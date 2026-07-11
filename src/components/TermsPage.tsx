@@ -347,7 +347,7 @@ export default function TermsPage() {
                       <li className="flex items-start gap-2.5 text-slate-800 font-bold">
                         <span className="mt-1 font-mono text-[9px] px-1.5 py-0.5 bg-emerald-100 border border-deep-navy rounded">COPPA</span>
                         <p className="font-semibold leading-relaxed">
-                          <strong>Children’s Online Privacy Protection Act:</strong> We strictly adhere to FTC guidelines. The platform does not collect, track, or maintain personal information from children under the age of 13.
+                          <strong>Children&apos;s Online Privacy Protection Act:</strong> We strictly adhere to FTC guidelines. The platform does not collect, track, or maintain personal information from children under the age of 13.
                         </p>
                       </li>
                       <li className="flex items-start gap-2.5 text-slate-800 font-bold">
@@ -525,7 +525,7 @@ export default function TermsPage() {
                     <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl space-y-1">
                       <span className="text-[10px] font-mono font-black text-emerald-800 block">COPPA</span>
                       <p className="text-[10px] text-slate-800 font-semibold leading-normal">
-                        <strong>Children's Online Privacy Protection Act:</strong> We strictly adhere to FTC guidelines. The platform does not collect, track, or maintain personal information from children under the age of 13.
+                        <strong>Children&apos;s Online Privacy Protection Act:</strong> We strictly adhere to FTC guidelines. The platform does not collect, track, or maintain personal information from children under the age of 13.
                       </p>
                     </div>
                     <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl space-y-1">

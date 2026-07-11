@@ -162,8 +162,8 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
           </h1>
 
           <p className="text-deep-navy text-sm sm:text-base leading-relaxed max-w-xl font-medium">
-            Hey <span className="text-emerald-500 font-extrabold">{username}</span>, you are currently level <span className="text-emerald-500 font-extrabold">{stats.level}</span>! 
-            Challenge global duelists in real-time online battles, earn math tokens, master multi-grade math lessons, and climb the scoreboard! No third-party sign-ins, pure educational power.
+            {"Hey "} <span className="text-emerald-500 font-extrabold">{username}</span>{", you are currently level "} <span className="text-emerald-500 font-extrabold">{stats.level}</span>{"! "} 
+            {"Challenge global duelists in real-time online battles, earn math tokens, master multi-grade math lessons, and climb the scoreboard! No third-party sign-ins, pure educational power."}
           </p>
 
           <div className="flex flex-col sm:flex-row flex-wrap items-center gap-5 pt-4">
@@ -277,9 +277,9 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
             Jesse Rock Math: A Game-Changing Multiplayer Math Game for Kids
           </h2>
           <p className="text-xs md:text-sm text-slate-700 font-medium leading-relaxed max-w-4xl">
-            <strong>"Jesse Math Rockstar" is an educational web application developed by Jesse, an 11-year-old developer.</strong> Designed as a highly interactive <strong>multiplayer math game for kids</strong>, Jesse has engineered 
-            a blazing-fast, real-time Firestore synchronization hub, creating a premium playground where children can race, challenge global peers, and learn math in 
-            a frictionless, safe, and highly visual environment.
+            <strong>{"\"Jesse Math Rockstar\" is an educational web application developed by Jesse, an 11-year-old developer."}</strong> {"Designed as a highly interactive "} <strong>{"multiplayer math game for kids"}</strong>{", Jesse has engineered "} 
+            {"a blazing-fast, real-time Firestore synchronization hub, creating a premium playground where children can race, challenge global peers, and learn math in "} 
+            {"a frictionless, safe, and highly visual environment."}
           </p>
         </div>
 

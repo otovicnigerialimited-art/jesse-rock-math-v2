@@ -13,7 +13,7 @@ const ARCADE_GAMES = [
     id: '1', 
     title: 'Kind Kingdom', 
     url: 'https://beinternetawesome.withgoogle.com/en_uk/interland/kind-kingdom',
-    description: 'It’s cool to be kind. Spread good vibes and block bullies on your way to the top of the kingdom.',
+    description: 'It\'s cool to be kind. Spread good vibes and block bullies on your way to the top of the kingdom.',
     rating: 'Everyone',
     source: 'Google Interland'
   },
@@ -21,7 +21,7 @@ const ARCADE_GAMES = [
     id: '2', 
     title: 'Reality River', 
     url: 'https://beinternetawesome.withgoogle.com/en_uk/interland/reality-river',
-    description: 'Don’t fall for fake! Cross the river by answering questions about phishing and scams.',
+    description: 'Don\'t fall for fake! Cross the river by answering questions about phishing and scams.',
     rating: 'Everyone',
     source: 'Google Interland'
   },
