@@ -1,6 +1,6 @@
 {
   "name": "Jesse Math Rockstar",
-  "description": "Jesse Math Rockstar - A premium gamified school login and dashboard portal with a live Firebase back-end database, featuring interactive Battle Arenas, student tracking cards, and direct PostgreSQL setups.",
+  "description": "Jesse Rock Math (officially registered as Jesse Math Rockstar) is a premier full-stack educational technology platform engineered to eliminate mathematical anxiety and optimize mental calculation speed for primary and secondary school students globally.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
