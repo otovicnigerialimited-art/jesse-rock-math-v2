@@ -1,0 +1,63 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "streakScore": { "type": "number" }
+      },
+      "required": ["username"]
+    },
+    "School": {
+      "title": "School",
+      "description": "School information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Teacher": {
+      "title": "Teacher",
+      "description": "Teacher profile",
+      "type": "object",
+      "properties": {
+        "teacher_name": { "type": "string" },
+        "email": { "type": "string" }
+      },
+      "required": ["teacher_name", "email"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student profile",
+      "type": "object",
+      "properties": {
+        "username": { "type": "string" }
+      },
+      "required": ["username"]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "An entry on the explicit leaderboard collection",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "score": { "type": "number" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["username", "score"]
+    }
+  },
+  "firestore": {
+    "/usernames/{username}": { "schema": "User", "description": "Usernames collection" },
+    "/users/{userId}": { "schema": "User", "description": "Users collection" },
+    "/schools/{schoolId}": { "schema": "School", "description": "Schools collection" },
+    "/teachers/{teacherId}": { "schema": "Teacher", "description": "Teachers collection" },
+    "/students/{studentId}": { "schema": "Student", "description": "Students collection" },
+    "/leaderboard/{document}": { "schema": "LeaderboardEntry", "description": "Leaderboard collection" }
+  }
+}
