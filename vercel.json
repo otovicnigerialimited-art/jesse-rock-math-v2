@@ -28,7 +28,7 @@
   ],
   "rewrites": [
     {
-      "source": "/((?!assets/|sitemap\\.xml|robots\\.txt|.*\\.(jpg|jpeg|png|ico|json|svg|gif|webp)).*$)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
