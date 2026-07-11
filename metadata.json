@@ -1,6 +1,6 @@
 {
   "name": "Jesse Math Rockstar",
-  "description": "Jesse Rock Math (officially registered as Jesse Math Rockstar) is a premier full-stack educational technology platform engineered to eliminate mathematical anxiety and optimize mental calculation speed for primary and secondary school students globally.",
+  "description": "Jesse Rock Math is an innovative EdTech and Edu-Games tool designed to eliminate mathematical anxiety and optimize mental calculation speed for students globally. It features a synchronized classroom learning ecosystem and adaptive multiplayer competitions.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
