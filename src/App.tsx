@@ -1259,7 +1259,11 @@ export default function App() {
                     )
                   )}
                   {activeTab === 'dashboard' && <Dashboard stats={stats} onStartQuiz={() => setActiveTab('quiz')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} />}
-                  {activeTab === 'leaderboard' && <Leaderboard currentUser={{ uid: authState.userId || null, username: authState.username || null, role: authState.role }} currentStreak={stats.streak} stats={stats} />}
+                  {activeTab === 'leaderboard' && (
+                    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-950 text-white"><Loader2 className="animate-spin text-brand-primary w-12 h-12" /></div>}>
+                      <Leaderboard currentUser={{ uid: authState.userId || null, username: authState.username || null, role: authState.role }} currentStreak={stats.streak} stats={stats} />
+                    </React.Suspense>
+                  )}
                   {activeTab === 'hub' && <LearningHub onStartLesson={(lesson) => { setPracticeLesson(lesson); setActiveTab('learn'); }} stats={stats} />}
                   {activeTab === 'arena' && <ArenaMatches currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', classCode: authState.classCode }} onExit={() => setActiveTab('home')} soundEffectsEnabled={configSettings?.soundEffectsEnabled ?? true} onMatchFinished={handlePlayArenaFinish} />}
                   {activeTab === 'quiz' && <Quiz onFinish={handleQuizFinish} difficulty={selectedDifficulty} onExit={() => setActiveTab('home')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} />}
