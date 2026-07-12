@@ -778,7 +778,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
 
               {/* Player list */}
               <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
-                {onlinePlayers.map((player) => {
+                {onlinePlayers.map((player, idx) => {
                   const isMe = player.id === currentUser.uid;
                   return (
                     <div 

@@ -318,7 +318,28 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
             </p>
           </div>
 
-          {/* New Football Story Section */}
+          {/* Educational Platform Highlights */}
+          <div className="mt-8 p-6 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 border-4 border-deep-navy rounded-[2rem] relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <div className="text-6xl rotate-12">🎓</div>
+            </div>
+            <h3 className="text-xl font-black text-deep-navy mb-4 uppercase tracking-tight flex items-center gap-2">
+              <span className="text-2xl">🎓</span> Interactive Learning Platform
+            </h3>
+            <div className="space-y-4 text-[13px] font-bold text-slate-850 leading-relaxed">
+              <p>
+                {"Jesse Rock Math is designed to transform the way students engage with mathematics. By creating an interactive, game-based environment, we move beyond passive learning to active participation, helping learners master essential concepts through play."}
+              </p>
+              <p>
+                {"Our platform leverages real-time feedback, adaptive challenges, and rewarding progress tracking to ensure every student remains motivated and challenged at their appropriate level, making math both accessible and enjoyable."}
+              </p>
+              <p className="bg-white/50 p-3 rounded-xl border-2 border-deep-navy/10">
+                {"We believe that technology should empower educators and inspire students. By bridging the gap between traditional curriculum requirements and modern gamified interaction, we are building a foundation for lifelong mathematical confidence."}
+              </p>
+            </div>
+          </div>
+
+          {/* Football Story Section */}
           <div className="mt-8 p-6 bg-gradient-to-br from-green-500/10 via-yellow-500/5 to-blue-500/10 border-4 border-deep-navy rounded-[2rem] relative overflow-hidden">
             <div className="absolute top-0 right-0 p-4 opacity-10">
               <div className="text-6xl rotate-12">⚽</div>
