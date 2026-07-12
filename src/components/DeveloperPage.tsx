@@ -317,6 +317,38 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
               A huge thank you to my <strong>Aunty Mercy</strong> for her amazing support, and a massive thank you to my <strong>Mum</strong> for letting me use her laptop to code all of my applications. I couldn't have built this without them!
             </p>
           </div>
+
+          {/* New Football Story Section */}
+          <div className="mt-8 p-6 bg-gradient-to-br from-green-500/10 via-yellow-500/5 to-blue-500/10 border-4 border-deep-navy rounded-[2rem] relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-10">
+              <div className="text-6xl rotate-12">⚽</div>
+            </div>
+            <h3 className="text-xl font-black text-deep-navy mb-4 uppercase tracking-tight flex items-center gap-2">
+              <span className="text-2xl">🇧🇷</span> My Favourite Iconic Football Player
+            </h3>
+            <div className="space-y-4 text-[13px] font-bold text-slate-850 leading-relaxed">
+              <p>
+                {"It is hard to think of a modern footballing story quite as brilliant, yet completely devastating, as Neymar Jr.’s relationship with the FIFA World Cup. For over a decade, he carried the hopes, dreams, and immense pressure of over 200 million Brazilians on his back. Every time he stepped onto the pitch wearing that iconic number 10 shirt, he wasn't just playing a game—he was carrying the legacy of Pelé, Garrincha, and Ronaldo, trying to bring the sixth star home."}
+              </p>
+              <p>
+                {"But the World Cup has often been staggeringly cruel to him. We all remember 2014. A young, joyful Neymar was taking the tournament by storm on home soil, playing with the weight of an entire nation on his shoulders. Then came that horrific fractured vertebra against Colombia. In an instant, his dream was shattered, and the images of him being carried off the pitch in tears will forever be etched into football history."}
+              </p>
+              <p>
+                {"When 2018 arrived, he fought through rushed injury recoveries just to be there, only to face bitter disappointment. But perhaps nothing cuts deeper than Qatar 2022. The goal he scored against Croatia in extra time was a moment of pure, unadulterated magic—a goal worthy of winning any World Cup. He equalled Pelé’s official goalscoring record with a strike of absolute genius. Yet, minutes later, the dream vanished in a penalty shootout. The image of him sitting alone on the center circle, sobbing uncontrollably while the world watched, is one of the most painful sights the sport has ever seen."}
+              </p>
+              <p className="bg-white/50 p-3 rounded-xl border-2 border-deep-navy/10">
+                {"Neymar gave his ankles, his spine, his tears, and his youth to the Seleção. He was constantly targeted, fouled, and battered by defenders, yet he always got back up to dance, create, and smile—until the heartbreak simply became too heavy to bear. He deserved to lift that trophy. He deserved the fairy-tale ending to a story of unimaginable pressure. Football can be beautiful, but the way it treated Neymar on the grandest stage of all will always remain a profound tragedy."}
+              </p>
+              <a 
+                href="https://dev.to/jesse_otobo_/my-favourtite-iconic-football-player-463e" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 underline transition-colors"
+              >
+                Read full article on Dev.to <ExternalLink size={12} />
+              </a>
+            </div>
+          </div>
         </div>
       </motion.section>
 
