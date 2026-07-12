@@ -256,9 +256,9 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
               </div>
             </motion.div>
           )}
-          {activeReactions.map((rx) => (
+          {activeReactions.map((rx, idx) => (
             <motion.div
-              key={rx.id}
+              key={`${rx.id}-${idx}`}
               initial={{ opacity: 0, x: 50, scale: 0.8 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 100, scale: 0.8 }}
@@ -478,7 +478,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {classmates.map((mate) => {
+                {classmates.map((mate, idx) => {
                   const isMe = mate.id === currentUser.uid;
                   const isOnline = Date.now() - (mate.last_active || 0) < 60000;
                   const mateScore = mate.score || 0;
@@ -488,7 +488,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
 
                   return (
                     <div 
-                      key={mate.id}
+                      key={`${mate.id}-${idx}`}
                       className={`p-5 rounded-2xl border border-deep-navy border-4 transition-all flex flex-col justify-between gap-4 ${
                         isMe 
                           ? 'bg-sunny-yellow/15 border-violet-500 shadow-inner' 
@@ -540,9 +540,9 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
                         <div className="bg-slate-50 p-2.5 rounded-xl border border-dashed border-deep-navy border-2 flex items-center justify-between gap-2 flex-wrap">
                           <span className="text-[10px] font-bold text-deep-navy/70 font-mono uppercase">Send Signal:</span>
                           <div className="flex gap-1.5">
-                            {['🎸', '⚡', '👑', '🎉', '💖'].map((emoji) => (
+                            {['🎸', '⚡', '👑', '🎉', '💖'].map((emoji, eIdx) => (
                               <button
-                                key={emoji}
+                                key={`${emoji}-${eIdx}`}
                                 onClick={() => handleSendReaction(mate.id, emoji)}
                                 className="w-8 h-8 rounded-lg bg-white hover:bg-sunny-yellow border border-deep-navy border-2 text-sm flex items-center justify-center transition-all hover:scale-110 active:scale-95 cursor-pointer"
                                 title={`Send ${emoji} Reaction`}
@@ -658,7 +658,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
 
                   return (
                     <div 
-                      key={mate.id}
+                      key={`${mate.id}-${idx}`}
                       className={`p-3 rounded-xl border border-deep-navy border-2 flex items-center justify-between gap-3 text-left ${cardStyle}`}
                     >
                       <div className="flex items-center gap-2.5">

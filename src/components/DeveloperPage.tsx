@@ -701,9 +701,9 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
             {guestbookLogs.length === 0 ? (
               <p className="text-xs text-slate-600 text-center italic py-4 font-bold">Be the first to leave a message!</p>
             ) : (
-              guestbookLogs.map((log) => (
+              guestbookLogs.map((log, idx) => (
                 <div 
-                  key={log.id}
+                  key={`${log.id}-${idx}`}
                   className="p-3.5 rounded-xl bg-clean-white border border-deep-navy border-4 flex gap-2 flex-col font-sans"
                 >
                   <div className="flex items-center justify-between gap-2 border-b border-deep-navy/10 pb-1.5">

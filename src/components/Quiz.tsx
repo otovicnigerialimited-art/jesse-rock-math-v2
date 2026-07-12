@@ -248,9 +248,9 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
           <div className="space-y-3">
             <span className="text-xs font-black text-deep-navy block uppercase tracking-wider">Choose your entry path:</span>
             <div className="grid grid-cols-3 gap-3">
-              {(['easy', 'medium', 'hard'] as Difficulty[]).map((diff) => (
+              {(['easy', 'medium', 'hard'] as Difficulty[]).map((diff, idx) => (
                 <button
-                  key={diff}
+                  key={`${diff}-${idx}`}
                   onClick={() => setSelectedWelcomeDifficulty(diff)}
                   className={cn(
                     "py-3.5 px-4 rounded-xl font-black text-xs uppercase tracking-wider border-2 transition-all cursor-pointer shadow-sm text-center",
@@ -353,41 +353,41 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
         {/* Digital Keypad - Optimized for touchscreens but also usable on desktop */}
         <div className="flex flex-col gap-2 sm:gap-3 max-w-xs mx-auto">
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((val, idx) => (
               <button
-                key={key}
+                key={`${val}-${idx}`}
                 type="button"
                 onPointerDown={(e) => {
                   e.preventDefault();
-                  setUserInput((prev) => prev + key);
+                  setUserInput((prev) => prev + val);
                   inputRef.current?.focus();
                 }}
                 className="h-14 min-w-[3.5rem] rounded-2xl text-2xl font-black transition-transform active:scale-95 shadow-md flex items-center justify-center cursor-pointer bg-white/10 text-deep-navy border-2 border-slate-200 hover:bg-white/20 touch-manipulation"
               >
-                {key}
+                {val}
               </button>
             ))}
           </div>
           <div className="grid grid-cols-4 gap-2 sm:gap-3">
-            {['CLEAR', 0, '/', 'GO'].map((key) => (
+            {['CLEAR', 0, '/', 'GO'].map((val, idx) => (
               <button
-                key={key}
+                key={`${val}-${idx}`}
                 type="button"
                 onPointerDown={(e) => {
                   e.preventDefault();
-                  if (key === 'CLEAR') setUserInput('');
-                  else if (key === 'GO') submitAnswer();
-                  else setUserInput((prev) => prev + key);
+                  if (val === 'CLEAR') setUserInput('');
+                  else if (val === 'GO') submitAnswer();
+                  else setUserInput((prev) => prev + val);
                   inputRef.current?.focus();
                 }}
                 className={cn(
                   "h-14 min-w-[3rem] rounded-2xl text-2xl font-black transition-transform active:scale-95 shadow-md flex items-center justify-center cursor-pointer touch-manipulation",
-                  key === 'CLEAR' ? "bg-rose-500/20 text-rose-400 text-sm border-2 border-rose-500/30 hover:bg-rose-500/30" : 
-                  key === 'GO' ? "bg-emerald-500 text-deep-navy text-lg hover:brightness-110 shadow-emerald-500/50" : 
+                  val === 'CLEAR' ? "bg-rose-500/20 text-rose-400 text-sm border-2 border-rose-500/30 hover:bg-rose-500/30" : 
+                  val === 'GO' ? "bg-emerald-500 text-deep-navy text-lg hover:brightness-110 shadow-emerald-500/50" : 
                   "bg-white/10 text-deep-navy border-2 border-slate-200 hover:bg-white/20"
                 )}
               >
-                {key}
+                {val}
               </button>
             ))}
           </div>

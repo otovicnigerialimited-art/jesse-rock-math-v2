@@ -130,6 +130,7 @@ export default function App() {
 
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('easy');
 
+
   // Custom configurations (Sound, avatars & speed)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [configSettings, setConfigSettings] = useState(() => {
@@ -1104,9 +1105,9 @@ export default function App() {
       {/* Dynamic Floating Emojis Background */}
       <div className="floating-bg-container fixed inset-0 pointer-events-none">
         {activeTab !== 'quiz' && <div className={`landscape-overlay ${isNight ? 'landscape-night' : ''}`} />}
-        {activeTab !== 'quiz' && backgroundEmojis.map((emoji) => (
+        {activeTab !== 'quiz' && backgroundEmojis.map((emoji, idx) => (
           <div
-            key={emoji.id}
+            key={`${emoji.id}-${idx}`}
             className="floating-emoji-item"
             style={{
               left: emoji.left,
@@ -1153,9 +1154,9 @@ export default function App() {
           </div>
           
           <nav className="flex-1 overflow-y-auto space-y-1.5 p-4 scrollbar-thin-custom">
-            {navItems.map((item) => (
+            {navItems.map((item, idx) => (
               <button
-                key={item.id}
+                key={`${item.id}-${idx}`}
                 onClick={() => {
                   setIsSidebarOpen(false);
                   setActiveTab(item.id as any);
@@ -1189,6 +1190,7 @@ export default function App() {
               </button>
             )}
           </nav>
+
 
           {/* Sidebar Footer with direct legal links */}
           <div className="p-4 border-t border-deep-navy/10 text-center space-y-1 bg-sunny-yellow/10 shrink-0">
@@ -1276,6 +1278,7 @@ export default function App() {
           </div>
         </main>
       </div>
+
 
       <AnimatePresence>
         {isSettingsOpen && <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} config={configSettings} setConfig={setConfigSettings} />}

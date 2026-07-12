@@ -637,7 +637,7 @@ export default function TeacherDashboard({
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 font-medium">
-                      {filteredStudents.map((student) => {
+                      {filteredStudents.map((student, idx) => {
                         const progress = student.school_math_progress || {
                           highScore: 0,
                           xp: 100,
@@ -647,7 +647,7 @@ export default function TeacherDashboard({
                           currentLevel: 1
                         };
                         return (
-                          <tr key={student.id} className="hover:bg-white/[2%] transition-all">
+                          <tr key={`${student.id}-${idx}`} className="hover:bg-white/[2%] transition-all">
                             <td className="p-4 text-deep-navy">
                               <span className="font-bold block text-sm">
                                 {student.real_first_name}
@@ -917,10 +917,10 @@ export default function TeacherDashboard({
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 font-medium">
-                      {activeSessions.map((session) => {
+                      {activeSessions.map((session, idx) => {
                         const loginTime = new Date(session.timestamp).toLocaleTimeString();
                         return (
-                          <tr key={session.id} className="hover:bg-white/[2%] transition-all">
+                          <tr key={`${session.id}-${idx}`} className="hover:bg-white/[2%] transition-all">
                             <td className="p-4">
                               <span className="font-bold text-sm block text-deep-navy">
                                 @{session.student_name}

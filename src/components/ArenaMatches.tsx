@@ -782,7 +782,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                   const isMe = player.id === currentUser.uid;
                   return (
                     <div 
-                      key={player.id}
+                      key={`${player.id}-${idx}`}
                       className={`p-3.5 rounded-2xl border flex items-center justify-between gap-3 transition-all ${
                         isMe 
                           ? "bg-violet-600/10 border-violet-500/25" 

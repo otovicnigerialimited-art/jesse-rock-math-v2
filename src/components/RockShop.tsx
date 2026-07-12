@@ -500,7 +500,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
             </div>
           ) : (
             <div className="grid md:grid-cols-2 gap-5">
-              {filteredItems.map((item) => {
+              {filteredItems.map((item, idx) => {
                 const isOwned = item.coin_cost === 0 || purchasedItemIds.includes(item.id);
                 const isEquipped = (item.category === 'hair' && equippedItems.hair === item.id) ||
                                   (item.category === 'body' && equippedItems.body === item.id) ||
@@ -517,7 +517,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
 
                 return (
                   <motion.div
-                    key={item.id}
+                    key={`${item.id}-${idx}`}
                     animate={isShaking ? {
                       x: [-6, 6, -6, 6, -3, 3, 0],
                       transition: { duration: 0.5 }

@@ -753,7 +753,7 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
               const isPlaceholder = (player as any).isPlaceholderMe;
 
               return (
-                <React.Fragment key={player.id}>
+                <React.Fragment key={`${player.collection || 'player'}-${player.id}-${idx}`}>
                   {isPlaceholder && (
                     <div className="py-3 bg-white backdrop-blur-md/40 text-center text-[10px] font-black tracking-widest text-deep-navy border-y border-deep-navy border-4">
                       ••• CURRENT PLAYER RANKING STATUS •••

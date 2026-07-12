@@ -32,7 +32,6 @@ import {
   Globe,
   BookOpen
 } from 'lucide-react';
-// import removed
 import { db } from '../lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, onSnapshot, deleteDoc } from 'firebase/firestore';
 import { 
@@ -61,7 +60,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       delay: `${-((i * 13) % 25)}s`
     }));
   }, []);
-  
+
   // Individual login sub-mode: 'rockstar', 'student', or 'class_code'
   const [individualSubMode, setIndividualSubMode] = useState<'rockstar' | 'student' | 'class_code'>('rockstar');
 
@@ -712,9 +711,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-tr from-purple-900 via-indigo-950 to-pink-900 relative overflow-x-hidden font-sans text-deep-navy">
       {/* Floating Emojis Background */}
       <div className="floating-bg-container">
-        {backgroundEmojis.map((emoji) => (
+        {backgroundEmojis.map((emoji, idx) => (
           <div
-            key={emoji.id}
+            key={`${emoji.id}-${idx}`}
             className="floating-emoji-item"
             style={{
               left: emoji.left,
@@ -731,6 +730,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       {/* Background radial soft lights */}
       <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-pink-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+
 
       {/* SEALED COMPONENT CHECK: Render Developer Portal Dashboard if Dev Authenticated and developer tab active */}
       {isDevAuthenticated && loginTab === 'developer' ? (
@@ -826,9 +826,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-3.5">
-                  {features.map((f) => (
+                  {features.map((f, idx) => (
                     <div 
-                      key={f.id}
+                      key={`${f.id}-${idx}`}
                       className={`p-4 rounded-xl border transition-all flex flex-col justify-between gap-3 ${
                         f.deployed 
                           ? 'bg-clean-white border-cyan-500/25 shadow-inner' 
@@ -972,14 +972,14 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             </motion.div>
             
             <h1 className="text-2xl font-display font-black tracking-tight text-deep-navy leading-none mt-2">
-              JESSE ROCK<br />
+              Welcome to Jesse Rock Math<br />
               <span className="bg-gradient-to-r from-yellow-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(244,63,94,0.4)] text-xl font-black tracking-widest uppercase">
                 MATH ARENA 👑
               </span>
             </h1>
             
             <div className="py-1 px-2.5 bg-violet-600/10 border border-violet-500/20 text-violet-350 rounded-lg text-[10px] font-black uppercase tracking-wider inline-flex items-center gap-1.5 justify-center mx-auto">
-              <Lock size={10} className="text-violet-400 animate-pulse" /> Secure Classroom Gate
+              <Lock size={10} className="text-violet-400 animate-pulse" /> Secure School Portal
             </div>
           </div>
 
@@ -995,7 +995,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               }`}
             >
               <User size={12} />
-              <span>Individual</span>
+              <span>Rockstar Student</span>
             </button>
             
             <button
@@ -1008,7 +1008,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               }`}
             >
               <GraduationCap size={12} />
-              <span>Teacher</span>
+              <span>Math Teacher</span>
             </button>
 
             <button
@@ -1021,7 +1021,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               }`}
             >
               <Cpu size={12} />
-              <span>Developer Login</span>
+              <span>Developer Portal</span>
             </button>
           </div>
 
@@ -1087,7 +1087,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 <form onSubmit={handleHomeLoginSubmit} className="space-y-4">
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Legendary Rockstar Username
+                      Your Rockstar Username
                     </label>
                     <div className="relative">
                       <User size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
@@ -1105,7 +1105,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Math Rockstar Password
+                      Secure Login PIN
                     </label>
                     <div className="relative">
                       <Lock size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
