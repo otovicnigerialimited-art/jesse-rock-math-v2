@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Trophy, Timer, Zap, ArrowRight, RefreshCcw, Home, Flame, Play, Sparkles, GraduationCap, ArrowLeft, BookOpen } from 'lucide-react';
 import { generateProblem, calculateXP } from '../lib/mathUtils';
 import { playCorrectSound, playWrongSound } from '../lib/audioUtils';
-import { Difficulty, Problem, UserStats } from '../types';
+import { Difficulty, Problem, UserStats, Lesson } from '../types';
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
 import { useAdaptiveLogic } from '../hooks/useAdaptiveLogic';
@@ -15,6 +15,7 @@ interface QuizProps {
   isGuest?: boolean;
   onConvertProgress?: () => void;
   allowedTypes?: Problem['type'][];
+  lesson?: Lesson;
 }
 
 const getInitialLevel = (diff: Difficulty) => {
@@ -34,12 +35,13 @@ const getDifficultyForLevel = (level: number): Difficulty => {
   return 'extreme';
 };
 
-export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertProgress, allowedTypes }: QuizProps) {
+export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertProgress, allowedTypes, lesson }: QuizProps) {
   const [hasStarted, setHasStarted] = useState(false);
   const [selectedWelcomeDifficulty, setSelectedWelcomeDifficulty] = useState<Difficulty>(difficulty);
   const adaptiveLogic = useAdaptiveLogic(getInitialLevel(selectedWelcomeDifficulty));
 
-  const [currentProblem, setCurrentProblem] = useState<Problem>(generateProblem(adaptiveLogic.currentLevel, allowedTypes));
+  const quizAllowedTypes = lesson?.problemTypes || allowedTypes;
+  const [currentProblem, setCurrentProblem] = useState<Problem>(generateProblem(adaptiveLogic.currentLevel, quizAllowedTypes));
 
   const [userInput, setUserInput] = useState('');
   const [score, setScore] = useState(0);
@@ -128,7 +130,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
     setTimeout(() => {
       setFeedback(null);
       setUserInput('');
-      setCurrentProblem(generateProblem(evalResult.level, allowedTypes));
+      setCurrentProblem(generateProblem(evalResult.level, quizAllowedTypes));
       setActiveFeedbackTag(null);
     }, 1300);
   };
@@ -188,7 +190,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
               setScore(0);
               setTotalQuestions(0);
               adaptiveLogic.reset();
-              setCurrentProblem(generateProblem(getInitialLevel(selectedWelcomeDifficulty), allowedTypes));
+              setCurrentProblem(generateProblem(getInitialLevel(selectedWelcomeDifficulty), quizAllowedTypes));
             }}
             className="flex-1 py-4 btn-3d-blue font-bold flex items-center justify-center gap-2"
           >

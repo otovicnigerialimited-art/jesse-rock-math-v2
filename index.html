@@ -7,9 +7,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/icon.png" />
     <!-- Primary Meta Tags -->
-    <title>Jesse Rock Math | Elite Full-Stack EdTech Platform</title>
-    <meta name="description" content="Jesse Rock Math is an innovative EdTech tool designed to eliminate mathematical anxiety and optimize mental calculation speed for primary and secondary school students globally. Created by Jesse Otobo, an 11-year-old developer, the platform features a 7-module curriculum designed for interactive learning.">
-    <meta name="keywords" content="educational platform, EdTech, Edu-Games, Jesse Otobo, Jesse Math Rockstar, multiplayer math competition, mental math, primary school math, secondary school math, Firebase EdTech, real-time math, mathematical fluency, gamified learning">
+    <title>Jesse Rock Math | Interactive Math Games & Educational EdTech Application</title>
+    <meta name="description" content="Jesse Rock Math is a gamified learning platform and educational application (EdTech) designed to optimize mental math speed. Featuring interactive math games, multiplayer competition, and classroom tools for students globally. Created by Jesse Otobo.">
+    <meta name="keywords" content="Interactive Math Games, Educational Application, EdTech, Gamified Learning, multiplayer math game, gamified math learning platform, elementary math arcade games, coppa compliant math game, Jesse Otobo, math games, free classroom edtech tools, mental math speed drills, classroom math application, jesse math rock, jesse math rock star">
     <meta name="author" content="Jesse Otobo">
     <meta name="creation_date" content="2026-06-20" />
     <meta name="date" content="2026-06-20" />
@@ -139,74 +139,53 @@
         <h2>Full Application Features & Capabilities</h2>
         
         <section>
-          <h3>1. Live Multiplayer Battle Arena</h3>
-          <p>
-            An active, real-time classroom hub where students join shared game lobbies instantly. Powered by an advanced real-time Firebase backend, 
-            classmates compete side-by-side to solve math problems. The arena includes dynamic matchmaking, live spectator scores, and competitive 
-            multiplayer countdowns that keep students fully engaged during classroom math drills. The real-time mechanics synchronize score updates instantly 
-            using Firestore listeners, allowing children to see their friends' progress, trigger live animations, and share healthy, non-toxic emoji reactions.
-          </p>
-        </section>
+          <h2>Jesse Rock Math: Educational Hubs</h2>
+          
+          <div id="hubs-documentation">
+            <h3>1. The Learning Hub (Core Academic Hub)</h3>
+            <p>
+              <strong>Purpose:</strong> The central academic foundation of the platform where students master foundational and advanced mathematical concepts step-by-step.
+            </p>
+            <p>
+              <strong>Logic & Functionality:</strong> This hub organizes the curriculum into 7 distinct modules. The logic follows a structured path: 1. Interactive Visual Learning (using physical-model sliders and balancing scales), 2. Guided Practice (The Workout), and 3. The Grand Quiz Battle. To ensure comprehension, students must pass the topic "Quiz Battle" with a score of 15/20 or higher to unlock subsequent content. It acts as the "classroom textbook" and practice lab for all users.
+            </p>
 
-        <section>
-          <h3>2. Real-Time Adaptive Learning Drills (Solo Mode)</h3>
-          <p>
-            An intelligent mathematical algorithm handles solo play. As a child enters correct answers and builds their streak, the math questions dynamically 
-            increase in complexity (e.g., larger digits, multi-operator equations, and challenging fractions). When an error occurs, the difficulty 
-            smoothly recalibrates downwards to protect the learner's confidence and foster growth mindset resilience. This adaptive progression system 
-            ensures that students are always challenged at their exact skill level, preventing math anxiety while encouraging cognitive development.
-          </p>
-        </section>
+            <h3>2. The Teacher Classroom Hub & Live Chalkboard</h3>
+            <p>
+              <strong>Purpose:</strong> Empowers educators to moderate, broadcast, and customize the learning experience in real-time.
+            </p>
+            <p>
+              <strong>Logic & Functionality:</strong> Powered by Firestore, teachers create Class Codes. Once students join, the teacher's dashboard acts as a digital chalkboard. Logic allows for real-time broadcasting of math subjects (e.g., changing the current focus from multiplication to fractions), publishing "Vocabulary Words of the Day," and setting active assignments. Changes are instantly pushed to all student devices via Firestore listeners, ensuring synchronized classroom activity.
+            </p>
+          </div>
 
-        <section>
-          <h3>3. Interactive Teacher Classroom Hub & Live Chalkboard</h3>
-          <p>
-            Teachers can create customized <strong>Class Codes</strong> instantly. Once students join with the code, the teacher acts as the moderator 
-            on a digital chalkboard, broadcast-controlling the math subject (multiplication, decimals, algebra, etc.), approving student entries, 
-            publishing daily math vocabulary words, and setting assignments. This transforms typical math sessions into active, synchronized multiplayer activities. 
-            The live chalkboard is reactive, updating instantly on student devices whenever the teacher edits equations or broadcasts new terms.
-          </p>
-        </section>
+          <h2>Jesse Rock Math: Competitive Arenas</h2>
 
-        <section>
-          <h3>4. Rockstar Avatar Shop & Rewards Center</h3>
-          <p>
-            Students earn <strong>Math Rock Tokens</strong> and Experience Points (XP) solely through mathematical accuracy and persistent practice. 
-            These tokens are 100% free with absolutely zero microtransactions. In the Rockstar Shop, students redeem tokens for cosmetic profile upgrades, 
-            exclusive user badges (e.g., "Math Legend", "Fractions Champion"), and unlockable rock instruments (electric guitars, drums, synths) 
-            to personalize their avatars. This visual-reward mechanism builds healthy extrinsic motivation, inspiring children to practice more math to acquire rare shop items.
-          </p>
-        </section>
+          <div id="arenas-documentation">
+            <h3>1. The Multiplayer Battle Arena</h3>
+            <p>
+              <strong>Purpose:</strong> A high-octane social environment designed to gamify math drills, fostering healthy competition and increasing engagement through social play.
+            </p>
+            <p>
+              <strong>Logic & Functionality:</strong> This arena uses a real-time lobby system (Firebase backend). When students join, their progress is synchronized. The logic calculates scores based on correct answers (+10 points) plus a speed-bonus algorithm. It includes streak multipliers (consecutive correct answers), and a "Confidence Reset" algorithm that recalibrates difficulty if a student makes an error. Students can use emoji-based reactions to cheer on peers, maintaining a safe, positive social environment.
+            </p>
 
-        <section>
-          <h3>5. Immersive Audio & Visualizer Suite</h3>
-          <p>
-            Featuring high-energy rock beats, real-time sound effects for streaks, responsive instrument visualizers, and a master sound-mute control 
-            suitable for quiet school computer labs. The visualizers pulsate reactively to the rhythm of the music and correct answers, creating a multisensory 
-            learning experience that bridges auditory, visual, and kinesthetic modalities.
-          </p>
-        </section>
+            <h3>2. The Play Arena (Speed Conditioning)</h3>
+            <p>
+              <strong>Purpose:</strong> An instant-start portal for high-frequency mental math speed conditioning.
+            </p>
+            <p>
+              <strong>Logic & Functionality:</strong> Designed for rapid-fire practice, this arena focuses purely on mental reflex speed. It features a simplified interface to minimize friction. The logic prioritizes question generation based on the user's current adaptive level. Reaching milestones here directly contributes to unlocking elite rewards in the Rockstar Shop.
+            </p>
 
-        <section>
-          <h3>6. Dedicated Learn Arena & Learning Hub Integration</h3>
-          <p>
-            Our ultimate educational integration links our two core components. The <strong>Learning Hub</strong> acts as the central hub for learning concepts step-by-step. In the Learning Hub, students interact with responsive, physical-model sliders and visual balancing scales to master individual concepts before practicing. 
-          </p>
-          <ul>
-            <li><strong>The 15/20 Mastery Rule:</strong> To ensure complete subject comprehension, users must complete and pass the topic <strong>Quiz Battle</strong> with a score of <strong>15/20 or higher</strong> to unlock subsequent topics.</li>
-            <li><strong>The Journey to Mastery:</strong> Every topic follows a structured path: 1. Visual Learning (Interactive Models) -> 2. Guided Practice (The Workout) -> 3. The Grand Quiz Battle. Successfully navigating this journey is the only way to earn the highest-tier badges.</li>
-          </ul>
-        </section>
-
-        <section>
-          <h3>7. Play Arena & Fun Arcade Secret Zone</h3>
-          <p>
-            Built around the theme <em>"Fire up your fingers and sharpen your mental math reflexes!"</em> the <strong>Play Arena</strong> contains a premium instant-start portal for high-octane speed conditioning.
-          </p>
-          <ul>
-            <li><strong>The 200-Solved Arcade Unlock:</strong> As a massive reward for persistence, once a player reaches a lifetime total of <strong>200 solved problems</strong>, they permanently unlock the <strong>Fun Arcade</strong>. This secret zone features elite educational games like <em>Kind Kingdom</em> and <em>Reality River</em> from Google Interland, rewarding math mastery with high-quality gameplay.</li>
-            <li><strong>Confidence Reset Rule:</strong> If a student breaks their active streak, the math engine instantly drops the question difficulty level so they can comfortably and confidently rebuild momentum.</li>
-          </ul>
+            <h3>3. The Fun Arcade (Reward Zone)</h3>
+            <p>
+              <strong>Purpose:</strong> A prestige reward zone that incentivizes long-term persistence and mathematical mastery.
+            </p>
+            <p>
+              <strong>Logic & Functionality:</strong> This arena is locked behind a "200-Solved Math Problem" milestone. The logic continuously tracks the user's lifetime solved problems in Firestore. Once the 200-problem threshold is reached, the arcade unlocks permanently, offering access to high-quality external educational games. This serves as a significant psychological reward mechanism for dedicated students.
+            </p>
+          </div>
         </section>
 
         <section>

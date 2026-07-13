@@ -1266,7 +1266,7 @@ export default function App() {
                   )}
                   {activeTab === 'hub' && <LearningHub onStartLesson={(lesson) => { setPracticeLesson(lesson); setActiveTab('learn'); }} stats={stats} />}
                   {activeTab === 'arena' && <ArenaMatches currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', classCode: authState.classCode }} onExit={() => setActiveTab('home')} soundEffectsEnabled={configSettings?.soundEffectsEnabled ?? true} onMatchFinished={handlePlayArenaFinish} />}
-                  {activeTab === 'quiz' && <Quiz onFinish={handleQuizFinish} difficulty={selectedDifficulty} onExit={() => setActiveTab('home')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} />}
+                  {activeTab === 'quiz' && <Quiz onFinish={handleQuizFinish} difficulty={selectedDifficulty} onExit={() => setActiveTab('home')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} lesson={practiceLesson} />}
                   {activeTab === 'badges' && <BadgesSection stats={stats} username={authState.username || 'Guest'} onClaimWeeklyBadge={handleClaimWeeklyBadge} />}
                   {activeTab === 'rules' && <RulesPage />}
                   {activeTab === 'terms' && <TermsPage />}
