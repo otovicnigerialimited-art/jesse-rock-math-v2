@@ -148,10 +148,10 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
             const reactionId = `rx_${rx.timestamp}_${Math.random()}`;
             setActiveReactions(prev => [...prev, { id: reactionId, emoji: rx.emoji, from: rx.from }]);
             
-            // Auto remove reaction bubble after 4 seconds
+            // Auto remove reaction bubble after 2 seconds
             setTimeout(() => {
               setActiveReactions(prev => prev.filter(r => r.id !== reactionId));
-            }, 4000);
+            }, 2000);
           }
         }
         
