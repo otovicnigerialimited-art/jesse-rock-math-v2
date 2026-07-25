@@ -8,7 +8,9 @@ import {
   addDoc, 
   query, 
   where, 
-  updateDoc
+  updateDoc,
+  deleteDoc,
+  writeBatch
 } from 'firebase/firestore';
 
 // ==========================================================
@@ -58,6 +60,8 @@ export interface MathProgressData {
   solved: number;
   correctAnswers: number;
   currentLevel: number;
+  streak: number;
+  completedTopics?: string[];
 }
 
 export interface SchoolStudent {
@@ -118,7 +122,8 @@ export async function seedSchoolsDb() {
           coins: 200,
           solved: 120,
           correctAnswers: 98,
-          currentLevel: 5
+          currentLevel: 5,
+          streak: 5
         },
         // Root fields for dual backward compatibility
         coins: 200,
@@ -145,7 +150,8 @@ export async function seedSchoolsDb() {
           coins: 350,
           solved: 150,
           correctAnswers: 135,
-          currentLevel: 8
+          currentLevel: 8,
+          streak: 12
         },
         coins: 350,
         xp: 1850,
@@ -259,17 +265,22 @@ export async function authenticateSchoolStudent(
   userObj?: SchoolStudent;
 } | null> {
   await seedSchoolsDb();
-  const cleanUser = usernameEntered.trim().toLowerCase();
-  const cleanPass = passwordEntered.trim();
+    const cleanUser = usernameEntered.trim();
+    const cleanPass = passwordEntered.trim();
 
-  const q = query(
-    collection(db, 'school_students'),
-    where('username', '==', cleanUser)
-  );
+    let snap = await getDocs(query(
+      collection(db, 'school_students'),
+      where('username_lower', '==', cleanUser.toLowerCase())
+    ));
 
-  const snap = await getDocs(q);
   if (snap.empty) {
-    return { success: false, error: "School student username not found. Ask your teacher to register you!" };
+    snap = await getDocs(query(
+      collection(db, 'school_students'),
+      where('username', '==', cleanUser)
+    ));
+    if (snap.empty) {
+      return { success: false, error: "School student username not found. Ask your teacher to register you!" };
+    }
   }
 
   const studentDoc = snap.docs[0];
@@ -291,16 +302,23 @@ export async function addStudentToTeacher(
   passwordEntered: string,
   teacherId: string
 ): Promise<{ success: boolean; error?: string; studentId?: string }> {
-  const cleanUser = usernameEntered.trim().toLowerCase();
+  const cleanUser = usernameEntered.trim();
   const cleanPass = passwordEntered.trim();
   const cleanFirstName = realFirstName.trim();
 
   // Verify unique student username globally (or in classroom)
-  const q = query(
+  let snap = await getDocs(query(
+    collection(db, 'school_students'),
+    where('username_lower', '==', cleanUser.toLowerCase())
+  ));
+  if (!snap.empty) {
+    return { success: false, error: `Username @${cleanUser} is already claimed by another student. Try an initial/suffix variation!` };
+  }
+  
+  snap = await getDocs(query(
     collection(db, 'school_students'),
     where('username', '==', cleanUser)
-  );
-  const snap = await getDocs(q);
+  ));
   if (!snap.empty) {
     return { success: false, error: `Username @${cleanUser} is already claimed by another student. Try an initial/suffix variation!` };
   }
@@ -312,12 +330,14 @@ export async function addStudentToTeacher(
     coins: 100,
     solved: 0,
     correctAnswers: 0,
-    currentLevel: 1
+    currentLevel: 1,
+    streak: 0
   };
 
   const newStudentData = {
     real_first_name: cleanFirstName,
     username: cleanUser,
+    username_lower: cleanUser.toLowerCase(),
     password: cleanPass,
     teacher_id: teacherId,
     school_math_progress: initialProgressObj,
@@ -379,6 +399,7 @@ export async function updateSchoolStudentProgress(
       const nextSolved = (prevRootProgress.solved || 0) + 1;
       const nextCorrect = (prevRootProgress.correctAnswers || 0) + (isCorrect ? 1 : 0);
       const nextLevel = Math.floor(nextXp / 1000) + 1;
+      const nextStreak = isCorrect ? (prevRootProgress.streak || 0) + 1 : 0;
 
       const updatedProgressObj: MathProgressData = {
         highScore: nextHighScore,
@@ -386,7 +407,8 @@ export async function updateSchoolStudentProgress(
         coins: nextCoins,
         solved: nextSolved,
         correctAnswers: nextCorrect,
-        currentLevel: nextLevel
+        currentLevel: nextLevel,
+        streak: nextStreak
       };
 
       await updateDoc(ref, {
@@ -398,6 +420,48 @@ export async function updateSchoolStudentProgress(
   } catch (err) {
     console.error("Failed to update school student scores live on Firestore:", err);
   }
+}
+
+// Wipe classroom data (students, sessions, and code) without deleting the teacher
+export async function wipeClassroomData(teacherId: string) {
+  const batch = writeBatch(db);
+  
+  // 1. Delete all students
+  const students = await fetchStudentsByTeacher(teacherId);
+  for (const student of students) {
+    batch.delete(doc(db, 'school_students', student.id));
+  }
+  
+  // 2. Delete class sessions
+  const sessionsQ = query(collection(db, 'class_sessions'), where('teacher_id', '==', teacherId));
+  const sessionsSnap = await getDocs(sessionsQ);
+  sessionsSnap.forEach((sessionDoc) => {
+    batch.delete(sessionDoc.ref);
+  });
+  
+  // 3. Clear class code on teacher
+  batch.update(doc(db, 'teachers', teacherId), {
+    class_code: null,
+    class_name: null
+  });
+  
+  await batch.commit();
+}
+
+// Delete entire classroom and student data
+export async function deleteClassroom(teacherId: string) {
+  const batch = writeBatch(db);
+  
+  // 1. Delete all students
+  const students = await fetchStudentsByTeacher(teacherId);
+  for (const student of students) {
+    batch.delete(doc(db, 'school_students', student.id));
+  }
+  
+  // 2. Delete teacher
+  batch.delete(doc(db, 'teachers', teacherId));
+  
+  await batch.commit();
 }
 
 // Re-exports/shims for compatibility

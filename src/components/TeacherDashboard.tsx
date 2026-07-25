@@ -13,7 +13,8 @@ import {
   deleteDoc
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { SchoolStudent, addStudentToTeacher, generateClassCode } from '../lib/schoolDb';
+import { SchoolStudent, addStudentToTeacher, generateClassCode, deleteClassroom, wipeClassroomData } from '../lib/schoolDb';
+import { LESSONS } from '../data/lessons';
 import { 
   Users, 
   Search, 
@@ -84,6 +85,11 @@ export default function TeacherDashboard({
   const [codeError, setCodeError] = useState<string | null>(null);
   const [codeSuccess, setCodeSuccess] = useState<string | null>(null);
   const [isGeneratingCode, setIsGeneratingCode] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+  const [studentToRemove, setStudentToRemove] = useState<string | null>(null);
 
   // Active Class Students state
   const [activeSessions, setActiveSessions] = useState<any[]>([]);
@@ -300,15 +306,13 @@ export default function TeacherDashboard({
 
   // Remove a student from class
   const handleRemoveStudentFromClass = async (sessionId: string) => {
-    if (!window.confirm("Are you sure you want to remove this student from the active class? They will be logged out instantly.")) {
-      return;
-    }
     try {
       const docRef = doc(db, 'class_sessions', sessionId);
       await updateDoc(docRef, {
         status: 'removed',
         removed_at: Date.now()
       });
+      setStudentToRemove(null);
     } catch (err) {
       console.error("Failed to remove student from class:", err);
     }
@@ -335,7 +339,7 @@ export default function TeacherDashboard({
     setFormSuccess(null);
 
     const cleanFirstName = firstName.trim();
-    const cleanUsername = username.trim().toLowerCase().replace(/\s/g, '');
+    const cleanUsername = username.trim().replace(/\s/g, '');
     const cleanPassword = password.trim();
 
     // STRICT LOCAL VERIFICATION (Enforce browser-side checks to protect DB resources)
@@ -360,8 +364,8 @@ export default function TeacherDashboard({
       setFormError("Error: Username must be at least 3 characters long.");
       return;
     }
-    if (!/^[a-z0-9_]+$/.test(cleanUsername)) {
-      setFormError("Error: Username can only contain lowercase letters, numbers, and underscores.");
+    if (!/^[a-zA-Z0-9_]+$/.test(cleanUsername)) {
+      setFormError("Error: Username can only contain letters, numbers, and underscores.");
       return;
     }
 
@@ -442,6 +446,7 @@ export default function TeacherDashboard({
               <LogOut size={13} />
               Sign Out
             </button>
+
           </div>
         </div>
       </div>
@@ -634,6 +639,10 @@ export default function TeacherDashboard({
                         <th className="p-4 text-center">XP Points ✨</th>
                         <th className="p-4 text-center">Math Coins 🪙</th>
                         <th className="p-4 text-center">Level ⭐</th>
+                        <th className="p-4 text-center">Streak 🔥</th>
+                        <th className="p-4 text-center">Completed Topics ✅</th>
+                        <th className="p-4 text-center">Next Topics 🎯</th>
+                        <th className="p-4 text-center">Struggling? ⚠️</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 font-medium">
@@ -644,8 +653,15 @@ export default function TeacherDashboard({
                           coins: 100,
                           solved: 0,
                           correctAnswers: 0,
-                          currentLevel: 1
+                          currentLevel: 1,
+                          streak: 0,
+                          completedTopics: []
                         };
+                        const accuracy = progress.solved > 0 ? (progress.correctAnswers / progress.solved) * 100 : 100;
+                        const isStruggling = accuracy < 50 && progress.solved > 10;
+                        const completed = progress.completedTopics || [];
+                        const nextTopics = LESSONS.filter(l => !completed.includes(l.id)).slice(0, 2);
+                        
                         return (
                           <tr key={`${student.id}-${idx}`} className="hover:bg-white/[2%] transition-all">
                             <td className="p-4 text-deep-navy">
@@ -676,6 +692,28 @@ export default function TeacherDashboard({
                               <span className="inline-block px-1.5 py-0.5 bg-violet-500/10 text-violet-400 rounded-md font-mono text-xs font-bold">
                                 Lvl {progress.currentLevel ?? 1}
                               </span>
+                            </td>
+                            <td className="p-4 text-center font-black text-orange-500">
+                              {progress.streak}
+                            </td>
+                            <td className="p-4 text-center text-[10px] text-slate-500">
+                              {completed.length} / {LESSONS.length}
+                            </td>
+                            <td className="p-4 text-center">
+                              {nextTopics.map(t => (
+                                <span key={t.id} className="block text-[9px] text-indigo-500 font-bold">
+                                  {t.title}
+                                </span>
+                              ))}
+                            </td>
+                            <td className="p-4 text-center">
+                              {isStruggling ? (
+                                <span className="px-2 py-1 bg-rose-500/10 text-rose-500 rounded text-[10px] font-black uppercase">
+                                  Yes ({Math.round(accuracy)}%)
+                                </span>
+                              ) : (
+                                <span className="text-slate-400 text-[10px]">No</span>
+                              )}
                             </td>
                           </tr>
                         );
@@ -741,7 +779,7 @@ export default function TeacherDashboard({
                 </div>
 
                 <button
-                  onClick={handleDeactivateCode}
+                  onClick={() => setShowDeleteConfirm(true)}
                   className="w-full py-2.5 rounded-xl bg-rose-900/10 hover:bg-rose-500 hover:text-white border border-rose-500/30 hover:border-rose-600 text-rose-600 text-xs font-black uppercase tracking-wider transition-all cursor-pointer"
                 >
                   Disable Classroom
@@ -953,7 +991,7 @@ export default function TeacherDashboard({
                                 </button>
                               </div>
                               <button
-                                onClick={() => handleRemoveStudentFromClass(session.id)}
+                                onClick={() => setStudentToRemove(session.id)}
                                 className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] rounded-lg uppercase tracking-wider transition-all cursor-pointer shadow flex items-center gap-1 mx-auto"
                               >
                                 <X size={11} /> Remove
@@ -966,6 +1004,112 @@ export default function TeacherDashboard({
                   </table>
                 </div>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* Remove Student Modal */}
+      {studentToRemove && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center border-4 border-rose-500">
+             <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-3 text-rose-500">
+               <X size={24} />
+             </div>
+             <h3 className="font-black text-deep-navy mb-2">Remove Student?</h3>
+             <p className="text-xs text-slate-500 mb-6 font-medium">They will be logged out instantly.</p>
+             <div className="flex gap-2">
+                <button onClick={() => setStudentToRemove(null)} className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer">CANCEL</button>
+                <button onClick={() => handleRemoveStudentFromClass(studentToRemove)} className="flex-1 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-xl transition-all cursor-pointer">REMOVE</button>
+             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full border border-rose-500 border-4 shadow-2xl relative">
+            <button
+              onClick={() => {
+                setShowDeleteConfirm(false);
+                setDeleteConfirmText('');
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center text-rose-500 border-4 border-rose-200">
+                <AlertCircle size={32} />
+              </div>
+            </div>
+
+            <h3 className="text-xl font-black text-center text-deep-navy mb-2 uppercase tracking-wide">
+              Danger Zone
+            </h3>
+            <p className="text-sm text-center text-slate-600 mb-6 font-medium">
+              Are you ABSOLUTELY sure you want to disable this classroom? ALL student data, progress, and accounts will be permanently deleted and cannot be recovered.
+            </p>
+
+            <div className="space-y-4">
+              {deleteError && (
+                <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-2">
+                  <AlertCircle size={14} className="text-rose-500 shrink-0 mt-0.5" />
+                  <p className="text-xs text-rose-600 font-bold">{deleteError}</p>
+                </div>
+              )}
+              
+              <div>
+                <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider text-center">
+                  Type "yes" to confirm
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder="yes"
+                  className="w-full text-center px-4 py-3 bg-slate-50 border-2 border-slate-200 rounded-xl focus:border-rose-500 focus:outline-none transition-all font-bold text-slate-700"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => {
+                    setShowDeleteConfirm(false);
+                    setDeleteConfirmText('');
+                    setDeleteError('');
+                  }}
+                  className="flex-1 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  disabled={deleteConfirmText.toLowerCase() !== 'yes' || isDeleting}
+                  onClick={async () => {
+                    if (deleteConfirmText.toLowerCase() === 'yes') {
+                      setIsDeleting(true);
+                      setDeleteError('');
+                      try {
+                        await wipeClassroomData(resolvedId);
+                        setTeacherCode('');
+                        setClassName('');
+                        setShowDeleteConfirm(false);
+                      } catch (error: any) {
+                        console.error("Error deleting classroom:", error);
+                        setDeleteError(error.message || "There was an error deleting the classroom. Please try again.");
+                      } finally {
+                        setIsDeleting(false);
+                      }
+                    }
+                  }}
+                  className="flex-1 px-4 py-3 bg-rose-500 hover:bg-rose-600 text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isDeleting ? "Deleting..." : "Disable"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

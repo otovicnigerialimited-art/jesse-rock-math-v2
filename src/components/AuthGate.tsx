@@ -47,7 +47,7 @@ interface AuthGateProps {
 
 export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) {
   // Tabs: 'individual' for Rockstar/Student Login, 'teacher' for Teacher Login, 'developer' for Developer Login
-  const [loginTab, setLoginTab] = useState<'individual' | 'teacher' | 'developer'>('individual');
+  const [loginTab, setLoginTab] = useState<'individual' | 'teacher'>('individual');
   
   const backgroundEmojis = React.useMemo(() => {
     const emojis = ['🎸', '👑', '🚀', '➕', '✖️', '🎸', '👑', '🚀', '➖', '➗'];
@@ -135,7 +135,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     setError(null);
     setSuccess(null);
 
-    const cleanName = classStudentName.trim().toLowerCase().replace(/\s/g, '');
+    const cleanName = classStudentName.trim().replace(/\s/g, '');
     const cleanCode = classCodeInput.trim().toUpperCase().replace(/\s/g, '');
 
     if (!cleanName) {
@@ -146,7 +146,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       setError("Your name must be at least 2 characters long.");
       return;
     }
-    if (!/^[a-z0-9_]+$/.test(cleanName)) {
+    if (!/^[a-zA-Z0-9_]+$/.test(cleanName)) {
       setError("Name can only contain letters, numbers, and underscores.");
       return;
     }
@@ -174,20 +174,26 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
       // Verify that the handle (username) was pre-registered/saved by this teacher
       const schoolStudentsCol = collection(db, 'school_students');
-      const studentQuery = query(schoolStudentsCol, 
-        where('teacher_id', '==', teacherId),
-        where('username', '==', cleanName)
-      );
+      const studentQuery = query(schoolStudentsCol, where('teacher_id', '==', teacherId));
       const studentSnap = await getDocs(studentQuery);
 
-      if (studentSnap.empty) {
+      let foundStudentDoc = null;
+      studentSnap.forEach(doc => {
+        const data = doc.data();
+        if ((data.username_lower === cleanName.toLowerCase()) || 
+            (data.username && data.username.toLowerCase() === cleanName.toLowerCase())) {
+          foundStudentDoc = doc;
+        }
+      });
+
+      if (!foundStudentDoc) {
         setError(`Error: The handle "@${cleanName}" is not registered inside your teacher's student roster. Please ask your teacher to add you first!`);
         setLoading(false);
         return;
       }
 
       // Read registered progress from teacher's roster
-      const schoolStudentData = studentSnap.docs[0].data();
+      const schoolStudentData = foundStudentDoc.data();
       const studentProgress = schoolStudentData.school_math_progress || {};
       const initialScore = studentProgress.highScore || 0;
       const initialXP = studentProgress.xp || 100;
@@ -554,7 +560,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     e.preventDefault();
     setError(null);
 
-    const cleanUser = studentUsername.trim().toLowerCase();
+    const cleanUser = studentUsername.trim();
     const cleanPass = studentPassword.trim();
 
     if (!cleanUser) {
@@ -605,10 +611,6 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
     if (!cleanEmail) {
       setError("Error: Email address is required.");
-      return;
-    }
-    if (!cleanEmail.includes('@')) {
-      setError("Error: Please provide a valid email address.");
       return;
     }
     if (!cleanPass) {
@@ -663,10 +665,6 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     }
     if (!cleanEmail) {
       setError("Error: Registered email address is required.");
-      return;
-    }
-    if (!cleanEmail.includes('@')) {
-      setError("Error: Please enter a valid school/personal email address.");
       return;
     }
     if (!cleanPass) {
@@ -1010,19 +1008,6 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               <GraduationCap size={12} />
               <span>Math Teacher</span>
             </button>
-
-            <button
-              type="button"
-              onClick={() => { setLoginTab('developer'); setError(null); setSuccess(null); setDevError(null); }}
-              className={`flex-1 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
-                loginTab === 'developer'
-                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-deep-navy shadow-[0_0_10px_rgba(236,72,153,0.5)]'
-                  : 'text-deep-navy hover:text-deep-navy hover:bg-white/5'
-              }`}
-            >
-              <Cpu size={12} />
-              <span>Developer Portal</span>
-            </button>
           </div>
 
           {/* Notifications and messages inside card */}
@@ -1230,7 +1215,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                             type="text"
                             placeholder="e.g. MasonRock"
                             value={classStudentName}
-                            onChange={(e) => setClassStudentName(e.target.value.toLowerCase().replace(/\s/g, ''))}
+                            onChange={(e) => setClassStudentName(e.target.value)}
                             className="w-full pl-9 pr-3 py-2.5 bg-white border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
                             autoComplete="off"
                             disabled={loading}
@@ -1249,7 +1234,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                             type="text"
                             placeholder="Enter 8-digit code"
                             value={classCodeInput}
-                            onChange={(e) => setClassCodeInput(e.target.value.toUpperCase().replace(/\s/g, ''))}
+                            onChange={(e) => setClassCodeInput(e.target.value)}
                             className="w-full pl-9 pr-3 py-2.5 bg-white border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-mono font-black tracking-wider uppercase"
                             autoComplete="off"
                             disabled={loading}
