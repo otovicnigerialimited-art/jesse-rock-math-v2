@@ -56,7 +56,8 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
     : 0;
 
   return (
-    <div className="space-y-12">
+    <div className="flex flex-col flex-1 justify-between w-full h-full">
+      <div className="space-y-12 flex-1">
       <div className="flex justify-center pt-8 pb-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 10 }}
@@ -314,8 +315,15 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
         </div>
       </div>
 
+            </div>
+
+      {/* Itch.io Embed */}
+      <div className="flex justify-center mt-4 mb-0 w-full">
+         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>
+      </div>
+
       {/* Sleek Professional Footer */}
-      <footer className="border-t border-deep-navy/10 pt-8 pb-4 mt-12 text-center space-y-4">
+      <footer className="border-t border-deep-navy/10 pt-6 pb-2 mt-8 text-center space-y-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5 text-left">
             <div className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0">

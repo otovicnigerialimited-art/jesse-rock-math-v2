@@ -413,7 +413,8 @@ export default function TeacherDashboard({
   }, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col flex-1 justify-between w-full h-full">
+      <div className="space-y-6 flex-1">
       {/* Teacher Dashboard Master Panel */}
       <div id="teacher-header-panel" className="bg-clean-white border border-deep-navy border-4 rounded-3xl p-6 md:p-8 space-y-6 backdrop-blur-xl relative overflow-hidden">
         {/* Colorful top bar */}
@@ -1027,6 +1028,7 @@ export default function TeacherDashboard({
         </div>
       )}
 
+      </div>
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
@@ -1114,6 +1116,10 @@ export default function TeacherDashboard({
           </div>
         </div>
       )}
+      {/* Itch.io Embed */}
+      <div className="flex justify-center mt-4 mb-0 w-full">
+         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>
+      </div>
     </div>
   );
 }

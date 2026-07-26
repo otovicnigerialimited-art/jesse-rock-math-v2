@@ -706,7 +706,8 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-gradient-to-tr from-purple-900 via-indigo-950 to-pink-900 relative overflow-x-hidden font-sans text-deep-navy">
+    <div className="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 bg-gradient-to-tr from-purple-900 via-indigo-950 to-pink-900 relative overflow-x-hidden font-sans text-deep-navy">
+      <div className="w-full flex-1 flex flex-col items-center justify-center">
       {/* Floating Emojis Background */}
       <div className="floating-bg-container">
         {backgroundEmojis.map((emoji, idx) => (
@@ -1498,6 +1499,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
         </motion.div>
       )}
+      </div>
+      {/* Itch.io Embed */}
+      <div className="flex justify-center mt-4 mb-0 w-full">
+         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>
+      </div>
     </div>
   );
 }
