@@ -21,19 +21,17 @@ export const SUPABASE_SQL_SCHEMA = `-- Jesse's Math Arena SQL Schema (Supabase /
 
 -- 1. Teachers Table
 CREATE TABLE IF NOT EXISTS teachers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id UUID PRIMARY KEY REFERENCES auth.users ON DELETE CASCADE,
   teacher_name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE,
-  password VARCHAR(100) NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- 2. School Students Table
 CREATE TABLE IF NOT EXISTS school_students (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id UUID PRIMARY KEY REFERENCES auth.users ON DELETE CASCADE,
   real_first_name VARCHAR(100) NOT NULL,
   username VARCHAR(50) NOT NULL UNIQUE,
-  password VARCHAR(100) NOT NULL,
   teacher_id UUID REFERENCES teachers(id) ON DELETE CASCADE,
   school_math_progress JSONB NOT NULL DEFAULT '{"highScore": 0, "xp": 100, "coins": 100, "solved": 0, "correctAnswers": 0, "currentLevel": 1}'::jsonb,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

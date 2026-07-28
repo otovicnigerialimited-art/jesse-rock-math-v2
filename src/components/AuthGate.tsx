@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useTransition } from 'react';
+import { isAppropriate } from '../lib/filterUtils';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Trophy, 
@@ -452,6 +453,12 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       setError("Name must be at least 3 characters long!");
       return;
     }
+    if (!isAppropriate(cleanUsername)) {
+      setError("Username contains inappropriate language. Please choose a safe username.");
+      setLoading(false);
+      return;
+    }
+
 
     const cleanPassword = password.trim();
     if (!cleanPassword) {
@@ -572,6 +579,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       return;
     }
 
+    if (!isAppropriate(cleanUser)) {
+      setError("Error: Username contains inappropriate language.");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await authenticateSchoolStudent(cleanUser, cleanPass);
@@ -661,6 +673,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     }
     if (cleanName.length < 2) {
       setError("Error: Educator's name must be at least 2 characters long.");
+      return;
+    }
+
+    if (!isAppropriate(cleanName) || !isAppropriate(cleanEmail)) {
+      setError("Error: Name or email contains inappropriate language.");
       return;
     }
     if (!cleanEmail) {

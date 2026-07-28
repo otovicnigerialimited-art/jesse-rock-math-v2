@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isAppropriate } from '../lib/filterUtils';
 import { 
   collection, 
   query, 
@@ -366,6 +367,11 @@ export default function TeacherDashboard({
     }
     if (!/^[a-zA-Z0-9_]+$/.test(cleanUsername)) {
       setFormError("Error: Username can only contain letters, numbers, and underscores.");
+      return;
+    }
+
+    if (!isAppropriate(cleanUsername) || !isAppropriate(cleanFirstName)) {
+      setFormError("Name or username contains inappropriate language. Please use school-appropriate names.");
       return;
     }
 

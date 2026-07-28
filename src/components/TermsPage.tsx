@@ -653,11 +653,12 @@ export default function TermsPage() {
                     To preserve a healthy, encouraging environment for young learners, the following operational bounds are actively enforced:
                   </p>
                   <ul className="space-y-3 pl-1 pt-1 text-xs">
-                    <li className="flex items-start gap-2 text-slate-800 font-bold">
+                                        <li className="flex items-start gap-2 text-slate-800 font-bold">
                       <span className="mt-1 w-2 h-2 rounded-full bg-deep-navy shrink-0"></span>
                       <p className="font-semibold leading-relaxed">
-                        <strong>Nickname Integrity:</strong> The system automatically flags and scrubs profane, personally identifiable, or offensive language from global real-time leaderboards.
+                        <strong>Nickname Integrity & Automated Filters:</strong> The platform explicitly blocks users from signing in or registering with usernames containing swear words, slurs, or inappropriate language. The system incorporates a robust real-time profanity filter to actively intercept, block, and scrub any offensive submissions. Failure to abide by clean naming conventions will result in account creation denial or immediate removal from global real-time leaderboards.
                       </p>
+
                     </li>
                     <li className="flex items-start gap-2 text-slate-800 font-bold">
                       <span className="mt-1 w-2 h-2 rounded-full bg-deep-navy shrink-0"></span>
