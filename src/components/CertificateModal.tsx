@@ -191,7 +191,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
                   <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1">Sign in by Jesse Math Rock Star</span>
                 </div>
 
-                {/* Operations / Dad */}
+                {/* Academic Board */}
                 <div className="flex flex-col items-center">
                   <span className="text-sm sm:text-lg font-mono font-black text-slate-800">APPROVED ✓</span>
                   <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1">Academic Board</span>

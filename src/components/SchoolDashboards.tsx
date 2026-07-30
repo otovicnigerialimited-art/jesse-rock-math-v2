@@ -16,7 +16,7 @@ interface SchoolDashboardsProps {
 
 export default function SchoolDashboards({ authState, onSignOut }: SchoolDashboardsProps) {
   return (
-    <div className="min-h-screen bg-white backdrop-blur-md p-4 md:p-8 text-deep-navy relative overflow-hidden font-sans pt-24 animate-fade-in">
+    <div className="min-h-full bg-white backdrop-blur-md p-4 md:p-8 text-deep-navy relative overflow-hidden font-sans pt-24 animate-fade-in">
       {/* Background Orbs */}
       <div className="absolute top-10 left-10 w-96 h-96 bg-violet-600/5 rounded-full blur-[150px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-[150px] pointer-events-none animate-pulse-slow" />

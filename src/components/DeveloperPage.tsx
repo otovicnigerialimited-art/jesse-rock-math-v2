@@ -66,7 +66,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
   }, []);
 
   const userRole = currentUser?.role || 'guest';
-  const isStarRatingOnly = userRole !== 'teacher' && userRole !== 'family' && userRole !== 'admin';
+  const isStarRatingOnly = userRole !== 'teacher' && userRole !== 'admin';
   const isGuest = !currentUser || currentUser.uid === 'guest' || currentUser.username === 'Genius Scholar' || currentUser.role === 'guest';
   const isAdult = currentUser?.role === 'teacher' || currentUser?.role === 'admin';
 
@@ -172,7 +172,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 text-deep-navy space-y-12">
+    <div className="min-h-full py-8 px-4 sm:px-6 lg:px-8 text-deep-navy space-y-12">
       
       {/* 1. HERO HEADER */}
       <motion.div 
@@ -309,14 +309,6 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
             </ul>
           </div>
 
-          <div className="bg-pink-500/5 p-5 rounded-2xl border-l-4 border-pink-500 border-deep-navy border border-2 text-deep-navy">
-            <h3 className="text-sm font-bold text-[#0D9488] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-              <Heart size={14} className="text-pink-600 animate-pulse" /> Special Thanks & Credits
-            </h3>
-            <p className="text-xs text-deep-navy font-bold leading-relaxed">
-              A huge thank you to my <strong>Aunty Mercy</strong> for her amazing support, and a massive thank you to my <strong>Mum</strong> for letting me use her laptop to code all of my applications. I couldn't have built this without them!
-            </p>
-          </div>
 
           {/* Educational Platform Highlights */}
           <div className="mt-8 p-6 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 border-4 border-deep-navy rounded-[2rem] relative overflow-hidden">

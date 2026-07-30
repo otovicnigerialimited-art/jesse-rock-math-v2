@@ -2,7 +2,7 @@ import React, { useState, useEffect, useTransition } from 'react';
 import { isAppropriate } from '../lib/filterUtils';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Trophy, 
+  Trophy, Award, 
   User, 
   Check, 
   ShieldAlert, 
@@ -49,6 +49,7 @@ interface AuthGateProps {
 export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) {
   // Tabs: 'individual' for Rockstar/Student Login, 'teacher' for Teacher Login, 'developer' for Developer Login
   const [loginTab, setLoginTab] = useState<'individual' | 'teacher'>('individual');
+  const [showLanding, setShowLanding] = useState(true);
   
   const backgroundEmojis = React.useMemo(() => {
     const emojis = ['🎸', '👑', '🚀', '➕', '✖️', '🎸', '👑', '🚀', '➖', '➗'];
@@ -722,33 +723,559 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     }
   };
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 bg-gradient-to-tr from-purple-900 via-indigo-950 to-pink-900 relative overflow-x-hidden font-sans text-deep-navy">
-      <div className="w-full flex-1 flex flex-col items-center justify-center">
-      {/* Floating Emojis Background */}
-      <div className="floating-bg-container">
-        {backgroundEmojis.map((emoji, idx) => (
-          <div
-            key={`${emoji.id}-${idx}`}
-            className="floating-emoji-item"
-            style={{
-              left: emoji.left,
-              fontSize: emoji.size,
-              animationDuration: emoji.duration,
-              animationDelay: emoji.delay,
-            }}
-          >
-            {emoji.char}
+
+    if (showLanding) {
+    return (
+      <div className="min-h-screen bg-[#E8F8F5] text-slate-900 overflow-y-auto font-sans relative">
+        {/* Floating Kids Animation Emojis */}
+        <div className="floating-bg-container fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-40">
+          {backgroundEmojis.map((emoji, idx) => (
+            <div
+              key={`emoji-${emoji.id}-${idx}`}
+              className="floating-emoji-item"
+              style={{
+                left: emoji.left,
+                fontSize: emoji.size,
+                animationDuration: emoji.duration,
+                animationDelay: emoji.delay,
+              }}
+            >
+              {emoji.char}
+            </div>
+          ))}
+        </div>
+        {/* Crisp mathematical coordinate grids */}
+        <div 
+          className="absolute inset-0 z-0 opacity-10 pointer-events-none" 
+          style={{ 
+            backgroundImage: `
+              linear-gradient(to right, #334155 1px, transparent 1px),
+              linear-gradient(to bottom, #334155 1px, transparent 1px)
+            `, 
+            backgroundSize: '40px 40px' 
+          }}
+        />
+        {/* Geometric equations layered subtly */}
+        <div className="absolute top-20 right-20 z-0 opacity-5 pointer-events-none font-mono text-4xl select-none">
+          ∑(x² + y²) = r²
+        </div>
+        <div className="absolute bottom-40 left-20 z-0 opacity-5 pointer-events-none font-mono text-4xl select-none">
+          ∫ e^x dx = e^x + C
+        </div>
+        <div className="absolute top-1/2 left-1/3 z-0 opacity-5 pointer-events-none font-mono text-3xl select-none transform rotate-45">
+          f'(x) = lim(h→0) [f(x+h) - f(x)] / h
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-6 py-16 md:py-24 relative z-10">
+          
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Left Column: Asymmetric Grid & Typography */}
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="lg:col-span-7 space-y-8"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-slate-300 bg-white rounded text-xs font-semibold uppercase tracking-widest text-slate-600">
+                <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
+                Jesse Math Rockstar
+              </div>
+              
+              <h1 className="text-5xl md:text-7xl font-light tracking-tight text-slate-900 leading-[1.1]">
+                Master mathematics.<br/>
+                <span className="font-bold text-cyan-400">Zero hesitation.</span>
+              </h1>
+              
+              <p className="text-lg md:text-xl text-slate-600 max-w-xl font-normal leading-relaxed">
+                An elite educational platform engineered for mental acceleration. Replace anxiety with instant reflex through high-performance, live multiplayer calculation arenas.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                <button 
+                  onClick={() => setShowLanding(false)}
+                  className="w-full sm:w-auto px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded text-sm uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
+                >
+                  <Zap size={18} /> Initialize Arena
+                </button>
+                <button 
+                  onClick={() => setShowLanding(false)}
+                  className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-800 text-slate-900 font-semibold rounded text-sm uppercase tracking-widest border border-slate-300 transition-colors flex items-center justify-center gap-2"
+                >
+                  <User size={18} /> Authenticate
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Right Column: Visual representation (SaaS dashboard interface trend) */}
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }} 
+              animate={{ opacity: 1, x: 0 }} 
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              className="lg:col-span-5 relative"
+            >
+              <div className="border border-slate-300 bg-white/80 p-6 rounded-lg relative overflow-hidden backdrop-blur-sm">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50" />
+                <div className="flex items-center justify-between border-b border-slate-300 pb-4 mb-4">
+                  <div className="text-xs font-mono text-slate-600">SYSTEM_STATUS</div>
+                  <div className="text-xs font-mono text-cyan-400">OPTIMAL</div>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-[#E8F8F5] border border-slate-300 rounded">
+                    <div className="flex items-center gap-3">
+                      <TrendingUp className="text-cyan-500" size={16} />
+                      <span className="text-sm font-medium text-slate-700">Adaptive Engine</span>
+                    </div>
+                    <span className="text-xs font-mono text-slate-500">ACTIVE</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between p-3 bg-[#E8F8F5] border border-slate-300 rounded">
+                    <div className="flex items-center gap-3">
+                      <Globe className="text-cyan-500" size={16} />
+                      <span className="text-sm font-medium text-slate-700">Global Network</span>
+                    </div>
+                    <span className="text-xs font-mono text-slate-500">12ms LATENCY</span>
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-[#E8F8F5] border border-slate-300 rounded">
+                    <div className="flex items-center gap-3">
+                      <ShieldCheck className="text-cyan-500" size={16} />
+                      <span className="text-sm font-medium text-slate-700">COPPA Shield</span>
+                    </div>
+                    <span className="text-xs font-mono text-slate-500">VERIFIED</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        ))}
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+            className="mt-32 pt-16 border-t border-slate-300"
+          >
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="space-y-4">
+                <div className="w-10 h-10 bg-white border border-slate-300 flex items-center justify-center rounded">
+                  <Database className="text-cyan-400" size={20} />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900">Absolute Precision</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Engineered with strict algorithmic bounds. Every problem set is dynamically generated for perfect difficulty scaling without repetitive fatigue.
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="w-10 h-10 bg-white border border-slate-300 flex items-center justify-center rounded">
+                  <Terminal className="text-cyan-400" size={20} />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900">Zero Latency Architecture</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Built on a modern stack ensuring immediate input validation and real-time multiplayer synchronization. No lag, just pure mental speed.
+                </p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="w-10 h-10 bg-white border border-slate-300 flex items-center justify-center rounded">
+                  <Award className="text-cyan-400" size={20} />
+                </div>
+                <h3 className="text-lg font-semibold text-slate-900">Quantifiable Mastery</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Transparent metrics and verified progression. Achieve Grand Master certification backed by rigorous, time-bound testing parameters.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          
+          {/* App History & Origin Story */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+            className="mt-32 pt-16 border-t border-slate-300 grid md:grid-cols-2 gap-12 items-center"
+          >
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold tracking-wide uppercase">
+                <span>📖</span> Platform Heritage & History
+              </div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+                Born from a Passion for Fearless Mathematics
+              </h2>
+              <p className="text-slate-600 leading-relaxed text-base">
+                Jesse Rock Math was founded on June 20, 2026, by visionary educator and developer <strong>Jesse Otobo</strong>. Witnessing how standard timed drills paralyzed young learners with math anxiety, Jesse set out to bridge the gap between high-octane arcade gaming and rigorous mathematics.
+              </p>
+              <p className="text-slate-600 leading-relaxed text-base">
+                What started as a simple mental arithmetic prototype rapidly evolved into an elite multiplayer EdTech arena trusted by classrooms worldwide, empowering thousands of students to rock their arithmetic, algebra, and fractions without fear.
+              </p>
+              <div className="flex items-center gap-4 pt-2">
+                <div className="flex -space-x-2">
+                  <span className="w-10 h-10 rounded-full bg-cyan-500 text-white font-bold flex items-center justify-center border-2 border-white shadow">JO</span>
+                  <span className="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center border-2 border-white shadow">🎸</span>
+                  <span className="w-10 h-10 rounded-full bg-purple-500 text-white font-bold flex items-center justify-center border-2 border-white shadow">🚀</span>
+                </div>
+                <div>
+                  <div className="text-sm font-bold text-slate-900">Created by Jesse Otobo</div>
+                  <div className="text-xs text-slate-500">Lead Architect & Educator</div>
+                </div>
+              </div>
+            </div>
+
+            <motion.div 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              className="bg-white border-2 border-slate-200 p-8 rounded-3xl shadow-xl relative overflow-hidden"
+            >
+              <div className="absolute -right-10 -bottom-10 text-9xl opacity-10 select-none">🎸</div>
+              <div className="space-y-4 relative z-10">
+                <div className="text-xs font-mono font-bold text-emerald-600 uppercase tracking-widest">Mission Statement</div>
+                <h3 className="text-2xl font-bold text-slate-900">"Transforming Math into Music and Mastery."</h3>
+                <p className="text-slate-600 text-sm italic">
+                  "We believe every child is a natural mathematician when given the right rhythm, low-stress environment, and joyful encouragement."
+                </p>
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-mono">
+                  <span>EST. JUNE 20, 2026</span>
+                  <span className="text-emerald-600 font-bold">VERIFIED PLATFORM</span>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+
+
+          {/* YouTube Video Embed & Comprehensive Curriculum Breakdown */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
+            className="mt-32 pt-16 border-t border-slate-300 space-y-16"
+          >
+            <div className="text-center max-w-3xl mx-auto space-y-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-xs font-bold tracking-wide uppercase">
+                <span>▶️</span> Watch Platform Demo
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+                See Jesse Rock Math in Action
+              </h2>
+              <p className="text-slate-600 text-lg leading-relaxed">
+                Watch our official walkthrough video to see how live multiplayer battles, zero-lag mechanics, and adaptive speed drills transform math practice into an addictive rock show.
+              </p>
+            </div>
+
+            
+          {/* Extra Gliding Benefits & Features */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="mt-24 grid md:grid-cols-3 gap-8"
+          >
+            <motion.div 
+              animate={{ y: [0, -8, 0] }}
+              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+              className="bg-white border-2 border-emerald-200 p-8 rounded-3xl shadow-xl space-y-4 relative overflow-hidden"
+            >
+              <div className="absolute -right-6 -bottom-6 text-7xl opacity-10 select-none">🌟</div>
+              <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl shadow-sm">🏆</div>
+              <h3 className="text-xl font-bold text-slate-900">Real-Time Leaderboards</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Compete with students worldwide on live global and classroom leaderboards. Earn rock badges, level up your avatar, and celebrate math milestones together.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              animate={{ y: [0, 8, 0] }}
+              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+              className="bg-white border-2 border-cyan-200 p-8 rounded-3xl shadow-xl space-y-4 relative overflow-hidden"
+            >
+              <div className="absolute -right-6 -bottom-6 text-7xl opacity-10 select-none">⚡</div>
+              <div className="w-12 h-12 bg-cyan-100 text-cyan-700 rounded-2xl flex items-center justify-center font-bold text-xl shadow-sm">⚡</div>
+              <h3 className="text-xl font-bold text-slate-900">Lightning Fast Feedback</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Instant visual and audio feedback rewards correct answers immediately, reinforcing positive numerical instincts and keeping engagement sky-high.
+              </p>
+            </motion.div>
+
+            <motion.div 
+              animate={{ y: [0, -8, 0] }}
+              transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut" }}
+              className="bg-white border-2 border-purple-200 p-8 rounded-3xl shadow-xl space-y-4 relative overflow-hidden"
+            >
+              <div className="absolute -right-6 -bottom-6 text-7xl opacity-10 select-none">🛡️</div>
+              <div className="w-12 h-12 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center font-bold text-xl shadow-sm">🛡️</div>
+              <h3 className="text-xl font-bold text-slate-900">Parent & Teacher Portal</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Monitor progress, assign tailored quiz modules, and export detailed performance reports with zero friction. Designed for modern classrooms.
+              </p>
+            </motion.div>
+          </motion.div>
+
+
+{/* YouTube Link Banner with 8K MaxRes Thumbnail Preview (Opens in New Tab) */}
+            <div className="max-w-4xl mx-auto bg-white p-4 rounded-3xl border-2 border-slate-200 shadow-xl overflow-hidden">
+              <a 
+                href="https://www.youtube.com/watch?v=BiOiAtKTfsQ" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="relative block w-full aspect-video rounded-2xl overflow-hidden bg-slate-950 group cursor-pointer shadow-inner"
+              >
+                <img 
+                  src="https://img.youtube.com/vi/BiOiAtKTfsQ/maxresdefault.jpg" 
+                  alt="Jesse Rock Math 8K Video Thumbnail" 
+                  className="w-full h-full object-cover filter contrast-110 saturate-120 transform group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => { e.currentTarget.src = 'https://img.youtube.com/vi/BiOiAtKTfsQ/hqdefault.jpg'; }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-24 h-24 bg-red-600 rounded-3xl flex items-center justify-center shadow-2xl transform group-hover:scale-110 group-hover:bg-red-500 transition-all duration-300 border-4 border-white/80">
+                    <div className="w-0 h-0 border-y-[14px] border-y-transparent border-l-[24px] border-l-white ml-1.5" />
+                  </div>
+                </div>
+                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-white drop-shadow-md">
+                  <div className="flex items-center gap-3">
+                    <span className="px-3 py-1 bg-red-600 rounded-xl text-xs font-mono font-black uppercase tracking-wider">8K Ultra HD</span>
+                    <span className="font-bold text-lg md:text-xl">Watch Jesse Rock Math on YouTube</span>
+                  </div>
+                  <span className="text-sm font-semibold underline text-cyan-300 group-hover:text-white transition-colors">Open YouTube ↗</span>
+                </div>
+              </a>
+            </div>
+
+            {/* Complete Topics & Benefits Deep Dive */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center mt-20">
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-bold tracking-wide uppercase">
+                  <span>📚</span> All Core Topics Covered
+                </div>
+                <h3 className="text-3xl font-bold text-slate-900 tracking-tight">
+                  A Complete Mathematical Ecosystem for K-12 & Beyond
+                </h3>
+                <p className="text-slate-600 leading-relaxed">
+                  Jesse Rock Math is meticulously engineered to cover every essential pillar of early and intermediate mathematical proficiency, ensuring students develop intuition rather than rote memorization.
+                </p>
+
+                <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                  <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
+                    <div className="font-bold text-slate-900 flex items-center gap-2">➕ Basic Arithmetic</div>
+                    <p className="text-xs text-slate-600">Addition, subtraction, multiplication & division speed mastery.</p>
+                  </div>
+                  <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
+                    <div className="font-bold text-slate-900 flex items-center gap-2">⚖️ Fractions & Decimals</div>
+                    <p className="text-xs text-slate-600">Visual slider balance, equivalence, and decimal conversion.</p>
+                  </div>
+                  <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
+                    <div className="font-bold text-slate-900 flex items-center gap-2">📐 Pre-Algebra & X</div>
+                    <p className="text-xs text-slate-600">Solving unknown variables, exponents, and order of operations.</p>
+                  </div>
+                  <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
+                    <div className="font-bold text-slate-900 flex items-center gap-2">📈 Percentages & Ratios</div>
+                    <p className="text-xs text-slate-600">Real-world financial literacy, discounts, and proportional scaling.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white border-2 border-slate-200 p-8 md:p-10 rounded-3xl shadow-xl space-y-6">
+                <div className="text-xs font-mono font-bold text-cyan-600 uppercase tracking-widest">Platform Benefits</div>
+                <h4 className="text-2xl font-bold text-slate-900">Why Students, Parents, and Schools Choose Us</h4>
+                
+                <div className="space-y-4 text-slate-700 text-sm">
+                  <motion.div 
+                    whileHover={{ x: 6 }} 
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="p-4 bg-emerald-50/60 rounded-2xl border border-emerald-200/60 flex items-start gap-3"
+                  >
+                    <span className="text-emerald-600 font-bold text-lg">🛡️</span>
+                    <div>
+                      <strong className="text-slate-900 block mb-0.5">1. Eliminates Math Anxiety & Fear</strong>
+                      By blending interactive arcade music, vibrant visuals, and positive reinforcement, students drop performance anxiety and embrace mistakes as fun puzzles.
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    whileHover={{ x: 6 }} 
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="p-4 bg-cyan-500/10 rounded-2xl border border-cyan-500/20 flex items-start gap-3"
+                  >
+                    <span className="text-cyan-600 font-bold text-lg">⚡</span>
+                    <div>
+                      <strong className="text-slate-900 block mb-0.5">2. Zero-Lag Real-Time Multiplayer</strong>
+                      Built with instant WebSocket and Firestore sync, allowing classmates and global peers to battle head-to-head seamlessly without freezing or network delay.
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    whileHover={{ x: 6 }} 
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="p-4 bg-purple-500/10 rounded-2xl border border-purple-500/20 flex items-start gap-3"
+                  >
+                    <span className="text-purple-600 font-bold text-lg">🔒</span>
+                    <div>
+                      <strong className="text-slate-900 block mb-0.5">3. 100% COPPA & Student Privacy Safe</strong>
+                      Designed specifically for classrooms with strict zero-tracking policies, no third-party ad networks, and complete teacher administrative control.
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    whileHover={{ x: 6 }} 
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20 flex items-start gap-3"
+                  >
+                    <span className="text-amber-600 font-bold text-lg">🎖️</span>
+                    <div>
+                      <strong className="text-slate-900 block mb-0.5">4. Printable Grand Master Certification</strong>
+                      Students who conquer 200 rigorous equations unlock official verifiable certificates complete with badges to proudly hang on classroom walls or fridges.
+                    </div>
+                  </motion.div>
+
+                  <motion.div 
+                    whileHover={{ x: 6 }} 
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="p-4 bg-blue-500/10 rounded-2xl border border-blue-500/20 flex items-start gap-3"
+                  >
+                    <span className="text-blue-600 font-bold text-lg">📈</span>
+                    <div>
+                      <strong className="text-slate-900 block mb-0.5">5. Actionable Teacher & Parent Dashboards</strong>
+                      Educators gain real-time visibility into student accuracy, speed trends, and trouble spots, enabling precise, targeted interventions.
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+
+          </motion.div>
+
+
+{/* Detailed Educational Purpose & Platform Modules Section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+            className="mt-32 pt-16 border-t border-slate-300 space-y-16"
+          >
+            <div className="text-center max-w-3xl mx-auto space-y-4">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+                Why Jesse Rock Math Changes Everything
+              </h2>
+              <p className="text-slate-600 text-lg leading-relaxed">
+                Traditional math education is plagued by slow drills, anxiety, and rigid testing. Jesse Rock Math transforms calculations into an electrifying, gamified experience that builds lifelong confidence and lightning-fast mental math reflexes.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-white border border-slate-300 p-8 rounded-2xl shadow-sm space-y-4">
+                <div className="w-12 h-12 bg-cyan-500/10 border border-cyan-500/30 rounded-xl flex items-center justify-center text-cyan-600 font-bold text-xl">
+                  🧠
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Eradicating Math Anxiety</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  By framing practice as an interactive rock-and-roll arcade game rather than stressful testing, students drop their guard, embrace mistakes as learning moments, and build healthy mathematical resilience.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-300 p-8 rounded-2xl shadow-sm space-y-4">
+                <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-center text-emerald-600 font-bold text-xl">
+                  ⚡
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Adaptive Speed Engine</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Our intelligent algorithm continuously evaluates user response times and accuracy, dynamically adjusting difficulty from basic arithmetic to complex algebraic equations in real time.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-300 p-8 rounded-2xl shadow-sm space-y-4">
+                <div className="w-12 h-12 bg-purple-500/10 border border-purple-500/30 rounded-xl flex items-center justify-center text-purple-600 font-bold text-xl">
+                  🏆
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Grand Master Certification</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Students who conquer 200 rigorous problems unlock official, printable Grand Master certificates complete with verification badges to proudly showcase their milestone achievement.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-300 p-8 rounded-2xl shadow-sm space-y-4">
+                <div className="w-12 h-12 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center justify-center text-amber-600 font-bold text-xl">
+                  🏫
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Teacher & Classroom Roster Tools</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Educators get instant access to live student progress dashboards, custom assignment schedulers, and zero-friction class codes for seamless math lab integration.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-300 p-8 rounded-2xl shadow-sm space-y-4">
+                <div className="w-12 h-12 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-600 font-bold text-xl">
+                  🛡️
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">100% COPPA & Safe Schools</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Strict privacy controls, zero tracking cookies, and automated name screening ensure a completely safe, distraction-free environment trusted by schools worldwide.
+                </p>
+              </div>
+
+              <div className="bg-white border border-slate-300 p-8 rounded-2xl shadow-sm space-y-4">
+                <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/30 rounded-xl flex items-center justify-center text-blue-600 font-bold text-xl">
+                  ⚔️
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Live Multiplayer Duels</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Challenge classmates or global peers in thrilling head-to-head calculation matches where speed, accuracy, and quick thinking crown the ultimate Math Rockstar.
+                </p>
+              </div>
+            </div>
+
+            {/* Curriculum Coverage Breakdown */}
+            <div className="bg-white border border-slate-300 p-8 md:p-12 rounded-3xl shadow-sm space-y-8">
+              <div className="text-center max-w-2xl mx-auto space-y-2">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-600">Comprehensive Curriculum</span>
+                <h3 className="text-2xl md:text-3xl font-bold text-slate-900">From Elementary Basics to Advanced Algebra</h3>
+                <p className="text-slate-600 text-sm">Built to align with international educational standards across all core math domains.</p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div className="p-4 bg-[#E8F8F5] rounded-xl border border-slate-200">
+                  <div className="text-2xl mb-2">➕ ➖</div>
+                  <h4 className="font-bold text-slate-900 mb-1">Arithmetic</h4>
+                  <p className="text-xs text-slate-600">Addition, subtraction, multiplication & division mastery.</p>
+                </div>
+                <div className="p-4 bg-[#E8F8F5] rounded-xl border border-slate-200">
+                  <div className="text-2xl mb-2">⚖️</div>
+                  <h4 className="font-bold text-slate-900 mb-1">Fractions & Decimals</h4>
+                  <p className="text-xs text-slate-600">Visual slider balancing and fractional equivalence.</p>
+                </div>
+                <div className="p-4 bg-[#E8F8F5] rounded-xl border border-slate-200">
+                  <div className="text-2xl mb-2">📐</div>
+                  <h4 className="font-bold text-slate-900 mb-1">Pre-Algebra</h4>
+                  <p className="text-xs text-slate-600">Solving for x, exponents, and order of operations.</p>
+                </div>
+                <div className="p-4 bg-[#E8F8F5] rounded-xl border border-slate-200">
+                  <div className="text-2xl mb-2">⏱️</div>
+                  <h4 className="font-bold text-slate-900 mb-1">Speed Drills</h4>
+                  <p className="text-xs text-slate-600">Time-trial challenges to build instant mental reflex.</p>
+                </div>
+              </div>
+            </div>
+
+          </motion.div>
+
+        </div>
       </div>
-
-      {/* Background radial soft lights */}
-      <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-pink-500/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
-
-
-      {/* SEALED COMPONENT CHECK: Render Developer Portal Dashboard if Dev Authenticated and developer tab active */}
+    );
+  }
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 bg-[#E8F8F5] relative overflow-x-hidden font-sans text-slate-800">
+      {/* Crisp mathematical coordinate grids */}
+      <div 
+        className="absolute inset-0 z-0 opacity-10 pointer-events-none" 
+        style={{ 
+          backgroundImage: `linear-gradient(to right, #334155 1px, transparent 1px), linear-gradient(to bottom, #334155 1px, transparent 1px)`,
+          backgroundSize: "40px 40px" 
+        }}
+      />
+      <div className="w-full flex-1 flex flex-col items-center justify-center relative z-10">
+{/* SEALED COMPONENT CHECK: Render Developer Portal Dashboard if Dev Authenticated and developer tab active */}
       {isDevAuthenticated && loginTab === 'developer' ? (
         <motion.div 
           id="developer-dashboard"
@@ -1060,7 +1587,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   type="button"
                   onClick={() => { setIndividualSubMode('rockstar'); setError(null); }}
                   className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'rockstar' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-100'
+                    individualSubMode === 'rockstar' ? 'bg-deep-navy text-slate-900 shadow-md' : 'text-deep-navy hover:bg-slate-100'
                   }`}
                 >
                   ⭐ Rockstar
@@ -1069,7 +1596,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   type="button"
                   onClick={() => { setIndividualSubMode('student'); setError(null); }}
                   className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'student' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-100'
+                    individualSubMode === 'student' ? 'bg-deep-navy text-slate-900 shadow-md' : 'text-deep-navy hover:bg-slate-100'
                   }`}
                 >
                   🍏 PIN Login
@@ -1078,7 +1605,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   type="button"
                   onClick={() => { setIndividualSubMode('class_code'); setError(null); }}
                   className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'class_code' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-100'
+                    individualSubMode === 'class_code' ? 'bg-deep-navy text-slate-900 shadow-md' : 'text-deep-navy hover:bg-slate-100'
                   }`}
                 >
                   🏫 Class Code

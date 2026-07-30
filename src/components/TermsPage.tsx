@@ -353,7 +353,7 @@ export default function TermsPage() {
                       <li className="flex items-start gap-2.5 text-slate-800 font-bold">
                         <span className="mt-1 font-mono text-[9px] px-1.5 py-0.5 bg-indigo-100 border border-deep-navy rounded">FERPA</span>
                         <p className="font-semibold leading-relaxed">
-                          <strong>Family Educational Rights and Privacy Act:</strong> This application does not maintain student educational records on central servers, ensuring absolute compliance with school district operational guidelines.
+                          <strong>FERPA (Federal Educational Rights and Privacy Act):</strong> This application does not maintain student educational records on central servers, ensuring absolute compliance with school district operational guidelines.
                         </p>
                       </li>
                       <li className="flex items-start gap-2.5 text-slate-800 font-bold">
@@ -531,7 +531,7 @@ export default function TermsPage() {
                     <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl space-y-1">
                       <span className="text-[10px] font-mono font-black text-indigo-800 block">FERPA</span>
                       <p className="text-[10px] text-slate-800 font-semibold leading-normal">
-                        <strong>Family Educational Rights and Privacy Act:</strong> This application does not maintain student educational records on central servers, ensuring absolute compliance with school district operational guidelines.
+                        <strong>FERPA (Federal Educational Rights and Privacy Act):</strong> This application does not maintain student educational records on central servers, ensuring absolute compliance with school district operational guidelines.
                       </p>
                     </div>
                     <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl space-y-1">

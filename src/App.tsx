@@ -52,7 +52,6 @@ const RulesPage = React.lazy(() => import('./components/RulesPage'));
 const TermsPage = React.lazy(() => import('./components/TermsPage'));
 const ClassPlayground = React.lazy(() => import('./components/ClassPlayground'));
 const DeveloperPage = React.lazy(() => import('./components/DeveloperPage'));
-const FamilyPage = React.lazy(() => import('./components/FamilyPage'));
 const LearnArena = React.lazy(() => import('./components/LearnArena'));
 const SchoolDashboards = React.lazy(() => import('./components/SchoolDashboards'));
 const CreatorPanel = React.lazy(() => import('./components/CreatorPanel'));
@@ -72,7 +71,7 @@ const INITIAL_STATS: UserStats = {
 };
 
 export default function App() {
-  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'family' | 'learn' | 'shop' | 'creator' | 'arcade'>('home');
+  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade'>('home');
   const [rewardTimer, setRewardTimer] = useState(300);
   const [isWorkspaceLocked, setIsWorkspaceLocked] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -1014,7 +1013,7 @@ export default function App() {
 
   if (authState.isChecking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+      <div className="h-screen w-screen flex items-center justify-center bg-slate-950 text-white">
         <div className="text-center space-y-4">
           <Loader2 className="animate-spin text-brand-primary w-12 h-12 mx-auto" strokeWidth={3} />
           <p className="text-sm font-black tracking-wider text-slate-400">CONNECTING TO JESSE ROCK MATH ARENA...</p>
@@ -1026,7 +1025,7 @@ export default function App() {
   if (!authState.isAuthenticated) {
     return (
       <React.Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+        <div className="h-screen w-screen flex items-center justify-center bg-slate-950 text-white">
           <div className="text-center space-y-4">
             <Loader2 className="animate-spin text-brand-primary w-12 h-12 mx-auto" strokeWidth={3} />
             <p className="text-sm font-black tracking-wider text-slate-400">LOADING ARENA...</p>
@@ -1064,7 +1063,7 @@ export default function App() {
   if (authState.role === 'teacher' || authState.role === 'admin') {
     return (
       <React.Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+        <div className="h-full flex items-center justify-center bg-slate-950 text-white">
           <Loader2 className="animate-spin text-brand-primary w-12 h-12" />
         </div>
       }>
@@ -1096,7 +1095,6 @@ export default function App() {
         { id: 'rules', label: 'How It Works & Rules', icon: HelpCircle },
         { id: 'terms', label: 'Terms & Policies', icon: FileText },
         { id: 'developer', label: 'Meet Developer', icon: User },
-        { id: 'family', label: 'Family Credits', icon: Heart },
         { id: 'creator', label: "Jesse's Desk 👑", icon: ShieldCheck }
       ];
 
@@ -1260,7 +1258,7 @@ export default function App() {
                   )}
                   {activeTab === 'dashboard' && <Dashboard stats={stats} onStartQuiz={() => setActiveTab('quiz')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} />}
                   {activeTab === 'leaderboard' && (
-                    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-950 text-white"><Loader2 className="animate-spin text-brand-primary w-12 h-12" /></div>}>
+                    <React.Suspense fallback={<div className="h-full flex items-center justify-center bg-slate-950 text-white"><Loader2 className="animate-spin text-brand-primary w-12 h-12" /></div>}>
                       <Leaderboard currentUser={{ uid: authState.userId || null, username: authState.username || null, role: authState.role }} currentStreak={stats.streak} stats={stats} />
                     </React.Suspense>
                   )}
@@ -1271,7 +1269,6 @@ export default function App() {
                   {activeTab === 'rules' && <RulesPage />}
                   {activeTab === 'terms' && <TermsPage />}
                   {activeTab === 'developer' && <DeveloperPage currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', role: authState.role || 'guest' }} />}
-                  {activeTab === 'family' && <FamilyPage />}
                   {activeTab === 'learn' && <LearnArena onFinish={handleLearnArenaFinish} onExit={() => setActiveTab('hub')} lesson={practiceLesson} />}
                   {activeTab === 'shop' && <RockShop userId={authState.userId || userDeviceId || ''} role={authState.role as any} onNavigateToTab={setActiveTab} />}
                   {activeTab === 'arcade' && <FunArcade stats={stats} onExit={() => setActiveTab('home')} />}
