@@ -31,20 +31,14 @@ import {
   Gamepad2,
   Flame
 } from 'lucide-react';
-const Dashboard = React.lazy(() => import('./components/Dashboard'));
-const Leaderboard = React.lazy(() => import('./components/Leaderboard'));
-const Quiz = React.lazy(() => import('./components/Quiz'));
-const LearningHub = React.lazy(() => import('./components/LearningHub'));
-import { getWeeklyData } from './components/BadgesSection';
-const BadgesSection = React.lazy(() => import('./components/BadgesSection'));
-const RockShop = React.lazy(() => import('./components/RockShop'));
-const FunArcade = React.lazy(() => import('./components/FunArcade'));
 import { UserStats, Difficulty, Lesson } from './types';
 import { cn } from './lib/utils';
 import { calculateLevel } from './lib/badges';
+import { getWeeklyData } from './lib/dateUtils';
 import { db } from './lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, increment } from 'firebase/firestore';
 import { handleFirestoreError, OperationType } from './lib/firestoreUtils';
+
 const AuthGate = React.lazy(() => import('./components/AuthGate'));
 const ArenaMatches = React.lazy(() => import('./components/ArenaMatches'));
 const HomeLanding = React.lazy(() => import('./components/HomeLanding'));
@@ -55,10 +49,18 @@ const DeveloperPage = React.lazy(() => import('./components/DeveloperPage'));
 const LearnArena = React.lazy(() => import('./components/LearnArena'));
 const SchoolDashboards = React.lazy(() => import('./components/SchoolDashboards'));
 const CreatorPanel = React.lazy(() => import('./components/CreatorPanel'));
-import AvatarPreview from './components/AvatarPreview';
-import { updateSchoolStudentProgress } from './lib/schoolDb';
+const Dashboard = React.lazy(() => import('./components/Dashboard'));
+const Leaderboard = React.lazy(() => import('./components/Leaderboard'));
+const Quiz = React.lazy(() => import('./components/Quiz'));
+const LearningHub = React.lazy(() => import('./components/LearningHub'));
+const BadgesSection = React.lazy(() => import('./components/BadgesSection'));
+const RockShop = React.lazy(() => import('./components/RockShop'));
+const FunArcade = React.lazy(() => import('./components/FunArcade'));
 const ConvertAccountModal = React.lazy(() => import('./components/ConvertAccountModal'));
 const CertificateModal = React.lazy(() => import('./components/CertificateModal'));
+
+import AvatarPreview from './components/AvatarPreview';
+import { updateSchoolStudentProgress } from './lib/schoolDb';
 
 const INITIAL_STATS: UserStats = {
   totalSolved: 0,

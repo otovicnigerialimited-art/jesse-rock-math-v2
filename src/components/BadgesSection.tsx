@@ -4,7 +4,8 @@ import { Trophy, Award, Calendar, Sparkles, Lock, Flame, Target, Zap, Clock, Dow
 import { UserStats, Difficulty } from '../types';
 import { cn } from '../lib/utils';
 import { Badge, CORE_BADGES } from '../lib/badges';
-import CertificateModal from './CertificateModal';
+import { getWeeklyData } from '../lib/dateUtils';
+const CertificateModal = React.lazy(() => import('./CertificateModal'));
 
 // Helper to calculate the current calendar week data key (e.g. "2026-W25")
 export function getWeeklyData() {

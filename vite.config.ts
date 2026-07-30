@@ -25,11 +25,15 @@ export default defineConfig(({mode}) => {
       },
     },
     build: {
-      chunkSizeWarningLimit: 2000,
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
+              if (id.includes('lucide-react')) return 'icons';
+              if (id.includes('recharts') || id.includes('d3')) return 'charts';
+              if (id.includes('framer-motion') || id.includes('motion')) return 'animations';
+              if (id.includes('firebase')) return 'firebase';
               return 'vendor';
             }
           }

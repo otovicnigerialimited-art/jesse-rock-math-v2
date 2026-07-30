@@ -5,6 +5,7 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
+import compression from "compression";
 import { initializeApp as initializeServerFirebase } from "firebase/app";
 import { getFirestore as getServerFirestore, doc as serverDoc, getDoc as serverGetDoc, updateDoc as serverUpdateDoc } from "firebase/firestore";
 import crypto from "crypto";
@@ -88,51 +89,47 @@ const UpdateScoreSchema = z.object({
   streakIncrease: z.number().min(-10).max(10),
 });
 
-async function startServer() {
+export async function createApp() {
   const app = express();
   const PORT = 3000;
 
-  // Trust first proxy (Cloud Run / Nginx)
+  // Trust first proxy (Cloud Run / Nginx / Vercel)
   app.set("trust proxy", 1);
 
-// --- Security Middleware ---
+  // Enable Gzip compression
+  app.use(compression());
 
+  // --- Security Middleware ---
   app.use(helmet({
-    contentSecurityPolicy: false, // Disable CSP for dev to avoid iframe issues
+    contentSecurityPolicy: false, 
     crossOriginEmbedderPolicy: false,
-    xFrameOptions: false, // Allow iframing
+    xFrameOptions: false,
   }));
 
   app.use(cors({
-    origin: true, // Be permissive in dev for CORS
+    origin: true, 
     credentials: true
   }));
 
   app.use(express.json({ limit: "500kb" }));
 
-  // Global & Targeted Rate Limiting
+  // Rate Limiting
   const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 300,
     message: { success: false, error: "Too many requests from this IP." }
   });
-
   app.use("/api/", globalLimiter);
 
-  // --- Secure API Implementation ---
-
+  // --- API Routes ---
   app.get("/api/health", (req, res) => {
-    res.json({ 
-      status: "online", 
-      security: "hardened"
-    });
+    res.json({ status: "online", security: "hardened" });
   });
 
   app.post("/api/gemini", async (req, res) => {
     try {
       const validated = GeminiSchema.parse(req.body);
       const { prompt, score, speed, difficulty, model } = validated;
-
       let safePrompt = "";
       if (score !== undefined) {
         safePrompt = `Generate a math hint for a student with Score:${score}, Speed:${speed}s, Level:${difficulty}. No spoilers.`;
@@ -142,19 +139,14 @@ async function startServer() {
       } else {
         return res.status(400).json({ success: false, error: "Empty payload." });
       }
-
       const ai = getAiClient();
       const response = await ai.models.generateContent({
         model: model || "gemini-3.5-flash",
         contents: safePrompt,
       });
-
       res.json({ success: true, text: response.text });
     } catch (error: any) {
-      if (error instanceof z.ZodError) {
-        return res.status(422).json({ success: false, error: "Invalid payload structure." });
-      }
-      console.error("[SECURITY LOG] AI Proxy Error:", error.message);
+      if (error instanceof z.ZodError) return res.status(422).json({ success: false, error: "Invalid payload structure." });
       res.status(500).json({ success: false, error: error.message || "Secure AI bridge failure." });
     }
   });
@@ -164,21 +156,9 @@ async function startServer() {
       const validated = LoginSchema.parse(req.body);
       const { username, userId, role } = validated;
       const secureId = userId || `anon_${crypto.randomBytes(6).toString('hex')}`;
-      
-      const sessionPayload = {
-        userId: secureId,
-        role: role || "individual",
-        username,
-        iat: Math.floor(Date.now() / 1000)
-      };
-
+      const sessionPayload = { userId: secureId, role: role || "individual", username, iat: Math.floor(Date.now() / 1000) };
       const token = Buffer.from(JSON.stringify(sessionPayload)).toString('base64');
-      
-      res.setHeader(
-        'Set-Cookie', 
-        `session_token=${token}; Path=/; Max-Age=604800; HttpOnly; Secure; SameSite=None`
-      );
-      
+      res.setHeader('Set-Cookie', `session_token=${token}; Path=/; Max-Age=604800; HttpOnly; Secure; SameSite=None`);
       res.json({ success: true, user: sessionPayload });
     } catch (error: any) {
       res.status(400).json({ success: false, error: "Login validation rejected." });
@@ -191,9 +171,7 @@ async function startServer() {
     if (match) {
       try {
         const decoded = JSON.parse(Buffer.from(decodeURIComponent(match[1]), 'base64').toString());
-        if (Date.now() / 1000 - decoded.iat < 604800) {
-          return res.json({ authenticated: true, ...decoded });
-        }
+        if (Date.now() / 1000 - decoded.iat < 604800) return res.json({ authenticated: true, ...decoded });
       } catch (e) {
         console.warn("[SECURITY] Tampered session token detected.");
       }
@@ -212,14 +190,11 @@ async function startServer() {
       const cookies = req.headers.cookie || '';
       const match = cookies.match(/session_token=([^;]+)/);
       if (!match) return res.status(401).json({ success: false, error: "Unauthenticated" });
-
       const session = JSON.parse(Buffer.from(decodeURIComponent(match[1]), 'base64').toString());
       const db = getServerDb();
       const userRef = serverDoc(db, "users", session.userId);
       const userSnap = await serverGetDoc(userRef);
-      
       if (!userSnap.exists()) return res.status(404).json({ success: false, error: "Profile missing" });
-
       const stats = userSnap.data();
       await serverUpdateDoc(userRef, {
         streak: (stats.streak || 0) + validated.streakIncrease,
@@ -227,7 +202,6 @@ async function startServer() {
         coins: (stats.coins || 0) + validated.scoreIncrease,
         lastUpdate: Date.now()
       });
-
       res.json({ success: true });
     } catch (error: any) {
       res.status(400).json({ success: false, error: error.message || "Transaction rejected." });
@@ -238,16 +212,21 @@ async function startServer() {
   const isProduction = process.env.NODE_ENV === "production";
   const distPath = path.join(process.cwd(), 'dist');
   
-  if (isProduction && fs.existsSync(path.join(distPath, 'index.html'))) {
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => res.sendFile(path.join(distPath, 'index.html')));
-  } else {
-    // Fallback to Vite if in dev or if dist is missing
+  // Only use Vite in non-production environments
+  if (!isProduction) {
     const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
     app.use(vite.middlewares);
+  } else if (fs.existsSync(path.join(distPath, 'index.html'))) {
+    app.use(express.static(distPath));
+    app.get('*', (req, res) => res.sendFile(path.join(distPath, 'index.html')));
   }
 
-  // Explicitly bind to 0.0.0.0 and Port 3000 for Cloud Run ingress
+  return app;
+}
+
+async function startServer() {
+  const app = await createApp();
+  const PORT = 3000;
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`🛡️  GENIUS SECURE SERVER: LISTENING ON http://0.0.0.0:${PORT}`);
     console.log(`🛡️  Zero-Trust Architecture: ACTIVE`);
@@ -255,3 +234,4 @@ async function startServer() {
 }
 
 startServer();
+
