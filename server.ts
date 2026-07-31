@@ -233,5 +233,12 @@ async function startServer() {
   });
 }
 
-startServer();
+// Check if running as a standalone server or in a serverless context
+const isServerless = !!process.env.VERCEL || !!process.env.LAMBDA_TASK_ROOT;
+
+if (!isServerless) {
+  startServer().catch(err => {
+    console.error("Failed to start server:", err);
+  });
+}
 
