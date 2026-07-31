@@ -17,6 +17,7 @@ import {
   Target,
   Github
 } from 'lucide-react';
+import AboutSection from './AboutSection';
 
 interface HomeLandingProps {
   username: string;
@@ -422,9 +423,11 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
             </div>
 
       {/* Itch.io Embed */}
-      <div className="flex justify-center mt-4 mb-0 w-full">
+      <div className="flex justify-center mt-4 mb-8 w-full">
          <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>
       </div>
+
+      <AboutSection />
 
       {/* Sleek Professional Footer */}
       <footer className="border-t border-deep-navy/10 pt-6 pb-2 mt-8 text-center space-y-4">

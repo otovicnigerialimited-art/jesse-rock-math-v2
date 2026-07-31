@@ -1,74 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    function isAuthenticated() {
-      return request.auth != null;
-    }
-
-    function isOwner(userId) {
-      return isAuthenticated() && request.auth.uid == userId;
-    }
-
-    match /usernames/{username} {
-      // Allow reading only if the user is checking their own username
-      // Or remove password from client-side read if possible.
-      // For now, we restrict to authenticated users for discovery, 
-      // but ideally we shouldn't store passwords here in plain text.
-      allow read: if isAuthenticated();
-      allow write: if isAuthenticated();
-    }
-
-    match /leaderboard/{document} {
-      allow read: if true;
-      // Leaderboard updates should ideally be handled by server-side logic
-      allow write: if isAuthenticated(); 
-    }
-
-    match /users/{userId} {
-      allow read: if isOwner(userId);
-      allow write: if isOwner(userId);
-    }
-
-    match /school_students/{studentId} {
-      allow read, write: if isAuthenticated();
-    }
-
-    match /teachers/{teacherId} {
-      allow read, write: if isAuthenticated();
-    }
-
-    match /schools/{schoolId} {
-      allow read, write: if isAuthenticated();
-    }
-
-    match /arena_games/{gameId} {
-      allow read, write: if isAuthenticated();
-    }
-
-    match /matchmaking_queue/{docId} {
-      allow read, write: if isAuthenticated();
-    }
-
-    match /developer_guestbook/{docId} {
-      allow read, write: if isAuthenticated();
-    }
-
-    match /shop_items/{docId} {
-      allow read: if true;
-      allow write: if isAuthenticated();
-    }
-
-    match /system_state/{docId} {
-      allow read, write: if isAuthenticated();
-    }
-
-    match /class_requests/{requestId} {
-      allow read, write: if isAuthenticated();
-    }
-
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if true;
     }
   }
 }

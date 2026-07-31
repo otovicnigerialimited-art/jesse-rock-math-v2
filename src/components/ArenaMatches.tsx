@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Trophy, Timer, Zap, ArrowRight, RefreshCcw, LogOut, ArrowLeft, Loader2, Search, Volume2, VolumeX } from 'lucide-react';
 import { db } from '../lib/firebase';
-import { doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs, deleteDoc, limit } from 'firebase/firestore';
 import { handleFirestoreError, OperationType } from '../lib/firestoreUtils';
 import { generateArenaQuestions } from '../lib/mathUtils';
 import { playCorrectSound, playWrongSound, setGlobalMuted } from '../lib/audioUtils';
@@ -58,7 +58,11 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
   const containerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const queueDocRef = doc(db, "matchmaking_queue", currentUser.uid);
+  
+  const queueDocRef = React.useMemo(() => {
+    if (!currentUser.uid || currentUser.uid === 'guest') return null;
+    return doc(db, "matchmaking_queue", currentUser.uid);
+  }, [currentUser.uid]);
 
   // Resize Observer for responsive scaling
   useEffect(() => {
@@ -81,21 +85,25 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
 
   // Real-time online real players registry scanner
   useEffect(() => {
+    // Only fetch top 10 users to avoid massive data transfer
     const usersCollection = collection(db, "users");
+    const q = query(usersCollection, limit(15));
 
-    const unsubscribe = onSnapshot(usersCollection, (snapshot) => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const list: any[] = [];
       snapshot.forEach((snap) => {
         const data = snap.data();
-        list.push({
-          id: snap.id,
-          username: data.username || "Challenger Genius",
-          xp: data.xp || 100,
-          streak: data.streak || 0
-        });
+        if (data.username) {
+          list.push({
+            id: snap.id,
+            username: data.username || "Challenger Genius",
+            xp: data.xp || 100,
+            streak: data.streak || 0
+          });
+        }
       });
       setOnlinePlayers(list);
-      setOnlineUsersCount(list.length);
+      setOnlineUsersCount(snapshot.size);
     }, (err) => {
       console.warn("Real-time active scan warning:", err);
     });
@@ -114,10 +122,12 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
   useEffect(() => {
     return () => {
       // Clean queue ref if player quits
-      deleteDoc(queueDocRef).catch(() => {});
+      if (queueDocRef) {
+        deleteDoc(queueDocRef).catch(() => {});
+      }
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, []);
+  }, [queueDocRef]);
 
   // Timer logic
   useEffect(() => {
@@ -199,6 +209,12 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
 
   // Start searching logic
   const handleStartMatchmaking = async () => {
+    if (!currentUser.uid) {
+      alert("Registration issue. Please refresh or register again.");
+      return;
+    }
+    if (!queueDocRef) return;
+
     if (audioRef.current && !isMuted) {
       audioRef.current.play().catch(() => {});
     }
@@ -300,7 +316,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
 
         // Clean up our own queue record if any
         try {
-          await deleteDoc(queueDocRef);
+          if (queueDocRef) await deleteDoc(queueDocRef);
         } catch (err) {
           handleFirestoreError(err, OperationType.DELETE, `matchmaking_queue/${currentUser.uid}`);
         }
@@ -313,31 +329,42 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
         setP1Name(currentUser.username);
         
         try {
-          await setDoc(queueDocRef, {
-            uid: currentUser.uid,
-            username: currentUser.username,
-            classCode: currentUser.classCode || "",
-            status: "waiting",
-            matchedRoomId: "",
-            timestamp: Date.now()
-          });
+          if (queueDocRef) {
+            await setDoc(queueDocRef, {
+              uid: currentUser.uid,
+              username: currentUser.username,
+              classCode: currentUser.classCode || "",
+              status: "waiting",
+              matchedRoomId: "",
+              timestamp: Date.now()
+            });
+          }
         } catch (err) {
           handleFirestoreError(err, OperationType.CREATE, `matchmaking_queue/${currentUser.uid}`);
         }
 
         // Listen for another match to claim our room!
-        const unsubQueue = onSnapshot(queueDocRef, async (snap) => {
-          if (snap.exists()) {
-            const data = snap.data();
-            if (data.status === 'matched') {
-              unsubQueue(); // stop listening queue
-              setGameId(data.matchedRoomId);
-              listenToGameRoom(data.matchedRoomId);
+        if (queueDocRef) {
+          const matchmakingTimeout = setTimeout(() => {
+            // If still searching after 15s, auto-start solo mode to avoid infinite wait
+            handleStartSoloWarmup();
+          }, 15000);
+
+          const unsubQueue = onSnapshot(queueDocRef, async (snap) => {
+            if (snap.exists()) {
+              const data = snap.data();
+              if (data.status === 'matched') {
+                clearTimeout(matchmakingTimeout);
+                unsubQueue(); // stop listening queue
+                setGameId(data.matchedRoomId);
+                listenToGameRoom(data.matchedRoomId);
+              }
             }
-          }
-        }, (err) => {
-          handleFirestoreError(err, OperationType.GET, `matchmaking_queue/${currentUser.uid}`);
-        });
+          }, (err) => {
+            clearTimeout(matchmakingTimeout);
+            handleFirestoreError(err, OperationType.GET, `matchmaking_queue/${currentUser.uid}`);
+          });
+        }
       }
     } catch (e) {
       console.error(e);

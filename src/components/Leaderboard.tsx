@@ -146,6 +146,11 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
   };
 
   const checkAndRunWeeklyReset = async () => {
+    // Only run if user is authenticated and is a teacher/admin (to avoid massive client side resets)
+    // Or if we really must run it on client, we need to be extremely careful.
+    // For now, let's limit it to only once every 30 seconds across the app or check if someone else is doing it.
+    if (!currentUser.uid || currentUser.role === 'guest') return;
+
     try {
       const sysRef = doc(db, 'system_state', 'leaderboard');
       const sysSnap = await getDoc(sysRef);
@@ -170,27 +175,23 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
           lastWeekWinnerStreak: sysData.lastWeekWinnerStreak || 0
         });
 
-        if (sysData.currentWeek !== actualWeek) {
-          // Time to reset! Mark immediately to avoid race condition
-          await setDoc(sysRef, {
-            ...sysData,
-            currentWeek: actualWeek,
-            lastResetTime: Date.now(),
-            lastWeekWinner: 'Synchronising...',
+        // Weekly Reset Trigger
+        if (sysData.currentWeek !== actualWeek && sysData.lastWeekWinnerId !== 'processing') {
+          // Attempt to lock
+          await updateDoc(sysRef, {
             lastWeekWinnerId: 'processing'
-          }, { merge: true });
+          });
 
           // Fetch all players from both collections
           const allPlayers: any[] = [];
           
-           const usersSnap = await getDocs(collection(db, 'users'));
+          const usersSnap = await getDocs(collection(db, 'users'));
           usersSnap.forEach(d => {
             const data = d.data();
-            const uname = data.username || '';
             if (isValidPlayer(data, d.id)) {
               allPlayers.push({
                 id: d.id,
-                username: uname,
+                username: data.username || 'Unknown',
                 collection: 'users',
                 streakScore: data.streakScore ?? data.streak ?? data.bestStreak ?? 0,
                 level: data.level ?? 1
@@ -201,12 +202,11 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
           const studentsSnap = await getDocs(collection(db, 'school_students'));
           studentsSnap.forEach(d => {
             const data = d.data();
-            const uname = data.username || '';
             if (isValidPlayer(data, d.id)) {
               const progress = data.school_math_progress || {};
               allPlayers.push({
                 id: d.id,
-                username: uname,
+                username: data.username || 'Unknown',
                 collection: 'school_students',
                 streakScore: data.streakScore ?? progress.highScore ?? data.streak ?? 0,
                 level: data.level ?? progress.currentLevel ?? 1
@@ -310,7 +310,7 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
         }
       }
     } catch (err) {
-      console.warn('Failed to run weekly reset check:', err);
+      console.warn('Weekly reset check bypassed:', err);
     }
   };
 
@@ -349,128 +349,114 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
   useEffect(() => {
     setLoading(true);
 
-    // Subscribe to users
-    const unsubscribeUsers = onSnapshot(collection(db, 'users'), (usersSnap) => {
-      // Subscribe to school students
-      const unsubscribeStudents = onSnapshot(collection(db, 'school_students'), (studentsSnap) => {
-        const fetched: LeaderboardUser[] = [];
+    let users: LeaderboardUser[] = [];
+    let students: LeaderboardUser[] = [];
 
-        // Parse individual users
-        usersSnap.forEach((docSnap) => {
-          const data = docSnap.data();
-          if (isValidPlayer(data, docSnap.id)) {
-            const uname = data.username || 'Unknown';
-            fetched.push({
-              id: docSnap.id,
-              username: uname,
-              streakScore: data.streakScore ?? data.bestStreak ?? data.streak ?? 0,
-              streak: data.streak ?? 0,
-              bestStreak: data.bestStreak ?? 0,
-              xp: data.xp ?? 0,
-              level: data.level ?? 1,
-              badges: data.badges ?? [],
-              totalSolved: data.totalSolved ?? 0,
-              role: data.role || 'individual',
-              collection: 'users'
-            });
-          }
-        });
-
-        // Parse school students
-        studentsSnap.forEach((docSnap) => {
-          const data = docSnap.data();
-          if (isValidPlayer(data, docSnap.id)) {
-            const uname = data.username || 'Unknown';
-            const progress = data.school_math_progress || {};
-            fetched.push({
-              id: docSnap.id,
-              username: uname,
-              streakScore: data.streakScore ?? progress.highScore ?? data.bestStreak ?? data.streak ?? progress.streakScore ?? 0,
-              streak: data.streak ?? progress.streak ?? 0,
-              bestStreak: data.bestStreak ?? progress.highScore ?? 0,
-              xp: data.xp ?? progress.xp ?? 0,
-              level: data.level ?? progress.currentLevel ?? 1,
-              badges: data.badges ?? [],
-              totalSolved: progress.solved ?? data.totalSolved ?? 0,
-              role: 'student',
-              collection: 'school_students'
-            });
-          }
-        });
-
-        // Sort strictly by streak descending, and then by level descending
-        fetched.sort((a, b) => {
-          const sA = a.streak ?? 0;
-          const sB = b.streak ?? 0;
-          if (sB !== sA) {
-            return sB - sA;
-          }
-          const lA = a.level ?? 1;
-          const lB = b.level ?? 1;
-          return lB - lA;
-        });
-
-        // Calculate any ranking changes for visual flash effect
-        const newRanks: Record<string, number> = {};
-        const newFlashes: Record<string, 'up' | 'down'> = {};
-
-        fetched.forEach((player, idx) => {
-          const rank = idx + 1;
-          newRanks[player.id] = rank;
-          const prev = prevRanks[player.id];
-          if (prev !== undefined && prev !== rank) {
-            newFlashes[player.id] = rank < prev ? 'up' : 'down';
-          }
-        });
-
-        setPrevRanks(newRanks);
-        if (Object.keys(newFlashes).length > 0) {
-          setFlashUsers(newFlashes);
-          const timer = setTimeout(() => setFlashUsers({}), 2500);
-          return () => clearTimeout(timer);
+    const mergeAndSort = () => {
+      const fetched = [...users, ...students];
+      
+      // Sort strictly by streak descending, and then by level descending
+      fetched.sort((a, b) => {
+        const sA = a.streak ?? 0;
+        const sB = b.streak ?? 0;
+        if (sB !== sA) {
+          return sB - sA;
         }
-
-        setTopPlayers(fetched.slice(0, 50));
-        setLoading(false);
-      }, (err) => {
-        console.error('Error fetching school_students for leaderboard:', err);
-        // Fallback to users only
-        const fetchedUsersOnly: LeaderboardUser[] = [];
-        usersSnap.forEach((docSnap) => {
-          const data = docSnap.data();
-          if (isValidPlayer(data, docSnap.id)) {
-            const uname = data.username || '';
-            fetchedUsersOnly.push({
-              id: docSnap.id,
-              username: uname,
-              streakScore: data.streakScore ?? data.bestStreak ?? data.streak ?? 0,
-              streak: data.streak ?? 0,
-              bestStreak: data.bestStreak ?? 0,
-              xp: data.xp ?? 0,
-              level: data.level ?? 1,
-              badges: data.badges ?? []
-            });
-          }
-        });
-        fetchedUsersOnly.sort((a, b) => {
-          const sA = a.streak ?? 0;
-          const sB = b.streak ?? 0;
-          if (sB !== sA) return sB - sA;
-          return (b.level ?? 1) - (a.level ?? 1);
-        });
-        setTopPlayers(fetchedUsersOnly.slice(0, 50));
-        setLoading(false);
+        const lA = a.level ?? 1;
+        const lB = b.level ?? 1;
+        return lB - lA;
       });
 
-      return () => unsubscribeStudents();
+      // Calculate any ranking changes for visual flash effect
+      const newRanks: Record<string, number> = {};
+      const newFlashes: Record<string, 'up' | 'down'> = {};
+
+      fetched.forEach((player, idx) => {
+        const rank = idx + 1;
+        newRanks[player.id] = rank;
+        const prev = prevRanks[player.id];
+        if (prev !== undefined && prev !== rank) {
+          newFlashes[player.id] = rank < prev ? 'up' : 'down';
+        }
+      });
+
+      setPrevRanks(newRanks);
+      if (Object.keys(newFlashes).length > 0) {
+        setFlashUsers(newFlashes);
+      }
+
+      setTopPlayers(fetched.slice(0, 50));
+      setLoading(false);
+    };
+
+    // Subscribe to users
+    const unsubscribeUsers = onSnapshot(collection(db, 'users'), (usersSnap) => {
+      users = [];
+      usersSnap.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (isValidPlayer(data, docSnap.id)) {
+          users.push({
+            id: docSnap.id,
+            username: data.username || 'Unknown',
+            streakScore: data.streakScore ?? data.bestStreak ?? data.streak ?? 0,
+            streak: data.streak ?? 0,
+            bestStreak: data.bestStreak ?? 0,
+            xp: data.xp ?? 0,
+            level: data.level ?? 1,
+            badges: data.badges ?? [],
+            totalSolved: data.totalSolved ?? 0,
+            role: data.role || 'individual',
+            collection: 'users'
+          });
+        }
+      });
+      mergeAndSort();
     }, (error) => {
       console.error('Error fetching users for leaderboard:', error);
-      setLoading(false);
       handleFirestoreError(error, OperationType.GET, 'users');
     });
 
-    return () => unsubscribeUsers();
+    // Subscribe to school students
+    const unsubscribeStudents = onSnapshot(collection(db, 'school_students'), (studentsSnap) => {
+      students = [];
+      studentsSnap.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (isValidPlayer(data, docSnap.id)) {
+          const progress = data.school_math_progress || {};
+          students.push({
+            id: docSnap.id,
+            username: data.username || 'Unknown',
+            streakScore: data.streakScore ?? progress.highScore ?? data.bestStreak ?? data.streak ?? progress.streakScore ?? 0,
+            streak: data.streak ?? progress.streak ?? 0,
+            bestStreak: data.bestStreak ?? progress.highScore ?? 0,
+            xp: data.xp ?? progress.xp ?? 0,
+            level: data.level ?? progress.currentLevel ?? 1,
+            badges: data.badges ?? [],
+            totalSolved: progress.solved ?? data.totalSolved ?? 0,
+            role: 'student',
+            collection: 'school_students'
+          });
+        }
+      });
+      mergeAndSort();
+    }, (error) => {
+      console.error('Error fetching school_students for leaderboard:', error);
+    });
+
+    return () => {
+      unsubscribeUsers();
+      unsubscribeStudents();
+    };
   }, []);
+
+  // Flash cleanup effect
+  useEffect(() => {
+    if (Object.keys(flashUsers).length > 0) {
+      const timer = setTimeout(() => setFlashUsers({}), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [flashUsers]);
+
 
   // 2. Calculate logged-in student's live rank and stats dynamically
   useEffect(() => {

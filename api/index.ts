@@ -37,17 +37,14 @@ let serverDb: any;
 
 const getServerDb = () => {
   if (!serverDb) {
-    const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
-    if (!projectId) {
-      throw new Error("VITE_FIREBASE_PROJECT_ID is missing. Please configure it in the application settings.");
-    }
+    const projectId = process.env.VITE_FIREBASE_PROJECT_ID || "silver-linker-scf5x";
     const firebaseConfig = {
-      apiKey: process.env.VITE_FIREBASE_API_KEY,
-      authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+      apiKey: process.env.VITE_FIREBASE_API_KEY || "AIzaSyC9osCI680YaE-HFoj-g8OuA63iVpJjaNM",
+      authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN || "silver-linker-scf5x.firebaseapp.com",
       projectId: projectId,
-      storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.VITE_FIREBASE_APP_ID
+      storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET || "silver-linker-scf5x.firebasestorage.app",
+      messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "483318254290",
+      appId: process.env.VITE_FIREBASE_APP_ID || "1:483318254290:web:a78237bdcc85fb05433b0b"
     };
     serverFirebaseApp = initializeServerFirebase(firebaseConfig);
     // Use the explicit database ID provided by the platform

@@ -14,6 +14,8 @@ export interface UserStats {
   xp: number;
   streak: number;
   bestStreak: number;
+  lastLoginDate?: string;
+  streakDays?: string[];
   completedLessons?: string[];
   history: {
     date: string;

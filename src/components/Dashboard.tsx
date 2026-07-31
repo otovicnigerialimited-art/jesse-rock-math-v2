@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { UserStats } from '../types';
 import { cn } from '../lib/utils';
+import DailyTip from './DailyTip';
 
 interface DashboardProps {
   stats: UserStats;
@@ -98,23 +99,29 @@ export default function Dashboard({ stats, onStartQuiz, isGuest, onConvertProgre
 
       {/* Stats Grid */}
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="glass p-6 rounded-3xl space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold flex items-center gap-2">
-              <TrendingUp size={18} className="text-green-400" /> Progress
-            </h3>
-            <span className="text-xs text-slate-500">XP: {stats.xp}</span>
+        <div className="flex flex-col gap-6">
+          <div className="glass p-6 rounded-3xl space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold flex items-center gap-2">
+                <TrendingUp size={18} className="text-green-400" /> Progress
+              </h3>
+              <span className="text-xs text-slate-500">XP: {stats.xp}</span>
+            </div>
+            <div className="h-4 bg-white/5 rounded-full overflow-hidden">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${(stats.xp % 1000) / 10}%` }}
+                className="h-full bg-gradient-to-r from-brand-primary to-brand-secondary"
+              />
+            </div>
+            <p className="text-sm text-deep-navy">
+              {1000 - (stats.xp % 1000)} XP until Level {stats.level + 1}
+            </p>
           </div>
-          <div className="h-4 bg-white/5 rounded-full overflow-hidden">
-            <motion.div 
-              initial={{ width: 0 }}
-              animate={{ width: `${(stats.xp % 1000) / 10}%` }}
-              className="h-full bg-gradient-to-r from-brand-primary to-brand-secondary"
-            />
-          </div>
-          <p className="text-sm text-deep-navy">
-            {1000 - (stats.xp % 1000)} XP until Level {stats.level + 1}
-          </p>
+
+          <DailyTip />
+
+          <StreakCalendar streakDays={stats.streakDays || []} />
         </div>
 
         <div className="md:col-span-2 glass p-6 rounded-3xl">
@@ -206,6 +213,65 @@ function StatCard({ icon, label, value, subValue }: { icon: React.ReactNode, lab
         <p className="text-2xl font-display font-black">{value}</p>
       </div>
       <p className="text-slate-500 text-[10px] font-bold">{subValue}</p>
+    </div>
+  );
+}
+
+function StreakCalendar({ streakDays }: { streakDays: string[] }) {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
+  
+  const monthName = today.toLocaleString('default', { month: 'long' });
+  
+  const days = Array.from({ length: daysInMonth }, (_, i) => {
+    const day = i + 1;
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const isActive = streakDays.includes(dateStr);
+    return { day, isActive, dateStr };
+  });
+
+  const blanks = Array.from({ length: firstDayOfMonth }, (_, i) => i);
+
+  return (
+    <div className="glass p-6 rounded-[2rem] border border-deep-navy border-4 space-y-4 shadow-xl">
+      <div className="flex items-center justify-between">
+        <h3 className="font-black text-sm uppercase tracking-tight flex items-center gap-2 text-deep-navy">
+          <Calendar size={18} className="text-brand-secondary" /> {monthName} Streak
+        </h3>
+        <div className="flex items-center gap-1.5">
+           <div className="w-2.5 h-2.5 rounded-full bg-brand-primary border border-deep-navy"></div>
+           <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Active</span>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-7 gap-1.5">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
+          <div key={d} className="text-[9px] font-black text-center text-slate-400 uppercase">{d}</div>
+        ))}
+        {blanks.map(b => <div key={`b-${b}`} className="aspect-square" />)}
+        {days.map(d => (
+          <div 
+            key={d.day} 
+            className={cn(
+              "aspect-square flex items-center justify-center rounded-lg text-[10px] font-black transition-all border",
+              d.isActive 
+                ? "bg-brand-primary text-deep-navy border-deep-navy shadow-[2px_2px_0px_rgba(0,0,0,1)] scale-105 z-10" 
+                : "bg-white/5 text-slate-400 border-transparent"
+            )}
+          >
+            {d.day}
+          </div>
+        ))}
+      </div>
+      <div className="pt-2 border-t border-deep-navy/10">
+        <p className="text-[10px] font-bold text-slate-600 flex items-center gap-1.5">
+          <Flame size={12} className="text-orange-500" /> Keep logging in to grow your streak!
+        </p>
+      </div>
     </div>
   );
 }
