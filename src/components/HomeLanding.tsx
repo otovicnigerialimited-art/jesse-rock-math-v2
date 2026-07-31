@@ -176,6 +176,77 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
         </div>
       </div>
 
+      {/* About Jesse Rock Math - Mission & Vision */}
+      <section className="bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 md:p-10 border border-deep-navy border-4 space-y-6">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-600">
+            <Target size={24} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-deep-navy uppercase tracking-tight">Our Mission & Educational Vision</h2>
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Bridging Game Mechanics with Mathematical Mastery</p>
+          </div>
+        </div>
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <p className="text-sm text-deep-navy font-semibold leading-relaxed">
+              Jesse Rock Math isn't just another educational app; it's a revolutionary movement in <strong>EdTech</strong> designed to transform how children perceive numbers. By leveraging high-octane <strong>competitive multiplayer</strong> and <strong>RPG progression mechanics</strong>, we've created a platform where students don't just "do math"—they live it.
+            </p>
+            <p className="text-sm text-deep-navy font-semibold leading-relaxed">
+              Our core philosophy revolves around <strong>Active Recall</strong> and <strong>Spaced Repetition</strong>. Through our dynamic Arena matches, students are exposed to constant, varied stimulation that forces the brain to retrieve mathematical facts quickly, building the neural pathways required for <strong>instant mental calculation</strong>.
+            </p>
+          </div>
+          <div className="bg-deep-navy/5 p-6 rounded-3xl border-2 border-dashed border-deep-navy/20 space-y-4">
+            <h4 className="text-xs font-black text-deep-navy uppercase flex items-center gap-2">
+              <Sparkles size={14} className="text-yellow-500" /> Why Interactive Learning Matters
+            </h4>
+            <div className="space-y-3">
+              <div className="flex gap-3">
+                <div className="w-5 h-5 rounded-full bg-emerald-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold">1</div>
+                <p className="text-[11px] text-slate-700 font-bold">Reduces Math Anxiety: Gamified environments provide a "safe failure" zone where mistakes are part of the game journey.</p>
+              </div>
+              <div className="flex gap-3">
+                <div className="w-5 h-5 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold">2</div>
+                <p className="text-[11px] text-slate-700 font-bold">Increases Engagement: Real-time leaderboards and badges create a dopamine-driven feedback loop that encourages longer study sessions.</p>
+              </div>
+              <div className="flex gap-3">
+                <div className="w-5 h-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold">3</div>
+                <p className="text-[11px] text-slate-700 font-bold">Accelerates Reflexes: Time-pressured duels replicate the adrenaline of sports, translating to faster processing in standardized testing.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Personalized Rockstar Recommendation Section */}
+      <div className="p-8 rounded-[2.5rem] bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border border-deep-navy border-4 flex flex-col md:flex-row items-center gap-8 group">
+        <div className="shrink-0 w-24 h-24 bg-white border border-deep-navy border-4 rounded-3xl flex items-center justify-center text-emerald-600 shadow-xl group-hover:rotate-6 transition-transform">
+          <Target size={48} />
+        </div>
+        <div className="space-y-3 text-center md:text-left">
+          <div className="inline-flex items-center gap-2 px-2 py-0.5 bg-emerald-500/20 rounded-lg text-[10px] font-black text-emerald-700 uppercase tracking-widest">
+            Level {stats.level} Insight
+          </div>
+          <h3 className="text-xl font-black text-deep-navy uppercase">Recommended for your rank</h3>
+          <p className="text-xs text-slate-700 font-bold leading-relaxed max-w-2xl">
+            {stats.level < 5 ? (
+              "Welcome to the stage! We recommend starting in the 'Learning Hub' to master multiplication tables. Focus on accuracy over speed to build a solid foundation before entering high-stakes duels."
+            ) : stats.level < 15 ? (
+              "You're becoming a regular! It's time to challenge your reflexes in the 'Play Arena'. Your accuracy is solid; now work on reducing your response time to under 3 seconds per question."
+            ) : (
+              "True Rockstar status! You should be aiming for the 'Grand Master Certificate'. Dive into the 'Algebraic Basics' lessons in the Hub to truly push your mathematical boundaries."
+            )}
+          </p>
+          <button 
+            onClick={() => onNavigateToTab(stats.level < 5 ? 'hub' : 'quiz')}
+            className="text-[10px] font-black uppercase text-emerald-600 hover:underline flex items-center gap-1 mx-auto md:mx-0"
+          >
+            Go to recommendation <ChevronRight size={12} />
+          </button>
+        </div>
+      </div>
+
       {/* Website Core Feature Highlights */}
       <div className="space-y-6">
         <div className="text-center md:text-left space-y-1">
@@ -251,6 +322,53 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
         </div>
         <div className="text-slate-500 font-semibold">
           Level {stats.level} Rank • Accuracy: {accuracy}% • Solved: {stats.totalSolved}
+        </div>
+      </div>
+
+      {/* News & Educational Insights Section */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="p-8 rounded-[2rem] bg-indigo-600 text-white space-y-4 shadow-xl border border-deep-navy border-4">
+          <div className="flex items-center gap-2">
+            <Flame size={20} className="text-orange-400" />
+            <h3 className="text-lg font-black uppercase tracking-tight">The Rockstar Newsletter</h3>
+          </div>
+          <div className="space-y-4">
+            <div className="border-l-2 border-orange-400 pl-4 py-1">
+              <p className="text-[11px] font-black uppercase text-orange-200">Update v2.4 - July 2026</p>
+              <p className="text-xs font-bold leading-relaxed">Integrated real-time socket-free Firestore sync for the Play Arena. Global duels are now 40% faster with zero latency spikes.</p>
+            </div>
+            <div className="border-l-2 border-emerald-400 pl-4 py-1">
+              <p className="text-[11px] font-black uppercase text-emerald-200">New Feature: Grand Master Certificates</p>
+              <p className="text-xs font-bold leading-relaxed">Reach the 200 questions milestone to unlock your printable certificate. Verified by the Young Genius Studios board.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-8 rounded-[2rem] bg-white border border-deep-navy border-4 space-y-4 shadow-xl">
+          <div className="flex items-center gap-2">
+            <HelpCircle size={20} className="text-deep-navy" />
+            <h3 className="text-lg font-black uppercase tracking-tight text-deep-navy">Math Rockstar FAQ</h3>
+          </div>
+          <div className="space-y-3">
+            <details className="group border-b border-deep-navy/10 pb-2 cursor-pointer">
+              <summary className="text-xs font-black text-deep-navy flex items-center justify-between list-none">
+                How do I earn the 'Table Titan' badge?
+                <ChevronRight size={14} className="group-open:rotate-90 transition-transform" />
+              </summary>
+              <p className="text-[10px] text-slate-600 font-bold mt-2 leading-relaxed">
+                You must achieve a 10-question win streak in the Play Arena specifically focused on Multiplication tables. This demonstrates pure muscle memory and arithmetic speed.
+              </p>
+            </details>
+            <details className="group border-b border-deep-navy/10 pb-2 cursor-pointer">
+              <summary className="text-xs font-black text-deep-navy flex items-center justify-between list-none">
+                Is my data safe without an account?
+                <ChevronRight size={14} className="group-open:rotate-90 transition-transform" />
+              </summary>
+              <p className="text-[10px] text-slate-600 font-bold mt-2 leading-relaxed">
+                Yes! We use local-bound secure storage tied to your browser profile. As long as you don't clear your site data, your levels, badges, and rockstar tokens are safe and secure.
+              </p>
+            </details>
+          </div>
         </div>
       </div>
 
