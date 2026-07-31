@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://jesse-math-rockstar-app.vercel.app/
+Sitemap: https://jesserockmath.vercel.app/sitemap.xml

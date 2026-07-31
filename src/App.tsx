@@ -74,6 +74,7 @@ const INITIAL_STATS: UserStats = {
 
 export default function App() {
   const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade'>('home');
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
   const [rewardTimer, setRewardTimer] = useState(300);
   const [isWorkspaceLocked, setIsWorkspaceLocked] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -189,6 +190,20 @@ export default function App() {
       return () => clearInterval(interval);
     }
   }, [authState.role]);
+
+  useEffect(() => {
+    // Check if the user agent is a common search bot to bypass the splash screen for SEO
+    const isBot = typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling/i.test(navigator.userAgent);
+    if (isBot) {
+      setIsSplashVisible(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setIsSplashVisible(false);
+    }, 1800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const fetchAndSyncProfile = async (uname: string, deviceId: string) => {
     const role = localStorage.getItem('jesse_rock_role') as any || 'individual';
@@ -1013,7 +1028,7 @@ export default function App() {
     }
   };
 
-  if (authState.isChecking) {
+  if (isSplashVisible) {
     return (
       <div className="h-screen w-screen flex items-center justify-center bg-slate-950 text-white">
         <div className="text-center space-y-4">
@@ -1022,6 +1037,10 @@ export default function App() {
         </div>
       </div>
     );
+  }
+
+  if (authState.isChecking) {
+    return null;
   }
 
   if (!authState.isAuthenticated) {

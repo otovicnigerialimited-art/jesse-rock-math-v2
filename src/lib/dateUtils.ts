@@ -13,14 +13,57 @@ export function getWeeklyData() {
   
   // Rotating themes for weekly accomplishments
   const weekThemes = [
-    { title: "Arithmetic Adventure", color: "from-blue-500 to-indigo-500", icon: "➕" },
-    { title: "Fraction Frenzy", color: "from-purple-500 to-pink-500", icon: "➗" },
-    { title: "Algebraic Quest", color: "from-orange-500 to-red-500", icon: "✖️" },
-    { title: "Geometry Journey", color: "from-emerald-500 to-teal-500", icon: "📐" }
+    {
+      id: "weekly_arithmetic_master",
+      title: "Arithmetic Champion 👑",
+      description: "Solve 15 correct problems this week to claim your crown!",
+      requirement: 15,
+      emoji: "🏆",
+      color: "from-amber-400 via-orange-500 to-yellow-500",
+      accent: "text-amber-400"
+    },
+    {
+      id: "weekly_accuracy_legend",
+      title: "Mind Marvel 🧠",
+      description: "Solve 10 correct problems this week to unlock the brain key!",
+      requirement: 10,
+      emoji: "🧠",
+      color: "from-cyan-400 via-blue-500 to-indigo-500",
+      accent: "text-cyan-400"
+    },
+    {
+      id: "weekly_speed_racer",
+      title: "Thunder Genius ⚡️",
+      description: "Solve 12 correct problems this week to unlock the speed spark!",
+      requirement: 12,
+      emoji: "⚡️",
+      color: "from-yellow-400 via-amber-500 to-orange-400",
+      accent: "text-yellow-400"
+    },
+    {
+      id: "weekly_explorer_pioneer",
+      title: "Galactic Explorer 🚀",
+      description: "Solve 8 correct problems this week to launch your star badge!",
+      requirement: 8,
+      emoji: "🚀",
+      color: "from-emerald-400 via-teal-500 to-cyan-500",
+      accent: "text-emerald-400"
+    }
   ];
+
+  // Modulo calculation to cycle week themes
+  const themeIndex = (weekNumber - 1) % weekThemes.length;
+  const currentChallenge = weekThemes[themeIndex];
+  
+  // Calculate days remaining in the week (until next Monday)
+  const currentDay = now.getDay() === 0 ? 7 : now.getDay();
+  const daysLeft = 7 - currentDay;
   
   return {
     weekKey,
-    theme: weekThemes[weekNumber % weekThemes.length]
+    currentChallenge,
+    daysLeft: daysLeft || 7,
+    daysRemaining: daysLeft || 7,
+    weekNumber
   };
 }
