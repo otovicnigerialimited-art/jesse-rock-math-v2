@@ -132,7 +132,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
       setUserInput('');
       setCurrentProblem(generateProblem(evalResult.level, quizAllowedTypes));
       setActiveFeedbackTag(null);
-    }, 1300);
+    }, 400);
   };
 
   const handleSubmit = (e?: React.FormEvent) => {

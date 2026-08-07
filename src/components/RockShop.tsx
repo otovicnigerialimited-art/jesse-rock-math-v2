@@ -383,7 +383,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
       <div className="grid lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Column: Stage projection of current avatar */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="lg:col-span-4 space-y-6 lg:sticky lg:top-8">
           <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 flex flex-col items-center justify-center text-center space-y-5">
             <div className="space-y-1">
               <span className="text-[10px] bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-2.5 py-0.5 rounded-full uppercase font-black tracking-widest">

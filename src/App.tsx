@@ -697,7 +697,7 @@ export default function App() {
 
     // Trigger Grand Master Celebration Modal
     if (stats.totalSolved < 200 && nextStats.totalSolved >= 200) {
-      setTimeout(() => setShowGrandMasterCelebration(true), 1200);
+      setTimeout(() => setShowGrandMasterCelebration(true), 400);
     }
 
     if (authState.role === 'guest') {
@@ -834,7 +834,7 @@ export default function App() {
 
     // Trigger Grand Master Celebration Modal
     if (stats.totalSolved < 200 && nextStats.totalSolved >= 200) {
-      setTimeout(() => setShowGrandMasterCelebration(true), 1200);
+      setTimeout(() => setShowGrandMasterCelebration(true), 400);
     }
 
     if (authState.role === 'guest') {
@@ -944,7 +944,7 @@ export default function App() {
 
     // Trigger Grand Master Celebration Modal
     if (stats.totalSolved < 200 && nextStats.totalSolved >= 200) {
-      setTimeout(() => setShowGrandMasterCelebration(true), 1200);
+      setTimeout(() => setShowGrandMasterCelebration(true), 400);
     }
 
     if (authState.role === 'guest') {
@@ -1294,6 +1294,7 @@ export default function App() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
                   className="min-h-full flex flex-col flex-1"
                 >
                   {activeTab === 'home' && (

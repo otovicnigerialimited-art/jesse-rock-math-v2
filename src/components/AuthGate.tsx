@@ -229,7 +229,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       setSuccess(`Authenticated! Welcome to ${teacherDoc.data().class_name || 'Classroom'}. Entering now...`);
       setTimeout(() => {
         onAuthSuccess(cleanName, sessionId);
-      }, 1000);
+      }, 400);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Failed to enter classroom.");
@@ -512,7 +512,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         setSuccess(`Welcome back, ${existingData.username || cleanUsername}! Loading progress...`);
         setTimeout(() => {
           onAuthSuccess(existingData.username || cleanUsername, correctUid);
-        }, 1200);
+        }, 400);
         return;
       }
 
@@ -553,7 +553,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       setSuccess(`Congratulations! Username "${cleanUsername}" is now registered.`);
       setTimeout(() => {
         onAuthSuccess(cleanUsername, uid);
-      }, 1200);
+      }, 400);
 
     } catch (err: any) {
       console.error(err);
@@ -605,7 +605,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       setSuccess(`Verified Rockstar Student @${freshStudent.username}! Preparing your instruments...`);
       setTimeout(() => {
         onAuthSuccess(freshStudent.username, freshStudent.id);
-      }, 1200);
+      }, 400);
 
     } catch (err: any) {
       setError(err.message || "Failed to log in student.");
@@ -650,7 +650,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       setSuccess(`Welcome back, Teacher ${authenticatedTeacher.teacher_name}! Synchronising...`);
       setTimeout(() => {
         onAuthSuccess(authenticatedTeacher.email, authenticatedTeacher.id);
-      }, 1200);
+      }, 400);
 
     } catch (err: any) {
       setError(err.message || "Teacher login check failed.");
@@ -714,7 +714,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       setSuccess(`Teacher Workspace Registered Successfully! Launching Class ${freshlyTeacher.teacher_name}...`);
       setTimeout(() => {
         onAuthSuccess(freshlyTeacher.email, freshlyTeacher.id);
-      }, 1200);
+      }, 400);
 
     } catch (err: any) {
       setError(err.message || "Failed to complete teacher registration.");

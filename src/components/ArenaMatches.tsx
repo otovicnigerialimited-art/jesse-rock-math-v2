@@ -544,7 +544,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
       } else {
         setQuestionIndex(nextIndex);
       }
-    }, 1300);
+    }, 400);
   };
 
   // Determine game results
