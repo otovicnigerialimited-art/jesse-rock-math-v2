@@ -1189,7 +1189,7 @@ export default function App() {
           <div className="flex items-center justify-between gap-3 p-4 border-b border-deep-navy/10">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0">
-                <img src="/jesse_rock_logo.jpg" alt="Jesse Rock Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                <img src="/logo.jpg" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE ROCK<br />
                 <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>

@@ -1511,7 +1511,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               whileHover={{ scale: 1.1, rotate: 12 }}
               className="w-16 h-16 rounded-[1.25rem] overflow-hidden shadow-[0_0_20px_rgba(236,72,153,0.3)] border border-deep-navy border-4 mx-auto cursor-pointer"
             >
-              <img src="/jesse_rock_logo.jpg" alt="Jesse Rock Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <img src="/logo.jpg" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </motion.div>
             
             <h1 className="text-2xl font-display font-black tracking-tight text-deep-navy leading-none mt-2">

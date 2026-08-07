@@ -14,7 +14,7 @@ target = """      <div className="flex justify-center pt-8 pb-4">
           className="relative inline-block"
         >
           <img 
-            src="/jesse_rock_logo.jpg" 
+            src="/logo.jpg" 
             alt="Jesse Rock Math Official Logo" 
             className="w-48 h-48 md:w-64 md:h-64 object-contain drop-shadow-2xl rounded-3xl border border-deep-navy/10"
             referrerPolicy="no-referrer"

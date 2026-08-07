@@ -35,7 +35,7 @@ export default function AboutSection() {
       <div className="glass p-8 md:p-12 rounded-[3rem] bg-gradient-to-br from-indigo-600/5 to-brand-primary/10 border-2 border-deep-navy space-y-6">
         <div className="flex flex-col md:flex-row items-center gap-8">
           <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-deep-navy shrink-0 shadow-xl rotate-3">
-            <img src="/jesse_rock_logo.jpg" alt="Jesse Otobo" className="w-full h-full object-cover" />
+            <img src="/logo.jpg" alt="Jesse Otobo" className="w-full h-full object-cover" />
           </div>
           <div className="space-y-2">
             <h3 className="text-2xl font-black text-deep-navy uppercase tracking-tight">The Vision of Jesse Otobo</h3>

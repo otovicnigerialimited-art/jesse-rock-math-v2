@@ -434,7 +434,7 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5 text-left">
             <div className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0">
-              <img src="/jesse_rock_logo.jpg" alt="Jesse Rock Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <img src="/logo.jpg" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </div>
             <div>
               <p className="text-xs font-black text-deep-navy tracking-tight leading-none uppercase">Young Genius Studios</p>
