@@ -180,22 +180,38 @@ export default function App() {
 
   const [userDeviceId, setUserDeviceId] = useState<string | null>(null);
   const [practiceLesson, setPracticeLesson] = useState<Lesson | null>(null);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>((window as any).deferredPrompt || null);
 
   useEffect(() => {
-    window.addEventListener('beforeinstallprompt', (e) => {
+    const handleBeforeInstallPrompt = (e: any) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Stash the event so it can be triggered later.
       setDeferredPrompt(e);
+      (window as any).deferredPrompt = e;
       console.log('beforeinstallprompt event was fired and saved');
-    });
+    };
 
-    window.addEventListener('appinstalled', () => {
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    // Also check if it was set before this effect ran
+    if ((window as any).deferredPrompt) {
+      setDeferredPrompt((window as any).deferredPrompt);
+    }
+
+    const handleAppInstalled = () => {
       // Clear the deferredPrompt so it can be garbage collected
       setDeferredPrompt(null);
+      (window as any).deferredPrompt = null;
       console.log('PWA was installed');
-    });
+    };
+
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
   }, []);
 
   // Show "Claim your account" modal every 5 minutes for guests to prevent them from losing their data
