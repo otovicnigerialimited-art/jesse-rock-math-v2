@@ -180,6 +180,23 @@ export default function App() {
 
   const [userDeviceId, setUserDeviceId] = useState<string | null>(null);
   const [practiceLesson, setPracticeLesson] = useState<Lesson | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      setDeferredPrompt(e);
+      console.log('beforeinstallprompt event was fired and saved');
+    });
+
+    window.addEventListener('appinstalled', () => {
+      // Clear the deferredPrompt so it can be garbage collected
+      setDeferredPrompt(null);
+      console.log('PWA was installed');
+    });
+  }, []);
 
   // Show "Claim your account" modal every 5 minutes for guests to prevent them from losing their data
   React.useEffect(() => {
@@ -1230,6 +1247,28 @@ export default function App() {
                 {item.label}
               </button>
             ))}
+            {deferredPrompt && (
+              <button
+                onClick={() => {
+                  deferredPrompt.prompt();
+                  deferredPrompt.userChoice.then((choiceResult: any) => {
+                    if (choiceResult.outcome === 'accepted') {
+                      console.log('User accepted the install prompt');
+                    } else {
+                      console.log('User dismissed the install prompt');
+                    }
+                    setDeferredPrompt(null);
+                  });
+                }}
+                className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider text-white bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 transition-all border border-emerald-900 shadow-md mt-4 cursor-pointer animate-pulse"
+              >
+                <div className="w-5 h-5 rounded-full overflow-hidden border border-white/40 shrink-0 bg-white p-0.5">
+                  <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover rounded-full" />
+                </div>
+                Install Math Rockstar App
+              </button>
+            )}
+            
             {authState.role === 'class_student' ? (
               <button
                 onClick={handleSignOut}
@@ -1280,7 +1319,7 @@ export default function App() {
         {/* Main Content */}
         <main className="flex-1 flex flex-col overflow-hidden">
           {/* Header/Toggle */}
-          <header className="p-3 sm:p-4 flex items-center gap-4 lg:hidden bg-clean-white/40 border-b border-deep-navy/10 backdrop-blur-md">
+          <header className="p-3 sm:p-4 flex items-center justify-between gap-4 lg:hidden bg-clean-white/40 border-b border-deep-navy/10 backdrop-blur-md">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-label="Toggle navigation menu"
@@ -1289,6 +1328,27 @@ export default function App() {
               <Menu size={24} />
               <span className="text-xs font-black uppercase tracking-wider">Jesse Math Menu</span>
             </button>
+            {deferredPrompt && (
+              <button
+                onClick={() => {
+                  deferredPrompt.prompt();
+                  deferredPrompt.userChoice.then((choiceResult: any) => {
+                    if (choiceResult.outcome === 'accepted') {
+                      console.log('User accepted the install prompt');
+                    } else {
+                      console.log('User dismissed the install prompt');
+                    }
+                    setDeferredPrompt(null);
+                  });
+                }}
+                className="p-2 sm:px-4 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 rounded-2xl text-white shadow-md border-2 border-emerald-900 transition-all flex items-center gap-2 active:scale-95 min-h-[44px] animate-pulse"
+              >
+                <div className="w-5 h-5 rounded-full overflow-hidden border border-white/40 shrink-0 bg-white p-0.5">
+                  <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover rounded-full" />
+                </div>
+                <span className="text-xs font-black uppercase tracking-wider hidden sm:block">Install App</span>
+              </button>
+            )}
           </header>
 
           <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-8 scrollbar-thin-custom">

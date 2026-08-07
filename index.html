@@ -8,10 +8,24 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/icon.png" />
+    <link rel="manifest" href="/manifest.json" />
     <link rel="canonical" href="https://jesse-math-rockstar-app.vercel.app/" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <!-- Primary Meta Tags -->
     <title>Jesse Math Rockstar | The Ultimate Math Arena & Educational Gaming Platform</title>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            })
+            .catch((err) => {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+      }
+    </script>
     <meta name="description" content="Jesse Math Rockstar is the premier gamified EdTech platform designed by 11-year-old software founder Jesse Otobo. Features real-time multiplayer math duels, adaptive learning, and a global competitive arena for students.">
     <meta name="keywords" content="Interactive Math Games, Educational Application, EdTech Platform, Gamified Learning, Multiplayer Math Game, Elementary Math Games, Middle School Math, Math Speed Drills, Mental Math Calculation, Classroom Math Tools, Jesse Otobo Developer, Jesse Math Rockstar, Math Arena, Real-time Math Duels, Adaptive Learning App, Global Math Leaderboard, Rock Shop Avatar Customization, Free Math For Schools, Addition Practice Game, Multiplication Mastery, Fraction Practice For Kids, Geometry Learning App, Pre-Algebra For Students, COPPA Compliant Math Game, School Safe Educational App, Math Anxiety Elimination, Rockstar Themed Learning, Jesse Math Rockstar Anniversary, Grand Master Math Certificate, 11 Year Old Tech Founder">
     <meta name="author" content="Jesse Otobo">
