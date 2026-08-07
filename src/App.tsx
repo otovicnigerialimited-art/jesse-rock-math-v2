@@ -1122,6 +1122,12 @@ export default function App() {
     );
   }
 
+  const LogoIcon = ({ size }: { size?: number }) => (
+    <div style={{ width: size, height: size }} className="rounded-full overflow-hidden border border-deep-navy/20">
+      <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+    </div>
+  );
+
   const navItems = authState.role === 'class_student'
     ? [
         { id: 'home', label: 'Classroom Playground', icon: Home },
@@ -1137,7 +1143,7 @@ export default function App() {
         { id: 'hub', label: 'Learning Hub', icon: BookOpen },
         { id: 'quiz', label: 'Play Arena', icon: Trophy },
         { id: 'learn', label: 'Learn Arena', icon: BookOpen },
-        { id: 'arena', label: 'Multiplayer Arena', icon: Globe },
+        { id: 'arena', label: 'Multiplayer Arena', icon: LogoIcon },
         { id: 'badges', label: 'Badges & Quests', icon: Star },
         { id: 'rules', label: 'How It Works & Rules', icon: HelpCircle },
         { id: 'terms', label: 'Terms & Policies', icon: FileText },

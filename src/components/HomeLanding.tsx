@@ -467,7 +467,10 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
               rel="noopener noreferrer"
               className="hover:text-blue-800 underline transition-colors cursor-pointer flex items-center gap-1"
             >
-              <Globe size={11} /> Official Project Site
+              <div className="w-3 h-3 rounded-full overflow-hidden border border-white/20">
+                <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+              </div> 
+              Official Project Site
             </a>
             <a 
               href="https://github.com/otovicnigerialimited-art" 

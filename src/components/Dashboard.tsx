@@ -249,8 +249,8 @@ function StreakCalendar({ streakDays }: { streakDays: string[] }) {
       </div>
       
       <div className="grid grid-cols-7 gap-1.5">
-        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
-          <div key={d} className="text-[9px] font-black text-center text-slate-400 uppercase">{d}</div>
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+          <div key={`${d}-${i}`} className="text-[9px] font-black text-center text-slate-400 uppercase">{d}</div>
         ))}
         {blanks.map(b => <div key={`b-${b}`} className="aspect-square" />)}
         {days.map(d => (

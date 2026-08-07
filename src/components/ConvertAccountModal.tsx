@@ -151,13 +151,16 @@ export default function ConvertAccountModal({
         initial={{ scale: 0.9, opacity: 0, y: 30 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.9, opacity: 0, y: 30 }}
-        className="relative w-full max-w-md bg-[#FFFDE7] border border-amber-900/30 border-4 rounded-3xl p-8 shadow-[0_0_50px_rgba(251,191,36,0.3)] space-y-6 z-10"
+        className="relative w-full max-w-md bg-white border border-slate-200 rounded-[2.5rem] p-10 shadow-2xl space-y-8 z-10 overflow-hidden"
       >
+        {/* Decorative background element */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-50 rounded-full -mr-16 -mt-16 blur-3xl opacity-50 pointer-events-none" />
+        
         {/* Close Button */}
         {!loading && (
           <button
             onClick={onClose}
-            className="absolute top-5 right-5 p-2 bg-amber-900/5 hover:bg-amber-900/10 rounded-xl text-[#3A2A18] hover:text-[#2A1D0F] transition-all cursor-pointer"
+            className="absolute top-6 right-6 p-2 bg-slate-50 hover:bg-slate-100 rounded-xl text-slate-400 hover:text-slate-600 transition-all cursor-pointer z-20"
             title="Close"
           >
             <X size={18} />
@@ -165,117 +168,118 @@ export default function ConvertAccountModal({
         )}
 
         {/* Header */}
-        <div className="text-center space-y-2">
-          <div className="w-14 h-14 bg-gradient-to-r from-amber-400 to-amber-500 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-amber-500/30">
-            <Sparkles size={26} className="text-white animate-pulse" />
+        <div className="text-center space-y-3 relative z-10">
+          <div className="w-16 h-16 bg-cyan-50 border border-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
+            <Sparkles size={28} className="text-cyan-600" />
           </div>
-          <h2 className="text-2xl font-display font-black text-[#2A1D0F] uppercase tracking-tight">
-            Claim Your Account 👑
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Claim Your Account
           </h2>
-          <p className="text-[#3A2A18] text-xs font-semibold leading-relaxed px-4">
-            Claim your account so you don't lose your progress! Save your guest stats permanently, secure your official rank, and play safely from any device.
+          <p className="text-slate-500 text-sm font-medium leading-relaxed px-2">
+            Secure your official Rockstar identity and save your progress permanently to the global cloud.
           </p>
         </div>
 
         {/* Current Guest Stats Preview */}
-        <div className="p-4 bg-amber-900/5 rounded-2xl border border-amber-900/20 border-4 grid grid-cols-3 gap-2 text-center">
-          <div>
-            <span className="text-[10px] text-amber-900 uppercase font-bold block">Current Streak</span>
-            <span className="text-lg font-mono font-black text-orange-500 flex items-center justify-center gap-1">
-              <Flame size={14} className="fill-orange-500 animate-pulse inline" />
+        <div className="p-5 bg-slate-50 rounded-2xl border border-slate-100 grid grid-cols-3 gap-4 text-center relative z-10">
+          <div className="space-y-1">
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest block">Streak</span>
+            <span className="text-xl font-bold text-slate-900 flex items-center justify-center gap-1.5">
+              <Flame size={16} className="text-orange-500 fill-orange-500" />
               {guestStats.streak}
             </span>
           </div>
-          <div>
-            <span className="text-[10px] text-amber-900 uppercase font-bold block">XP Accumulated</span>
-            <span className="text-lg font-mono font-black text-violet-600">{guestStats.xp}</span>
+          <div className="space-y-1 border-x border-slate-200">
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest block">XP</span>
+            <span className="text-xl font-bold text-slate-900">{guestStats.xp}</span>
           </div>
-          <div>
-            <span className="text-[10px] text-amber-900 uppercase font-bold block">Level reached</span>
-            <span className="text-lg font-mono font-black text-emerald-600">{guestStats.level}</span>
+          <div className="space-y-1">
+            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest block">Level</span>
+            <span className="text-xl font-bold text-slate-900">{guestStats.level}</span>
           </div>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleConvert} className="space-y-4">
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-black text-[#2A1D0F] uppercase tracking-wider block">Choose Username</label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-amber-900/50">
-                <User size={16} />
-              </span>
+        <form onSubmit={handleConvert} className="space-y-5 relative z-10">
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Identity Username</label>
+            <div className="relative group">
+              <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
               <input
                 type="text"
-                placeholder="e.g. RockstarGamer"
+                placeholder="MathChampion"
                 value={usernameInput}
                 onChange={(e) => setUsernameInput(e.target.value)}
                 disabled={loading || success !== null}
-                className="w-full pl-11 pr-4 py-3 bg-white border border-amber-900/20 border-4 rounded-2xl text-sm font-bold text-[#2A1D0F] placeholder:text-amber-900/40 focus:outline-none focus:border-amber-500 transition-all"
+                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all"
               />
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-[10px] font-black text-[#2A1D0F] uppercase tracking-wider block">Set Password</label>
-            <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-amber-900/50">
-                <Lock size={16} />
-              </span>
+          <div className="space-y-2">
+            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Secure Passkey</label>
+            <div className="relative group">
+              <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
               <input
                 type="password"
-                placeholder="Min 4 characters"
+                placeholder="••••••••"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
                 disabled={loading || success !== null}
-                className="w-full pl-11 pr-4 py-3 bg-white border border-amber-900/20 border-4 rounded-2xl text-sm font-bold text-[#2A1D0F] placeholder:text-amber-900/40 focus:outline-none focus:border-amber-500 transition-all"
+                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-slate-900 placeholder:text-slate-400 outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all"
               />
             </div>
           </div>
 
           {/* Feedback Messages */}
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-3 bg-rose-500/15 border border-rose-500/20 text-rose-600 text-xs font-bold rounded-2xl text-center"
-            >
-              ⚠️ {error}
-            </motion.div>
-          )}
+          <AnimatePresence mode="wait">
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="p-4 bg-rose-50 border border-rose-100 text-rose-600 text-xs font-bold rounded-2xl text-center"
+              >
+                {error}
+              </motion.div>
+            )}
 
-          {success && (
-            <motion.div
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-3 bg-emerald-500/15 border border-emerald-500/20 text-emerald-600 text-xs font-bold rounded-2xl text-center"
-            >
-              🎉 {success}
-            </motion.div>
-          )}
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="p-4 bg-emerald-50 border border-emerald-100 text-emerald-600 text-xs font-bold rounded-2xl text-center"
+              >
+                {success}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Submit Button */}
           <button
             type="submit"
             disabled={loading || success !== null}
-            className="w-full py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 disabled:from-slate-200 disabled:to-slate-300 disabled:text-slate-400 text-[#2A1D0F] rounded-2xl font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-amber-500/25 cursor-pointer disabled:cursor-not-allowed border-b-4 border-amber-600 active:border-b-0 active:translate-y-1 disabled:border-b-0 disabled:translate-y-0"
+            className="w-full py-4 bg-slate-900 hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-400 text-white rounded-2xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 transition-all shadow-xl shadow-slate-900/10 cursor-pointer disabled:cursor-not-allowed active:scale-[0.98]"
           >
             {loading ? (
               <>
-                <Loader2 size={16} className="animate-spin text-[#2A1D0F]" />
-                Reserving username...
+                <Loader2 size={18} className="animate-spin" />
+                Processing...
               </>
             ) : success ? (
-              "Account Created! 🚀"
+              "Identity Secured"
             ) : (
               <>
-                CLAIM PERMANENT ACCOUNT <ArrowRight size={16} />
+                Confirm Identity <ArrowRight size={18} />
               </>
             )}
           </button>
         </form>
 
-        <p className="text-[10px] text-[#3A2A18] text-center leading-normal font-semibold opacity-75">
-          🛡️ Safe, direct password registration. No third-party search indexes or trackers. Developed By: Jesse Otobo (11-year-old developer).
+        <p className="text-[10px] text-slate-400 text-center leading-relaxed font-medium relative z-10">
+          Your progress will be merged with your new permanent account.<br/>
+          Secure cloud synchronization enabled.
         </p>
       </motion.div>
     </div>

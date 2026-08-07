@@ -1503,55 +1503,57 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-sm bg-clean-white backdrop-blur-xl border border-deep-navy border-4 p-6 md:p-8 rounded-[2.5rem] shadow-2xl relative z-10 space-y-6 text-center"
+          className="w-full max-w-sm bg-white border border-slate-200 p-8 md:p-10 rounded-[2.5rem] shadow-2xl relative z-10 space-y-8 text-center"
         >
           {/* Logo and Brand details */}
-          <div className="space-y-2.5">
+          <div className="space-y-4">
             <motion.div 
-              whileHover={{ scale: 1.1, rotate: 12 }}
-              className="w-16 h-16 rounded-[1.25rem] overflow-hidden shadow-[0_0_20px_rgba(236,72,153,0.3)] border border-deep-navy border-4 mx-auto cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm border border-slate-200 mx-auto"
             >
               <img src="/logo.jpg" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             </motion.div>
             
-            <h1 className="text-2xl font-display font-black tracking-tight text-deep-navy leading-none mt-2">
-              Welcome to Jesse Rock Math<br />
-              <span className="bg-gradient-to-r from-yellow-400 via-pink-500 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(244,63,94,0.4)] text-xl font-black tracking-widest uppercase">
-                MATH ARENA 👑
-              </span>
-            </h1>
+            <div className="space-y-1">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 leading-none">
+                Math Arena
+              </h1>
+              <p className="text-sm text-slate-500 font-medium tracking-wide uppercase">
+                Enterprise Education Portal
+              </p>
+            </div>
             
-            <div className="py-1 px-2.5 bg-violet-600/10 border border-violet-500/20 text-violet-350 rounded-lg text-[10px] font-black uppercase tracking-wider inline-flex items-center gap-1.5 justify-center mx-auto">
-              <Lock size={10} className="text-violet-400 animate-pulse" /> Secure School Portal
+            <div className="py-1 px-3 bg-cyan-50 border border-cyan-100 text-cyan-700 rounded-full text-[10px] font-bold uppercase tracking-widest inline-flex items-center gap-1.5 justify-center mx-auto">
+              <ShieldCheck size={12} /> Secure Access Verified
             </div>
           </div>
 
           {/* 3-Way Portal Selector: Individual, Teacher, Developer Login */}
-          <div className="flex bg-white backdrop-blur-md/60 p-1 rounded-2xl border border-deep-navy border-4 gap-1 shadow-inner">
+          <div className="flex bg-slate-100/80 p-1 rounded-2xl border border-slate-200 gap-1 shadow-inner">
             <button
               type="button"
               onClick={() => { setLoginTab('individual'); setError(null); setSuccess(null); }}
-              className={`flex-1 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+              className={`flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
                 loginTab === 'individual'
-                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-deep-navy shadow-[0_0_10px_rgba(236,72,153,0.5)]'
-                  : 'text-deep-navy hover:text-deep-navy hover:bg-white/5'
+                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
-              <User size={12} />
-              <span>Rockstar Student</span>
+              <User size={14} className={loginTab === 'individual' ? 'text-cyan-600' : ''} />
+              <span>Rockstar</span>
             </button>
             
             <button
               type="button"
               onClick={() => { setLoginTab('teacher'); setError(null); setSuccess(null); }}
-              className={`flex-1 py-2 text-[10px] font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+              className={`flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
                 loginTab === 'teacher'
-                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-deep-navy shadow-[0_0_10px_rgba(236,72,153,0.5)]'
-                  : 'text-deep-navy hover:text-deep-navy hover:bg-white/5'
+                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+                  : 'text-slate-500 hover:text-slate-700'
               }`}
             >
-              <GraduationCap size={12} />
-              <span>Math Teacher</span>
+              <GraduationCap size={14} className={loginTab === 'teacher' ? 'text-cyan-600' : ''} />
+              <span>Teacher</span>
             </button>
           </div>
 
@@ -1582,78 +1584,78 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
           {loginTab === 'individual' && (
             <div className="space-y-4 text-left">
               {/* Sub-tab toggle for Rockstar, Student, and Class Code inside Individual Login tab */}
-              <div className="flex bg-white backdrop-blur-md/70 p-1 rounded-xl border border-deep-navy border-4 text-[10px] sm:text-xs font-mono uppercase font-black mb-4 gap-1">
+              <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-200 text-[10px] font-bold uppercase tracking-widest mb-6 gap-1">
                 <button
                   type="button"
                   onClick={() => { setIndividualSubMode('rockstar'); setError(null); }}
                   className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'rockstar' ? 'bg-deep-navy text-slate-900 shadow-md' : 'text-deep-navy hover:bg-slate-100'
+                    individualSubMode === 'rockstar' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
-                  ⭐ Rockstar
+                  Indiv.
                 </button>
                 <button
                   type="button"
                   onClick={() => { setIndividualSubMode('student'); setError(null); }}
                   className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'student' ? 'bg-deep-navy text-slate-900 shadow-md' : 'text-deep-navy hover:bg-slate-100'
+                    individualSubMode === 'student' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
-                  🍏 PIN Login
+                  Student
                 </button>
                 <button
                   type="button"
                   onClick={() => { setIndividualSubMode('class_code'); setError(null); }}
                   className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'class_code' ? 'bg-deep-navy text-slate-900 shadow-md' : 'text-deep-navy hover:bg-slate-100'
+                    individualSubMode === 'class_code' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
-                  🏫 Class Code
+                  Class
                 </button>
               </div>
 
               {individualSubMode === 'rockstar' && (
                 /* Rockstar Form */
                 <form onSubmit={handleHomeLoginSubmit} className="space-y-4">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Your Rockstar Username
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Username
                     </label>
-                    <div className="relative">
-                      <User size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
+                    <div className="relative group">
+                      <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                       <input
                         type="text"
-                        placeholder="GeniusMathMage"
+                        placeholder="MasterMind"
                         value={username}
                         onChange={(e) => setUsername(e.target.value.replace(/\s/g, ''))}
-                        className="w-full pl-9 pr-3 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
+                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
                         autoComplete="off"
                         disabled={loading}
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Secure Login PIN
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Secret PIN
                     </label>
-                    <div className="relative">
-                      <Lock size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
+                    <div className="relative group">
+                      <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                       <input
                         type={showPassword ? "text" : "password"}
-                        placeholder="Password or secret PIN"
+                        placeholder="••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full pl-9 pr-9 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
+                        className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
                         autoComplete="off"
                         disabled={loading}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-3.5 text-slate-500 hover:text-slate-350 transition-colors cursor-pointer"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                       >
-                        {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
                     </div>
                   </div>
@@ -1661,9 +1663,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-deep-navy font-black uppercase tracking-wider transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(236,72,153,0.3)] rounded-xl flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-cyan-600/20"
                   >
-                    {loading ? "Verifying..." : "ENTER INDIVIDUAL PLAY ✨"}
+                    {loading ? "Initializing..." : "Authorize Entry"}
                   </button>
                 </form>
               )}
@@ -1671,45 +1673,45 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               {individualSubMode === 'student' && (
                 /* Student Form */
                 <form onSubmit={handleStudentLoginSubmit} className="space-y-4">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Student Username
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Student ID
                     </label>
-                    <div className="relative">
-                      <User size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
+                    <div className="relative group">
+                      <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                       <input
                         type="text"
-                        placeholder="e.g. mason_star"
+                        placeholder="mason_star"
                         value={studentUsername}
                         onChange={(e) => setStudentUsername(e.target.value.replace(/\s/g, ''))}
-                        className="w-full pl-9 pr-3 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
+                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
                         autoComplete="off"
                         disabled={loading}
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Student Password PIN
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Student Passkey
                     </label>
-                    <div className="relative">
-                      <Lock size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
+                    <div className="relative group">
+                      <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                       <input
                         type={showStudentPassword ? "text" : "password"}
-                        placeholder="e.g. play123"
+                        placeholder="••••"
                         value={studentPassword}
                         onChange={(e) => setStudentPassword(e.target.value)}
-                        className="w-full pl-9 pr-9 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
+                        className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
                         autoComplete="off"
                         disabled={loading}
                       />
                       <button
                         type="button"
                         onClick={() => setShowStudentPassword(!showStudentPassword)}
-                        className="absolute right-3 top-3.5 text-slate-500 hover:text-slate-350 transition-colors cursor-pointer"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                       >
-                        {showStudentPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                        {showStudentPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
                     </div>
                   </div>
@@ -1717,9 +1719,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-deep-navy font-black uppercase tracking-wider transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(236,72,153,0.3)] rounded-xl flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-emerald-600/20"
                   >
-                    {loading ? "Authenticating..." : "ENTER SCHOOL ARENA 🍏"}
+                    {loading ? "Authenticating..." : "Enter School Arena"}
                   </button>
                 </form>
               )}
@@ -1750,58 +1752,58 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                     </div>
                   ) : (
                     <form onSubmit={handleClassLoginSubmit} className="space-y-4">
-                      <div className="space-y-1 text-left">
-                        <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                          Your Classroom Handle
+                      <div className="space-y-1.5 text-left">
+                        <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                          Classroom Handle
                         </label>
-                        <div className="relative">
-                          <User size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
+                        <div className="relative group">
+                          <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                           <input
                             type="text"
                             placeholder="e.g. MasonRock"
                             value={classStudentName}
                             onChange={(e) => setClassStudentName(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2.5 bg-white border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
+                            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
                             autoComplete="off"
                             disabled={loading}
                           />
                         </div>
-                        <p className="text-[9px] text-slate-500 font-medium">Use the username registered by your teacher.</p>
                       </div>
 
-                      <div className="space-y-1 text-left">
-                        <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                          Teacher's Class Code
-                        </label>
-                        <div className="relative">
-                          <Globe size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
-                          <input
-                            type="text"
-                            placeholder="Enter 8-digit code"
+                    <div className="space-y-1.5 text-left">
+                      <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                        Classroom Access Code
+                      </label>
+                      <div className="relative group">
+                        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full overflow-hidden border border-slate-200">
+                          <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+                        </div>
+                        <input
+                          type="text"
+                          placeholder="JESSE-123"
                             value={classCodeInput}
                             onChange={(e) => setClassCodeInput(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2.5 bg-white border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-mono font-black tracking-wider uppercase"
+                            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-mono font-bold tracking-wider uppercase"
                             autoComplete="off"
                             disabled={loading}
                           />
                         </div>
-                        <p className="text-[9px] text-slate-500 font-medium">The secure code shared by your teacher.</p>
                       </div>
 
                       <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-deep-navy font-black uppercase tracking-wider transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(236,72,153,0.3)] rounded-xl flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 text-xs"
+                        className="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-cyan-600/20"
                       >
                         {loading ? (
                           <>
-                            <RefreshCw size={13} className="animate-spin" />
-                            Verifying Class...
+                            <RefreshCw size={14} className="animate-spin" />
+                            Verifying...
                           </>
                         ) : (
                           <>
-                            <LogIn size={13} />
-                            JOIN CLASSROOM 🚀
+                            <LogIn size={14} />
+                            Enter Classroom
                           </>
                         )}
                       </button>
@@ -1818,45 +1820,45 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               {!isTeacherSignUp ? (
                 /* Teacher SignIn Form */
                 <form onSubmit={handleTeacherLoginSubmit} className="space-y-4 text-left">
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Teacher Registered Email
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Registered Email
                     </label>
-                    <div className="relative">
-                      <Mail size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
+                    <div className="relative group">
+                      <Mail size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                       <input
                         type="email"
-                        placeholder="teacher@school.edu"
+                        placeholder="educator@school.edu"
                         value={teacherEmail}
                         onChange={(e) => setTeacherEmail(e.target.value)}
-                        className="w-full pl-9 pr-3 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
+                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
                         autoComplete="off"
                         disabled={loading}
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
-                      Teacher Password
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Teacher Passkey
                     </label>
-                    <div className="relative">
-                      <Lock size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
+                    <div className="relative group">
+                      <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                       <input
                         type={showTeacherPassword ? "text" : "password"}
-                        placeholder="Your secret passcode"
+                        placeholder="••••••••"
                         value={teacherPassword}
                         onChange={(e) => setTeacherPassword(e.target.value)}
-                        className="w-full pl-9 pr-9 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
+                        className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
                         autoComplete="off"
                         disabled={loading}
                       />
                       <button
                         type="button"
                         onClick={() => setShowTeacherPassword(!showTeacherPassword)}
-                        className="absolute right-3 top-3.5 text-slate-500 hover:text-slate-350 transition-colors cursor-pointer"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                       >
-                        {showTeacherPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                        {showTeacherPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
                     </div>
                   </div>
@@ -1864,19 +1866,19 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-deep-navy font-black uppercase tracking-wider transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(236,72,153,0.3)] rounded-xl flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-slate-900/10"
                   >
-                    <LogIn size={13} />
-                    <span>{loading ? "Checking Database..." : "LOGIN TEACHER CABINET"}</span>
+                    <LogIn size={14} />
+                    <span>{loading ? "Authenticating..." : "Teacher Cabinet Login"}</span>
                   </button>
 
                   <div className="text-center pt-2">
                     <button
                       type="button"
                       onClick={() => { setIsTeacherSignUp(true); setError(null); setSuccess(null); }}
-                      className="text-xs text-indigo-400 hover:text-indigo-300 font-bold underline cursor-pointer"
+                      className="text-[10px] text-cyan-600 hover:text-cyan-700 font-bold uppercase tracking-widest cursor-pointer"
                     >
-                      Don't have an account? Sign up here as a Teacher
+                      New Educator? Create Workspace
                     </button>
                   </div>
                 </form>
@@ -2028,16 +2030,19 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
           {/* Universal Guest Play Button */}
           {onGuestPlay && loginTab !== 'developer' && (
-            <div className="pt-2 border-t border-deep-navy border-4">
+            <div className="pt-4 border-t border-slate-200">
               <button
                 type="button"
                 onClick={onGuestPlay}
                 disabled={loading}
-                className="w-full py-3 bg-white text-deep-navy border border-gray-300 hover:bg-slate-100 font-black uppercase tracking-wider transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.15)] rounded-xl flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 text-xs"
+                className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 text-xs"
               >
-                <Zap size={14} className="text-amber-500" />
-                QUICK PLAY AS GUEST ⚡
+                <Sparkles size={14} className="text-cyan-400" />
+                Instant Guest Access
               </button>
+              <p className="mt-2 text-[10px] text-slate-500 font-medium text-center italic">
+                Enter immediately. Progress saved temporarily.
+              </p>
             </div>
           )}
 
