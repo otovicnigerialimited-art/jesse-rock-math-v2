@@ -1195,7 +1195,13 @@ export default function App() {
                 <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>
               </h1>
             </div>
-            <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-2 text-deep-navy hover:text-action-orange"><X size={20}/></button>
+            <button 
+              onClick={() => setIsSidebarOpen(false)} 
+              className="lg:hidden p-2 text-deep-navy hover:text-action-orange transition-colors"
+              aria-label="Close menu"
+            >
+              <X size={24}/>
+            </button>
           </div>
           
           <nav className="flex-1 overflow-y-auto space-y-1.5 p-4 scrollbar-thin-custom">
@@ -1206,14 +1212,15 @@ export default function App() {
                   setIsSidebarOpen(false);
                   setActiveTab(item.id as any);
                 }}
+                aria-label={`Navigate to ${item.label}`}
                 className={cn(
-                  "w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-xs font-bold transition-all border border-transparent",
+                  "w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-xs font-bold transition-all border border-transparent min-h-[44px]",
                   activeTab === item.id 
                     ? "bg-deep-navy text-clean-white border-deep-navy shadow-md scale-[1.02]" 
                     : "text-deep-navy hover:bg-sky-blue/40 hover:border-deep-navy/20"
                 )}
               >
-                <item.icon size={18} />
+                <item.icon size={20} />
                 {item.label}
               </button>
             ))}
@@ -1270,9 +1277,10 @@ export default function App() {
           <header className="p-3 sm:p-4 flex items-center gap-4 lg:hidden bg-clean-white/40 border-b border-deep-navy/10 backdrop-blur-md">
             <button 
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-3 bg-gradient-to-r from-purple-500 via-slate-500 to-slate-600 hover:from-purple-600 hover:to-slate-700 rounded-2xl text-white shadow-md border-2 border-white/50 transition-all flex items-center gap-2 active:scale-95"
+              aria-label="Toggle navigation menu"
+              className="p-4 bg-gradient-to-r from-purple-500 via-slate-500 to-slate-600 hover:from-purple-600 hover:to-slate-700 rounded-2xl text-white shadow-md border-2 border-white/50 transition-all flex items-center gap-2 active:scale-95 min-h-[44px] min-w-[44px]"
             >
-              <Menu size={20} />
+              <Menu size={24} />
               <span className="text-xs font-black uppercase tracking-wider">Jesse Math Menu</span>
             </button>
           </header>
@@ -1356,7 +1364,7 @@ export default function App() {
                 </h3>
                 
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  Outstanding work! You have reached the elite milestone of solving over **200 math problems** in the Jesse Rock Math Arena! 
+                  Outstanding work! You have reached the elite milestone of solving over **200 math problems** in the Jesse Math Rockstar Arena! 
                   You have unlocked the prestigious **Legendary Tier Badge** permanently shown on your profile.
                 </p>
 
