@@ -3,7 +3,7 @@ const CACHE_NAME = 'math-rockstar-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/logo.jpg',
+  '/logo.png',
   '/icon.png'
 ];
 

@@ -1280,20 +1280,18 @@ export default function App() {
                     setDeferredPrompt(null);
                   });
                 }}
-                className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider text-white bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 transition-all border border-emerald-900 shadow-md mt-4 cursor-pointer animate-pulse"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 py-3 mt-4 text-[13px]"
+                style={{ fontFamily: "'Arial Black', sans-serif" }}
               >
-                <div className="w-5 h-5 rounded-full overflow-hidden border border-white/40 shrink-0 bg-white p-0.5">
-                  <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
-                </div>
-                Install Math Rockstar App
+                🎸 Download App
               </button>
             ) : (
               <button
                 onClick={() => setShowInstallGuide(true)}
-                className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider text-blue-700 bg-blue-50 hover:bg-blue-100 hover:border-blue-300 transition-all border border-blue-200 mt-4 cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 py-3 mt-4 text-[13px]"
+                style={{ fontFamily: "'Arial Black', sans-serif" }}
               >
-                <Download size={18} className="text-blue-600" />
-                How to Install App
+                🎸 Download App
               </button>
             )}
             
@@ -1369,20 +1367,20 @@ export default function App() {
                     setDeferredPrompt(null);
                   });
                 }}
-                className="p-2 sm:px-4 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 rounded-2xl text-white shadow-md border-2 border-emerald-900 transition-all flex items-center gap-2 active:scale-95 min-h-[44px] animate-pulse"
+                className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 px-4 py-2 min-h-[44px]"
+                style={{ fontFamily: "'Arial Black', sans-serif", fontSize: "14px" }}
               >
-                <div className="w-5 h-5 rounded-full overflow-hidden border border-white/40 shrink-0 bg-white p-0.5">
-                  <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
-                </div>
-                <span className="text-xs font-black uppercase tracking-wider hidden sm:block">Install App</span>
+                <span className="hidden sm:inline">🎸 Download App</span>
+                <span className="sm:hidden">🎸 App</span>
               </button>
             ) : (
               <button
                 onClick={() => setShowInstallGuide(true)}
-                className="p-2 sm:px-4 sm:py-3 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-2xl shadow-sm border border-blue-200 transition-all flex items-center gap-2 active:scale-95 min-h-[44px]"
+                className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 px-4 py-2 min-h-[44px]"
+                style={{ fontFamily: "'Arial Black', sans-serif", fontSize: "14px" }}
               >
-                <Download size={18} className="text-blue-600" />
-                <span className="text-xs font-black uppercase tracking-wider hidden sm:block">Install App</span>
+                <span className="hidden sm:inline">🎸 Download App</span>
+                <span className="sm:hidden">🎸 App</span>
               </button>
             )}
           </header>
