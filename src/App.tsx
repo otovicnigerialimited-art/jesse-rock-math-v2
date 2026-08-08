@@ -29,7 +29,9 @@ import {
   Heart,
   ShoppingBag,
   Gamepad2,
-  Flame
+  Flame,
+  Smartphone,
+  Download
 } from 'lucide-react';
 import { UserStats, Difficulty, Lesson } from './types';
 import { cn } from './lib/utils';
@@ -58,6 +60,7 @@ const RockShop = React.lazy(() => import('./components/RockShop'));
 const FunArcade = React.lazy(() => import('./components/FunArcade'));
 const ConvertAccountModal = React.lazy(() => import('./components/ConvertAccountModal'));
 const CertificateModal = React.lazy(() => import('./components/CertificateModal'));
+const InstallGuideModal = React.lazy(() => import('./components/InstallGuideModal'));
 
 import AvatarPreview from './components/AvatarPreview';
 import { updateSchoolStudentProgress } from './lib/schoolDb';
@@ -181,6 +184,7 @@ export default function App() {
   const [userDeviceId, setUserDeviceId] = useState<string | null>(null);
   const [practiceLesson, setPracticeLesson] = useState<Lesson | null>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>((window as any).deferredPrompt || null);
+  const [showInstallGuide, setShowInstallGuide] = useState(false);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: any) => {
@@ -1157,7 +1161,7 @@ export default function App() {
 
   const LogoIcon = ({ size }: { size?: number }) => (
     <div style={{ width: size, height: size }} className="rounded-full overflow-hidden border border-deep-navy/20">
-      <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+      <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
     </div>
   );
 
@@ -1227,9 +1231,9 @@ export default function App() {
         )}>
           <div className="flex items-center justify-between gap-3 p-4 border-b border-deep-navy/10">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0">
-                <img src="/logo.jpg" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-              </div>
+              <a href="https://jesse-math-rockstar-app.vercel.app/" className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0 block">
+                <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              </a>
               <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE ROCK<br />
                 <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>
               </h1>
@@ -1263,7 +1267,7 @@ export default function App() {
                 {item.label}
               </button>
             ))}
-            {deferredPrompt && (
+            {deferredPrompt ? (
               <button
                 onClick={() => {
                   deferredPrompt.prompt();
@@ -1279,9 +1283,17 @@ export default function App() {
                 className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider text-white bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 transition-all border border-emerald-900 shadow-md mt-4 cursor-pointer animate-pulse"
               >
                 <div className="w-5 h-5 rounded-full overflow-hidden border border-white/40 shrink-0 bg-white p-0.5">
-                  <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover rounded-full" />
+                  <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
                 </div>
                 Install Math Rockstar App
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowInstallGuide(true)}
+                className="w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider text-blue-700 bg-blue-50 hover:bg-blue-100 hover:border-blue-300 transition-all border border-blue-200 mt-4 cursor-pointer"
+              >
+                <Download size={18} className="text-blue-600" />
+                How to Install App
               </button>
             )}
             
@@ -1344,7 +1356,7 @@ export default function App() {
               <Menu size={24} />
               <span className="text-xs font-black uppercase tracking-wider">Jesse Math Menu</span>
             </button>
-            {deferredPrompt && (
+            {deferredPrompt ? (
               <button
                 onClick={() => {
                   deferredPrompt.prompt();
@@ -1360,8 +1372,16 @@ export default function App() {
                 className="p-2 sm:px-4 sm:py-3 bg-gradient-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 rounded-2xl text-white shadow-md border-2 border-emerald-900 transition-all flex items-center gap-2 active:scale-95 min-h-[44px] animate-pulse"
               >
                 <div className="w-5 h-5 rounded-full overflow-hidden border border-white/40 shrink-0 bg-white p-0.5">
-                  <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover rounded-full" />
+                  <img src="/logo.png" alt="Logo" className="w-full h-full object-cover rounded-full" />
                 </div>
+                <span className="text-xs font-black uppercase tracking-wider hidden sm:block">Install App</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowInstallGuide(true)}
+                className="p-2 sm:px-4 sm:py-3 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-2xl shadow-sm border border-blue-200 transition-all flex items-center gap-2 active:scale-95 min-h-[44px]"
+              >
+                <Download size={18} className="text-blue-600" />
                 <span className="text-xs font-black uppercase tracking-wider hidden sm:block">Install App</span>
               </button>
             )}
@@ -1370,15 +1390,16 @@ export default function App() {
           <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-8 scrollbar-thin-custom">
             <div className="max-w-6xl mx-auto min-h-full flex flex-col">
               {/* Dynamic Content */}
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.15, ease: "easeOut" }}
-                  className="min-h-full flex flex-col flex-1"
-                >
+              <React.Suspense fallback={<div className="h-full flex items-center justify-center text-slate-500"><Loader2 className="animate-spin w-8 h-8" /></div>}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="min-h-full flex flex-col flex-1"
+                  >
                   {activeTab === 'home' && (
                     authState.role === 'class_student' ? (
                       <ClassPlayground 
@@ -1413,6 +1434,7 @@ export default function App() {
                   {activeTab === 'creator' && <CreatorPanel />}
                 </motion.div>
               </AnimatePresence>
+              </React.Suspense>
             </div>
           </div>
         </main>
@@ -1422,7 +1444,11 @@ export default function App() {
       <AnimatePresence>
         {isSettingsOpen && <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} config={configSettings} setConfig={setConfigSettings} />}
         {showGuestFinishDialog && <GuestFinishDialog isOpen={showGuestFinishDialog} onClose={() => setShowGuestFinishDialog(false)} stats={stats} onConvert={() => { setShowGuestFinishDialog(false); setShowConvertModal(true); }} />}
-        {showConvertModal && <ConvertAccountModal isOpen={showConvertModal} onClose={() => setShowConvertModal(false)} guestStats={stats} userDeviceId={userDeviceId} onConvertSuccess={(uname, uid) => { fetchAndSyncProfile(uname, uid); setActiveTab('dashboard'); setShowConvertModal(false); }}/>}
+        {showConvertModal && (
+          <React.Suspense fallback={null}>
+            <ConvertAccountModal isOpen={showConvertModal} onClose={() => setShowConvertModal(false)} guestStats={stats} userDeviceId={userDeviceId} onConvertSuccess={(uname, uid) => { fetchAndSyncProfile(uname, uid); setActiveTab('dashboard'); setShowConvertModal(false); }}/>
+          </React.Suspense>
+        )}
         {showAnniversaryDialog && <AnniversaryDialog isOpen={showAnniversaryDialog} onClose={() => setShowAnniversaryDialog(false)} />}
         {showGiftDialog && <GiftDialog isOpen={!!showGiftDialog} onClose={() => setShowGiftDialog(null)} amount={showGiftDialog.amount} />}
         
@@ -1483,13 +1509,24 @@ export default function App() {
 
         {/* Grand Master Certificate Modal */}
         {showGrandMasterCert && (
-          <CertificateModal 
-            isOpen={showGrandMasterCert} 
-            onClose={() => setShowGrandMasterCert(false)} 
-            username={authState.username || 'Guest Scholar'} 
-            totalSolved={stats.totalSolved}
-            correctAnswers={stats.correctAnswers}
-          />
+          <React.Suspense fallback={null}>
+            <CertificateModal 
+              isOpen={showGrandMasterCert} 
+              onClose={() => setShowGrandMasterCert(false)} 
+              username={authState.username || 'Guest Scholar'} 
+              totalSolved={stats.totalSolved}
+              correctAnswers={stats.correctAnswers}
+            />
+          </React.Suspense>
+        )}
+
+        {showInstallGuide && (
+          <React.Suspense fallback={null}>
+            <InstallGuideModal 
+              isOpen={showInstallGuide} 
+              onClose={() => setShowInstallGuide(false)} 
+            />
+          </React.Suspense>
         )}
       </AnimatePresence>
       

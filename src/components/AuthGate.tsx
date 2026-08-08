@@ -1511,7 +1511,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               whileHover={{ scale: 1.05 }}
               className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm border border-slate-200 mx-auto"
             >
-              <img src="/logo.jpg" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <a href="https://jesse-math-rockstar-app.vercel.app/" className="block w-full h-full">
+                <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              </a>
             </motion.div>
             
             <div className="space-y-1">
@@ -1776,7 +1778,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                       </label>
                       <div className="relative group">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full overflow-hidden border border-slate-200">
-                          <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+                          <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
                         </div>
                         <input
                           type="text"

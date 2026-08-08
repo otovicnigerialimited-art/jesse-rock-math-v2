@@ -433,9 +433,9 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
       <footer className="border-t border-deep-navy/10 pt-6 pb-2 mt-8 text-center space-y-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5 text-left">
-            <div className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0">
-              <img src="/logo.jpg" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-            </div>
+            <a href="https://jesse-math-rockstar-app.vercel.app/" className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0 block">
+              <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            </a>
             <div>
               <p className="text-xs font-black text-deep-navy tracking-tight leading-none uppercase">Young Genius Studios</p>
               <p className="text-[10px] text-slate-500 font-bold mt-0.5 font-mono">EDUCATIONAL ARCHITECTURE FRAMEWORK</p>
@@ -468,7 +468,7 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
               className="hover:text-blue-800 underline transition-colors cursor-pointer flex items-center gap-1"
             >
               <div className="w-3 h-3 rounded-full overflow-hidden border border-white/20">
-                <img src="/logo.jpg" alt="Logo" className="w-full h-full object-cover" />
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
               </div> 
               Official Project Site
             </a>
