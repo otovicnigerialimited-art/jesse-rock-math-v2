@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import ReviewSection from './ReviewSection';
 import { 
   Trophy, 
   BookOpen, 
@@ -421,6 +422,9 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
       </div>
 
             </div>
+            
+      {/* Review Section */}
+      <ReviewSection />
 
       {/* Itch.io Embed */}
       <div className="flex justify-center mt-4 mb-8 w-full">
