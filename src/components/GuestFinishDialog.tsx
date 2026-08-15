@@ -6,7 +6,7 @@ export default function GuestFinishDialog({ isOpen, onClose, stats, onConvert }:
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-white backdrop-blur-md/80 backdrop-blur-md" onClick={onClose} />
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm " onClick={onClose} />
       <div className="relative bg-white border border-deep-navy border-4 p-6 rounded-2xl w-full max-w-sm text-center shadow-xl">
         <Trophy className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
         <h2 className="text-2xl font-black text-deep-navy mb-2">Great Session!</h2>

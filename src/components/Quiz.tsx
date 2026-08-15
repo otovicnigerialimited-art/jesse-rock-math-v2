@@ -434,7 +434,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowMilestone(false)}
-              className="absolute inset-0 bg-white backdrop-blur-sm/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm "
             />
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 25 }}

@@ -13,7 +13,7 @@ export default function SettingsModal({ isOpen, onClose, config, setConfig }: Se
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-white backdrop-blur-md/80 backdrop-blur-md" onClick={onClose} />
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm " onClick={onClose} />
       <div className="relative bg-white border border-deep-navy border-4 p-6 rounded-2xl w-full max-w-sm shadow-xl">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-black text-deep-navy">Settings</h2>
