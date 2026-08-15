@@ -1,3 +1,4 @@
+import { safeStorage } from "../lib/storage";
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Shield, User, Lock, ArrowRight, Sparkles, Loader2, Flame } from 'lucide-react';
@@ -113,14 +114,14 @@ export default function ConvertAccountModal({
       setSuccess(`Success! Your account "${cleanUsername}" is registered and progress is saved.`);
       
       // Clean up guest local storage stats
-      localStorage.removeItem('guest_rockstar_stats');
+      safeStorage.removeItem('guest_rockstar_stats');
 
       // Update login cookies/keys
-      localStorage.setItem('jesse_rock_role', 'individual');
-      localStorage.setItem('jesse_rock_device_id', uid);
-      localStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, uid);
-      localStorage.setItem('jesse_rock_my_username', cleanUsername);
-      localStorage.setItem('jesse_rock_user_id', uid);
+      safeStorage.setItem('jesse_rock_role', 'individual');
+      safeStorage.setItem('jesse_rock_device_id', uid);
+      safeStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, uid);
+      safeStorage.setItem('jesse_rock_my_username', cleanUsername);
+      safeStorage.setItem('jesse_rock_user_id', uid);
 
       setTimeout(() => {
         onConvertSuccess(cleanUsername, uid);

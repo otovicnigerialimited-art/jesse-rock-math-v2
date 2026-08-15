@@ -1,3 +1,4 @@
+import { safeStorage } from "./lib/storage";
 import React, { useState, useEffect, useTransition } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import SettingsModal from './components/SettingsModal';
@@ -41,9 +42,9 @@ import { db } from './lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, increment } from 'firebase/firestore';
 import { handleFirestoreError, OperationType } from './lib/firestoreUtils';
 
-const AuthGate = React.lazy(() => import('./components/AuthGate'));
+import AuthGate from './components/AuthGate';
+import HomeLanding from './components/HomeLanding';
 const ArenaMatches = React.lazy(() => import('./components/ArenaMatches'));
-const HomeLanding = React.lazy(() => import('./components/HomeLanding'));
 const RulesPage = React.lazy(() => import('./components/RulesPage'));
 const TermsPage = React.lazy(() => import('./components/TermsPage'));
 const ClassPlayground = React.lazy(() => import('./components/ClassPlayground'));
@@ -78,6 +79,7 @@ const INITIAL_STATS: UserStats = {
 };
 
 export default function App() {
+  console.log('[JesseMath] Rendering App component...');
   const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade'>('home');
   const [rewardTimer, setRewardTimer] = useState(300);
   const [isWorkspaceLocked, setIsWorkspaceLocked] = useState(false);
@@ -106,8 +108,13 @@ export default function App() {
     }));
   }, []);
   const [stats, setStats] = useState<UserStats>(() => {
-    const saved = localStorage.getItem('math_rockstar_stats');
-    return saved ? JSON.parse(saved) : INITIAL_STATS;
+    try {
+      const saved = safeStorage.getItem('math_rockstar_stats');
+      return saved ? JSON.parse(saved) : INITIAL_STATS;
+    } catch (err) {
+      console.warn('[JesseMath] Could not load initial stats from storage:', err);
+      return INITIAL_STATS;
+    }
   });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNight, setIsNight] = useState(false);
@@ -140,18 +147,29 @@ export default function App() {
   // Custom configurations (Sound, avatars & speed)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [configSettings, setConfigSettings] = useState(() => {
-    const saved = localStorage.getItem('math_rockstar_config');
-    return saved ? JSON.parse(saved) : {
-      soundEffects: true,
-      rockMusic: true,
-      quietMode: false,
-      selectedAvatar: '🎸 Math Rockstar',
-      customSpeed: 'easy' as Difficulty
-    };
+    try {
+      const saved = safeStorage.getItem('math_rockstar_config');
+      return saved ? JSON.parse(saved) : {
+        soundEffects: true,
+        rockMusic: true,
+        quietMode: false,
+        selectedAvatar: '🎸 Math Rockstar',
+        customSpeed: 'easy' as Difficulty
+      };
+    } catch (err) {
+      console.warn('[JesseMath] Could not load configSettings from storage:', err);
+      return {
+        soundEffects: true,
+        rockMusic: true,
+        quietMode: false,
+        selectedAvatar: '🎸 Math Rockstar',
+        customSpeed: 'easy' as Difficulty
+      };
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem('math_rockstar_config', JSON.stringify(configSettings));
+    safeStorage.setItem('math_rockstar_config', JSON.stringify(configSettings));
     if (configSettings.quietMode) {
       document.body.classList.add('quiet-mode');
     } else {
@@ -230,12 +248,12 @@ export default function App() {
   }, [authState.role]);
 
   const fetchAndSyncProfile = async (uname: string, deviceId: string) => {
-    const role = localStorage.getItem('jesse_rock_role') as any || 'individual';
-    const schoolId = localStorage.getItem('jesse_rock_school_id');
-    const schoolName = localStorage.getItem('jesse_rock_school_name');
-    const className = localStorage.getItem('jesse_rock_class_name');
-    const realName = localStorage.getItem('jesse_rock_real_name');
-    const userId = localStorage.getItem('jesse_rock_user_id');
+    const role = safeStorage.getItem('jesse_rock_role') as any || 'individual';
+    const schoolId = safeStorage.getItem('jesse_rock_school_id');
+    const schoolName = safeStorage.getItem('jesse_rock_school_name');
+    const className = safeStorage.getItem('jesse_rock_class_name');
+    const realName = safeStorage.getItem('jesse_rock_real_name');
+    const userId = safeStorage.getItem('jesse_rock_user_id');
 
     // Notify backend to establish the server-verified secure session cookie
     try {
@@ -253,7 +271,7 @@ export default function App() {
     }
 
     if (role !== 'individual') {
-      const classCode = localStorage.getItem('jesse_rock_class_code') || '';
+      const classCode = safeStorage.getItem('jesse_rock_class_code') || '';
       setAuthState({
         isAuthenticated: true,
         isChecking: false,
@@ -432,12 +450,12 @@ export default function App() {
 
   useEffect(() => {
     // Check if there is an active logged-in math rockstar on this device
-    const storedUsername = localStorage.getItem('jesse_rock_my_username');
-    let storedDeviceId = localStorage.getItem('jesse_rock_device_id');
+    const storedUsername = safeStorage.getItem('jesse_rock_my_username');
+    let storedDeviceId = safeStorage.getItem('jesse_rock_device_id');
     
     if (!storedDeviceId) {
       storedDeviceId = 'user_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now().toString(36);
-      localStorage.setItem('jesse_rock_device_id', storedDeviceId);
+      safeStorage.setItem('jesse_rock_device_id', storedDeviceId);
     }
     
     setUserDeviceId(storedDeviceId);
@@ -450,7 +468,7 @@ export default function App() {
         isCookieBlocked: false,
         message: `Welcome back, @${storedUsername}`,
         username: storedUsername,
-        role: (localStorage.getItem('jesse_rock_role') as any) || 'individual',
+        role: (safeStorage.getItem('jesse_rock_role') as any) || 'individual',
         userId: storedDeviceId
       });
       fetchAndSyncProfile(storedUsername, storedDeviceId);
@@ -492,13 +510,13 @@ export default function App() {
           }
           if (data.jesse_gift && data.jesse_gift.type === 'streak') {
             const currentGiftId = data.jesse_gift.id;
-            const lastSeenGift = localStorage.getItem('jesse_last_seen_gift');
+            const lastSeenGift = safeStorage.getItem('jesse_last_seen_gift');
             if (currentGiftId !== lastSeenGift) {
                setShowGiftDialog({ 
                  amount: data.jesse_gift.amount, 
                  isWeeklyWinner: currentGiftId.startsWith('weekly_winner_')
                });
-               localStorage.setItem('jesse_last_seen_gift', currentGiftId);
+               safeStorage.setItem('jesse_last_seen_gift', currentGiftId);
             }
           }
         }
@@ -523,14 +541,14 @@ export default function App() {
       }
     }
 
-    localStorage.removeItem('jesse_rock_my_username');
-    localStorage.removeItem('jesse_rock_device_id');
-    localStorage.removeItem('jesse_rock_role');
-    localStorage.removeItem('jesse_rock_school_id');
-    localStorage.removeItem('jesse_rock_school_name');
-    localStorage.removeItem('jesse_rock_class_name');
-    localStorage.removeItem('jesse_rock_real_name');
-    localStorage.removeItem('jesse_rock_user_id');
+    safeStorage.removeItem('jesse_rock_my_username');
+    safeStorage.removeItem('jesse_rock_device_id');
+    safeStorage.removeItem('jesse_rock_role');
+    safeStorage.removeItem('jesse_rock_school_id');
+    safeStorage.removeItem('jesse_rock_school_name');
+    safeStorage.removeItem('jesse_rock_class_name');
+    safeStorage.removeItem('jesse_rock_real_name');
+    safeStorage.removeItem('jesse_rock_user_id');
 
     // Notify backend to clear the secure session cookie
     try {
@@ -540,7 +558,7 @@ export default function App() {
     }
 
     const freshDeviceId = 'user_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now().toString(36);
-    localStorage.setItem('jesse_rock_device_id', freshDeviceId);
+    safeStorage.setItem('jesse_rock_device_id', freshDeviceId);
     setUserDeviceId(freshDeviceId);
     
     setAuthState({
@@ -555,9 +573,9 @@ export default function App() {
 
   useEffect(() => {
     if (authState.role === 'guest') {
-      localStorage.setItem('guest_rockstar_stats', JSON.stringify(stats));
+      safeStorage.setItem('guest_rockstar_stats', JSON.stringify(stats));
     } else {
-      localStorage.setItem('math_rockstar_stats', JSON.stringify(stats));
+      safeStorage.setItem('math_rockstar_stats', JSON.stringify(stats));
     }
   }, [stats, authState.role]);
 
@@ -1086,50 +1104,22 @@ export default function App() {
     }
   };
 
-  if (authState.isChecking) {
-    return (
-      <div className="h-screen w-screen flex items-center justify-center bg-slate-950 text-white">
-        <AnimatePresence>
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center space-y-4"
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-brand-primary/20 rounded-full blur-xl animate-pulse" />
-              <Loader2 className="animate-spin text-brand-primary w-12 h-12 mx-auto relative z-10" strokeWidth={3} />
-            </div>
-            <p className="text-[10px] font-black tracking-widest text-slate-400 uppercase">Rockstar Authentication Engine Booting...</p>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    );
-  }
-
   if (!authState.isAuthenticated) {
     return (
-      <React.Suspense fallback={
-        <div className="h-screen w-screen flex items-center justify-center bg-slate-950 text-white">
-          <div className="text-center space-y-4">
-            <Loader2 className="animate-spin text-brand-primary w-12 h-12 mx-auto" strokeWidth={3} />
-            <p className="text-sm font-black tracking-wider text-slate-400">LOADING ARENA...</p>
-          </div>
-        </div>
-      }>
-        <AuthGate 
-          onAuthSuccess={(uname, matchedUid) => {
-            setUserDeviceId(matchedUid);
-            fetchAndSyncProfile(uname, matchedUid);
-          }}
-          onGuestPlay={() => {
-            const savedGuest = localStorage.getItem('guest_rockstar_stats');
-            if (savedGuest) {
-              setStats(JSON.parse(savedGuest));
-            } else {
-              setStats(INITIAL_STATS);
-            }
-            setAuthState({
-              isAuthenticated: true,
+      <AuthGate 
+        onAuthSuccess={(uname, matchedUid) => {
+          setUserDeviceId(matchedUid);
+          fetchAndSyncProfile(uname, matchedUid);
+        }}
+        onGuestPlay={() => {
+          const savedGuest = safeStorage.getItem('guest_rockstar_stats');
+          if (savedGuest) {
+            setStats(JSON.parse(savedGuest));
+          } else {
+            setStats(INITIAL_STATS);
+          }
+          setAuthState({
+            isAuthenticated: true,
             isChecking: false,
             isCookieBlocked: false,
             message: "Guest session started",
@@ -1140,7 +1130,6 @@ export default function App() {
           setActiveTab('home');
         }}
       />
-      </React.Suspense>
     );
   }
 

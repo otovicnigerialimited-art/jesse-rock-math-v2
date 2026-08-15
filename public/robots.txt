@@ -1,3 +1,26 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /config/
+Disallow: /admin/
+Disallow: /session/
+
 Sitemap: https://jesse-math-rockstar-app.vercel.app/sitemap.xml

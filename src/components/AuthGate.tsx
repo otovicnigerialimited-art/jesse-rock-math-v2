@@ -1,3 +1,4 @@
+import { safeStorage } from "../lib/storage";
 import React, { useState, useEffect, useTransition } from 'react';
 import { isAppropriate } from '../lib/filterUtils';
 import { motion, AnimatePresence } from 'motion/react';
@@ -74,9 +75,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
   // Check for persistent Class Session on mount
   useEffect(() => {
-    const savedSessionId = localStorage.getItem('jesse_class_session_id');
-    const savedName = localStorage.getItem('jesse_class_request_name');
-    const savedCode = localStorage.getItem('jesse_class_request_code');
+    const savedSessionId = safeStorage.getItem('jesse_class_session_id');
+    const savedName = safeStorage.getItem('jesse_class_request_name');
+    const savedCode = safeStorage.getItem('jesse_class_request_code');
     if (savedSessionId && savedName && savedCode) {
       setClassStudentName(savedName);
       setClassCodeInput(savedCode);
@@ -96,13 +97,13 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
           setClassSessionStatus('removed');
           setError("You have been removed from the classroom session by your teacher.");
           // Clear session from local storage but keep name/code for convenience
-          localStorage.removeItem('jesse_class_session_id');
+          safeStorage.removeItem('jesse_class_session_id');
         }
       } else {
         // Session doc deleted
         setClassSessionStatus('idle');
         setActiveSessionId(null);
-        localStorage.removeItem('jesse_class_session_id');
+        safeStorage.removeItem('jesse_class_session_id');
       }
     }, (err) => {
       console.error("Error listening to class session:", err);
@@ -126,9 +127,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     }
     setClassSessionStatus('idle');
     setActiveSessionId(null);
-    localStorage.removeItem('jesse_class_session_id');
-    localStorage.removeItem('jesse_class_request_name');
-    localStorage.removeItem('jesse_class_request_code');
+    safeStorage.removeItem('jesse_class_session_id');
+    safeStorage.removeItem('jesse_class_request_name');
+    safeStorage.removeItem('jesse_class_request_code');
     setError(null);
   };
 
@@ -218,13 +219,13 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       });
 
       // Log in instantly!
-      localStorage.setItem('jesse_rock_role', 'class_student');
-      localStorage.setItem('jesse_rock_user_id', sessionId);
-      localStorage.setItem('jesse_rock_my_username', cleanName);
-      localStorage.setItem('jesse_rock_class_code', cleanCode);
-      localStorage.setItem('jesse_class_session_id', sessionId);
-      localStorage.setItem('jesse_class_request_name', cleanName);
-      localStorage.setItem('jesse_class_request_code', cleanCode);
+      safeStorage.setItem('jesse_rock_role', 'class_student');
+      safeStorage.setItem('jesse_rock_user_id', sessionId);
+      safeStorage.setItem('jesse_rock_my_username', cleanName);
+      safeStorage.setItem('jesse_rock_class_code', cleanCode);
+      safeStorage.setItem('jesse_class_session_id', sessionId);
+      safeStorage.setItem('jesse_class_request_name', cleanName);
+      safeStorage.setItem('jesse_class_request_code', cleanCode);
 
       setSuccess(`Authenticated! Welcome to ${teacherDoc.data().class_name || 'Classroom'}. Entering now...`);
       setTimeout(() => {
@@ -293,8 +294,8 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
   // Handle local session storage and concurrent lock handshakes
   useEffect(() => {
     // Check if there's an existing valid developer session
-    const activeToken = localStorage.getItem('jesse_dev_active_session_token');
-    const mySavedToken = localStorage.getItem('jesse_dev_my_token');
+    const activeToken = safeStorage.getItem('jesse_dev_active_session_token');
+    const mySavedToken = safeStorage.getItem('jesse_dev_my_token');
 
     if (activeToken && mySavedToken && activeToken === mySavedToken) {
       setIsDevAuthenticated(true);
@@ -305,12 +306,12 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'jesse_dev_active_session_token') {
         const newValue = e.newValue;
-        const currentLocalToken = localStorage.getItem('jesse_dev_my_token');
+        const currentLocalToken = safeStorage.getItem('jesse_dev_my_token');
         if (newValue && currentLocalToken && newValue !== currentLocalToken) {
           // KICK-OUT! Another tab authenticated!
           setIsDevAuthenticated(false);
           setDevSessionToken(null);
-          localStorage.removeItem('jesse_dev_my_token');
+          safeStorage.removeItem('jesse_dev_my_token');
           setDevError("Session terminated: A new developer login was validated on another tab.");
         }
       }
@@ -410,8 +411,8 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       const newToken = `dev_token_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       
       // Save locally and globally
-      localStorage.setItem('jesse_dev_my_token', newToken);
-      localStorage.setItem('jesse_dev_active_session_token', newToken);
+      safeStorage.setItem('jesse_dev_my_token', newToken);
+      safeStorage.setItem('jesse_dev_active_session_token', newToken);
       
       setDevSessionToken(newToken);
       setIsDevAuthenticated(true);
@@ -423,12 +424,12 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
   // Developer Log-out handler
   const handleDevLogout = () => {
-    localStorage.removeItem('jesse_dev_my_token');
+    safeStorage.removeItem('jesse_dev_my_token');
     // If we logout, we also clear the active session token so other tabs can login or clean up
-    const activeToken = localStorage.getItem('jesse_dev_active_session_token');
-    const myToken = localStorage.getItem('jesse_dev_my_token');
+    const activeToken = safeStorage.getItem('jesse_dev_active_session_token');
+    const myToken = safeStorage.getItem('jesse_dev_my_token');
     if (activeToken === myToken) {
-      localStorage.removeItem('jesse_dev_active_session_token');
+      safeStorage.removeItem('jesse_dev_active_session_token');
     }
     setIsDevAuthenticated(false);
     setDevSessionToken(null);
@@ -475,11 +476,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     setLoading(true);
 
     try {
-      let uid = localStorage.getItem('jesse_rock_device_id');
+      let uid = safeStorage.getItem('jesse_rock_device_id');
       if (!uid) {
         uid = `dev_${Math.floor(100000 + Math.random() * 900000)}`;
       }
-      localStorage.setItem('jesse_rock_device_id', uid);
+      safeStorage.setItem('jesse_rock_device_id', uid);
 
       const nameDocRef = doc(db, "usernames", cleanUsername.toLowerCase());
       const nameSnap = await getDoc(nameDocRef);
@@ -503,11 +504,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         }
 
         const correctUid = existingData.uid || uid;
-        localStorage.setItem('jesse_rock_role', 'individual');
-        localStorage.setItem('jesse_rock_device_id', correctUid);
-        localStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, correctUid);
-        localStorage.setItem('jesse_rock_my_username', existingData.username || cleanUsername);
-        localStorage.setItem('jesse_rock_user_id', correctUid);
+        safeStorage.setItem('jesse_rock_role', 'individual');
+        safeStorage.setItem('jesse_rock_device_id', correctUid);
+        safeStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, correctUid);
+        safeStorage.setItem('jesse_rock_my_username', existingData.username || cleanUsername);
+        safeStorage.setItem('jesse_rock_user_id', correctUid);
         
         setSuccess(`Welcome back, ${existingData.username || cleanUsername}! Loading progress...`);
         setTimeout(() => {
@@ -544,11 +545,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         console.warn("Could not save initial user profile doc, falling back securely:", err);
       }
 
-      localStorage.setItem('jesse_rock_role', 'individual');
-      localStorage.setItem('jesse_rock_device_id', uid);
-      localStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, uid);
-      localStorage.setItem('jesse_rock_my_username', cleanUsername);
-      localStorage.setItem('jesse_rock_user_id', uid);
+      safeStorage.setItem('jesse_rock_role', 'individual');
+      safeStorage.setItem('jesse_rock_device_id', uid);
+      safeStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, uid);
+      safeStorage.setItem('jesse_rock_my_username', cleanUsername);
+      safeStorage.setItem('jesse_rock_user_id', uid);
 
       setSuccess(`Congratulations! Username "${cleanUsername}" is now registered.`);
       setTimeout(() => {
@@ -596,11 +597,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
       const freshStudent = res.userObj;
 
-      localStorage.setItem('jesse_rock_role', 'student'); 
-      localStorage.setItem('jesse_rock_user_id', freshStudent.id);
-      localStorage.setItem('jesse_rock_my_username', freshStudent.username);
-      localStorage.setItem('jesse_rock_real_name', freshStudent.real_first_name);
-      localStorage.setItem('jesse_rock_teacher_id', freshStudent.teacher_id);
+      safeStorage.setItem('jesse_rock_role', 'student'); 
+      safeStorage.setItem('jesse_rock_user_id', freshStudent.id);
+      safeStorage.setItem('jesse_rock_my_username', freshStudent.username);
+      safeStorage.setItem('jesse_rock_real_name', freshStudent.real_first_name);
+      safeStorage.setItem('jesse_rock_teacher_id', freshStudent.teacher_id);
 
       setSuccess(`Verified Rockstar Student @${freshStudent.username}! Preparing your instruments...`);
       setTimeout(() => {
@@ -642,10 +643,10 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
       const authenticatedTeacher = res.userObj;
 
-      localStorage.setItem('jesse_rock_role', 'teacher');
-      localStorage.setItem('jesse_rock_user_id', authenticatedTeacher.id);
-      localStorage.setItem('jesse_rock_my_username', authenticatedTeacher.email);
-      localStorage.setItem('jesse_rock_real_name', authenticatedTeacher.teacher_name);
+      safeStorage.setItem('jesse_rock_role', 'teacher');
+      safeStorage.setItem('jesse_rock_user_id', authenticatedTeacher.id);
+      safeStorage.setItem('jesse_rock_my_username', authenticatedTeacher.email);
+      safeStorage.setItem('jesse_rock_real_name', authenticatedTeacher.teacher_name);
 
       setSuccess(`Welcome back, Teacher ${authenticatedTeacher.teacher_name}! Synchronising...`);
       setTimeout(() => {
@@ -705,11 +706,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
       const freshlyTeacher = res.userObj;
 
-      localStorage.setItem('jesse_rock_role', 'teacher');
-      localStorage.setItem('jesse_rock_user_id', freshlyTeacher.id);
-      localStorage.setItem('jesse_rock_my_username', freshlyTeacher.email);
-      localStorage.setItem('jesse_rock_real_name', freshlyTeacher.teacher_name);
-      localStorage.setItem('jesse_rock_device_id', freshlyTeacher.id);
+      safeStorage.setItem('jesse_rock_role', 'teacher');
+      safeStorage.setItem('jesse_rock_user_id', freshlyTeacher.id);
+      safeStorage.setItem('jesse_rock_my_username', freshlyTeacher.email);
+      safeStorage.setItem('jesse_rock_real_name', freshlyTeacher.teacher_name);
+      safeStorage.setItem('jesse_rock_device_id', freshlyTeacher.id);
 
       setSuccess(`Teacher Workspace Registered Successfully! Launching Class ${freshlyTeacher.teacher_name}...`);
       setTimeout(() => {

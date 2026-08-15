@@ -1,19 +1,7 @@
-// Basic Service Worker for PWA Installation Requirements
-const CACHE_NAME = 'math-rockstar-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/logo.png',
-  '/icon.png'
-];
+// Basic Service Worker for PWA Installation Requirements (Network First)
+const CACHE_NAME = 'math-rockstar-v2';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
-      })
-  );
   self.skipWaiting();
 });
 
@@ -21,11 +9,7 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
+        cacheNames.map((cacheName) => caches.delete(cacheName))
       );
     })
   );
@@ -33,11 +17,9 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Always attempt network fetch first
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached response if found, else fetch from network
-        return response || fetch(event.request);
-      })
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
+
