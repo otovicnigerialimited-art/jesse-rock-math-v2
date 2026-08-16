@@ -6,10 +6,10 @@ interface ReviewSectionProps {
 }
 
 export default function ReviewSection({ userRole = 'student' }: ReviewSectionProps) {
-  // Determine if the user is explicitly a verified parent or teacher
+  // Determine if the user is explicitly a verified parent, teacher, or admin
   const isAdultAccount = userRole === 'teacher' || userRole === 'parent' || userRole === 'admin';
   
-  // State for showing the adult written panel (only accessible via explicit adult toggle/role)
+  // State for showing the adult written panel (ONLY true for verified adult accounts)
   const [adultPortalActive, setAdultPortalActive] = useState(isAdultAccount);
   const [isSubmitted, setIsSubmitted] = useState(false);
   
@@ -107,7 +107,7 @@ export default function ReviewSection({ userRole = 'student' }: ReviewSectionPro
         <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 mb-6 flex items-start gap-3">
           <Lock className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
           <p className="text-xs text-slate-300 font-medium leading-relaxed">
-            <strong className="text-white">COPPA Privacy Enforced:</strong> Kids, Students, Individual accounts, and Guests rate using our <strong>Visual 5-Star Rating & Badge System</strong>. Written review panels are strictly restricted to verified Parent & Teacher Dashboards.
+            <strong className="text-white">COPPA Privacy Enforced:</strong> Guest, Student, Kid, and Individual accounts rate exclusively using our <strong>Visual 5-Star Rating & Badge System</strong>. Written review text panels are completely disabled and hidden for minor accounts to prevent personal information exposure.
           </p>
         </div>
 
@@ -257,16 +257,18 @@ export default function ReviewSection({ userRole = 'student' }: ReviewSectionPro
               Submit Star Rating
             </button>
 
-            {/* Parent & Educator Access Portal Toggle */}
-            <div className="pt-2 border-t border-slate-800/80">
-              <button
-                type="button"
-                onClick={() => setAdultPortalActive(true)}
-                className="text-[11px] text-slate-400 hover:text-emerald-400 font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
-              >
-                <UserCheck className="w-3.5 h-3.5" /> Are you a Parent or Teacher? Click here to access the Written Testimonial Panel
-              </button>
-            </div>
+            {/* Parent & Educator Access Portal Toggle - Strictly for verified adult accounts only */}
+            {isAdultAccount && (
+              <div className="pt-2 border-t border-slate-800/80">
+                <button
+                  type="button"
+                  onClick={() => setAdultPortalActive(true)}
+                  className="text-[11px] text-slate-400 hover:text-emerald-400 font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <UserCheck className="w-3.5 h-3.5" /> Switch to Written Testimonial Panel
+                </button>
+              </div>
+            )}
           </form>
         )}
       </div>

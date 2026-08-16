@@ -84,8 +84,8 @@ export default function AvatarPreview({
       <motion.svg
         viewBox="0 0 200 200"
         className="w-full h-full relative z-10 p-1 filter drop-shadow-[0_8px_12px_rgba(0,0,0,0.5)]"
-        variants={floatVariant}
-        animate="animate"
+        animate={animate ? { y: [0, -6, 0], rotate: [0, 1.5, -1.5, 0] } : undefined}
+        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
       >
         <defs>
           {/* Neon Glow Filters */}

@@ -11,11 +11,14 @@ interface State {
 }
 
 export class ErrorBoundary extends Component<Props, State> {
-  public state: State = {
-    hasError: false,
-    error: null,
-    errorInfo: null
-  };
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null
+    };
+  }
 
   private handleUnhandledRejection = (event: PromiseRejectionEvent) => {
     console.error('[ErrorBoundary] Unhandled promise rejection:', event.reason);

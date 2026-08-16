@@ -49,7 +49,7 @@ interface AuthGateProps {
 
 export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) {
   // Tabs: 'individual' for Rockstar/Student Login, 'teacher' for Teacher Login, 'developer' for Developer Login
-  const [loginTab, setLoginTab] = useState<'individual' | 'teacher'>('individual');
+  const [loginTab, setLoginTab] = useState<'individual' | 'teacher' | 'developer'>('individual');
   const [showLanding, setShowLanding] = useState(true);
   
   const backgroundEmojis = React.useMemo(() => {

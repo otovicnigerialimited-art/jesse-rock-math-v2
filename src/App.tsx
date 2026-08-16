@@ -80,7 +80,7 @@ const INITIAL_STATS: UserStats = {
 
 export default function App() {
   console.log('[JesseMath] Rendering App component...');
-  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade'>('home');
+  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade' | 'arena'>('home');
   const [rewardTimer, setRewardTimer] = useState(300);
   const [isWorkspaceLocked, setIsWorkspaceLocked] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -184,10 +184,11 @@ export default function App() {
     isCookieBlocked: boolean;
     message: string;
     username: string | null;
-    role?: 'student' | 'teacher' | 'admin' | 'individual' | 'guest';
+    role?: 'student' | 'teacher' | 'admin' | 'individual' | 'guest' | 'class_student';
     schoolId?: string | null;
     schoolName?: string | null;
     className?: string | null;
+    classCode?: string | null;
     realName?: string | null;
     userId?: string | null;
   }>({
@@ -1141,7 +1142,7 @@ export default function App() {
         </div>
       }>
         <SchoolDashboards 
-          authState={authState} 
+          authState={authState as any} 
           onSignOut={handleSignOut} 
         />
       </React.Suspense>
@@ -1396,7 +1397,7 @@ export default function App() {
                           classCode: authState.classCode || ''
                         }}
                         onSignOut={handleSignOut}
-                        onNavigateToTab={setActiveTab}
+                        onNavigateToTab={(tab: string) => setActiveTab(tab as any)}
                       />
                     ) : (
                       <HomeLanding username={authState.username || 'Guest'} userRole={authState.role as any} stats={stats} onNavigateToTab={setActiveTab} onNavigateToLesson={(l: any) => { setPracticeLesson(l); setActiveTab('learn'); }} onNavigateToTermsSection={handleNavigateToTermsSection} />
@@ -1412,7 +1413,7 @@ export default function App() {
                   {activeTab === 'arena' && <ArenaMatches currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', classCode: authState.classCode }} onExit={() => setActiveTab('home')} soundEffectsEnabled={configSettings?.soundEffectsEnabled ?? true} onMatchFinished={handlePlayArenaFinish} />}
                   {activeTab === 'quiz' && <Quiz onFinish={handleQuizFinish} difficulty={selectedDifficulty} onExit={() => setActiveTab('home')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} lesson={practiceLesson} />}
                   {activeTab === 'badges' && <BadgesSection stats={stats} username={authState.username || 'Guest'} onClaimWeeklyBadge={handleClaimWeeklyBadge} />}
-                  {activeTab === 'rules' && <RulesPage />}
+                  {activeTab === 'rules' && <RulesPage onNavigateToTab={(tab: string) => setActiveTab(tab as any)} />}
                   {activeTab === 'terms' && <TermsPage />}
                   {activeTab === 'developer' && <DeveloperPage currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', role: authState.role || 'guest' }} />}
                   {activeTab === 'learn' && <LearnArena onFinish={handleLearnArenaFinish} onExit={() => setActiveTab('hub')} lesson={practiceLesson} />}
