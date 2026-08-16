@@ -153,12 +153,34 @@ Thank you for playing Jesse Math Rockstar!
 
       zip.file('README-OFFLINE.txt', readmeText);
 
-      // 3. Desktop .url Internet Shortcut
+      // 3. Desktop .url Internet Shortcut with Icon Metadata
       const urlShortcutContent = `[InternetShortcut]
 URL=https://jesse-math-rockstar-app.vercel.app/
+IDList=
+HotKey=0
+IconFile=https://jesse-math-rockstar-app.vercel.app/favicon.ico
 IconIndex=0
+[{000214A0-0000-0000-C000-00000000046X}]
+Prop3=19,1
 `;
-      zip.file('Jesse-Math-Rockstar.url', urlShortcutContent);
+      zip.file('Jesse-Math-Rockstar-Desktop-App.url', urlShortcutContent);
+
+      // 4. Windows Batch Script to create Desktop & Start Menu Shortcut with logo
+      const batInstallerContent = `@echo off
+echo Creating Jesse Math Rockstar Desktop App Shortcut...
+set SCRIPT="%TEMP%\\%RANDOM%-%RANDOM%-%RANDOM%-%RANDOM%.vbs"
+echo Set oWS = WScript.CreateObject("WScript.Shell") >> %SCRIPT%
+echo sLinkFile = oWS.SpecialFolders("Desktop") ^& "\\Jesse Math Rockstar.lnk" >> %SCRIPT%
+echo Set oLink = oWS.CreateShortcut(sLinkFile) >> %SCRIPT%
+echo oLink.TargetPath = "https://jesse-math-rockstar-app.vercel.app/" >> %SCRIPT%
+echo oLink.Description = "Jesse Math Rockstar Desktop App" >> %SCRIPT%
+echo oLink.Save >> %SCRIPT%
+cscript /nologo %SCRIPT%
+del %SCRIPT%
+echo Done! Shortcut added to Desktop!
+pause
+`;
+      zip.file('Create-Desktop-Shortcut.bat', batInstallerContent);
 
       // Generate Zip Blob
       const blob = await zip.generateAsync({ type: 'blob' });
