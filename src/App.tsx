@@ -1399,7 +1399,7 @@ export default function App() {
                         onNavigateToTab={setActiveTab}
                       />
                     ) : (
-                      <HomeLanding username={authState.username || 'Guest'} stats={stats} onNavigateToTab={setActiveTab} onNavigateToLesson={(l: any) => { setPracticeLesson(l); setActiveTab('learn'); }} onNavigateToTermsSection={handleNavigateToTermsSection} />
+                      <HomeLanding username={authState.username || 'Guest'} userRole={authState.role as any} stats={stats} onNavigateToTab={setActiveTab} onNavigateToLesson={(l: any) => { setPracticeLesson(l); setActiveTab('learn'); }} onNavigateToTermsSection={handleNavigateToTermsSection} />
                     )
                   )}
                   {activeTab === 'dashboard' && <Dashboard stats={stats} onStartQuiz={() => setActiveTab('quiz')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} />}

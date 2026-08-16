@@ -22,6 +22,7 @@ import AboutSection from './AboutSection';
 
 interface HomeLandingProps {
   username: string;
+  userRole?: 'student' | 'kid' | 'individual' | 'teacher' | 'parent' | 'admin' | 'guest';
   stats: {
     level: number;
     streak: number;
@@ -41,7 +42,7 @@ const SITE_LESSONS = [
   { id: '3', title: 'Algebraic Basics', cat: 'Algebra', desc: 'Introducing dynamic equations and solving X' }
 ];
 
-export default function HomeLanding({ username, stats, onNavigateToTab, onNavigateToLesson, onNavigateToTermsSection }: HomeLandingProps) {
+export default function HomeLanding({ username, userRole, stats, onNavigateToTab, onNavigateToLesson, onNavigateToTermsSection }: HomeLandingProps) {
   if (!stats) return null;
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -424,7 +425,7 @@ export default function HomeLanding({ username, stats, onNavigateToTab, onNaviga
             </div>
             
       {/* Review Section */}
-      <ReviewSection />
+      <ReviewSection userRole={userRole} />
 
       {/* Itch.io Embed */}
       <div className="flex justify-center mt-4 mb-8 w-full">
