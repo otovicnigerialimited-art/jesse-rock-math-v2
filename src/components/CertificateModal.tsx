@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Download, Printer, Award, Music, Star, ShieldCheck, FileText } from 'lucide-react';
+import { X, Download, Printer, Award, Music, Star, ShieldCheck, FileText, CheckCircle2, Sparkles, Flame, Trophy } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
@@ -14,14 +14,15 @@ interface CertificateModalProps {
 
 export default function CertificateModal({ isOpen, onClose, username, totalSolved, correctAnswers }: CertificateModalProps) {
   const certRef = useRef<HTMLDivElement>(null);
-  const accuracy = totalSolved > 0 ? Math.round((correctAnswers / totalSolved) * 100) : 0;
+  const accuracy = totalSolved > 0 ? Math.round((correctAnswers / totalSolved) * 100) : 100;
+  const certId = React.useMemo(() => `JMR-${Math.floor(100000 + Math.random() * 900000)}`, []);
 
   const handleDownloadPNG = async () => {
     if (!certRef.current) return;
     try {
       const canvas = await html2canvas(certRef.current, { scale: 3, useCORS: true });
       const link = document.createElement('a');
-      link.download = `Jesse_Rock_Math_Legendary_${username || 'Scholar'}.png`;
+      link.download = `Jesse_Math_Rockstar_Certificate_${username || 'Scholar'}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
@@ -35,7 +36,6 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
       const canvas = await html2canvas(certRef.current, { scale: 3, useCORS: true });
       const imgData = canvas.toDataURL('image/png');
       
-      // A4 landscape: 297mm x 210mm
       const pdf = new jsPDF({
         orientation: 'landscape',
         unit: 'mm',
@@ -47,7 +47,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Jesse_Rock_Math_Certificate_${username || 'Scholar'}.pdf`);
+      pdf.save(`Jesse_Math_Rockstar_Certificate_${username || 'Scholar'}.pdf`);
     } catch (err) {
       console.error("Failed to generate PDF", err);
     }
@@ -60,7 +60,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto bg-slate-950/80 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 overflow-y-auto bg-slate-950/85 backdrop-blur-md">
           {/* Custom style injection for high resolution and clean paper-based printing */}
           <style dangerouslySetInnerHTML={{__html: `
             @media print {
@@ -77,7 +77,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
                 width: 100% !important;
                 height: auto !important;
                 aspect-ratio: 1.414 !important;
-                border: 12px double #b45309 !important; /* Gold border */
+                border: 14px double #b45309 !important; /* Gold border */
                 box-shadow: none !important;
                 margin: 0 !important;
                 padding: 40px !important;
@@ -99,117 +99,131 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
             onClick={onClose}
           />
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 20 }} 
+            initial={{ opacity: 0, scale: 0.92, y: 15 }} 
             animate={{ opacity: 1, scale: 1, y: 0 }} 
-            exit={{ opacity: 0, scale: 0.9, y: 20 }} 
-            className="relative z-10 w-full max-w-4xl flex flex-col items-center gap-6 p-2 sm:p-4 my-8"
+            exit={{ opacity: 0, scale: 0.92, y: 15 }} 
+            className="relative z-10 w-full max-w-5xl flex flex-col items-center gap-5 my-6"
           >
             {/* The Certificate Target */}
             <div 
               ref={certRef}
               id="print-certificate-target"
-              className="w-full aspect-[1.414] bg-white rounded-2xl shadow-2xl overflow-hidden relative text-deep-navy border-[14px] border-double border-amber-600 p-6 sm:p-14 flex flex-col items-center justify-between text-center select-none"
+              className="w-full aspect-[1.414] bg-white rounded-3xl shadow-2xl overflow-hidden relative text-deep-navy border-[16px] border-double border-amber-600 p-6 sm:p-12 md:p-14 flex flex-col items-center justify-between text-center select-none"
               style={{ 
-                backgroundImage: 'radial-gradient(circle at center, #ffffff 50%, #fefcf6 100%)',
-                boxShadow: '0 25px 50px -12px rgba(251, 191, 36, 0.15)' 
+                backgroundImage: 'radial-gradient(circle at center, #ffffff 40%, #fffdfa 80%, #fef3c7 100%)',
+                boxShadow: '0 25px 60px -15px rgba(217, 119, 6, 0.25)' 
               }}
             >
-              {/* Ornate corner frames and background graphics */}
-              <div className="absolute inset-2 border-2 border-amber-500/10 rounded-lg pointer-events-none" />
-              <div className="absolute top-0 left-0 w-28 h-28 border-t-4 border-l-4 border-amber-500/50 m-4 sm:m-8 rounded-tl-lg pointer-events-none" />
-              <div className="absolute top-0 right-0 w-28 h-28 border-t-4 border-r-4 border-amber-500/50 m-4 sm:m-8 rounded-tr-lg pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-28 h-28 border-b-4 border-l-4 border-amber-500/50 m-4 sm:m-8 rounded-bl-lg pointer-events-none" />
-              <div className="absolute bottom-0 right-0 w-28 h-28 border-b-4 border-r-4 border-amber-500/50 m-4 sm:m-8 rounded-br-lg pointer-events-none" />
-              
-              {/* Header: App Brand Name with Icons */}
-              <div className="flex items-center gap-2 text-amber-600 font-display font-black text-xs sm:text-sm uppercase tracking-[0.25em] mb-1">
-                <Music size={14} className="animate-pulse" />
-                <span>Jesse Rock Math</span>
-                <Star size={14} className="fill-amber-500 text-amber-500" />
+              {/* Security Watermark Background Pattern */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center font-display font-black text-9xl tracking-widest text-amber-900 select-none uppercase">
+                MATH ROCKSTAR
               </div>
+
+              {/* Ornate corner frames and gold foil flourish graphics */}
+              <div className="absolute inset-2 sm:inset-3 border-2 border-amber-500/20 rounded-xl pointer-events-none" />
+              <div className="absolute inset-4 sm:inset-5 border border-amber-600/30 rounded-lg pointer-events-none" />
               
-              {/* Certificate Title */}
-              <div className="space-y-1">
-                <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-amber-700 uppercase tracking-widest leading-none">
-                  LEGENDARY TIER
-                </h1>
-                <p className="text-[10px] sm:text-[11px] text-slate-500 uppercase tracking-[0.3em] font-bold">
-                  HONORARY MATHEMATICAL CREDENTIAL
+              <div className="absolute top-0 left-0 w-24 h-24 sm:w-32 sm:h-32 border-t-8 border-l-8 border-amber-600/70 m-3 sm:m-6 rounded-tl-xl pointer-events-none" />
+              <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 border-t-8 border-r-8 border-amber-600/70 m-3 sm:m-6 rounded-tr-xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 sm:w-32 sm:h-32 border-b-8 border-l-8 border-amber-600/70 m-3 sm:m-6 rounded-bl-xl pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-24 h-24 sm:w-32 sm:h-32 border-b-8 border-r-8 border-amber-600/70 m-3 sm:m-6 rounded-br-xl pointer-events-none" />
+
+              {/* Top Crest / Academic Header */}
+              <div className="flex flex-col items-center gap-1.5 z-10 mt-1">
+                <div className="flex items-center gap-2 px-5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 border border-amber-500/30 text-amber-800 font-display font-black text-xs sm:text-sm uppercase tracking-[0.3em]">
+                  <Trophy size={16} className="text-amber-600 fill-amber-500" />
+                  <span>JESSE MATH ROCKSTAR ACADEMY</span>
+                  <Sparkles size={16} className="text-amber-600" />
+                </div>
+                <p className="text-[9px] sm:text-[10px] text-amber-900/70 font-mono font-bold uppercase tracking-[0.25em]">
+                  OFFICIAL INTERNATIONAL CREDENTIAL OF EXCELLENCE • ID: {certId}
                 </p>
               </div>
 
-              {/* Recipient description */}
-              <div className="space-y-2 max-w-2xl my-2">
-                <p className="text-xs sm:text-lg text-slate-700 font-serif italic font-bold">
-                  This is to certify that
+              {/* Certificate Main Title */}
+              <div className="space-y-1.5 z-10 my-2">
+                <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-800 via-yellow-700 to-amber-900 uppercase tracking-widest leading-none drop-shadow-sm">
+                  CERTIFICATE OF MASTERY
+                </h1>
+                <p className="text-[11px] sm:text-xs text-amber-900 font-serif font-black uppercase tracking-[0.35em] border-b-2 border-amber-500/30 pb-2 max-w-lg mx-auto">
+                  GRAND MASTER MATHEMATICAL DIPLOMA
+                </p>
+              </div>
+
+              {/* Recipient Presentation Block */}
+              <div className="space-y-2 max-w-3xl z-10 w-full">
+                <p className="text-xs sm:text-base text-slate-700 font-serif italic font-bold">
+                  This prestiges honor and national recognition is officially conferred upon
                 </p>
                 
-                {/* Username Display */}
-                <div className="relative py-2 px-6">
-                  <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-black text-slate-900 border-b-4 border-double border-amber-600 pb-2 max-w-xl mx-auto tracking-wide">
+                {/* Recipient Name in Display Typography */}
+                <div className="relative py-1 px-4 my-2">
+                  <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-slate-950 border-b-4 border-double border-amber-600/80 pb-3 max-w-2xl mx-auto tracking-wide drop-shadow-sm">
                     {username || "Young Math Rockstar"}
                   </h2>
                 </div>
+
+                <p className="text-xs sm:text-sm text-slate-700 font-serif leading-relaxed font-semibold max-w-2xl mx-auto">
+                  For demonstrating exceptional analytical precision, computational velocity, and unwavering dedication in completing over <strong className="text-amber-900 font-black">{totalSolved} advanced math challenges</strong> with an outstanding precision rating.
+                </p>
               </div>
 
-              {/* Achievement description */}
-              <div className="space-y-3 max-w-xl">
-                <p className="text-[11px] sm:text-sm text-slate-700 font-serif leading-relaxed font-semibold">
-                  has achieved the status of <strong className="text-amber-800">Legendary Math Rockstar</strong> by successfully solving over <strong className="text-amber-800 text-xs sm:text-base">200 Math Questions</strong> in the Play Arena. This recipient has demonstrated extraordinary calculation speed, consistent logical precision, and elite-tier mathematical focus.
-                </p>
-
-                {/* Stats Block */}
-                <div className="grid grid-cols-2 gap-4 py-3 bg-amber-50/50 rounded-2xl border-2 border-amber-200/50 max-w-sm mx-auto">
-                  <div>
-                    <p className="text-[8px] uppercase tracking-wider font-black text-amber-600">Accuracy</p>
-                    <p className="text-xl font-display font-black text-amber-700">{accuracy}%</p>
-                  </div>
-                  <div className="border-l border-amber-200">
-                    <p className="text-[8px] uppercase tracking-wider font-black text-amber-600">Questions Answered</p>
-                    <p className="text-xl font-display font-black text-amber-700">{totalSolved}</p>
-                  </div>
+              {/* Middle Section: Highlights Grid & Official Gold Seal */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center w-full max-w-3xl my-3 z-10">
+                {/* Left Highlight */}
+                <div className="bg-amber-50/80 rounded-2xl border-2 border-amber-300/60 p-3 shadow-sm text-center">
+                  <p className="text-[9px] uppercase tracking-widest font-black text-amber-700">Accuracy Rating</p>
+                  <p className="text-2xl sm:text-3xl font-display font-black text-amber-900 mt-0.5">{accuracy}%</p>
+                  <p className="text-[9px] text-amber-800 font-bold mt-0.5">High Speed Precision</p>
                 </div>
-                
-                {/* The Seal / Badge Graphic */}
-                <div className="flex justify-center my-1 sm:my-3 scale-90 sm:scale-100">
+
+                {/* Center Official Embossed Gold Seal */}
+                <div className="flex justify-center my-1 sm:my-0">
                   <div className="relative flex items-center justify-center">
-                    <div className="absolute w-20 h-20 bg-amber-500/10 rounded-full border border-amber-500/30 animate-spin-slow pointer-events-none" />
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 via-amber-500 to-amber-600 border-4 border-double border-amber-100 flex flex-col items-center justify-center text-white shadow-xl relative">
-                      <ShieldCheck size={20} className="text-white drop-shadow-md mb-0.5" />
-                      <span className="text-[7px] font-black uppercase tracking-wider text-amber-100">VERIFIED</span>
-                      <span className="text-[6px] font-mono text-white/90">#200_SOLVED</span>
+                    <div className="absolute w-24 h-24 bg-amber-500/20 rounded-full border border-amber-500/40 animate-spin-slow pointer-events-none" />
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-300 via-amber-500 to-amber-700 border-4 border-double border-amber-100 flex flex-col items-center justify-center text-white shadow-2xl relative p-1">
+                      <ShieldCheck size={24} className="text-white drop-shadow-md mb-0.5" />
+                      <span className="text-[8px] font-black uppercase tracking-wider text-amber-100">AUTHENTIC</span>
+                      <span className="text-[7px] font-mono font-bold text-white/90">OFFICIAL SEAL</span>
                     </div>
                   </div>
                 </div>
+
+                {/* Right Highlight */}
+                <div className="bg-amber-50/80 rounded-2xl border-2 border-amber-300/60 p-3 shadow-sm text-center">
+                  <p className="text-[9px] uppercase tracking-widest font-black text-amber-700">Questions Solved</p>
+                  <p className="text-2xl sm:text-3xl font-display font-black text-amber-900 mt-0.5">{totalSolved}+</p>
+                  <p className="text-[9px] text-amber-800 font-bold mt-0.5">Verified Calculation Drills</p>
+                </div>
               </div>
 
-              {/* Credentials Signatures Block */}
-              <div className="flex justify-between w-full max-w-2xl mt-4 border-t-2 border-double border-amber-600/30 pt-4 sm:pt-6">
-                {/* Developer / Founder */}
-                <div className="flex flex-col items-center">
-                  <span className="text-lg sm:text-2xl text-slate-950 font-semibold" style={{ fontFamily: "'Brush Script MT', cursive, serif" }}>Jesse Otobo</span>
-                  <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1">Sign in by Jesse Math Rock Star</span>
+              {/* Footer: Board Signatures & Seal Verification */}
+              <div className="flex justify-between items-end w-full max-w-3xl border-t-2 border-double border-amber-600/40 pt-4 sm:pt-6 z-10">
+                {/* Founder Signature */}
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-2xl sm:text-3xl text-slate-950 font-bold tracking-tight" style={{ fontFamily: "'Brush Script MT', cursive, serif" }}>Jesse Otobo</span>
+                  <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-600 font-black border-t-2 border-slate-300 pt-1">Jesse Otobo (11-Yr-Old Founder & Chief Engineer)</span>
                 </div>
 
-                {/* Academic Board */}
-                <div className="flex flex-col items-center">
-                  <span className="text-sm sm:text-lg font-mono font-black text-slate-800">APPROVED ✓</span>
-                  <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1">Academic Board</span>
+                {/* Verification Badge */}
+                <div className="hidden sm:flex flex-col items-center text-center">
+                  <span className="text-xs font-mono font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">VERIFIED BOARD APPROVAL ✓</span>
+                  <span className="text-[9px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1 mt-1">Jesse Math Rockstar Academic Board</span>
                 </div>
 
-                {/* Date */}
-                <div className="flex flex-col items-center">
-                  <span className="text-xs sm:text-base font-mono font-bold text-slate-900">{new Date().toLocaleDateString()}</span>
-                  <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1">Date of Achievement</span>
+                {/* Date Conferred */}
+                <div className="flex flex-col items-center text-center">
+                  <span className="text-xs sm:text-base font-mono font-black text-slate-900">{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                  <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-slate-600 font-black border-t-2 border-slate-300 pt-1">Date Conferred</span>
                 </div>
               </div>
             </div>
 
             {/* Actions Panel */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 no-print mt-2">
+            <div className="flex flex-wrap items-center justify-center gap-3 no-print mt-1">
               <button 
                 onClick={handleDownloadPDF}
-                className="px-6 py-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-black rounded-xl uppercase tracking-widest flex items-center gap-2 shadow-xl shadow-red-500/20 transition-all hover:scale-105"
+                className="px-6 py-3 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-500 hover:to-rose-500 text-white font-black rounded-2xl uppercase tracking-widest text-xs sm:text-sm flex items-center gap-2 shadow-xl shadow-red-500/20 transition-all hover:scale-105 cursor-pointer active:scale-95"
               >
                 <FileText size={18} className="stroke-[2.5px]" />
                 Download Printable PDF
@@ -217,15 +231,15 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
 
               <button 
                 onClick={handleDownloadPNG}
-                className="px-6 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-amber-950 font-black rounded-xl uppercase tracking-widest flex items-center gap-2 shadow-xl shadow-amber-500/30 transition-all hover:scale-105"
+                className="px-6 py-3 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black rounded-2xl uppercase tracking-widest text-xs sm:text-sm flex items-center gap-2 shadow-xl shadow-amber-500/30 transition-all hover:scale-105 cursor-pointer active:scale-95"
               >
                 <Download size={18} className="stroke-[2.5px]" />
-                Save PNG Image
+                Save High-Res PNG Image
               </button>
               
               <button 
                 onClick={handlePrint}
-                className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-black rounded-xl uppercase tracking-widest flex items-center gap-2 shadow-xl transition-all hover:scale-105"
+                className="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-amber-400 border border-slate-700 rounded-2xl font-black uppercase tracking-widest text-xs sm:text-sm flex items-center gap-2 shadow-xl transition-all hover:scale-105 cursor-pointer active:scale-95"
               >
                 <Printer size={18} className="stroke-[2.5px]" />
                 Print Certificate
@@ -233,9 +247,9 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
 
               <button 
                 onClick={onClose}
-                className="px-5 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all font-bold uppercase text-xs tracking-wider border border-white/10"
+                className="px-5 py-3 bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white rounded-2xl transition-all font-bold uppercase text-xs tracking-wider border border-slate-700 cursor-pointer"
               >
-                Close Window
+                Close
               </button>
             </div>
           </motion.div>
@@ -244,4 +258,5 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
     </AnimatePresence>
   );
 }
+
 
