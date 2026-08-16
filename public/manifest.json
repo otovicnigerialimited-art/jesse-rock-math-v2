@@ -2,12 +2,16 @@
   "id": "com.jesse.mathrockstar.pwa",
   "name": "Jesse Math Rockstar",
   "short_name": "Math Rockstar",
-  "start_url": "/",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "any",
   "background_color": "#0f172a",
   "theme_color": "#7c3aed",
-  "description": "Jesse Math Rockstar is the premier gamified EdTech platform designed by 11-year-old software founder Jesse Otobo.",
+  "description": "Jesse Math Rockstar is the premier gamified EdTech platform designed by 11-year-old software founder Jesse Otobo to boost mental math speed and eliminate math anxiety.",
+  "lang": "en-US",
+  "dir": "ltr",
   "categories": ["education", "games", "kids"],
   "icons": [
     {
@@ -21,6 +25,45 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Jesse Math Rockstar Arena Dashboard"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Jesse Math Rockstar Mobile Speed Drill"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Play Speed Arena",
+      "short_name": "Play Arena",
+      "description": "Jump straight into real-time math speed duels",
+      "url": "/?tab=arena",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Learning Hub",
+      "short_name": "Learn",
+      "description": "Interactive visual math models and lesson drills",
+      "url": "/?tab=learn",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
     }
   ]
 }
+
