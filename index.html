@@ -20,18 +20,11 @@
         window.deferredPrompt = e;
       });
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then((registrations) => {
-          for (let registration of registrations) {
-            registration.unregister();
-          }
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('PWA Service Worker registered:', reg.scope))
+            .catch(err => console.log('Service Worker registration failed:', err));
         });
-        if ('caches' in window) {
-          caches.keys().then((names) => {
-            for (let name of names) {
-              caches.delete(name);
-            }
-          });
-        }
       }
     </script>
     <meta name="description" content="Master mental calculation speed with the best free multiplayer math game for kids. Join our zero-lag interactive classroom today and level up your skills!">
