@@ -320,6 +320,12 @@ pause
                       Click <strong>Install</strong> to play fullscreen without browser tabs!
                     </li>
                   </ol>
+                  <button
+                    onClick={handleNativeInstall}
+                    className="mt-3 w-full py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
+                  >
+                    <Sparkles size={14} /> Trigger Chrome Desktop Install Prompt Now
+                  </button>
                 </div>
                 
                 <div className="bg-sky-50 border border-sky-100 rounded-2xl p-4">
@@ -338,6 +344,12 @@ pause
                       Click <strong>Install</strong>.
                     </li>
                   </ol>
+                  <button
+                    onClick={handleNativeInstall}
+                    className="mt-3 w-full py-2.5 px-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
+                  >
+                    <Sparkles size={14} /> Trigger Edge Desktop Install Prompt Now
+                  </button>
                 </div>
               </motion.div>
             )}
@@ -362,6 +374,12 @@ pause
                       Tap <strong>Add</strong>. Jesse Math Rockstar will appear on your home screen!
                     </li>
                   </ol>
+                  <button
+                    onClick={handleDownloadOfflinePackage}
+                    className="mt-3 w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
+                  >
+                    <DownloadCloud size={14} /> Download iPhone App Shortcut Package (.ZIP)
+                  </button>
                 </div>
               </motion.div>
             )}
@@ -386,6 +404,12 @@ pause
                       Confirm installation to complete setup.
                     </li>
                   </ol>
+                  <button
+                    onClick={handleNativeInstall}
+                    className="mt-3 w-full py-2.5 px-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
+                  >
+                    <Sparkles size={14} /> Trigger Android 1-Click Install Prompt Now
+                  </button>
                 </div>
               </motion.div>
             )}
