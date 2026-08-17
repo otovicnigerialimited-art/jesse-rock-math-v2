@@ -2,6 +2,13 @@
   "id": "com.jesse.mathrockstar.pwa",
   "name": "Jesse Math Rockstar",
   "short_name": "Math Rockstar",
+  "developer": {
+    "name": "Jesse Otobo",
+    "url": "https://jesse-math-rockstar-app.vercel.app/"
+  },
+  "publisher": "Jesse Otobo Educational Technologies",
+  "author": "Jesse Otobo (11-Year-Old Founder)",
+  "copyright": "© 2026 Jesse Otobo. All rights reserved.",
   "start_url": "/?utm_source=pwa",
   "scope": "/",
   "display": "standalone",
@@ -9,7 +16,7 @@
   "orientation": "any",
   "background_color": "#0f172a",
   "theme_color": "#7c3aed",
-  "description": "Jesse Math Rockstar is the premier gamified EdTech platform designed by 11-year-old software founder Jesse Otobo to boost mental math speed and eliminate math anxiety.",
+  "description": "Jesse Math Rockstar is the official verified EdTech platform designed by 11-year-old software founder Jesse Otobo to boost mental math speed and eliminate math anxiety.",
   "lang": "en-US",
   "dir": "ltr",
   "categories": ["education", "games", "kids"],
