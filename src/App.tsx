@@ -1217,23 +1217,23 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Sidebar - ROCKSTAR CONCERT THEME */}
+        {/* Sidebar */}
         <aside className={cn(
-          "fixed inset-y-0 left-0 z-40 w-72 bg-slate-950/95 text-white border-r border-pink-500/30 transition-transform lg:translate-x-0 lg:static shrink-0 flex flex-col shadow-2xl backdrop-blur-xl",
+          "fixed inset-y-0 left-0 z-40 w-72 glass bg-clean-white text-deep-navy border-r border-deep-navy border-r-4 transition-transform lg:translate-x-0 lg:static shrink-0 flex flex-col",
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}>
-          <div className="flex items-center justify-between gap-3 p-4 border-b border-slate-800">
+          <div className="flex items-center justify-between gap-3 p-4 border-b border-deep-navy/10">
             <div className="flex items-center gap-3">
-              <a href="https://jesse-math-rockstar-app.vercel.app/" className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(236,72,153,0.6)] border border-pink-500/50 shrink-0 block hover:scale-105 transition-transform">
+              <a href="https://jesse-math-rockstar-app.vercel.app/" className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0 block">
                 <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </a>
-              <h1 className="text-lg font-display font-black tracking-tight leading-tight text-white">JESSE ROCK<br />
-                <span className="text-pink-400 text-xs uppercase font-extrabold flex items-center gap-1">MATH ARENA 🎸</span>
+              <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE ROCK<br />
+                <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>
               </h1>
             </div>
             <button 
               onClick={() => setIsSidebarOpen(false)} 
-              className="lg:hidden p-2 text-slate-400 hover:text-pink-400 transition-colors"
+              className="lg:hidden p-2 text-deep-navy hover:text-action-orange transition-colors"
               aria-label="Close menu"
             >
               <X size={24}/>
@@ -1250,13 +1250,13 @@ export default function App() {
                 }}
                 aria-label={`Navigate to ${item.label}`}
                 className={cn(
-                  "w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-xs font-bold transition-all border min-h-[44px]",
+                  "w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-xs font-bold transition-all border border-transparent min-h-[44px]",
                   activeTab === item.id 
-                    ? "bg-gradient-to-r from-pink-600 to-purple-600 text-white border-pink-400 shadow-[0_0_15px_rgba(236,72,153,0.4)] scale-[1.02]" 
-                    : "text-slate-300 hover:bg-slate-900 hover:text-white border-transparent hover:border-slate-800"
+                    ? "bg-deep-navy text-clean-white border-deep-navy shadow-md scale-[1.02]" 
+                    : "text-deep-navy hover:bg-sky-blue/40 hover:border-deep-navy/20"
                 )}
               >
-                <item.icon size={20} className={activeTab === item.id ? "text-amber-300" : "text-pink-400"} />
+                <item.icon size={20} />
                 {item.label}
               </button>
             ))}

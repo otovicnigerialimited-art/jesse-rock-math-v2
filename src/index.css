@@ -4,199 +4,84 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Outfit", sans-serif;
   
-  /* High-Voltage Electric Rockstar Palette */
-  --color-rock-dark: #09090E;         /* Deep Stage Black */
-  --color-rock-stage: #11111E;        /* Concert Stage Charcoal */
-  --color-rock-magenta: #EC4899;      /* Neon Electric Magenta */
-  --color-rock-purple: #8B5CF6;       /* Rock Concert Violet */
-  --color-rock-cyan: #06B6D4;         /* High-Voltage Cyan */
-  --color-rock-gold: #F59E0B;         /* Rockstar Gold Trophy */
-  --color-rock-flame: #EF4444;        /* Electric Flame Red */
+  /* 60-30-10 Kids Educational Theme */
+  --color-sky-blue: #E8F8F5;    /* Minty Green calming background */
+  --color-sunny-yellow: #FEF3C7; /* Beautiful Warm Pale Yellow Panel */
+  --color-clean-white: #FFFFFA;  /* Clean Warm Ivory White */
+  --color-action-orange: #FF6D00; /* 10% Accent / Buttons */
+  --color-deep-navy: #1C1917;    /* Dark Charcoal (off-black) text / Contour lines */
+  --color-pure-black: #0F172A;
   
-  /* 60-30-10 Kids Educational Theme (Compat Fallback) */
-  --color-sky-blue: #0D0E1A;          /* Deep Rock Night Atmosphere */
-  --color-sunny-yellow: #FEF3C7;      /* Warm Pale Yellow Panel */
-  --color-clean-white: #181828;       /* Clean Dark Rock Panel */
-  --color-action-orange: #EC4899;     /* Electric Pink Accent */
-  --color-deep-navy: #F8FAFC;         /* Crisp White Text on Dark Stage */
-  --color-pure-black: #09090E;
+  /* Soft Pastel Colors for interactive elements and accents */
+  --color-pastel-pink: #FF8A80;
+  --color-pastel-blue: #80D8FF;
+  --color-pastel-green: #A7FFEB;
+  --color-pastel-purple: #EA80FC;
+  --color-pastel-yellow: #FFFF8D;
   
-  /* Soft Pastel & Electric Accents */
-  --color-pastel-pink: #F472B6;
-  --color-pastel-blue: #38BDF8;
-  --color-pastel-green: #34D399;
-  --color-pastel-purple: #C084FC;
-  --color-pastel-yellow: #FBBF24;
-  
-  --color-brand-primary: #8B5CF6;
-  --color-brand-secondary: #06B6D4;
-  --color-brand-accent: #EC4899;
+  --color-brand-primary: #312E81;
+  --color-brand-secondary: #0D9488;
+  --color-brand-accent: var(--color-action-orange);
 }
 
 @layer base {
   body {
-    background-color: var(--color-rock-dark);
-    color: #F8FAFC;
+    background-color: var(--color-sky-blue);
+    color: var(--color-deep-navy);
     @apply antialiased;
     transition: background-color 0.5s ease, color 0.5s ease;
   }
 }
 
-/* HIGH-VOLTAGE ROCKSTAR CONCERT ANIMATIONS */
-@keyframes stageLightSweep {
-  0%, 100% { transform: rotate(-25deg) scale(1); opacity: 0.25; }
-  50% { transform: rotate(25deg) scale(1.15); opacity: 0.5; }
-}
-
-@keyframes neonPulse {
-  0%, 100% { box-shadow: 0 0 15px rgba(236, 72, 153, 0.4), 0 0 30px rgba(139, 92, 246, 0.2); }
-  50% { box-shadow: 0 0 25px rgba(236, 72, 153, 0.7), 0 0 50px rgba(6, 182, 212, 0.4); }
-}
-
-@keyframes goldGlow {
-  0%, 100% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.5); }
-  50% { box-shadow: 0 0 24px rgba(245, 158, 11, 0.9); }
-}
-
-@keyframes rockGuitarVibe {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
-}
-
-@keyframes lightningFlash {
-  0%, 90%, 100% { opacity: 0.1; }
-  92%, 96% { opacity: 0.8; }
-}
-
-.animate-stage-light {
-  animation: stageLightSweep 8s ease-in-out infinite;
-}
-
-.animate-rock-pulse {
-  animation: neonPulse 3s ease-in-out infinite;
-}
-
-.animate-gold-glow {
-  animation: goldGlow 2.5s ease-in-out infinite;
-}
-
-.animate-guitar-vibe {
-  animation: rockGuitarVibe 2s ease-in-out infinite;
-}
-
-/* ROCKSTAR GLASS & CARD STYLING */
 .glass {
-  background: rgba(17, 17, 30, 0.85);
-  backdrop-filter: blur(12px);
-  border: 2px solid rgba(139, 92, 246, 0.3);
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 4px solid var(--color-deep-navy); /* Contour line */
   border-radius: 1.5rem;
-  color: #F8FAFC;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(236, 72, 153, 0.15);
+  color: var(--color-deep-navy);
 }
 
-.rockstar-card {
-  background: linear-gradient(145deg, rgba(24, 24, 42, 0.9), rgba(13, 13, 24, 0.95));
-  border: 2px solid rgba(236, 72, 153, 0.3);
-  border-radius: 1.5rem;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(139, 92, 246, 0.2);
-  position: relative;
-  overflow: hidden;
-}
+/* Flat matte buttons for accents (10%) */
 
-.rockstar-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #EC4899, #8B5CF6, #06B6D4, #F59E0B);
-}
-
-/* ROCKSTAR BUTTONS WITH 3D PRESS FEEL & NEON GLOW */
-.btn-action, .rockstar-btn-primary {
-  background: linear-gradient(135deg, #EC4899, #D946EF);
-  border: 3px solid #F472B6;
+/* Interactive Elements with Contour Lines */
+.btn-action {
+  background-color: var(--color-action-orange);
+  border: 4px solid var(--color-deep-navy);
   color: #FFFFFF;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   border-radius: 1.25rem;
-  box-shadow: 0 6px 0 #9D174D, 0 0 20px rgba(236, 72, 153, 0.5);
-  transition: all 0.1s ease;
+  box-shadow: 0 6px 0 var(--color-deep-navy);
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
   user-select: none;
   cursor: pointer;
 }
-.btn-action:hover, .rockstar-btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 0 #9D174D, 0 0 30px rgba(236, 72, 153, 0.8);
-}
-.btn-action:active, .rockstar-btn-primary:active {
+.btn-action:active {
   transform: translateY(6px);
-  box-shadow: 0 0 0 #9D174D, 0 0 10px rgba(236, 72, 153, 0.4);
+  box-shadow: 0 0 0 var(--color-deep-navy);
 }
 
-.btn-secondary, .rockstar-btn-gold {
-  background: linear-gradient(135deg, #F59E0B, #D97706);
-  border: 3px solid #FCD34D;
-  color: #0F172A;
+.btn-secondary {
+  background-color: var(--color-sunny-yellow);
+  border: 4px solid var(--color-deep-navy);
+  color: var(--color-deep-navy);
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   border-radius: 1.25rem;
-  box-shadow: 0 6px 0 #78350F, 0 0 20px rgba(245, 158, 11, 0.4);
-  transition: all 0.1s ease;
+  box-shadow: 0 6px 0 var(--color-deep-navy);
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
   user-select: none;
   cursor: pointer;
 }
-.btn-secondary:hover, .rockstar-btn-gold:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 0 #78350F, 0 0 30px rgba(245, 158, 11, 0.7);
-}
-.btn-secondary:active, .rockstar-btn-gold:active {
+.btn-secondary:active {
   transform: translateY(6px);
-  box-shadow: 0 0 0 #78350F;
-}
-
-.rockstar-btn-cyan {
-  background: linear-gradient(135deg, #06B6D4, #0284C7);
-  border: 3px solid #67E8F9;
-  color: #FFFFFF;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-radius: 1.25rem;
-  box-shadow: 0 6px 0 #075985, 0 0 20px rgba(6, 182, 212, 0.4);
-  transition: all 0.1s ease;
-  user-select: none;
-  cursor: pointer;
-}
-.rockstar-btn-cyan:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 0 #075985, 0 0 30px rgba(6, 182, 212, 0.7);
-}
-.rockstar-btn-cyan:active {
-  transform: translateY(6px);
-  box-shadow: 0 0 0 #075985;
-}
-
-/* TEXT GRADIENT GLOWS */
-.rockstar-text-glow {
-  background: linear-gradient(135deg, #FFF, #F472B6, #FBBF24, #38BDF8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(236, 72, 153, 0.5));
-}
-
-.rockstar-text-gold {
-  background: linear-gradient(135deg, #FFF, #FCD34D, #F59E0B);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(245, 158, 11, 0.5));
+  box-shadow: 0 0 0 var(--color-deep-navy);
 }
 
 /* Wiggle animation & hover effect */
 @keyframes wiggle {
-  0%, 100% { transform: scale(1.08) rotate(-4deg); }
-  50% { transform: scale(1.08) rotate(4deg); }
+  0%, 100% { transform: scale(1.1) rotate(-4deg); }
+  50% { transform: scale(1.1) rotate(4deg); }
 }
 .wiggle-hover {
   display: inline-block;
@@ -206,24 +91,24 @@
   animation: wiggle 0.15s infinite;
 }
 
-/* Day/Night backgrounds - Rockstar Concert Theme */
+/* Day/Night backgrounds */
 .bg-daytime {
-  background-color: var(--color-rock-dark);
-  color: #F8FAFC;
+  background-color: var(--color-sky-blue);
+  color: var(--color-deep-navy);
 }
 .bg-nighttime {
-  background-color: #05050A;
+  background-color: #0F172A;
   color: #F8FAFC;
 }
 
-/* Stage Landscape overlay with Rock Concert Neon Skyline */
+/* Landscape overlay */
 .landscape-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 140px;
-  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%238B5CF6" fill-opacity="0.15" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+  height: 120px;
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23BBDEFB" fill-opacity="1" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: bottom;
@@ -236,12 +121,15 @@
     height: 250px;
   }
 }
+.landscape-night {
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23334155" fill-opacity="1" d="M0,256L48,229.3C96,203,192,149,288,154.7C384,160,480,224,576,218.7C672,213,768,139,864,128C960,117,1056,171,1152,197.3C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+}
 
 /* Floating emojis under active elements */
 @keyframes floatUp {
   0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.25; }
-  90% { opacity: 0.25; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
   100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
 }
 .floating-bg-container {
@@ -253,19 +141,16 @@
   position: absolute; bottom: -50px; user-select: none; pointer-events: none;
   animation: floatUp linear infinite; opacity: 0; will-change: transform, opacity;
 }
-.scrollbar-thin-custom::-webkit-scrollbar { width: 6px; }
-.scrollbar-thin-custom::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-.scrollbar-thin-custom::-webkit-scrollbar-thumb { background: rgba(236, 72, 153, 0.4); border-radius: 4px; }
-.scrollbar-thin-custom::-webkit-scrollbar-thumb:hover { background: rgba(236, 72, 153, 0.8); }
+.scrollbar-thin-custom::-webkit-scrollbar { width: 4px; }
+.scrollbar-thin-custom::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+.scrollbar-thin-custom::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+.scrollbar-thin-custom::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.3); }
 
 /* Quiet Mode - Sensory Overload Protection */
 body.quiet-mode .animate-pulse,
 body.quiet-mode .animate-bounce,
 body.quiet-mode .animate-ping,
-body.quiet-mode .animate-spin,
-body.quiet-mode .animate-stage-light,
-body.quiet-mode .animate-rock-pulse,
-body.quiet-mode .animate-gold-glow {
+body.quiet-mode .animate-spin {
   animation: none !important;
   transform: none !important;
 }
@@ -273,4 +158,5 @@ body.quiet-mode .animate-gold-glow {
 body.quiet-mode .floating-emoji-item {
   display: none !important;
 }
+
 

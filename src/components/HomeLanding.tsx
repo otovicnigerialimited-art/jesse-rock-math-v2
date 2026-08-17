@@ -110,36 +110,31 @@ export default function HomeLanding({
   return (
     <div className="flex flex-col flex-1 justify-between w-full h-full space-y-12">
       
-      {/* 1. HERO SECTION - ELECTRIC ROCKSTAR CONCERT STAGE */}
-      <section className="relative overflow-hidden p-8 md:p-14 rounded-[3rem] bg-gradient-to-br from-slate-950 via-purple-950 to-slate-900 text-white border-4 border-pink-500/40 shadow-2xl rockstar-card animate-rock-pulse">
-        {/* Stage Spotlights & Background Glows */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent pointer-events-none" />
-
+      {/* 1. HERO SECTION */}
+      <section className="relative overflow-hidden p-8 md:p-14 rounded-[3rem] bg-gradient-to-br from-violet-600 via-indigo-700 to-slate-900 text-white border-4 border-deep-navy shadow-2xl">
         <div className="relative z-10 space-y-6 max-w-3xl">
           
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-pink-500/20 border border-pink-500/40 rounded-full text-xs font-black text-pink-300 uppercase tracking-widest shadow-lg">
-            <Sparkles size={14} className="text-yellow-400 animate-spin" /> 🎸 Electric Rockstar Math Concert Stage
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-black text-amber-300 uppercase tracking-widest">
+            <Sparkles size={14} className="text-yellow-400" /> Free Interactive Math Game
           </div>
 
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tight leading-none rockstar-text-glow">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tight leading-none">
             Jesse Math Rockstar
           </h1>
 
-          <p className="text-xl md:text-2xl font-bold text-amber-400 tracking-tight flex items-center gap-2">
-            <span>🔥 Turn Math Practice into an Unstoppable Rock Concert!</span>
+          <p className="text-xl md:text-2xl font-bold text-amber-300 tracking-tight">
+            Make math practice feel like a game.
           </p>
 
           <p className="text-sm md:text-base text-slate-200 font-medium leading-relaxed max-w-2xl">
-            Master math speed drills, solo guitar solos, multiplayer arena duels, rockstar avatars, streaks, and trophies. Jam to calculation mastery!
+            Practice math through interactive challenges, multiplayer battles, rewards, streaks, and progression. Build calculation speed while having fun!
           </p>
 
           {/* Supported Skills Pills */}
           <div className="flex flex-wrap gap-2 pt-1">
             {['Addition', 'Subtraction', 'Multiplication', 'Division', 'Fractions', 'Decimals', 'Algebra', 'Geometry'].map((skill) => (
-              <span key={skill} className="px-3.5 py-1 bg-slate-900/80 border border-purple-500/30 rounded-full text-xs font-bold text-pink-200 shadow-sm flex items-center gap-1">
-                <span className="text-amber-400 text-[10px]">⚡</span> {skill}
+              <span key={skill} className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/15 rounded-full text-xs font-bold text-slate-100">
+                {skill}
               </span>
             ))}
           </div>
@@ -148,19 +143,19 @@ export default function HomeLanding({
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
             <button
               onClick={() => onNavigateToTab('quiz')}
-              className="w-full sm:w-auto px-8 py-4 rockstar-btn-gold font-black text-sm tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-amber-500/20"
+              className="w-full sm:w-auto px-8 py-4 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm tracking-wider uppercase rounded-2xl shadow-xl flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
             >
-              🎸 Play Free Rock Concert <ArrowRight size={18} />
+              Play Free <ArrowRight size={18} />
             </button>
             <button
-              onClick={() => onNavigateToTab('arena')}
-              className="w-full sm:w-auto px-8 py-4 rockstar-btn-primary font-black text-sm tracking-wider uppercase rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+              onClick={() => onNavigateToTab('school')}
+              className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-sm tracking-wider uppercase rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
             >
-              ⚡ Rock Arena Battle
+              <GraduationCap size={18} /> For Teachers
             </button>
             <button
               onClick={() => onNavigateToTab('hub')}
-              className="w-full sm:w-auto px-8 py-4 bg-slate-900/80 hover:bg-slate-800 text-cyan-300 font-black text-sm tracking-wider uppercase rounded-2xl border border-cyan-500/40 backdrop-blur-md flex items-center justify-center gap-2 transition-all cursor-pointer"
+              className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-sm tracking-wider uppercase rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
             >
               <BookOpen size={18} /> Learning Hub
             </button>
