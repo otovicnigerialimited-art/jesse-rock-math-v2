@@ -99,15 +99,15 @@ export default function ReviewSection({ userRole = 'student' }: ReviewSectionPro
             Ratings & Feedback <Sparkles className="w-6 h-6 text-yellow-400" />
           </h3>
           <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold rounded-full">
-            <ShieldCheck className="w-3.5 h-3.5" /> COPPA Compliant
+            <ShieldCheck className="w-3.5 h-3.5" /> Student Privacy Protected
           </span>
         </div>
 
-        {/* COPPA Explicit Guarantee */}
+        {/* Child Safety Feature */}
         <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 mb-6 flex items-start gap-3">
           <Lock className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
           <p className="text-xs text-slate-300 font-medium leading-relaxed">
-            <strong className="text-white">COPPA Privacy Enforced:</strong> Guest, Student, Kid, and Individual accounts rate exclusively using our <strong>Visual 5-Star Rating & Badge System</strong>. Written review text panels are completely disabled and hidden for minor accounts to prevent personal information exposure.
+            <strong className="text-white">Privacy Protected:</strong> Student accounts rate using a simple <strong>Visual Star Rating System</strong>. Open text input is restricted for minor accounts to protect student privacy.
           </p>
         </div>
 
@@ -119,8 +119,8 @@ export default function ReviewSection({ userRole = 'student' }: ReviewSectionPro
             <h4 className="text-xl font-bold text-white mb-2">Thank you!</h4>
             <p className="text-emerald-400 font-medium text-sm">
               {adultPortalActive 
-                ? 'Your Parent/Teacher review has been recorded for Google Search and AI indexing!' 
-                : 'Your 5-star rating has been registered safely! Keep rocking on Jesse Math Rockstar!'}
+                ? 'Your feedback has been submitted successfully!' 
+                : 'Your rating has been registered safely! Keep practicing on Jesse Math Rockstar!'}
             </p>
           </div>
         ) : adultPortalActive ? (

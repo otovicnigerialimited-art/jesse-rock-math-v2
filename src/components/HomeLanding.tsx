@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import ReviewSection from './ReviewSection';
 import { 
   Trophy, 
   BookOpen, 
@@ -12,13 +11,19 @@ import {
   HelpCircle, 
   Flame, 
   Compass,
-  Globe,
-  ExternalLink,
   ChevronRight,
   Target,
-  Github
+  Users,
+  GraduationCap,
+  Zap,
+  CheckCircle2,
+  Gamepad2,
+  Github,
+  ExternalLink,
+  Smartphone
 } from 'lucide-react';
 import AboutSection from './AboutSection';
+import ReviewSection from './ReviewSection';
 
 interface HomeLandingProps {
   username: string;
@@ -34,24 +39,65 @@ interface HomeLandingProps {
   onNavigateToTermsSection?: (section: 'privacy' | 'terms' | 'dual') => void;
 }
 
-const SITE_LESSONS = [
-  { id: '1', title: 'Multiplication Mastery', cat: 'Arithmetic', desc: 'Step-by-step interactive array grids' },
-  { id: '2', title: 'Division Decoded', cat: 'Arithmetic', desc: 'Splitting groups fairly with inverse math' },
-  { id: '4', title: 'Long Division Arena', cat: 'Arithmetic', desc: 'Step-by-step long division workouts' },
-  { id: '5', title: 'Fraction Fusion', cat: 'Arithmetic', desc: 'Learn parts with visual pie sectors' },
-  { id: '3', title: 'Algebraic Basics', cat: 'Algebra', desc: 'Introducing dynamic equations and solving X' }
+const SUPPORTED_SKILLS = [
+  { id: '1', name: 'Multiplication', cat: 'Arithmetic', desc: 'Master times tables with interactive drills', lessonId: '1' },
+  { id: '2', name: 'Division', cat: 'Arithmetic', desc: 'Practice splitting numbers and inverse operations', lessonId: '2' },
+  { id: '3', name: 'Addition', cat: 'Arithmetic', desc: 'Build mental calculation speed and fluency', lessonId: '1' },
+  { id: '4', name: 'Subtraction', cat: 'Arithmetic', desc: 'Practice quick mental subtraction challenges', lessonId: '1' },
+  { id: '5', name: 'Fractions', cat: 'Fractions', desc: 'Understand parts of a whole with visual models', lessonId: '5' },
+  { id: '6', name: 'Decimals', cat: 'Decimals', desc: 'Practice place values, conversions, and decimals', lessonId: '5' },
+  { id: '7', name: 'Algebra', cat: 'Algebra', desc: 'Solve equations and find unknown variables', lessonId: '3' },
+  { id: '8', name: 'Geometry', cat: 'Geometry', desc: 'Explore angles, shapes, perimeter, and area', lessonId: '3' },
 ];
 
-export default function HomeLanding({ username, userRole, stats, onNavigateToTab, onNavigateToLesson, onNavigateToTermsSection }: HomeLandingProps) {
+const FAQ_ITEMS = [
+  {
+    q: "Is Jesse Math Rockstar free?",
+    a: "Yes, Jesse Math Rockstar is 100% free to play with no hidden paywalls, subscription fees, or intrusive advertisements."
+  },
+  {
+    q: "What math skills can students practice?",
+    a: "Students can practice core skills across addition, subtraction, multiplication, division, fractions, decimals, algebra basics, and geometry."
+  },
+  {
+    q: "Can students play multiplayer match games?",
+    a: "Yes! Students can enter the Play Arena to join live multiplayer math challenges against peers, build streaks, and climb global leaderboards."
+  },
+  {
+    q: "Is Jesse Math Rockstar suitable for classrooms and teachers?",
+    a: "Absolutely. Teachers can set up class rosters, track student performance, view progress diagnostics, and run interactive class activities."
+  },
+  {
+    q: "What age or grade level is it designed for?",
+    a: "It is designed primarily for primary and middle school students, but adaptable for any student looking to improve mental calculation speed."
+  },
+  {
+    q: "Do I need an account to start playing?",
+    a: "No account is required to start practicing immediately! You can enter a nickname and jump straight into challenges."
+  },
+  {
+    q: "Can I play on a mobile phone or tablet?",
+    a: "Yes, Jesse Math Rockstar is fully responsive and optimized for phones, tablets, Chromebooks, and desktop computers."
+  }
+];
+
+export default function HomeLanding({ 
+  username, 
+  userRole, 
+  stats, 
+  onNavigateToTab, 
+  onNavigateToLesson, 
+  onNavigateToTermsSection 
+}: HomeLandingProps) {
   if (!stats) return null;
   const [searchQuery, setSearchQuery] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
-  // Filter lessons based on query
-  const filteredSuggestions = SITE_LESSONS.filter(l => 
-    l.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    l.cat.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    l.desc.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredSuggestions = SUPPORTED_SKILLS.filter(s => 
+    s.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    s.cat.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    s.desc.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const accuracy = stats.totalSolved > 0 
@@ -59,73 +105,121 @@ export default function HomeLanding({ username, userRole, stats, onNavigateToTab
     : 0;
 
   return (
-    <div className="flex flex-col flex-1 justify-between w-full h-full">
-      <div className="space-y-12 flex-1">
+    <div className="flex flex-col flex-1 justify-between w-full h-full space-y-12">
+      
+      {/* 1. HERO SECTION */}
+      <section className="relative overflow-hidden p-8 md:p-14 rounded-[3rem] bg-gradient-to-br from-violet-600 via-indigo-700 to-slate-900 text-white border-4 border-deep-navy shadow-2xl">
+        <div className="relative z-10 space-y-6 max-w-3xl">
+          
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs font-black text-amber-300 uppercase tracking-widest">
+            <Sparkles size={14} className="text-yellow-400" /> Free Interactive Math Game
+          </div>
 
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tight leading-none">
+            Jesse Math Rockstar
+          </h1>
 
-      {/* Search & Site Explorer - Sleek Sticky feel */}
-      <div className="relative">
-        <div className="p-4 md:p-6 rounded-3xl bg-white/30 border border-deep-navy border-4 backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xl md:text-2xl font-bold text-amber-300 tracking-tight">
+            Make math practice feel like a game.
+          </p>
+
+          <p className="text-sm md:text-base text-slate-200 font-medium leading-relaxed max-w-2xl">
+            Practice math through interactive challenges, multiplayer battles, rewards, streaks, and progression. Build calculation speed while having fun!
+          </p>
+
+          {/* Supported Skills Pills */}
+          <div className="flex flex-wrap gap-2 pt-1">
+            {['Addition', 'Subtraction', 'Multiplication', 'Division', 'Fractions', 'Decimals', 'Algebra', 'Geometry'].map((skill) => (
+              <span key={skill} className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/15 rounded-full text-xs font-bold text-slate-100">
+                {skill}
+              </span>
+            ))}
+          </div>
+
+          {/* Primary & Secondary CTAs */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+            <button
+              onClick={() => onNavigateToTab('quiz')}
+              className="w-full sm:w-auto px-8 py-4 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm tracking-wider uppercase rounded-2xl shadow-xl flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
+            >
+              Play Free <ArrowRight size={18} />
+            </button>
+            <button
+              onClick={() => onNavigateToTab('school')}
+              className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-sm tracking-wider uppercase rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
+            >
+              <GraduationCap size={18} /> For Teachers
+            </button>
+            <button
+              onClick={() => onNavigateToTab('hub')}
+              className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-sm tracking-wider uppercase rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
+            >
+              <BookOpen size={18} /> Learning Hub
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. QUICK EXPLORER & SEARCH */}
+      <section className="relative">
+        <div className="p-4 md:p-6 rounded-3xl bg-white/60 border-4 border-deep-navy backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4 shadow-md">
           <div className="flex items-center gap-3 shrink-0">
-            <div className="w-10 h-10 bg-pastel-green/10 rounded-xl flex items-center justify-center text-blue-500">
-              <Compass size={20} className="animate-spin-slow" />
+            <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+              <Compass size={20} />
             </div>
             <div>
-              <h4 className="text-sm font-black text-deep-navy">Interactive Site Explorer</h4>
-              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-extrabold">Instant Lesson Finder</p>
+              <h3 className="text-sm font-black text-deep-navy">Explore Math Topics</h3>
+              <p className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Quick Skill Finder</p>
             </div>
           </div>
 
-          {/* Search bar inputs */}
           <div className="relative w-full md:max-w-md">
-            <Search size={16} className="absolute left-4 top-3.5 text-deep-navy" />
+            <Search size={16} className="absolute left-4 top-3.5 text-slate-400" />
             <input 
               type="text"
-              placeholder="Search multiplication, fractions, algebraic equations..."
+              placeholder="Search multiplication, fractions, algebra..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
                 setShowSuggestions(true);
               }}
               onFocus={() => setShowSuggestions(true)}
-              className="w-full pl-11 pr-4 py-3 bg-clean-white backdrop-blur-md border-deep-navy border-4 border border-deep-navy border-4 rounded-2xl text-xs text-deep-navy placeholder:text-slate-700 outline-none focus:border-indigo-500 font-semibold transition-all"
+              className="w-full pl-11 pr-4 py-3 bg-white border-2 border-deep-navy/20 rounded-2xl text-xs text-deep-navy placeholder:text-slate-400 outline-none focus:border-indigo-600 font-semibold transition-all shadow-sm"
             />
 
-            {/* Suggestions Overlay dropdown */}
             <AnimatePresence>
               {showSuggestions && searchQuery.trim().length > 0 && (
                 <>
-                  {/* Click trigger to dismiss suggestions */}
                   <div className="fixed inset-0 z-10" onClick={() => setShowSuggestions(false)} />
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute left-0 right-0 top-full mt-2 bg-white border border-deep-navy border-4 rounded-2xl shadow-2xl p-3 z-20 max-h-60 overflow-y-auto space-y-1"
+                    className="absolute left-0 right-0 top-full mt-2 bg-white border-2 border-deep-navy rounded-2xl shadow-2xl p-3 z-20 max-h-60 overflow-y-auto space-y-1"
                   >
-                    <p className="text-[10px] text-slate-500 font-black uppercase tracking-wider px-2 pb-1.5 border-b border-deep-navy border-4">Website Search Results</p>
+                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-wider px-2 pb-1.5 border-b border-slate-100">Math Topics</p>
                     {filteredSuggestions.length > 0 ? (
-                      filteredSuggestions.map((l) => (
+                      filteredSuggestions.map((s) => (
                         <button
-                          key={l.id}
+                          key={s.id}
                           onClick={() => {
-                            onNavigateToLesson(l.id);
+                            onNavigateToLesson(s.lessonId);
                             setSearchQuery('');
                             setShowSuggestions(false);
                           }}
-                          className="w-full text-left p-2 hover:bg-white/5 rounded-xl transition-all flex items-center justify-between group cursor-pointer"
+                          className="w-full text-left p-2 hover:bg-indigo-50 rounded-xl transition-all flex items-center justify-between group cursor-pointer"
                         >
                           <div>
-                            <p className="text-xs font-black text-deep-navy group-hover:text-blue-500 transition-colors">{l.title}</p>
-                            <p className="text-[10px] text-slate-550 italic font-medium">{l.desc}</p>
+                            <p className="text-xs font-black text-deep-navy group-hover:text-indigo-600">{s.name}</p>
+                            <p className="text-[10px] text-slate-500 font-medium">{s.desc}</p>
                           </div>
-                          <span className="text-[10px] bg-slate-800 text-deep-navy font-bold px-2 py-0.5 rounded uppercase group-hover:bg-indigo-600/20 group-hover:text-blue-500">
-                            {l.cat}
+                          <span className="text-[10px] bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded uppercase">
+                            {s.cat}
                           </span>
                         </button>
                       ))
                     ) : (
-                      <p className="p-3 text-[11px] text-slate-500 italic text-center">No math topics found. Try typing 'division' or 'fraction'</p>
+                      <p className="p-3 text-[11px] text-slate-500 italic text-center">No matching math topics found.</p>
                     )}
                   </motion.div>
                 </>
@@ -133,324 +227,268 @@ export default function HomeLanding({ username, userRole, stats, onNavigateToTab
             </AnimatePresence>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Main Hero Section */}
-      <div className="relative overflow-hidden p-8 md:p-14 rounded-[3.5rem] bg-gradient-to-br from-pastel-purple/60 via-pastel-blue/30 to-transparent border border-deep-navy border-4 shadow-2xl relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-energetic-red/10 rounded-full blur-[100px] pointer-events-none" />
-        
-        <div className="relative z-10 space-y-6 max-w-2xl text-center md:text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-energetic-red/10 border border-energetic-red/20 rounded-full text-xs font-black text-action-orange uppercase tracking-widest leading-none mx-auto md:mx-0">
-            <Sparkles size={12} className="text-yellow-400 animate-pulse" /> ROCKSTAR PORTAL IS LIVE
-          </div>
-          
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tight leading-none text-deep-navy">
-            WELCOME TO <br />
-            <span className="text-deep-navy drop-shadow-md">
-              JESSE MATH ROCK STAR
-            </span>
-          </h1>
-
-          <p className="text-deep-navy text-sm sm:text-base leading-relaxed max-w-xl font-medium">
-            {"Hey "} <span className="text-emerald-500 font-extrabold">{username}</span>{", you are currently level "} <span className="text-emerald-500 font-extrabold">{stats.level}</span>{"! "} 
-            {"Challenge global duelists in real-time online battles, earn math tokens, master multi-grade math lessons, and climb the scoreboard! No third-party sign-ins, pure educational power."}
+      {/* 3. HOW IT WORKS */}
+      <section className="space-y-6">
+        <div className="text-center space-y-2 max-w-xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-display font-black text-deep-navy">
+            How It Works
+          </h2>
+          <p className="text-xs md:text-sm text-slate-600 font-medium">
+            Start practicing math in three simple steps.
           </p>
-
-          <div className="flex flex-col sm:flex-row flex-wrap items-center gap-5 pt-4">
-            <button
-              onClick={() => onNavigateToTab('quiz')}
-              className="w-full sm:w-auto px-8 py-4 btn-action rounded-2xl font-black text-sm tracking-wider uppercase flex items-center justify-center gap-2 hover:scale-105 transition-transform"
-            >
-              Enter Play Arena <ArrowRight size={18} />
-            </button>
-            <button
-              onClick={() => onNavigateToTab('shop')}
-              className="w-full sm:w-auto px-8 py-4 btn-secondary rounded-2xl font-black text-sm tracking-wide uppercase flex items-center justify-center gap-2 hover:scale-105 transition-transform"
-            >
-              🎸 Rock Shop & Customize
-            </button>
-            <button
-              onClick={() => onNavigateToTab('rules')}
-              className="w-full sm:w-auto px-8 py-4 btn-secondary rounded-2xl font-black text-sm tracking-wide uppercase flex items-center justify-center gap-2 hover:scale-105 transition-transform"
-            >
-              <HelpCircle size={17} /> Rules Page
-            </button>
-          </div>
         </div>
-      </div>
 
-      {/* About Jesse Rock Math - Mission & Vision */}
-      <section className="bg-white/40 backdrop-blur-md rounded-[2.5rem] p-8 md:p-10 border border-deep-navy border-4 space-y-6">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-indigo-600">
-            <Target size={24} />
-          </div>
-          <div>
-            <h2 className="text-2xl font-black text-deep-navy uppercase tracking-tight">Our Mission & Educational Vision</h2>
-            <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Bridging Game Mechanics with Mathematical Mastery</p>
-          </div>
-        </div>
-        
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="space-y-4">
-            <p className="text-sm text-deep-navy font-semibold leading-relaxed">
-              Jesse Rock Math isn't just another educational app; it's a revolutionary movement in <strong>EdTech</strong> designed to transform how children perceive numbers. By leveraging high-octane <strong>competitive multiplayer</strong> and <strong>RPG progression mechanics</strong>, we've created a platform where students don't just "do math"—they live it.
-            </p>
-            <p className="text-sm text-deep-navy font-semibold leading-relaxed">
-              Our core philosophy revolves around <strong>Active Recall</strong> and <strong>Spaced Repetition</strong>. Through our dynamic Arena matches, students are exposed to constant, varied stimulation that forces the brain to retrieve mathematical facts quickly, building the neural pathways required for <strong>instant mental calculation</strong>.
-            </p>
-          </div>
-          <div className="bg-deep-navy/5 p-6 rounded-3xl border-2 border-dashed border-deep-navy/20 space-y-4">
-            <h4 className="text-xs font-black text-deep-navy uppercase flex items-center gap-2">
-              <Sparkles size={14} className="text-yellow-500" /> Why Interactive Learning Matters
-            </h4>
-            <div className="space-y-3">
-              <div className="flex gap-3">
-                <div className="w-5 h-5 rounded-full bg-emerald-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold">1</div>
-                <p className="text-[11px] text-slate-700 font-bold">Reduces Math Anxiety: Gamified environments provide a "safe failure" zone where mistakes are part of the game journey.</p>
-              </div>
-              <div className="flex gap-3">
-                <div className="w-5 h-5 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold">2</div>
-                <p className="text-[11px] text-slate-700 font-bold">Increases Engagement: Real-time leaderboards and badges create a dopamine-driven feedback loop that encourages longer study sessions.</p>
-              </div>
-              <div className="flex gap-3">
-                <div className="w-5 h-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] font-bold">3</div>
-                <p className="text-[11px] text-slate-700 font-bold">Accelerates Reflexes: Time-pressured duels replicate the adrenaline of sports, translating to faster processing in standardized testing.</p>
-              </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="p-6 rounded-3xl bg-white border-4 border-deep-navy space-y-3 shadow-md relative">
+            <div className="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 font-black text-lg flex items-center justify-center shadow">
+              1
             </div>
+            <h3 className="text-base font-black text-deep-navy">Choose a Challenge</h3>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              Pick the math skill you want to practice, from multiplication tables to algebraic equations.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-3xl bg-white border-4 border-deep-navy space-y-3 shadow-md relative">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-black text-lg flex items-center justify-center shadow">
+              2
+            </div>
+            <h3 className="text-base font-black text-deep-navy">Solve and Compete</h3>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              Answer math questions, build streaks, and compete in interactive single-player or multiplayer games.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-3xl bg-white border-4 border-deep-navy space-y-3 shadow-md relative">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-white font-black text-lg flex items-center justify-center shadow">
+              3
+            </div>
+            <h3 className="text-base font-black text-deep-navy">Become a Rockstar</h3>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              Earn rewards, unlock avatar gear in the Rock Shop, and climb the leaderboard as your skills improve.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Personalized Rockstar Recommendation Section */}
-      <div className="p-8 rounded-[2.5rem] bg-gradient-to-r from-emerald-500/10 to-blue-500/10 border border-deep-navy border-4 flex flex-col md:flex-row items-center gap-8 group">
-        <div className="shrink-0 w-24 h-24 bg-white border border-deep-navy border-4 rounded-3xl flex items-center justify-center text-emerald-600 shadow-xl group-hover:rotate-6 transition-transform">
-          <Target size={48} />
-        </div>
-        <div className="space-y-3 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 px-2 py-0.5 bg-emerald-500/20 rounded-lg text-[10px] font-black text-emerald-700 uppercase tracking-widest">
-            Level {stats.level} Insight
+      {/* 4. MATH SKILLS SECTION */}
+      <section className="space-y-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-display font-black text-deep-navy">
+              Math Skills You Can Practice
+            </h2>
+            <p className="text-xs md:text-sm text-slate-600 font-medium mt-1">
+              Explore essential curriculum math topics with interactive drills.
+            </p>
           </div>
-          <h3 className="text-xl font-black text-deep-navy uppercase">Recommended for your rank</h3>
-          <p className="text-xs text-slate-700 font-bold leading-relaxed max-w-2xl">
-            {stats.level < 5 ? (
-              "Welcome to the stage! We recommend starting in the 'Learning Hub' to master multiplication tables. Focus on accuracy over speed to build a solid foundation before entering high-stakes duels."
-            ) : stats.level < 15 ? (
-              "You're becoming a regular! It's time to challenge your reflexes in the 'Play Arena'. Your accuracy is solid; now work on reducing your response time to under 3 seconds per question."
-            ) : (
-              "True Rockstar status! You should be aiming for the 'Grand Master Certificate'. Dive into the 'Algebraic Basics' lessons in the Hub to truly push your mathematical boundaries."
-            )}
-          </p>
-          <button 
-            onClick={() => onNavigateToTab(stats.level < 5 ? 'hub' : 'quiz')}
-            className="text-[10px] font-black uppercase text-emerald-600 hover:underline flex items-center gap-1 mx-auto md:mx-0"
+          <button
+            onClick={() => onNavigateToTab('hub')}
+            className="px-5 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-black text-xs uppercase tracking-wider rounded-xl transition-all flex items-center gap-1 shrink-0"
           >
-            Go to recommendation <ChevronRight size={12} />
+            Explore All Lessons <ChevronRight size={14} />
           </button>
         </div>
-      </div>
 
-      {/* Website Core Feature Highlights */}
-      <div className="space-y-6">
-        <div className="text-center md:text-left space-y-1">
-          <h2 className="text-xl font-black uppercase tracking-wider text-deep-navy">Website Features & Hub Highlights</h2>
-          <p className="text-xs text-slate-500 leading-normal font-medium">Explore the diverse features of Jesse Rock Math Hub in sequential pages</p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Feature 1 */}
-          <div className="p-6 rounded-3xl bg-sky-blue/50 backdrop-blur-sm border border-deep-navy border-4 space-y-4 hover:border-energetic-red/20 transition-all flex flex-col justify-between group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-violet-600/10 rounded-xl flex items-center justify-center text-action-orange">
-                <Trophy size={18} />
-              </div>
-              <h3 className="text-sm font-black text-deep-navy group-hover:text-emerald-500 transition-colors">1. Quick Match Play Arena</h3>
-              <p className="text-[11px] text-deep-navy leading-relaxed font-semibold">
-                Engage in fast real-time matches against other players using direct Firestore synchronization. No restrictive Google popups!
-              </p>
-            </div>
-            <button 
-              onClick={() => onNavigateToTab('quiz')}
-              className="text-[10px] text-action-orange hover:text-emerald-500 font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer pt-2 mt-auto"
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+          {SUPPORTED_SKILLS.map((skill) => (
+            <div 
+              key={skill.id}
+              className="p-5 rounded-2xl bg-white border-2 border-deep-navy/20 hover:border-indigo-600 transition-all space-y-2 flex flex-col justify-between shadow-sm group"
             >
-              Start matchmaking now <ChevronRight size={12} />
-            </button>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="p-6 rounded-3xl bg-sky-blue/50 backdrop-blur-sm border border-deep-navy border-4 space-y-4 hover:border-pastel-green/40 transition-all flex flex-col justify-between group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-pastel-green/20 rounded-xl flex items-center justify-center text-emerald-500">
-                <BookOpen size={18} />
+              <div className="space-y-1.5">
+                <span className="px-2 py-0.5 bg-indigo-100 text-indigo-800 text-[10px] font-bold rounded uppercase inline-block">
+                  {skill.cat}
+                </span>
+                <h3 className="text-sm font-black text-deep-navy group-hover:text-indigo-600 transition-colors">
+                  {skill.name}
+                </h3>
+                <p className="text-[11px] text-slate-600 font-medium leading-snug">
+                  {skill.desc}
+                </p>
               </div>
-              <h3 className="text-sm font-black text-deep-navy group-hover:text-emerald-500 transition-colors">2. Interactive Learning Hub</h3>
-              <p className="text-[11px] text-deep-navy leading-relaxed font-semibold">
-                Access custom worksheets and visual generators for Arithmetic, Fraction Pie Fusion, Algebraic Basics, and step-by-step Division.
-              </p>
+              <button
+                onClick={() => onNavigateToLesson(skill.lessonId)}
+                className="pt-2 text-[11px] font-black text-indigo-600 hover:underline flex items-center gap-1 cursor-pointer mt-auto"
+              >
+                Practice Skill <ChevronRight size={12} />
+              </button>
             </div>
-            <button 
-              onClick={() => onNavigateToTab('hub')}
-              className="text-[10px] text-emerald-500 hover:text-emerald-500 font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer pt-2 mt-auto"
-            >
-              Browse curricula worksheets <ChevronRight size={12} />
-            </button>
-          </div>
-
-          {/* Feature 3 */}
-          <div className="p-6 rounded-3xl bg-sky-blue/50 backdrop-blur-sm border border-deep-navy border-4 space-y-4 hover:border-pastel-yellow/40 transition-all flex flex-col justify-between group">
-            <div className="space-y-2">
-              <div className="w-10 h-10 bg-pastel-yellow/20 rounded-xl flex items-center justify-center text-amber-700">
-                <Award size={18} />
-              </div>
-              <h3 className="text-sm font-black text-deep-navy group-hover:text-amber-700 transition-colors">3. Digital Medal Store</h3>
-              <p className="text-[11px] text-deep-navy leading-relaxed font-semibold">
-                Unlock weekly math challenges to earn ultra-rare elite badges (e.g. Genius Debut, Table Titan, Long Solver) to display on your global profile!
-              </p>
-            </div>
-            <button 
-              onClick={() => onNavigateToTab('badges')}
-              className="text-[10px] text-amber-700 hover:text-amber-800 font-black uppercase tracking-wider flex items-center gap-1 cursor-pointer pt-2 mt-auto"
-            >
-              View unlocked trophies <ChevronRight size={12} />
-            </button>
-          </div>
+          ))}
         </div>
-      </div>
+      </section>
 
-      {/* Mini Profile Sync Ticker banner */}
-      <div className="p-5 rounded-2xl bg-clean-white backdrop-blur-md border border-deep-navy border-4 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[10px]">
-        <div className="flex items-center gap-2 text-deep-navy font-semibold">
-          <ShieldCheck size={14} className="text-emerald-500 shrink-0" />
-          <span>Active Device-Bound Username: <strong className="text-deep-navy">{username}</strong></span>
-        </div>
-        <div className="text-slate-500 font-semibold">
-          Level {stats.level} Rank • Accuracy: {accuracy}% • Solved: {stats.totalSolved}
-        </div>
-      </div>
-
-      {/* News & Educational Insights Section */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="p-8 rounded-[2rem] bg-indigo-600 text-white space-y-4 shadow-xl border border-deep-navy border-4">
-          <div className="flex items-center gap-2">
-            <Flame size={20} className="text-orange-400" />
-            <h3 className="text-lg font-black uppercase tracking-tight">The Rockstar Newsletter</h3>
+      {/* 5. MULTIPLAYER MATH SECTION */}
+      <section className="p-8 md:p-12 rounded-[2.5rem] bg-gradient-to-r from-indigo-900 to-slate-900 text-white border-4 border-deep-navy space-y-6 shadow-xl">
+        <div className="max-w-2xl space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full text-xs font-black uppercase tracking-wider">
+            <Users size={14} /> Real-Time Battle Arena
           </div>
-          <div className="space-y-4">
-            <div className="border-l-2 border-orange-400 pl-4 py-1">
-              <p className="text-[11px] font-black uppercase text-orange-200">Update v2.4 - July 2026</p>
-              <p className="text-xs font-bold leading-relaxed">Integrated real-time socket-free Firestore sync for the Play Arena. Global duels are now 40% faster with zero latency spikes.</p>
-            </div>
-            <div className="border-l-2 border-emerald-400 pl-4 py-1">
-              <p className="text-[11px] font-black uppercase text-emerald-200">New Feature: Grand Master Certificates</p>
-              <p className="text-xs font-bold leading-relaxed">Reach the 200 questions milestone to unlock your printable certificate. Verified by the Young Genius Studios board.</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-8 rounded-[2rem] bg-white border border-deep-navy border-4 space-y-4 shadow-xl">
-          <div className="flex items-center gap-2">
-            <HelpCircle size={20} className="text-deep-navy" />
-            <h3 className="text-lg font-black uppercase tracking-tight text-deep-navy">Math Rockstar FAQ</h3>
-          </div>
-          <div className="space-y-3">
-            <details className="group border-b border-deep-navy/10 pb-2 cursor-pointer">
-              <summary className="text-xs font-black text-deep-navy flex items-center justify-between list-none">
-                How do I earn the 'Table Titan' badge?
-                <ChevronRight size={14} className="group-open:rotate-90 transition-transform" />
-              </summary>
-              <p className="text-[10px] text-slate-600 font-bold mt-2 leading-relaxed">
-                You must achieve a 10-question win streak in the Play Arena specifically focused on Multiplication tables. This demonstrates pure muscle memory and arithmetic speed.
-              </p>
-            </details>
-            <details className="group border-b border-deep-navy/10 pb-2 cursor-pointer">
-              <summary className="text-xs font-black text-deep-navy flex items-center justify-between list-none">
-                Is my data safe without an account?
-                <ChevronRight size={14} className="group-open:rotate-90 transition-transform" />
-              </summary>
-              <p className="text-[10px] text-slate-600 font-bold mt-2 leading-relaxed">
-                Yes! We use local-bound secure storage tied to your browser profile. As long as you don't clear your site data, your levels, badges, and rockstar tokens are safe and secure.
-              </p>
-            </details>
-          </div>
-        </div>
-      </div>
-
-      {/* SEO & Educational Growth Hub Showcases */}
-      <div className="p-8 md:p-10 rounded-[2.5rem] bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent border border-deep-navy border-4 space-y-8">
-        <div className="space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full text-[10px] font-black text-amber-700 uppercase tracking-wider">
-            <Sparkles size={11} className="text-amber-500" /> Educational Growth Portal
-          </div>
-          <h2 className="text-2xl md:text-3xl font-display font-black tracking-tight text-deep-navy uppercase">
-            Jesse Rock Math: A Game-Changing Multiplayer Math Game for Kids
+          <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight">
+            Turn math practice into a competition.
           </h2>
-          <p className="text-xs md:text-sm text-slate-700 font-medium leading-relaxed max-w-4xl">
-            <strong>{"\"Jesse Math Rockstar\" is an educational web application developed by Jesse, an 11-year-old developer."}</strong> {"Designed as a highly interactive "} <strong>{"multiplayer math game for kids"}</strong>{", Jesse has engineered "} 
-            {"a blazing-fast, real-time Firestore synchronization hub, creating a premium playground where children can race, challenge global peers, and learn math in "} 
-            {"a frictionless, safe, and highly visual environment."}
+          <p className="text-sm md:text-base text-slate-300 font-medium leading-relaxed">
+            Challenge yourself, compete with others, earn points, build streaks, and climb the leaderboard while practicing real math skills.
+          </p>
+          <div className="pt-2">
+            <button
+              onClick={() => onNavigateToTab('arena')}
+              className="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer"
+            >
+              Enter Battle Arena <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. TEACHER & CLASSROOM FEATURES */}
+      <section className="p-8 md:p-10 rounded-[2.5rem] bg-emerald-50 border-4 border-emerald-300 space-y-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-3 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-200/80 text-emerald-900 rounded-full text-xs font-black uppercase tracking-wider">
+              <GraduationCap size={14} /> Classroom Ready
+            </div>
+            <h2 className="text-2xl md:text-3xl font-display font-black text-deep-navy">
+              Math practice for classrooms, too.
+            </h2>
+            <p className="text-xs md:text-sm text-slate-700 font-medium leading-relaxed max-w-2xl">
+              Teachers can use Jesse Math Rockstar to give students interactive math activities, track class progress, and make practice more engaging in computer labs or at home.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigateToTab('school')}
+            className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-lg transition-all flex items-center gap-2 shrink-0 cursor-pointer"
+          >
+            Explore Teacher Tools <ArrowRight size={16} />
+          </button>
+        </div>
+      </section>
+
+      {/* 7. PARENT & STUDENT VALUE PROPOSITION */}
+      <section className="space-y-6">
+        <div className="text-center space-y-2 max-w-xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-display font-black text-deep-navy">
+            Why Students Love Practicing
+          </h2>
+          <p className="text-xs md:text-sm text-slate-600 font-medium">
+            Designed to build confidence and fluency through positive reinforcement.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 pt-4 border-t border-deep-navy/10">
-          <div className="space-y-3">
-            <h3 className="text-sm font-black text-deep-navy uppercase tracking-wider flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-500" /> Real-Time Adaptive Learning Algorithm
-            </h3>
-            <p className="text-xs text-slate-700 font-medium leading-relaxed">
-              Every student progresses differently. Our intelligent engine delivers <strong>real-time adaptive math drills</strong> 
-              that scale dynamically in response to answer streaks. As students construct flawless winning streaks, the 
-              difficulty rises, keeping students engaged and challenged at precisely the perfect moment to boost their 
-              <strong>mental math calculation speed</strong>.
-            </p>
-          </div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <ValueCard 
+            title="Interactive Practice"
+            desc="Solve math problems through quick games that keep learning active and engaging."
+          />
+          <ValueCard 
+            title="Progress & Streaks"
+            desc="Track streaks and level up as accuracy improves over time."
+          />
+          <ValueCard 
+            title="Custom Avatar Gear"
+            desc="Earn coins by solving equations and unlock rockstar items in the Rock Shop."
+          />
+          <ValueCard 
+            title="Student Friendly"
+            desc="Focused practice with zero ads, simple controls, and anonymous usernames."
+          />
+        </div>
+      </section>
 
-          <div className="space-y-3">
-            <h3 className="text-sm font-black text-deep-navy uppercase tracking-wider flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Friction-Free Classroom Times Tables Alternative
-            </h3>
-            <p className="text-xs text-slate-700 font-medium leading-relaxed">
-              Designed as a modern <strong>classroom times tables alternative</strong>, our platform offers an immediate, 
-              zero-friction solution for school computer labs:
+      {/* 8. SHORT CREATOR STORY */}
+      <section className="p-8 rounded-3xl bg-slate-50 border-2 border-deep-navy/20 space-y-4">
+        <div className="flex flex-col sm:flex-row items-center gap-5">
+          <div className="w-16 h-16 rounded-2xl bg-indigo-600 text-white font-black text-2xl flex items-center justify-center shrink-0 shadow">
+            JO
+          </div>
+          <div className="space-y-1 text-center sm:text-left">
+            <h3 className="text-lg font-black text-deep-navy">Created by Jesse Otobo</h3>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed max-w-2xl">
+              Jesse Math Rockstar was created by Jesse Otobo, an 11-year-old developer who wanted to make math practice more engaging for classmates and students worldwide.
             </p>
-            <ul className="text-xs text-slate-700 font-semibold space-y-1.5 list-disc list-inside">
-              <li><strong>No-Account Setup:</strong> Students simply provide a nickname and start learning within seconds.</li>
-              <li><strong>Zero Friction:</strong> No email logins, passwords, or complex onboarding to handle.</li>
-              <li><strong>Safe Local-Bound Progress:</strong> High-performance offline local-bound storage keeps achievements secure.</li>
-              <li><strong>Free Elementary Math App:</strong> Zero cost, zero ads, and pure educational power designed for computer labs.</li>
-            </ul>
           </div>
         </div>
-      </div>
+      </section>
 
+      {/* 9. USER-FOCUSED FAQ SECTION */}
+      <section className="p-8 md:p-10 rounded-[2.5rem] bg-white border-4 border-deep-navy space-y-6 shadow-md">
+        <div className="space-y-2">
+          <h2 className="text-2xl md:text-3xl font-display font-black text-deep-navy flex items-center gap-2">
+            <HelpCircle size={24} className="text-indigo-600" /> Frequently Asked Questions
+          </h2>
+          <p className="text-xs md:text-sm text-slate-600 font-medium">
+            Everything you need to know about playing and using Jesse Math Rockstar.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {FAQ_ITEMS.map((item, idx) => (
+            <div key={idx} className="border-b border-slate-200 pb-3">
+              <button
+                onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
+                className="w-full text-left flex items-center justify-between gap-4 font-black text-sm text-deep-navy hover:text-indigo-600 transition-colors py-1 cursor-pointer"
+              >
+                <span>{item.q}</span>
+                <ChevronRight size={18} className={`shrink-0 transition-transform ${openFaqIndex === idx ? 'rotate-90 text-indigo-600' : 'text-slate-400'}`} />
+              </button>
+              <AnimatePresence>
+                {openFaqIndex === idx && (
+                  <motion.p
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="text-xs text-slate-600 font-medium mt-2 leading-relaxed"
+                  >
+                    {item.a}
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </div>
-            
+          ))}
+        </div>
+      </section>
+
+      {/* 10. FINAL CALL TO ACTION */}
+      <section className="p-8 md:p-12 rounded-[2.5rem] bg-gradient-to-r from-indigo-600 to-violet-700 text-white text-center space-y-5 shadow-xl border-4 border-deep-navy">
+        <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight">
+          Ready to Practice Math?
+        </h2>
+        <p className="text-sm md:text-base text-indigo-100 font-medium max-w-md mx-auto">
+          Start playing interactive math challenges today and build your skills!
+        </p>
+        <button
+          onClick={() => onNavigateToTab('quiz')}
+          className="px-10 py-4 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-xl transition-all hover:scale-105 inline-flex items-center gap-2 cursor-pointer"
+        >
+          Play Free Now <ArrowRight size={18} />
+        </button>
+      </section>
+
       {/* Review Section */}
       <ReviewSection userRole={userRole} />
 
-      {/* Itch.io Embed */}
-      <div className="flex justify-center mt-4 mb-8 w-full">
-         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>
-      </div>
-
+      {/* About Section */}
       <AboutSection />
 
-      {/* Sleek Professional Footer */}
-      <footer className="border-t border-deep-navy/10 pt-6 pb-2 mt-8 text-center space-y-4">
+      {/* 11. FOOTER */}
+      <footer className="border-t border-deep-navy/10 pt-6 pb-2 mt-8 space-y-4 text-center">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5 text-left">
-            <a href="https://jesse-math-rockstar-app.vercel.app/" className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0 block">
-              <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-            </a>
+            <div className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0">
+              <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" />
+            </div>
             <div>
-              <p className="text-xs font-black text-deep-navy tracking-tight leading-none uppercase">Young Genius Studios</p>
-              <p className="text-[10px] text-slate-500 font-bold mt-0.5 font-mono">EDUCATIONAL ARCHITECTURE FRAMEWORK</p>
+              <p className="text-xs font-black text-deep-navy uppercase">Jesse Math Rockstar</p>
+              <p className="text-[10px] text-slate-500 font-medium">Free Interactive Math Game</p>
             </div>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 text-xs font-bold text-slate-600">
             <button 
               onClick={() => onNavigateToTermsSection?.('privacy')}
-              className="hover:text-emerald-800 underline transition-colors cursor-pointer"
+              className="hover:text-indigo-800 underline transition-colors cursor-pointer"
             >
               Privacy Policy
             </button>
@@ -461,46 +499,30 @@ export default function HomeLanding({ username, userRole, stats, onNavigateToTab
               Terms of Service
             </button>
             <button 
-              onClick={() => onNavigateToTermsSection?.('dual')}
-              className="hover:text-amber-800 transition-colors cursor-pointer"
+              onClick={() => onNavigateToTab('school')}
+              className="hover:text-indigo-800 underline transition-colors cursor-pointer"
             >
-              Legal Compliance Center
+              Teacher Tools
             </button>
-            <a 
-              href="https://sites.google.com/view/jesse-rock-math-the-ultimate-m/home" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hover:text-blue-800 underline transition-colors cursor-pointer flex items-center gap-1"
-            >
-              <div className="w-3 h-3 rounded-full overflow-hidden border border-white/20">
-                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
-              </div> 
-              Official Project Site
-            </a>
-            <a 
-              href="https://github.com/otovicnigerialimited-art" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hover:text-slate-900 underline transition-colors cursor-pointer flex items-center gap-1"
-            >
-              <Github size={11} /> GitHub Profile
-            </a>
-            <a 
-              href="https://www.producthunt.com/@jesse_otobo" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hover:text-orange-600 underline transition-colors cursor-pointer flex items-center gap-1"
-            >
-              <ExternalLink size={11} /> Product Hunt
-            </a>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-deep-navy/5 pt-4 text-[10px] text-slate-500 font-semibold font-mono">
-          <p>© 2026 Young Genius Studios. Developed By: Jesse Otobo (11-year-old developer). Crafted under Young Genius Educational Standard Code.</p>
-          <p>Approved by Lead Architect Jesse Otobo</p>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-deep-navy/5 pt-4 text-[10px] text-slate-500 font-medium font-mono">
+          <p>© 2026 Jesse Math Rockstar. Created by Jesse Otobo.</p>
+          <p>Educational Math Practice Platform</p>
         </div>
       </footer>
+
+    </div>
+  );
+}
+
+function ValueCard({ title, desc }: { title: string, desc: string }) {
+  return (
+    <div className="p-5 rounded-2xl bg-white border-2 border-deep-navy/15 space-y-2 shadow-sm">
+      <CheckCircle2 size={18} className="text-emerald-500" />
+      <h3 className="text-sm font-black text-deep-navy">{title}</h3>
+      <p className="text-[11px] text-slate-600 font-medium leading-relaxed">{desc}</p>
     </div>
   );
 }
