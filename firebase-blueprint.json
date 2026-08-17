@@ -50,6 +50,21 @@
         "timestamp": { "type": "number" }
       },
       "required": ["username", "score"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "User review and rating for Jesse Math Rockstar",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviewText": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "verifiedPlayer": { "type": "boolean" },
+        "role": { "type": "string" }
+      },
+      "required": ["userId", "displayName", "rating", "reviewText", "createdAt", "verifiedPlayer"]
     }
   },
   "firestore": {
@@ -58,6 +73,7 @@
     "/schools/{schoolId}": { "schema": "School", "description": "Schools collection" },
     "/teachers/{teacherId}": { "schema": "Teacher", "description": "Teachers collection" },
     "/students/{studentId}": { "schema": "Student", "description": "Students collection" },
-    "/leaderboard/{document}": { "schema": "LeaderboardEntry", "description": "Leaderboard collection" }
+    "/leaderboard/{document}": { "schema": "LeaderboardEntry", "description": "Leaderboard collection" },
+    "/reviews/{reviewId}": { "schema": "Review", "description": "User reviews and ratings collection" }
   }
 }

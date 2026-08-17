@@ -52,6 +52,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
   const [activeFeedbackTag, setActiveFeedbackTag] = useState<string | null>(null);
   const [showMilestone, setShowMilestone] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isEvaluatingRef = useRef(false);
 
   useEffect(() => {
     if (hasStarted && timeLeft > 0 && !isGameOver) {
@@ -70,10 +71,12 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
   }, [currentProblem, adaptiveLogic, hasStarted]);
 
   const submitAnswer = () => {
-    if (userInput === '') return;
+    if (userInput === '' || isEvaluatingRef.current) return;
+    isEvaluatingRef.current = true;
 
     if (userInput.length > 30) {
       alert("Input too long! Keep your math response short.");
+      isEvaluatingRef.current = false;
       return;
     }
 
@@ -132,6 +135,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
       setUserInput('');
       setCurrentProblem(generateProblem(evalResult.level, quizAllowedTypes));
       setActiveFeedbackTag(null);
+      isEvaluatingRef.current = false;
     }, 400);
   };
 

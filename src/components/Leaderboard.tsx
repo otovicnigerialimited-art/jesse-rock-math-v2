@@ -389,8 +389,9 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
       setLoading(false);
     };
 
-    // Subscribe to users
-    const unsubscribeUsers = onSnapshot(collection(db, 'users'), (usersSnap) => {
+    // Subscribe to users (limited to top 50)
+    const usersQuery = query(collection(db, 'users'), limit(50));
+    const unsubscribeUsers = onSnapshot(usersQuery, (usersSnap) => {
       users = [];
       usersSnap.forEach((docSnap) => {
         const data = docSnap.data();
@@ -416,8 +417,9 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
       handleFirestoreError(error, OperationType.GET, 'users');
     });
 
-    // Subscribe to school students
-    const unsubscribeStudents = onSnapshot(collection(db, 'school_students'), (studentsSnap) => {
+    // Subscribe to school students (limited to top 50)
+    const studentsQuery = query(collection(db, 'school_students'), limit(50));
+    const unsubscribeStudents = onSnapshot(studentsQuery, (studentsSnap) => {
       students = [];
       studentsSnap.forEach((docSnap) => {
         const data = docSnap.data();
