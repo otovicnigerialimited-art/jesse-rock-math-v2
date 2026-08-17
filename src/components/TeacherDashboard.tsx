@@ -91,6 +91,7 @@ export default function TeacherDashboard({
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [studentToRemove, setStudentToRemove] = useState<string | null>(null);
+  const [selectedStudentForDetails, setSelectedStudentForDetails] = useState<SchoolStudent | null>(null);
 
   // Active Class Students state
   const [activeSessions, setActiveSessions] = useState<any[]>([]);
@@ -650,6 +651,7 @@ export default function TeacherDashboard({
                         <th className="p-4 text-center">Completed Topics ✅</th>
                         <th className="p-4 text-center">Next Topics 🎯</th>
                         <th className="p-4 text-center">Struggling? ⚠️</th>
+                        <th className="p-4 text-center">Actions 📊</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 font-medium">
@@ -670,7 +672,7 @@ export default function TeacherDashboard({
                         const nextTopics = LESSONS.filter(l => !completed.includes(l.id)).slice(0, 2);
                         
                         return (
-                          <tr key={`${student.id}-${idx}`} className="hover:bg-white/[2%] transition-all">
+                          <tr key={`${student.id}-${idx}`} className="hover:bg-violet-500/5 transition-all">
                             <td className="p-4 text-deep-navy">
                               <span className="font-bold block text-sm">
                                 {student.real_first_name}
@@ -678,49 +680,61 @@ export default function TeacherDashboard({
                               <span className="text-[10px] text-slate-500 font-mono italic">ID: {student.id.substring(0, 8)}...</span>
                             </td>
                             <td className="p-4 space-y-1">
-                              <div className="text-cyan-400 font-mono font-bold text-xs">
+                              <div className="text-cyan-600 font-mono font-bold text-xs">
                                 @{student.username}
                               </div>
-                              <span className="px-2 py-0.5 bg-white backdrop-blur-md rounded text-deep-navy font-bold font-mono border border-deep-navy border-4 inline-flex items-center gap-1">
+                              <span className="px-2 py-0.5 bg-white backdrop-blur-md rounded text-deep-navy font-bold font-mono border border-deep-navy border-2 inline-flex items-center gap-1">
                                 <Lock size={9} className="text-slate-700" /> {student.password}
                               </span>
                             </td>
-                            <td className="p-4 text-center font-extrabold text-rose-400 text-sm">
+                            <td className="p-4 text-center font-extrabold text-rose-500 text-sm">
                               {progress.highScore}
                             </td>
-                            <td className="p-4 text-center font-black text-amber-400">
+                            <td className="p-4 text-center font-black text-amber-500">
                               {progress.xp}
                             </td>
-                            <td className="p-4 text-center font-black text-yellow-400 inline-flex items-center gap-1 justify-center pt-5">
-                              <Coins size={12} className="text-yellow-500" />
-                              {student.coins ?? progress.coins ?? 100}
+                            <td className="p-4 text-center font-black text-yellow-600">
+                              <div className="inline-flex items-center gap-1 justify-center">
+                                <Coins size={12} className="text-yellow-500" />
+                                {student.coins ?? progress.coins ?? 100}
+                              </div>
                             </td>
                             <td className="p-4 text-center">
-                              <span className="inline-block px-1.5 py-0.5 bg-violet-500/10 text-violet-400 rounded-md font-mono text-xs font-bold">
+                              <span className="inline-block px-1.5 py-0.5 bg-violet-500/10 text-violet-600 rounded-md font-mono text-xs font-bold">
                                 Lvl {progress.currentLevel ?? 1}
                               </span>
                             </td>
                             <td className="p-4 text-center font-black text-orange-500">
                               {progress.streak}
                             </td>
-                            <td className="p-4 text-center text-[10px] text-slate-500">
+                            <td className="p-4 text-center text-[10px] text-slate-600 font-bold">
                               {completed.length} / {LESSONS.length}
                             </td>
                             <td className="p-4 text-center">
                               {nextTopics.map(t => (
-                                <span key={t.id} className="block text-[9px] text-indigo-500 font-bold">
+                                <span key={t.id} className="block text-[9px] text-indigo-600 font-bold">
                                   {t.title}
                                 </span>
                               ))}
                             </td>
                             <td className="p-4 text-center">
                               {isStruggling ? (
-                                <span className="px-2 py-1 bg-rose-500/10 text-rose-500 rounded text-[10px] font-black uppercase">
-                                  Yes ({Math.round(accuracy)}%)
+                                <span className="px-2 py-1 bg-rose-500/10 text-rose-600 rounded text-[10px] font-black uppercase inline-flex items-center gap-1">
+                                  <AlertCircle size={10} /> Yes ({Math.round(accuracy)}%)
                                 </span>
                               ) : (
-                                <span className="text-slate-400 text-[10px]">No</span>
+                                <span className="text-emerald-600 font-bold text-[10px] inline-flex items-center gap-1">
+                                  <CheckCircle size={10} /> Good ({Math.round(accuracy)}%)
+                                </span>
                               )}
+                            </td>
+                            <td className="p-4 text-center">
+                              <button
+                                onClick={() => setSelectedStudentForDetails(student)}
+                                className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white font-black text-[10px] uppercase rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1 mx-auto"
+                              >
+                                <Activity size={11} /> View Details
+                              </button>
                             </td>
                           </tr>
                         );
@@ -1030,6 +1044,170 @@ export default function TeacherDashboard({
                 <button onClick={() => setStudentToRemove(null)} className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer">CANCEL</button>
                 <button onClick={() => handleRemoveStudentFromClass(studentToRemove)} className="flex-1 py-2.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-xl transition-all cursor-pointer">REMOVE</button>
              </div>
+          </div>
+        </div>
+      )}
+
+      {/* Comprehensive Student Progress & Activity Inspector Modal */}
+      {selectedStudentForDetails && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto">
+          <div className="bg-clean-white border-4 border-deep-navy rounded-3xl max-w-2xl w-full p-6 md:p-8 space-y-6 shadow-2xl relative my-8 text-left">
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedStudentForDetails(null)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-all cursor-pointer border-2 border-deep-navy"
+            >
+              <X size={18} />
+            </button>
+
+            {/* Modal Title Header */}
+            <div className="flex items-center gap-4 border-b border-deep-navy/20 pb-4">
+              <div className="w-14 h-14 rounded-2xl bg-violet-600 flex items-center justify-center text-white shrink-0 font-black text-2xl border-2 border-deep-navy shadow">
+                {selectedStudentForDetails.real_first_name.charAt(0)}
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xl font-black text-deep-navy">
+                    {selectedStudentForDetails.real_first_name}
+                  </h3>
+                  <span className="px-2.5 py-0.5 rounded-full bg-cyan-100 border border-cyan-300 text-cyan-800 font-mono text-xs font-bold">
+                    @{selectedStudentForDetails.username}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 font-semibold mt-0.5">
+                  Student Progress & Detailed Activity Report (Live Synced)
+                </p>
+              </div>
+            </div>
+
+            {/* Metrics Overview Grid */}
+            {(() => {
+              const p = selectedStudentForDetails.school_math_progress || {
+                highScore: 0,
+                xp: 100,
+                coins: 100,
+                solved: 0,
+                correctAnswers: 0,
+                currentLevel: 1,
+                streak: 0,
+                completedTopics: []
+              };
+              const accuracy = p.solved > 0 ? Math.round((p.correctAnswers / p.solved) * 100) : 100;
+              const completedList = p.completedTopics || [];
+              const pendingLessons = LESSONS.filter(l => !completedList.includes(l.id));
+
+              return (
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="bg-amber-50 border-2 border-amber-300 p-3.5 rounded-2xl text-center space-y-0.5">
+                      <div className="text-[10px] font-black uppercase text-amber-700">Total XP</div>
+                      <div className="text-xl font-black text-amber-600">{p.xp} XP</div>
+                    </div>
+                    <div className="bg-violet-50 border-2 border-violet-300 p-3.5 rounded-2xl text-center space-y-0.5">
+                      <div className="text-[10px] font-black uppercase text-violet-700">Level</div>
+                      <div className="text-xl font-black text-violet-600">Lvl {p.currentLevel}</div>
+                    </div>
+                    <div className="bg-emerald-50 border-2 border-emerald-300 p-3.5 rounded-2xl text-center space-y-0.5">
+                      <div className="text-[10px] font-black uppercase text-emerald-700">Accuracy</div>
+                      <div className="text-xl font-black text-emerald-600">{accuracy}%</div>
+                    </div>
+                    <div className="bg-rose-50 border-2 border-rose-300 p-3.5 rounded-2xl text-center space-y-0.5">
+                      <div className="text-[10px] font-black uppercase text-rose-700">High Score</div>
+                      <div className="text-xl font-black text-rose-600">{p.highScore}</div>
+                    </div>
+                  </div>
+
+                  {/* Solved vs Attempted Breakdown */}
+                  <div className="bg-slate-50 border-2 border-deep-navy/20 rounded-2xl p-4 space-y-3">
+                    <h4 className="text-xs font-black uppercase text-deep-navy tracking-wider flex items-center gap-2">
+                      <Activity size={15} className="text-indigo-600" />
+                      Math Equations Performance Breakdown
+                    </h4>
+                    <div className="grid grid-cols-3 gap-2 text-center text-xs font-bold">
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <span className="text-[10px] text-slate-500 block uppercase font-mono">Total Attempted</span>
+                        <span className="text-base font-black text-deep-navy">{p.solved}</span>
+                      </div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <span className="text-[10px] text-slate-500 block uppercase font-mono">Correct Answers</span>
+                        <span className="text-base font-black text-emerald-600">{p.correctAnswers}</span>
+                      </div>
+                      <div className="bg-white p-2.5 rounded-xl border border-slate-200">
+                        <span className="text-[10px] text-slate-500 block uppercase font-mono">Current Streak</span>
+                        <span className="text-base font-black text-orange-500">{p.streak} 🔥</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Completed Curriculum Topics */}
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-black uppercase text-deep-navy tracking-wider flex items-center justify-between">
+                      <span className="flex items-center gap-2">
+                        <CheckCircle size={15} className="text-emerald-500" />
+                        Completed Lessons ({completedList.length} / {LESSONS.length})
+                      </span>
+                    </h4>
+                    {completedList.length === 0 ? (
+                      <p className="text-xs text-slate-500 italic bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        Student hasn't completed any curriculum lessons yet. They can complete lessons in the Learning Hub!
+                      </p>
+                    ) : (
+                      <div className="flex flex-wrap gap-1.5">
+                        {completedList.map(lessonId => {
+                          const matched = LESSONS.find(l => l.id === lessonId);
+                          return (
+                            <span key={lessonId} className="px-2.5 py-1 bg-emerald-100 border border-emerald-300 text-emerald-800 rounded-lg text-xs font-bold flex items-center gap-1">
+                              <Check size={12} /> {matched ? matched.title : `Lesson #${lessonId}`}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Recommendations / What They Need */}
+                  <div className="space-y-2">
+                    <h4 className="text-xs font-black uppercase text-deep-navy tracking-wider flex items-center gap-2">
+                      <GraduationCap size={15} className="text-violet-600" />
+                      Recommended Next Focus Areas
+                    </h4>
+                    <div className="space-y-2">
+                      {pendingLessons.slice(0, 3).map(lesson => (
+                        <div key={lesson.id} className="p-3 bg-violet-50/60 border border-violet-200 rounded-xl flex items-center justify-between">
+                          <div>
+                            <span className="text-xs font-black text-deep-navy block">{lesson.title}</span>
+                            <span className="text-[11px] text-slate-600 font-medium">{lesson.description}</span>
+                          </div>
+                          <span className="px-2 py-0.5 bg-violet-200 text-violet-800 text-[10px] font-black uppercase rounded shrink-0 font-mono ml-2">
+                            {lesson.category}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Diagnostic Summary for Teacher */}
+                  <div className="p-4 bg-amber-50 border-2 border-amber-300 rounded-2xl space-y-1">
+                    <span className="text-[11px] font-black uppercase text-amber-800 block">Teacher Diagnostic Note</span>
+                    <p className="text-xs text-amber-900 font-medium leading-relaxed">
+                      {accuracy < 50 && p.solved > 10
+                        ? `⚠️ ${selectedStudentForDetails.real_first_name} has an accuracy rate of ${accuracy}%. They may benefit from practice on ${pendingLessons[0]?.title || 'basic arithmetic'} or extra chalkboard encouragement.`
+                        : `🌟 ${selectedStudentForDetails.real_first_name} is performing well with a ${accuracy}% accuracy rate! They are ready to tackle ${pendingLessons[0]?.title || 'advanced challenges'}.`}
+                    </p>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Footer Close Button */}
+            <div className="pt-2">
+              <button
+                onClick={() => setSelectedStudentForDetails(null)}
+                className="w-full py-3 bg-deep-navy hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer shadow"
+              >
+                Close Inspector
+              </button>
+            </div>
           </div>
         </div>
       )}
