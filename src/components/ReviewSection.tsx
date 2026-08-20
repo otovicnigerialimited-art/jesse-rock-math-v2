@@ -59,6 +59,9 @@ export default function ReviewSection({
   // Filter state
   const [activeFilter, setActiveFilter] = useState<'all' | 'verified' | '5star'>('all');
 
+  const normalizedRole = (userRole || 'student').toLowerCase();
+  const isGuestStudentOrIndividual = ['guest', 'student', 'kid', 'individual'].includes(normalizedRole);
+
   // Real-time Firestore subscription
   useEffect(() => {
     const unsubscribe = subscribeToReviews((fetchedReviews) => {
@@ -248,143 +251,145 @@ export default function ReviewSection({
           </div>
         </div>
 
-        {/* REVIEW SUBMISSION FORM */}
-        <div className="bg-gradient-to-br from-slate-950 to-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-5 flex-wrap gap-2">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <MessageSquare className="w-5 h-5 text-indigo-400" /> Leave a Genuine Review & Rating
-            </h3>
-            <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-amber-400" /> Share your experience with the community
-            </span>
-          </div>
-
-          {submittedSuccess ? (
-            <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 text-center animate-in fade-in duration-300 space-y-3">
-              <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/30">
-                <HeartHandshake className="w-6 h-6 text-white" />
-              </div>
-              <h4 className="text-lg font-bold text-white">Thank You for Your Review!</h4>
-              <p className="text-xs text-emerald-400 font-medium max-w-md mx-auto">
-                Your feedback has been saved to the database. Verified Player status was determined based on your recorded math activity.
-              </p>
-              <button
-                type="button"
-                onClick={() => setSubmittedSuccess(false)}
-                className="mt-2 text-xs font-bold text-slate-300 hover:text-white underline cursor-pointer"
-              >
-                Submit another review or rating
-              </button>
+        {/* REVIEW SUBMISSION FORM - Only visible to Teachers, Parents, and Administrators */}
+        {!isGuestStudentOrIndividual && (
+          <div className="bg-gradient-to-br from-slate-950 to-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-5 flex-wrap gap-2">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <MessageSquare className="w-5 h-5 text-indigo-400" /> Leave a Genuine Review & Rating
+              </h3>
+              <span className="text-xs text-slate-400 font-medium flex items-center gap-1">
+                <Award className="w-3.5 h-3.5 text-amber-400" /> Share your experience with the community
+              </span>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {formError && (
-                <div className="bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold p-3 rounded-xl">
-                  {formError}
-                </div>
-              )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {/* Name */}
+            {submittedSuccess ? (
+              <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-6 text-center animate-in fade-in duration-300 space-y-3">
+                <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/30">
+                  <HeartHandshake className="w-6 h-6 text-white" />
+                </div>
+                <h4 className="text-lg font-bold text-white">Thank You for Your Review!</h4>
+                <p className="text-xs text-emerald-400 font-medium max-w-md mx-auto">
+                  Your feedback has been saved to the database. Verified Player status was determined based on your recorded math activity.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSubmittedSuccess(false)}
+                  className="mt-2 text-xs font-bold text-slate-300 hover:text-white underline cursor-pointer"
+                >
+                  Submit another review or rating
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {formError && (
+                  <div className="bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold p-3 rounded-xl">
+                    {formError}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* Name */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                      Your Name / Display Name <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={reviewerName}
+                      onChange={(e) => setReviewerName(e.target.value)}
+                      required
+                      placeholder="e.g. Alex M. or Mrs. Jenkins"
+                      maxLength={100}
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white placeholder-slate-600 focus:ring-2 focus:ring-amber-400 text-sm"
+                    />
+                  </div>
+
+                  {/* Role */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                      Role / Category
+                    </label>
+                    <select
+                      value={roleType}
+                      onChange={(e) => setRoleType(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-amber-400 text-sm"
+                    >
+                      <option value="Student Player">Student Player</option>
+                      <option value="Teacher / Educator">Teacher / Educator</option>
+                      <option value="Parent / Guardian">Parent / Guardian</option>
+                      <option value="School Administrator">School Administrator</option>
+                      <option value="Individual Math Player">Individual Math Player</option>
+                    </select>
+                  </div>
+
+                  {/* Star Rating Selection */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                      Rating (1 to 5 Stars)
+                    </label>
+                    <div className="flex items-center gap-1.5 pt-1">
+                      {[1, 2, 3, 4, 5].map((s) => (
+                        <button
+                          key={s}
+                          type="button"
+                          onClick={() => setRating(s)}
+                          className="p-1 hover:scale-110 transition-transform cursor-pointer"
+                          title={`${s} Star${s > 1 ? 's' : ''}`}
+                        >
+                          <Star 
+                            className={`w-7 h-7 ${s <= rating ? 'text-amber-400 fill-amber-400' : 'text-slate-700'}`} 
+                          />
+                        </button>
+                      ))}
+                      <span className="text-xs font-bold text-amber-400 ml-2">{rating}/5</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Review Text */}
                 <div>
                   <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Your Name / Display Name <span className="text-rose-400">*</span>
+                    Your Written Review / Feedback <span className="text-rose-400">*</span>
                   </label>
-                  <input
-                    type="text"
-                    value={reviewerName}
-                    onChange={(e) => setReviewerName(e.target.value)}
+                  <textarea
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
                     required
-                    placeholder="e.g. Alex M. or Mrs. Jenkins"
-                    maxLength={100}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white placeholder-slate-600 focus:ring-2 focus:ring-amber-400 text-sm"
+                    rows={3}
+                    maxLength={2000}
+                    placeholder="Share how Jesse Math Rockstar helped you or your students practice math..."
+                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:ring-2 focus:ring-amber-400 text-sm resize-none"
                   />
                 </div>
 
-                {/* Role */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Role / Category
-                  </label>
-                  <select
-                    value={roleType}
-                    onChange={(e) => setRoleType(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-white focus:ring-2 focus:ring-amber-400 text-sm"
-                  >
-                    <option value="Student Player">Student Player</option>
-                    <option value="Teacher / Educator">Teacher / Educator</option>
-                    <option value="Parent / Guardian">Parent / Guardian</option>
-                    <option value="School Administrator">School Administrator</option>
-                    <option value="Individual Math Player">Individual Math Player</option>
-                  </select>
-                </div>
-
-                {/* Star Rating Selection */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                    Rating (1 to 5 Stars)
-                  </label>
-                  <div className="flex items-center gap-1.5 pt-1">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => setRating(s)}
-                        className="p-1 hover:scale-110 transition-transform cursor-pointer"
-                        title={`${s} Star${s > 1 ? 's' : ''}`}
-                      >
-                        <Star 
-                          className={`w-7 h-7 ${s <= rating ? 'text-amber-400 fill-amber-400' : 'text-slate-700'}`} 
-                        />
-                      </button>
-                    ))}
-                    <span className="text-xs font-bold text-amber-400 ml-2">{rating}/5</span>
+                {/* Submit Button */}
+                <div className="flex items-center justify-between flex-wrap gap-3">
+                  <div className="text-[11px] text-slate-400 flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Verified Player status will be assigned automatically based on recorded math practice history.</span>
                   </div>
+
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+                  >
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" /> Verifying & Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" /> Submit Review
+                      </>
+                    )}
+                  </button>
                 </div>
-              </div>
-
-              {/* Review Text */}
-              <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
-                  Your Written Review / Feedback <span className="text-rose-400">*</span>
-                </label>
-                <textarea
-                  value={reviewText}
-                  onChange={(e) => setReviewText(e.target.value)}
-                  required
-                  rows={3}
-                  maxLength={2000}
-                  placeholder="Share how Jesse Math Rockstar helped you or your students practice math..."
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:ring-2 focus:ring-amber-400 text-sm resize-none"
-                />
-              </div>
-
-              {/* Submit Button */}
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                <div className="text-[11px] text-slate-400 flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Verified Player status will be assigned automatically based on recorded math practice history.</span>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2 cursor-pointer"
-                >
-                  {submitting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" /> Verifying & Saving...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" /> Submit Review
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
+              </form>
+            )}
+          </div>
+        )}
 
         {/* PUBLIC REVIEWS LIST */}
         <div className="space-y-4">
