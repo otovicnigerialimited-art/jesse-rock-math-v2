@@ -16,6 +16,7 @@ import SatsMockTests from './SatsMockTests';
 import SatsProgressAnalytics from './SatsProgressAnalytics';
 import SatsExamGuide from './SatsExamGuide';
 import SatsMindset from './SatsMindset';
+import SatsDsatTutor from './SatsDsatTutor';
 import SatsCalmBreakModal from './SatsCalmBreakModal';
 import SatsParentSummaryModal from './SatsParentSummaryModal';
 import { 
@@ -32,7 +33,8 @@ import {
   Sparkles, 
   Coffee,
   Menu,
-  X
+  X,
+  Brain
 } from 'lucide-react';
 
 interface SatsHubProps {
@@ -93,7 +95,8 @@ export default function SatsHub({
     { id: 'mocks', label: 'Mock Tests', icon: Trophy },
     { id: 'progress', label: 'Analytics', icon: TrendingUp },
     { id: 'guide', label: 'Exam Guide', icon: FileText },
-    { id: 'mindset', label: 'Rockstar Mindset', icon: Heart }
+    { id: 'mindset', label: 'Rockstar Mindset', icon: Heart },
+    { id: 'dsat_tutor', label: 'AI DSAT Tutor', icon: Brain }
   ];
 
   return (
@@ -289,6 +292,10 @@ export default function SatsHub({
           <SatsMindset
             onOpenCalmBreathing={() => setIsCalmModalOpen(true)}
           />
+        )}
+
+        {activeTab === 'dsat_tutor' && (
+          <SatsDsatTutor />
         )}
       </main>
 
