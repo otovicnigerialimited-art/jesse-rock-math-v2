@@ -1,20 +1,41 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, ShieldCheck, Zap, Heart, GraduationCap, Trophy, Users, Target, Rocket } from 'lucide-react';
+import { 
+  Sparkles, 
+  ShieldCheck, 
+  Zap, 
+  Heart, 
+  GraduationCap, 
+  Trophy, 
+  Users, 
+  Target, 
+  Rocket, 
+  Lock, 
+  Compass, 
+  BookOpen, 
+  CheckCircle2, 
+  Flame, 
+  LayoutDashboard, 
+  UserCheck, 
+  BarChart3, 
+  Clock, 
+  FileText,
+  School
+} from 'lucide-react';
 
 export default function AboutSection() {
   return (
-    <section className="space-y-10 py-12 border-t border-deep-navy/10">
+    <section className="space-y-12 py-12 border-t border-deep-navy/10">
       {/* Header */}
       <div className="max-w-3xl mx-auto text-center space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-violet-100 border border-violet-200 rounded-full text-xs font-black text-violet-800 uppercase tracking-widest">
-          <Sparkles size={13} className="text-amber-500" /> Story, Purpose & Vision
+          <Sparkles size={13} className="text-amber-500" /> Platform Architecture & Curriculum Overview
         </div>
-        <h2 className="text-3xl md:text-4xl font-display font-black text-deep-navy tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-display font-black text-deep-navy tracking-tight">
           About Jesse Math Rockstar
         </h2>
         <p className="text-sm md:text-base text-slate-700 font-medium leading-relaxed">
-          Created to make math practice engaging, interactive, and rewarding for students everywhere.
+          An enterprise-grade, gamified math learning ecosystem built for students, teachers, and parents—featuring age-appropriate learning hubs, standardized exam preparation, and classroom analytics.
         </p>
       </div>
 
@@ -33,63 +54,161 @@ export default function AboutSection() {
               The Story Behind the Platform
             </h3>
             <p className="text-sm md:text-base text-slate-200 font-medium leading-relaxed">
-              Jesse Math Rockstar was created by Jesse Otobo, an 11-year-old developer who wanted to transform daily math practice from repetitive homework into an exciting game. Seeing classmates struggle with math anxiety inspired the idea of an interactive space where solving equations earns rewards, unlocks avatar gear, and fosters friendly competition.
+              Jesse Math Rockstar was created by Jesse Otobo, an 11-year-old developer who wanted to transform daily math practice from repetitive homework into an exciting game. Seeing classmates struggle with math anxiety inspired the creation of an interactive space where solving equations earns rewards, unlocks avatar gear, and fosters friendly competition.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Mission & Vision Statements */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="p-7 rounded-3xl bg-white border-4 border-deep-navy space-y-3 shadow-md">
-          <div className="w-10 h-10 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700 font-black">
-            <Target size={20} />
+      {/* 1. AGE DISTINCTIONS & CHILD PRIVACY SAFETY (COPPA COMPLIANT) */}
+      <div className="bg-slate-900 text-white p-8 md:p-10 rounded-3xl border-4 border-deep-navy space-y-6 shadow-lg">
+        <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <ShieldCheck size={22} />
           </div>
-          <h3 className="text-lg font-black text-deep-navy">Our Core Mission</h3>
-          <p className="text-xs md:text-sm text-slate-600 font-medium leading-relaxed">
-            To help students build mental calculation speed, math fluency, and consistent practice habits through positive reinforcement, gamified feedback, and interactive challenges.
-          </p>
+          <div>
+            <span className="text-[10px] font-black uppercase text-emerald-400 tracking-widest block">Safety & Privacy Standards</span>
+            <h3 className="text-xl md:text-2xl font-black text-white">Age Distinctions & COPPA Privacy Guarantee</h3>
+          </div>
         </div>
 
-        <div className="p-7 rounded-3xl bg-white border-4 border-deep-navy space-y-3 shadow-md">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 border border-indigo-300 flex items-center justify-center text-indigo-700 font-black">
-            <Rocket size={20} />
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
+            <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
+              <Lock size={16} /> Under 13 Years Old (Primary & Middle School)
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed font-medium">
+              Strictly engineered in compliance with <strong>COPPA &amp; GDPR Child Privacy</strong> rules. Primary students require <strong>no email address</strong> to play and can log in via teacher-generated visual class cards. Contains zero public chatrooms, direct messaging, or external link exposure.
+            </p>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">COPPA Safe</span>
+              <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">Level Gigs</span>
+              <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">KS2 SATs Prep</span>
+            </div>
           </div>
-          <h3 className="text-lg font-black text-deep-navy">The Vision</h3>
-          <p className="text-xs md:text-sm text-slate-600 font-medium leading-relaxed">
-            To create an educational platform where math isn't feared, but celebrated—giving every student the tools to practice at their own pace, gain confidence, and feel like a math rockstar.
-          </p>
+
+          <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
+            <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
+              <GraduationCap size={16} /> Ages 16+ (Digital SAT High School &amp; College Prep)
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed font-medium">
+              The <strong>Digital SAT (DSAT) Academy</strong> is explicitly designated for secondary students aged <strong>16 and older</strong> preparing for university entrance exams. Features full College Board math and reading/writing domains, Desmos calculator shortcuts, and Bluebook test simulators.
+            </p>
+            <div className="flex flex-wrap gap-2 pt-1">
+              <span className="px-2.5 py-1 bg-indigo-400/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-bold rounded-lg">16+ Designated</span>
+              <span className="px-2.5 py-1 bg-indigo-400/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-bold rounded-lg">Desmos Suite</span>
+              <span className="px-2.5 py-1 bg-indigo-400/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-bold rounded-lg">Bluebook Simulator</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Experience Pillars / What Makes It Unique */}
-      <div className="space-y-4">
-        <div className="text-center space-y-1">
-          <h3 className="text-xl font-black text-deep-navy">Designed for Student Engagement</h3>
-          <p className="text-xs text-slate-600 font-medium">Focused entirely on a positive, motivating user experience.</p>
+      {/* 2. GAMIFIED LEVEL GIGS & PROGRESSION ENGINE */}
+      <div className="p-8 rounded-3xl bg-white border-4 border-deep-navy space-y-6 shadow-md">
+        <div className="flex items-center gap-3 border-b border-slate-200 pb-4">
+          <div className="w-10 h-10 rounded-xl bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-700">
+            <Flame size={22} />
+          </div>
+          <div>
+            <span className="text-[10px] font-black uppercase text-amber-600 tracking-widest block">Gamification Architecture</span>
+            <h3 className="text-xl md:text-2xl font-black text-deep-navy">Level "Gigs" Progression &amp; Avatar Customization</h3>
+          </div>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <PillarCard 
-            icon={<Zap className="text-amber-500" />}
-            title="Gamified Practice"
-            description="Earn XP, maintain daily streaks, and level up your status as accuracy improves over time."
-          />
-          <PillarCard 
-            icon={<Users className="text-indigo-600" />}
-            title="Multiplayer Battles"
-            description="Compete in real-time speed duels against peers on global and classroom leaderboards."
-          />
-          <PillarCard 
-            icon={<GraduationCap className="text-emerald-600" />}
-            title="Curriculum Topics"
-            description="Covers essential topics from basic addition to fractions, decimals, algebra, and geometry."
-          />
-          <PillarCard 
-            icon={<ShieldCheck className="text-violet-600" />}
-            title="Safe & Ad-Free"
-            description="A focused environment with student privacy controls and zero intrusive advertisements."
-          />
+          <GigLevelCard stage="Garage Band Debut" levels="Levels 1 – 3" desc="Primary calculation speed, basic addition, subtraction, and place value fundamentals." />
+          <GigLevelCard stage="Local Legend" levels="Levels 4 – 7" desc="Times tables fluency, division, decimals, fractions, and mental word problems." />
+          <GigLevelCard stage="Main Stage Rockstar" levels="Levels 8 – 12" desc="Multi-step reasoning, algebra, geometry, ratios, and percentage conversions." />
+          <GigLevelCard stage="Hall of Famer" levels="Levels 13+" desc="Advanced problem-solving, SATs mastery, and global multiplayer arena leadership." />
+        </div>
+
+        <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="space-y-1 text-center md:text-left">
+            <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider">Rock Shop Economy</h4>
+            <p className="text-xs text-amber-800 font-medium">Students earn Rock Coins through accuracy streaks and level completion to customize rocker avatars with stage jackets, neon hairstyles, and guitars.</p>
+          </div>
+          <div className="px-4 py-2 bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-sm shrink-0">
+            100% Free Virtual Economy
+          </div>
+        </div>
+      </div>
+
+      {/* 3. EXAM HUBS: KS2 SATS (UNDER 13) & DIGITAL SAT (16+) */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* KS2 SATs */}
+        <div className="p-7 rounded-3xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 border-4 border-deep-navy space-y-4 shadow-md">
+          <div className="inline-block px-3 py-1 bg-slate-950 text-amber-400 font-black text-[10px] uppercase rounded-full tracking-wider">
+            Under 13 Primary School Hub
+          </div>
+          <h3 className="text-2xl font-black font-display tracking-tight">UK Key Stage 2 (KS2) SATs Exam Hub</h3>
+          <p className="text-xs font-medium leading-relaxed text-slate-900">
+            Tailored specifically for Year 6 UK students preparing for national assessments:
+          </p>
+          <ul className="space-y-2 text-xs font-bold text-slate-950">
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-slate-950 shrink-0" /> Paper 1: Timed 36-question Arithmetic drills</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-slate-950 shrink-0" /> Papers 2 &amp; 3: Reasoning word problem challenges</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-slate-950 shrink-0" /> Automated Scaled Score Conversion (80–120 Range)</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-slate-950 shrink-0" /> Calm Breathing Break tool for test anxiety reduction</li>
+          </ul>
+        </div>
+
+        {/* DSAT 16+ */}
+        <div className="p-7 rounded-3xl bg-gradient-to-br from-indigo-900 to-slate-950 text-white border-4 border-deep-navy space-y-4 shadow-md">
+          <div className="inline-block px-3 py-1 bg-indigo-500 text-white font-black text-[10px] uppercase rounded-full tracking-wider">
+            Ages 16+ High School &amp; College Prep
+          </div>
+          <h3 className="text-2xl font-black font-display tracking-tight">Digital SAT (DSAT) Academy</h3>
+          <p className="text-xs font-medium leading-relaxed text-slate-300">
+            Strictly designated for older students preparing for university entrance examinations:
+          </p>
+          <ul className="space-y-2 text-xs font-bold text-slate-200">
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Algebra, Advanced Math, Geometry &amp; Trigonometry</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Integrated Desmos Graphing Calculator shortcut suite</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Bluebook adaptive test simulator with countdown clock</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Target score predictor (400–1600 Composite Score)</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* 4. TEACHER DASHBOARD, LESSON PREPARATION & PARENT PORTAL */}
+      <div className="p-8 rounded-3xl bg-white border-4 border-deep-navy space-y-6 shadow-md">
+        <div className="flex items-center gap-3 border-b border-slate-200 pb-4">
+          <div className="w-10 h-10 rounded-xl bg-violet-100 border border-violet-300 flex items-center justify-center text-violet-700">
+            <School size={22} />
+          </div>
+          <div>
+            <span className="text-[10px] font-black uppercase text-violet-600 tracking-widest block">Pedagogical Tools</span>
+            <h3 className="text-xl md:text-2xl font-black text-deep-navy">Teacher Dashboard, Lesson Preparation &amp; Parent Tracking</h3>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-deep-navy font-bold text-sm">
+              <LayoutDashboard size={16} className="text-violet-600" /> Classroom Management
+            </div>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              Teachers can set up class rosters, generate student join codes, print visual login cards, and assign targeted homework or end-of-lesson exit tickets.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-deep-navy font-bold text-sm">
+              <BarChart3 size={16} className="text-indigo-600" /> AI Misconception Detector
+            </div>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              Analyzes class-wide incorrect answers and alerts teachers to specific mathematical friction points (e.g., fraction addition vs multiplication errors).
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-deep-navy font-bold text-sm">
+              <UserCheck size={16} className="text-emerald-600" /> Parent Portal &amp; Progress
+            </div>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              Parents monitor child accuracy, completed homework, test readiness, and practice streak consistency with linked security PINs.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -97,10 +216,10 @@ export default function AboutSection() {
       <div className="p-6 md:p-8 rounded-3xl bg-slate-50 border-2 border-deep-navy/20 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-1 text-center md:text-left">
           <h4 className="text-base font-black text-deep-navy flex items-center justify-center md:justify-start gap-2">
-            <Heart size={18} className="text-rose-500" /> Free for Students & Classrooms
+            <Heart size={18} className="text-rose-500" /> Free for Students, Teachers &amp; Schools
           </h4>
           <p className="text-xs text-slate-600 font-medium max-w-xl">
-            Jesse Math Rockstar is completely free to use for students, parents, and teachers with no subscriptions or paywalls.
+            Jesse Math Rockstar is completely free to use with zero subscriptions, paywalls, or advertisements.
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
@@ -116,19 +235,17 @@ export default function AboutSection() {
   );
 }
 
-function PillarCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
+function GigLevelCard({ stage, levels, desc }: { stage: string, levels: string, desc: string }) {
   return (
-    <motion.div 
-      whileHover={{ y: -3 }}
-      className="p-5 rounded-2xl bg-white border-2 border-deep-navy/20 space-y-2 shadow-sm"
-    >
-      <div className="w-9 h-9 bg-slate-100 rounded-xl flex items-center justify-center border border-slate-200">
-        {icon}
-      </div>
-      <h4 className="text-sm font-black text-deep-navy">{title}</h4>
+    <div className="p-5 rounded-2xl bg-slate-50 border-2 border-deep-navy/20 space-y-2 shadow-sm">
+      <span className="px-2.5 py-0.5 bg-amber-400 text-slate-950 font-black text-[9px] uppercase rounded-full tracking-wider inline-block">
+        {levels}
+      </span>
+      <h4 className="text-sm font-black text-deep-navy">{stage}</h4>
       <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-        {description}
+        {desc}
       </p>
-    </motion.div>
+    </div>
   );
 }
+
