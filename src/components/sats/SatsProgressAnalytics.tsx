@@ -131,7 +131,7 @@ export default function SatsProgressAnalytics({
       </section>
 
       {/* 4. COMMON MISTAKES & WEAKNESS LOG */}
-      {progress.weaknessTags.length > 0 && (
+      {(progress?.weaknessTags || []).length > 0 && (
         <section className="bg-white p-6 md:p-8 rounded-3xl border-4 border-amber-500 shadow-lg space-y-4">
           <h3 className="text-xl font-display font-black text-slate-900 flex items-center gap-2">
             <AlertCircle size={20} className="text-amber-600" /> Detected Weakness Areas

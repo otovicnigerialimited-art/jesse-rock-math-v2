@@ -43,12 +43,13 @@ export default function SatsDashboard({
 }: SatsDashboardProps) {
   // Compute days remaining
   const today = new Date();
-  const examDate = new Date(progress.targetExamDate);
+  const examDate = new Date(progress?.targetExamDate || Date.now());
   const diffTime = Math.max(0, examDate.getTime() - today.getTime());
   const daysToGo = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 34;
 
   // Determine dynamic next step topic
-  const primaryWeakness = progress.weaknessTags.length > 0 ? progress.weaknessTags[0] : null;
+  const weaknessTags = progress?.weaknessTags || [];
+  const primaryWeakness = weaknessTags.length > 0 ? weaknessTags[0] : null;
   const nextTopicId = primaryWeakness?.associatedTopicId || 'topic_equivalent_fractions';
   const nextTopic = SATS_TOPICS.find(t => t.id === nextTopicId) || SATS_TOPICS[1];
 

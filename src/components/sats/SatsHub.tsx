@@ -6,7 +6,8 @@ import {
 } from '../../types/sats';
 import { 
   loadSatsProgress, 
-  saveSatsProgress 
+  saveSatsProgress,
+  getDefaultSatsProgress
 } from '../../lib/satsDb';
 import SatsDashboard from './SatsDashboard';
 import SatsLearnMode from './SatsLearnMode';
@@ -50,7 +51,7 @@ export default function SatsHub({
 }: SatsHubProps) {
   const [activeTab, setActiveTab] = useState<SatsNavTab>('dashboard');
   const [progress, setProgress] = useState<SatsStudentProgress>(() => {
-    return loadSatsProgress(userId, studentName) as any;
+    return getDefaultSatsProgress(userId, studentName);
   });
 
   // Direct parameter routing state

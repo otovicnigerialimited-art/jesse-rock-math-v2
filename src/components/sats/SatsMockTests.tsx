@@ -183,8 +183,11 @@ export default function SatsMockTests({
     setLatestResult(result);
 
     // Save into student progress
-    const updated = { ...progress };
-    updated.mockHistory.push(result);
+    const updated: SatsStudentProgress = { 
+      ...progress,
+      mockHistory: [...(progress?.mockHistory || []), result],
+      domainMastery: { ...progress.domainMastery }
+    };
     // update domain masteries
     strongDomains.forEach(d => {
       updated.domainMastery[d] = Math.min(100, (updated.domainMastery[d] || 60) + 5);
