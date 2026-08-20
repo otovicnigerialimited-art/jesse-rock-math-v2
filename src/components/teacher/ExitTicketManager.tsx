@@ -18,28 +18,17 @@ export default function ExitTicketManager({ teacherId, classId, students, onAssi
   const [difficulty, setDifficulty] = useState('Medium');
   const [isCreating, setIsCreating] = useState(false);
 
-  // Active ticket demo state
-  const [activeTicket, setActiveTicket] = useState<ExitTicket | null>({
-    id: 'ticket_demo_1',
-    teacher_id: teacherId,
-    class_id: classId,
-    topic: 'Fractions',
-    skill: 'Equivalent Fractions',
-    question_count: 3,
-    difficulty: 'Medium',
-    status: 'active',
-    created_at: Date.now(),
-    questions: [
-      { id: 1, question: 'Which fraction is equivalent to 1/2?', options: ['2/4', '3/5', '1/3', '4/6'], answer: '2/4', explanation: 'Multiply numerator and denominator by 2.' },
-      { id: 2, question: 'Complete: 3/4 = ? / 8', options: ['5', '6', '7', '8'], answer: '6', explanation: 'Multiply 3 by 2 to match denominator 4 * 2 = 8.' },
-      { id: 3, question: 'Are 2/3 and 4/6 equivalent?', options: ['Yes', 'No'], answer: 'Yes', explanation: '2/3 = (2*2)/(3*2) = 4/6.' }
-    ]
-  });
+  // Active ticket state (starts clean with null)
+  const [activeTicket, setActiveTicket] = useState<ExitTicket | null>(null);
 
-  const totalStudents = Math.max(students.length, 28);
-  const completedCount = 26;
-  const understoodCount = 20;
-  const supportCount = 6;
+  const totalStudents = students.length;
+  const completedCount = students.filter(s => (s.school_math_progress?.solved || 0) > 0).length;
+  const understoodCount = students.filter(s => {
+    const solved = s.school_math_progress?.solved || 0;
+    const correct = s.school_math_progress?.correctAnswers || 0;
+    return solved > 0 && (correct / solved) >= 0.7;
+  }).length;
+  const supportCount = Math.max(0, completedCount - understoodCount);
 
   const handleCreateTicket = async () => {
     setIsCreating(true);

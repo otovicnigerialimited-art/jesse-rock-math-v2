@@ -94,11 +94,11 @@ export async function seedSchoolsDb() {
     const snap = await getDocs(teachersCol);
     
     if (snap.empty) {
-      console.log('✏️ Seeding default classroom teacher and student data to Firestore...');
+      console.log('✏️ Initializing clean teacher classroom database...');
       
       const defaultTeacherId = 'teacher_jesse_default';
       
-      // Seed default teacher
+      // Seed clean default teacher without dummy student records
       await setDoc(doc(db, 'teachers', defaultTeacherId), {
         id: defaultTeacherId,
         teacher_name: 'Jesse Rockstar',
@@ -106,66 +106,10 @@ export async function seedSchoolsDb() {
         password: 'teach123'
       });
 
-      // Seed default students under this teacher
-      const s1Id = 'student_leo_default';
-      await setDoc(doc(db, 'school_students', s1Id), {
-        id: s1Id,
-        real_first_name: 'Leo',
-        username: 'leo_rock',
-        password: 'star123',
-        teacher_id: defaultTeacherId,
-        school_math_progress: {
-          highScore: 420,
-          xp: 1250,
-          coins: 200,
-          solved: 120,
-          correctAnswers: 98,
-          currentLevel: 5,
-          streak: 5
-        },
-        // Root fields for dual backward compatibility
-        coins: 200,
-        xp: 1250,
-        badges: ["School Rockstar", "Genius Debut"],
-        equipped_items: {
-          hair: 'hair_rocker',
-          body: 'body_vest',
-          instrument: 'guitar_v'
-        },
-        purchased_items: ['hair_rocker', 'body_vest', 'guitar_v']
-      });
-
-      const s2Id = 'student_emma_default';
-      await setDoc(doc(db, 'school_students', s2Id), {
-        id: s2Id,
-        real_first_name: 'Emma',
-        username: 'emma_calc',
-        password: 'star123',
-        teacher_id: defaultTeacherId,
-        school_math_progress: {
-          highScore: 680,
-          xp: 1850,
-          coins: 350,
-          solved: 150,
-          correctAnswers: 135,
-          currentLevel: 8,
-          streak: 12
-        },
-        coins: 350,
-        xp: 1850,
-        badges: ["School Rockstar", "Fast Fingers"],
-        equipped_items: {
-          hair: 'hair_mohawk',
-          body: 'body_tshirt',
-          instrument: 'guitar_default'
-        },
-        purchased_items: ['hair_mohawk', 'body_tshirt']
-      });
-
-      console.log('✅ Seeding complete.');
+      console.log('✅ Clean teacher database initialized.');
     }
   } catch (error) {
-    console.warn('Failed to seed default classroom data:', error);
+    console.warn('Failed to initialize classroom database:', error);
   }
 }
 

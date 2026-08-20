@@ -22,6 +22,8 @@ import {
   FileText
 } from 'lucide-react';
 
+import { SatsStudentProgress } from '../../types/sats';
+
 export interface DsatQuestion {
   id: string;
   section: 'math' | 'reading_writing';
@@ -37,6 +39,11 @@ export interface DsatQuestion {
     desmosTip?: string;
     distractorAnalysis: { option: string; reason: string }[];
   };
+}
+
+interface SatsDsatTutorProps {
+  progress?: SatsStudentProgress;
+  onUpdateProgress?: (updated: SatsStudentProgress) => void;
 }
 
 const SAMPLE_DSAT_QUESTIONS: DsatQuestion[] = [
@@ -122,7 +129,7 @@ const SAMPLE_DSAT_QUESTIONS: DsatQuestion[] = [
   }
 ];
 
-export default function SatsDsatTutor() {
+export default function SatsDsatTutor({ progress, onUpdateProgress }: SatsDsatTutorProps) {
   const [activeSection, setActiveSection] = useState<'all' | 'math' | 'reading_writing'>('all');
   const [selectedDomain, setSelectedDomain] = useState<string>('All Domains');
   const [currentQuestion, setCurrentQuestion] = useState<DsatQuestion>(SAMPLE_DSAT_QUESTIONS[0]);
@@ -142,16 +149,27 @@ export default function SatsDsatTutor() {
   const [chatInput, setChatInput] = useState<string>('');
   const [isChatTyping, setIsChatTyping] = useState<boolean>(false);
 
-  // Handle Question Answering
-  const handleGradeAnswer = () => {
-    setIsGraded(true);
-  };
-
   const isCorrect = () => {
     if (currentQuestion.isSpr) {
       return userSpr.trim() === currentQuestion.correctAnswer.trim();
     }
     return userChoice.toUpperCase().startsWith(currentQuestion.correctAnswer.toUpperCase());
+  };
+
+  // Handle Question Answering
+  const handleGradeAnswer = () => {
+    setIsGraded(true);
+
+    if (progress && onUpdateProgress) {
+      const correct = isCorrect();
+      const updated: SatsStudentProgress = {
+        ...progress,
+        totalPracticeSolved: (progress.totalPracticeSolved || 0) + 1,
+        totalCorrect: (progress.totalCorrect || 0) + (correct ? 1 : 0),
+        domainMastery: { ...progress.domainMastery }
+      };
+      onUpdateProgress(updated);
+    }
   };
 
   // Generate Next / AI Question

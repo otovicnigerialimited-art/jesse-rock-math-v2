@@ -17,18 +17,7 @@ export default function HomeworkManager({ teacherId, classId, students }: Homewo
   const [questionCount, setQuestionCount] = useState(10);
   const [dueDate, setDueDate] = useState('2026-08-25');
 
-  const [activeHomework, setActiveHomework] = useState<HomeworkAssignment | null>({
-    id: 'hw_demo_1',
-    teacher_id: teacherId,
-    class_id: classId,
-    title: 'Fractions Practice Homework',
-    topic: 'Fractions',
-    skill: 'Equivalent Fractions',
-    question_count: 10,
-    difficulty: 'KS2 Standard',
-    due_date: '2026-08-25',
-    created_at: Date.now()
-  });
+  const [activeHomework, setActiveHomework] = useState<HomeworkAssignment | null>(null);
 
   const handleCreateHomework = async () => {
     try {

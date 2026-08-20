@@ -10,21 +10,19 @@ interface SchoolAdminSectionProps {
 
 export default function SchoolAdminSection({ currentTeacher, students }: SchoolAdminSectionProps) {
   const [school, setSchool] = useState<School | null>({
-    id: 'sch_1',
-    name: 'St. Jude Primary & Math Academy',
-    code: 'SCH-9402',
+    id: `sch_${currentTeacher.id || 'default'}`,
+    name: `${currentTeacher.teacher_name}'s School Organization`,
+    code: `SCH-${(currentTeacher.id || '100').slice(0, 4).toUpperCase()}`,
     adminEmail: currentTeacher.email,
     created_at: Date.now()
   });
 
   const [classes, setClasses] = useState<ClassRoom[]>([
-    { id: 'c1', school_id: 'sch_1', class_name: 'Year 5A', year_group: 'Year 5', teacher_ids: [currentTeacher.id], student_count: 28, created_at: Date.now() },
-    { id: 'c2', school_id: 'sch_1', class_name: 'Year 6B', year_group: 'Year 6', teacher_ids: [currentTeacher.id], student_count: 32, created_at: Date.now() }
+    { id: 'c1', school_id: `sch_${currentTeacher.id}`, class_name: 'Main Classroom', year_group: 'Primary / KS2', teacher_ids: [currentTeacher.id], student_count: students.length, created_at: Date.now() }
   ]);
 
   const [teachers, setTeachers] = useState<Teacher[]>([
-    { id: currentTeacher.id, teacher_name: currentTeacher.teacher_name, email: currentTeacher.email },
-    { id: 't2', teacher_name: 'Mr. David Miller', email: 'dmiller@stjude.edu' }
+    { id: currentTeacher.id, teacher_name: currentTeacher.teacher_name, email: currentTeacher.email }
   ]);
 
   const [showAddClass, setShowAddClass] = useState(false);

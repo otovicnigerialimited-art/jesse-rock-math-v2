@@ -17,13 +17,13 @@ export default function ParentReportModal({ isOpen, onClose, student, className 
   };
 
   const progress = student.school_math_progress || {
-    solved: 38,
-    correctAnswers: 32,
-    highScore: 540,
-    currentLevel: 4
+    solved: 0,
+    correctAnswers: 0,
+    highScore: 0,
+    currentLevel: 1
   };
 
-  const accuracy = Math.round((progress.correctAnswers / Math.max(1, progress.solved)) * 100) || 84;
+  const accuracy = progress.solved > 0 ? Math.round((progress.correctAnswers / progress.solved) * 100) : 0;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">

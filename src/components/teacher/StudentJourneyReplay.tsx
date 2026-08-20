@@ -18,67 +18,11 @@ export default function StudentJourneyReplay({ student, onClose }: StudentJourne
     setLoading(true);
 
     fetchStudentJourney(student.id).then(events => {
-      if (events.length > 0) {
-        setJourneyEvents(events);
-      } else {
-        // Fallback default populated timeline events for realistic replay
-        setJourneyEvents([
-          {
-            id: 'ev_1',
-            student_id: student.id,
-            event_type: 'lesson_started',
-            topic: 'Fractions',
-            skill: 'Equivalent Fractions',
-            title: 'Started Unit: Fractions',
-            description: 'Initiated diagnostic assessment on equivalent fractions.',
-            timestamp: Date.now() - 7 * 24 * 3600 * 1000
-          },
-          {
-            id: 'ev_2',
-            student_id: student.id,
-            event_type: 'mistake_made',
-            topic: 'Fractions',
-            skill: 'Equivalent Fractions',
-            title: 'Misconception Flagged',
-            description: 'Made denominator scaling mistakes on Q3 and Q5.',
-            timestamp: Date.now() - 5 * 24 * 3600 * 1000
-          },
-          {
-            id: 'ev_3',
-            student_id: student.id,
-            event_type: 'targeted_practice',
-            topic: 'Fractions',
-            skill: 'Equivalent Fractions',
-            title: 'Received Targeted Practice Drill',
-            description: 'Completed 10-question remediation exercise assigned by teacher.',
-            timestamp: Date.now() - 3 * 24 * 3600 * 1000
-          },
-          {
-            id: 'ev_4',
-            student_id: student.id,
-            event_type: 'accuracy_boost',
-            topic: 'Fractions',
-            skill: 'Equivalent Fractions',
-            title: 'Accuracy Boost Recorded!',
-            description: 'Accuracy improved significantly from 54% to 71%.',
-            old_accuracy: 54,
-            new_accuracy: 71,
-            timestamp: Date.now() - 2 * 24 * 3600 * 1000
-          },
-          {
-            id: 'ev_5',
-            student_id: student.id,
-            event_type: 'skill_mastered',
-            topic: 'Fractions',
-            skill: 'Equivalent Fractions',
-            title: '🎉 SKILL MASTERED!',
-            description: 'Achieved 92% mastery score on Exit Ticket #4.',
-            old_accuracy: 71,
-            new_accuracy: 92,
-            timestamp: Date.now() - 1 * 24 * 3600 * 1000
-          }
-        ]);
-      }
+      setJourneyEvents(events || []);
+      setLoading(false);
+    }).catch(err => {
+      console.error("Failed to load student journey:", err);
+      setJourneyEvents([]);
       setLoading(false);
     });
   }, [student]);

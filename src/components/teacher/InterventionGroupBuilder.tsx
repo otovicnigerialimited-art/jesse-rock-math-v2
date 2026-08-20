@@ -23,10 +23,10 @@ export default function InterventionGroupBuilder({ students, onAssignGroupActivi
     return acc >= 0.8;
   }).map(s => s.id);
 
-  // Default fallback if student data list is empty
-  const [supportIds, setSupportIds] = useState<string[]>(initialSupport.length > 0 ? initialSupport : ['s1', 's2', 's3']);
-  const [developingIds, setDevelopingIds] = useState<string[]>(initialDeveloping.length > 0 ? initialDeveloping : ['s4', 's5', 's6', 's7']);
-  const [secureIds, setSecureIds] = useState<string[]>(initialSecure.length > 0 ? initialSecure : ['s8', 's9', 's10']);
+  // Initial group partition strictly based on actual registered students
+  const [supportIds, setSupportIds] = useState<string[]>(initialSupport);
+  const [developingIds, setDevelopingIds] = useState<string[]>(initialDeveloping);
+  const [secureIds, setSecureIds] = useState<string[]>(initialSecure);
 
   // Assigned differential activities
   const [supportActivity, setSupportActivity] = useState('Equivalent Fractions Remediation Lesson');

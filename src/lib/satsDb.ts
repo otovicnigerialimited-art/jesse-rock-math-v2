@@ -82,7 +82,7 @@ export function generateDefaultRevisionPlan(weakDomains?: SatsDomain[]): Revisio
 }
 
 export function getDefaultSatsProgress(userId: string = 'guest', studentName: string = 'Rockstar'): SatsStudentProgress {
-  // Default target date is roughly 45 days in future or May SATs
+  // Default target date is roughly 34 days in future
   const now = new Date();
   const targetDate = new Date(now.getTime() + 34 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
@@ -90,90 +90,43 @@ export function getDefaultSatsProgress(userId: string = 'guest', studentName: st
     userId,
     studentName,
     targetExamDate: targetDate,
-    currentConfidence: 7.8,
-    readinessScore: 68,
-    totalPracticeSolved: 18,
-    totalCorrect: 14,
-    totalMinutesStudied: 45,
-    streakDays: 4,
+    currentConfidence: 5.0,
+    readinessScore: 50,
+    totalPracticeSolved: 0,
+    totalCorrect: 0,
+    totalMinutesStudied: 0,
+    streakDays: 1,
     lastStudiedDate: new Date().toISOString().split('T')[0],
     domainMastery: {
-      number: 82,
-      fractions: 60,
-      ratio: 55,
-      algebra: 70,
-      measurement: 75,
-      geometry: 80,
-      statistics: 85,
-      reasoning: 65
+      number: 50,
+      fractions: 50,
+      ratio: 50,
+      algebra: 50,
+      measurement: 50,
+      geometry: 50,
+      statistics: 50,
+      reasoning: 50
     },
     topicMastery: {
-      topic_place_value: 82,
-      topic_equivalent_fractions: 60,
-      topic_ratio_proportion: 55,
-      topic_algebra_sequences: 70,
-      topic_measurement_area: 75,
-      topic_geometry_angles: 80,
-      topic_statistics_graphs: 85,
-      topic_reasoning_multistep: 65
+      topic_place_value: 50,
+      topic_equivalent_fractions: 50,
+      topic_ratio_proportion: 50,
+      topic_algebra_sequences: 50,
+      topic_measurement_area: 50,
+      topic_geometry_angles: 50,
+      topic_statistics_graphs: 50,
+      topic_reasoning_multistep: 50
     },
-    weaknessTags: [
-      {
-        tag: 'subtracting fractions with different denominators',
-        mistakeCount: 3,
-        lastDetected: Date.now() - 3600 * 1000 * 24,
-        associatedTopicId: 'topic_equivalent_fractions'
-      },
-      {
-        tag: 'ratio scaling',
-        mistakeCount: 2,
-        lastDetected: Date.now() - 3600 * 1000 * 48,
-        associatedTopicId: 'topic_ratio_proportion'
-      }
-    ],
-    completedLessons: ['topic_place_value'],
-    mockHistory: [
-      {
-        id: 'mock_init_1',
-        date: new Date(Date.now() - 86400000 * 6).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-        timestamp: Date.now() - 86400000 * 6,
-        paperType: 'arithmetic',
-        paperName: 'Diagnostic Arithmetic Baseline',
-        totalQuestions: 20,
-        score: 13,
-        percentage: 65,
-        timeSpentSeconds: 1120,
-        strongDomains: ['number', 'statistics'],
-        weakDomains: ['fractions', 'ratio'],
-        weaknessTags: ['subtracting fractions with different denominators'],
-        recommendedFocusTopicId: 'topic_equivalent_fractions',
-        answers: []
-      },
-      {
-        id: 'mock_init_2',
-        date: new Date(Date.now() - 86400000 * 2).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-        timestamp: Date.now() - 86400000 * 2,
-        paperType: 'reasoning',
-        paperName: 'Paper 2 Reasoning Mock 1',
-        totalQuestions: 15,
-        score: 11,
-        percentage: 73,
-        timeSpentSeconds: 1450,
-        strongDomains: ['number', 'geometry', 'statistics'],
-        weakDomains: ['ratio', 'reasoning'],
-        weaknessTags: ['ratio scaling'],
-        recommendedFocusTopicId: 'topic_ratio_proportion',
-        answers: []
-      }
-    ],
+    weaknessTags: [],
+    completedLessons: [],
+    mockHistory: [],
     weeklyPlan: generateDefaultRevisionPlan(),
     milestones: [
       {
         id: 'm1',
         title: 'First Mock 🎓',
         desc: 'Completed your first diagnostic SATs mock paper',
-        icon: 'GraduationCap',
-        unlockedAt: Date.now() - 86400000 * 6
+        icon: 'GraduationCap'
       },
       {
         id: 'm2',

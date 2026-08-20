@@ -14,11 +14,41 @@ export default function TeacherRecommendationCard({ students, onBuildLesson }: T
 
   if (dismissed) return null;
 
+  // If no students in roster yet, render clean empty invitation card
+  if (students.length === 0) {
+    return (
+      <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-900 to-slate-950 border-2 border-indigo-500/40 shadow-xl space-y-3 text-white">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-amber-400 text-slate-950 rounded-2xl font-black shadow-md flex items-center gap-1.5">
+            <Sparkles size={20} />
+            <span className="text-xs uppercase tracking-wider">AI RECOMMENDATION ENGINE</span>
+          </div>
+          <div>
+            <h2 className="text-lg font-display font-black text-amber-400 tracking-tight">AI TEACHING ADVISOR READY</h2>
+            <p className="text-xs text-indigo-200">Waiting for class activity data</p>
+          </div>
+        </div>
+        <p className="text-xs text-slate-300 leading-relaxed">
+          Add students to your roster or share your active Class Code. Once students complete practice drills or quizzes, AI Recommendations will automatically generate targeted lesson suggestions and misconception analyses here!
+        </p>
+      </div>
+    );
+  }
+
   // Calculate recommendation metrics based on actual students
-  const totalStudents = Math.max(students.length, 28);
-  const supportCount = Math.round(totalStudents * 0.32); // ~9
-  const developingCount = Math.round(totalStudents * 0.46); // ~13
-  const secureCount = totalStudents - supportCount - developingCount; // ~6
+  const totalStudents = students.length;
+  const supportCount = students.filter(s => {
+    const solved = s.school_math_progress?.solved || 0;
+    const correct = s.school_math_progress?.correctAnswers || 0;
+    return solved > 0 && (correct / solved) < 0.6;
+  }).length;
+  const developingCount = students.filter(s => {
+    const solved = s.school_math_progress?.solved || 0;
+    const correct = s.school_math_progress?.correctAnswers || 0;
+    const acc = solved > 0 ? correct / solved : 0;
+    return acc >= 0.6 && acc < 0.8;
+  }).length;
+  const secureCount = Math.max(0, totalStudents - supportCount - developingCount);
 
   const recommendedTopic = "Fractions";
   const recommendedSkill = "Equivalent Fractions";

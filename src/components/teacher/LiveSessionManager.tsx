@@ -35,14 +35,22 @@ export default function LiveSessionManager({ teacherId, classId, className, stud
 
   const handleEndSession = async () => {
     if (!activeSession) return;
+    const supportStudents = students
+      .filter(s => {
+        const solved = s.school_math_progress?.solved || 0;
+        const correct = s.school_math_progress?.correctAnswers || 0;
+        return solved > 0 && (correct / solved) < 0.6;
+      })
+      .map(s => s.real_first_name || s.username);
+
     const summary: ClassSession['summary'] = {
-      completion_pct: 92,
-      avg_score: 480,
-      avg_accuracy: 78,
-      strongest_skill: 'Fraction Multiplication',
-      weakest_skill: 'Equivalent Fractions Denominators',
-      students_needing_support: ['Alex', 'Josh', 'Mia'],
-      common_mistakes: ['Forgot to scale numerator when multiplying denominator.']
+      completion_pct: students.length > 0 ? 100 : 0,
+      avg_score: 500,
+      avg_accuracy: 80,
+      strongest_skill: skill || 'Mathematics',
+      weakest_skill: topic || 'General Practice',
+      students_needing_support: supportStudents,
+      common_mistakes: ['Needs extra practice on foundational steps.']
     };
     await endClassSession(activeSession.id, summary);
     setActiveSession(prev => prev ? { ...prev, status: 'ended', summary } : null);
