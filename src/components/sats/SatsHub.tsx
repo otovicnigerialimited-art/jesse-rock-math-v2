@@ -97,7 +97,6 @@ export default function SatsHub({
     { id: 'dashboard', label: 'Dashboard', desc: 'Overview & Readiness Score', icon: LayoutDashboard },
     { id: 'practice', label: 'Practice Drills', desc: 'Speed & Skill Drills', icon: Zap },
     { id: 'mocks', label: 'Mock Exams', desc: 'KS2 Timed Standardized Tests', icon: Trophy },
-    { id: 'dsat_tutor', label: 'AI DSAT Tutor', desc: 'Digital SAT & College Board AI', icon: Brain },
     { id: 'learn', label: 'Learn Mode', desc: 'Topic Lessons & Worked Examples', icon: BookOpen },
     { id: 'progress', label: 'Analytics', desc: 'Accuracy & Weakness Tracker', icon: TrendingUp },
     { id: 'plan', label: 'Revision Plan', desc: 'Weekly Practice Schedule', icon: Calendar },
@@ -140,10 +139,10 @@ export default function SatsHub({
                 </div>
                 <div>
                   <h1 className="text-base sm:text-lg font-display font-black text-slate-900 tracking-tight leading-none">
-                    JESSE SATs PREP
+                    UK KS2 SATs HUB
                   </h1>
                   <span className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-700 block mt-0.5">
-                    KS2 & DSAT Intelligence
+                    UK Primary Key Stage 2 Prep
                   </span>
                 </div>
               </div>
