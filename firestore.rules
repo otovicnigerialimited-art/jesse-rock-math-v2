@@ -48,7 +48,63 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
+    match /classes/{classId} {
+      allow read, write: if true;
+    }
+
     match /class_sessions/{sessionId} {
+      allow read, write: if true;
+    }
+
+    match /student_help_requests/{requestId} {
+      allow read, write: if true;
+    }
+
+    match /class_misconceptions/{misconceptionId} {
+      allow read, write: if true;
+    }
+
+    match /intervention_groups/{groupId} {
+      allow read, write: if true;
+    }
+
+    match /homework_assignments/{homeworkId} {
+      allow read, write: if true;
+    }
+
+    match /homework_submissions/{submissionId} {
+      allow read, write: if true;
+    }
+
+    match /exit_tickets/{ticketId} {
+      allow read, write: if true;
+    }
+
+    match /exit_ticket_results/{resultId} {
+      allow read, write: if true;
+    }
+
+    match /student_journey_events/{eventId} {
+      allow read, write: if true;
+    }
+
+    match /assessments/{assessmentId} {
+      allow read, write: if true;
+    }
+
+    match /assessment_submissions/{submissionId} {
+      allow read, write: if true;
+    }
+
+    match /parent_invitations/{invitationId} {
+      allow read, write: if true;
+    }
+
+    match /parent_children/{docId} {
+      allow read, write: if true;
+    }
+
+    match /parent_weekly_reports/{reportId} {
       allow read, write: if true;
     }
 

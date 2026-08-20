@@ -148,10 +148,16 @@ export default function HomeLanding({
               Play Free <ArrowRight size={18} />
             </button>
             <button
+              onClick={() => onNavigateToTab('sats')}
+              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm tracking-wider uppercase rounded-2xl shadow-xl flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
+            >
+              <GraduationCap size={20} className="text-slate-950" /> SATs Preparation Mode
+            </button>
+            <button
               onClick={() => onNavigateToTab('school')}
               className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-sm tracking-wider uppercase rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
             >
-              <GraduationCap size={18} /> For Teachers
+              <Users size={18} /> For Teachers
             </button>
             <button
               onClick={() => onNavigateToTab('hub')}
@@ -160,6 +166,31 @@ export default function HomeLanding({
               <BookOpen size={18} /> Learning Hub
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* 2. DEDICATED PROMINENT KS2 SATs PREPARATION BANNER */}
+      <section className="relative overflow-hidden p-6 md:p-8 rounded-[2.5rem] bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 border-4 border-indigo-500 shadow-2xl text-white">
+        <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-emerald-500/20 border border-emerald-400/40 rounded-full text-xs font-black text-emerald-300 uppercase tracking-widest">
+              <GraduationCap size={15} /> KS2 Year 6 Mathematics
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-display font-black text-white">
+              🎓 Preparing for SATs?
+            </h2>
+            <p className="text-sm text-indigo-100/90 max-w-2xl font-medium leading-relaxed">
+              «Get ready for your KS2 SATs with guided practice, revision, mock tests and personalised support.»
+            </p>
+          </div>
+
+          <button
+            onClick={() => onNavigateToTab('sats')}
+            className="w-full lg:w-auto px-9 py-4 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-display font-black text-sm uppercase tracking-wider rounded-2xl shadow-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shrink-0 cursor-pointer"
+          >
+            START SATs PREPARATION →
+          </button>
         </div>
       </section>
 

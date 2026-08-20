@@ -21,7 +21,7 @@ import {
 } from '../lib/reviewsDb';
 
 interface ReviewSectionProps {
-  userRole?: 'student' | 'kid' | 'individual' | 'teacher' | 'parent' | 'admin' | 'guest' | string;
+  userRole?: 'student' | 'kid' | 'individual' | 'teacher' | 'parent' | 'guest' | string;
   userId?: string;
   username?: string;
   stats?: {
@@ -50,7 +50,7 @@ export default function ReviewSection({
   const [roleType, setRoleType] = useState<string>(
     userRole === 'teacher' ? 'Teacher / Educator' :
     userRole === 'parent' ? 'Parent / Guardian' :
-    userRole === 'admin' ? 'School Administrator' : 'Student Player'
+    userRole === 'individual' ? 'Independent Math Player' : 'Student Player'
   );
   const [rating, setRating] = useState<number>(5);
   const [reviewText, setReviewText] = useState<string>('');

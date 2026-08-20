@@ -51,6 +51,66 @@
       },
       "required": ["username", "score"]
     },
+    "ClassRoom": {
+      "title": "ClassRoom",
+      "description": "Classroom metadata",
+      "type": "object",
+      "properties": {
+        "class_name": { "type": "string" },
+        "school_id": { "type": "string" }
+      }
+    },
+    "ClassSession": {
+      "title": "ClassSession",
+      "description": "Live class session state",
+      "type": "object",
+      "properties": {
+        "teacher_id": { "type": "string" },
+        "topic": { "type": "string" }
+      }
+    },
+    "StudentHelpRequest": {
+      "title": "StudentHelpRequest",
+      "description": "I Need Help request from student",
+      "type": "object",
+      "properties": {
+        "student_name": { "type": "string" },
+        "topic": { "type": "string" }
+      }
+    },
+    "HomeworkAssignment": {
+      "title": "HomeworkAssignment",
+      "description": "Assigned homework task",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" }
+      }
+    },
+    "ExitTicket": {
+      "title": "ExitTicket",
+      "description": "Lesson closure exit ticket",
+      "type": "object",
+      "properties": {
+        "topic": { "type": "string" }
+      }
+    },
+    "Assessment": {
+      "title": "Assessment",
+      "description": "Custom created test or assessment",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" }
+      }
+    },
+    "StudentJourneyEvent": {
+      "title": "StudentJourneyEvent",
+      "description": "Student activity replay timeline event",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "student_id": { "type": "string" }
+      }
+    },
     "Review": {
       "title": "Review",
       "description": "User review and rating for Jesse Math Rockstar",
@@ -73,6 +133,13 @@
     "/schools/{schoolId}": { "schema": "School", "description": "Schools collection" },
     "/teachers/{teacherId}": { "schema": "Teacher", "description": "Teachers collection" },
     "/students/{studentId}": { "schema": "Student", "description": "Students collection" },
+    "/classes/{classId}": { "schema": "ClassRoom", "description": "Classes collection" },
+    "/class_sessions/{sessionId}": { "schema": "ClassSession", "description": "Live class sessions collection" },
+    "/student_help_requests/{requestId}": { "schema": "StudentHelpRequest", "description": "Student help requests collection" },
+    "/homework_assignments/{homeworkId}": { "schema": "HomeworkAssignment", "description": "Homework assignments collection" },
+    "/exit_tickets/{ticketId}": { "schema": "ExitTicket", "description": "Exit tickets collection" },
+    "/assessments/{assessmentId}": { "schema": "Assessment", "description": "Assessments collection" },
+    "/student_journey_events/{eventId}": { "schema": "StudentJourneyEvent", "description": "Student journey timeline events collection" },
     "/leaderboard/{document}": { "schema": "LeaderboardEntry", "description": "Leaderboard collection" },
     "/reviews/{reviewId}": { "schema": "Review", "description": "User reviews and ratings collection" }
   }

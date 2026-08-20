@@ -66,9 +66,9 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
   }, []);
 
   const userRole = currentUser?.role || 'guest';
-  const isStarRatingOnly = userRole !== 'teacher' && userRole !== 'admin';
+  const isStarRatingOnly = userRole !== 'teacher' && userRole !== 'parent';
   const isGuest = !currentUser || currentUser.uid === 'guest' || currentUser.username === 'Genius Scholar' || currentUser.role === 'guest';
-  const isAdult = currentUser?.role === 'teacher' || currentUser?.role === 'admin';
+  const isAdult = currentUser?.role === 'teacher' || currentUser?.role === 'parent';
 
   const sanitizeGuestbookText = (text: string): string => {
     return text

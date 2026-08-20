@@ -35,9 +35,35 @@ import {
   X,
   BookOpen,
   FileText,
-  Pencil
+  Pencil,
+  Building,
+  Upload,
+  Printer,
+  Ticket,
+  LayoutGrid,
+  Layers,
+  History,
+  FileCheck,
+  Heart,
+  Lightbulb
 } from 'lucide-react';
 import { motion } from 'motion/react';
+
+// Advanced Classroom Tools Components
+import SchoolAdminSection from './teacher/SchoolAdminSection';
+import BulkStudentImportModal from './teacher/BulkStudentImportModal';
+import StudentLoginCardsModal from './teacher/StudentLoginCardsModal';
+import LiveSessionManager from './teacher/LiveSessionManager';
+import TeacherRecommendationCard from './teacher/TeacherRecommendationCard';
+import ExitTicketManager from './teacher/ExitTicketManager';
+import MisconceptionDetectorCard from './teacher/MisconceptionDetectorCard';
+import ClassroomSeatingChart from './teacher/ClassroomSeatingChart';
+import InterventionGroupBuilder from './teacher/InterventionGroupBuilder';
+import HomeworkManager from './teacher/HomeworkManager';
+import StudentJourneyReplay from './teacher/StudentJourneyReplay';
+import AssessmentBuilderModal from './teacher/AssessmentBuilderModal';
+import ParentReportModal from './teacher/ParentReportModal';
+import StudentHelpCenterDrawer from './teacher/StudentHelpCenterDrawer';
 
 interface TeacherDashboardProps {
   teacher?: {
@@ -63,7 +89,14 @@ export default function TeacherDashboard({
   const resolvedName = teacher?.teacher_name || teacherName || 'Rockstar Educator';
   const resolvedEmail = teacher?.email || teacherEmail || '';
 
-  const [activeDashboardTab, setActiveDashboardTab] = useState<'roster' | 'class_login'>('roster');
+  const [activeDashboardTab, setActiveDashboardTab] = useState<'roster' | 'class_login' | 'live_session' | 'school_admin' | 'assessments' | 'homework' | 'differentiation'>('roster');
+
+  // Modals state
+  const [showBulkImport, setShowBulkImport] = useState(false);
+  const [showLoginCards, setShowLoginCards] = useState(false);
+  const [showAssessmentBuilder, setShowAssessmentBuilder] = useState(false);
+  const [selectedStudentForJourney, setSelectedStudentForJourney] = useState<SchoolStudent | null>(null);
+  const [selectedStudentForParentReport, setSelectedStudentForParentReport] = useState<SchoolStudent | null>(null);
 
   const [students, setStudents] = useState<SchoolStudent[]>([]);
   const [loading, setLoading] = useState(true);
@@ -446,18 +479,38 @@ export default function TeacherDashboard({
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <button
-              onClick={onSignOut}
-              className="px-4 py-3 rounded-2xl bg-white backdrop-blur-md hover:bg-rose-500/10 border border-deep-navy border-4 hover:border-rose-500/20 text-deep-navy hover:text-rose-400 text-xs font-bold uppercase transition-all tracking-wider flex items-center gap-2 cursor-pointer"
+              onClick={() => setShowBulkImport(true)}
+              className="px-3.5 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 border border-deep-navy border-4 text-slate-950 text-xs font-black uppercase transition-all tracking-wider flex items-center gap-1.5 cursor-pointer shadow-md"
             >
-              <LogOut size={13} />
-              Sign Out
+              <Upload size={14} /> Bulk CSV Import
             </button>
 
+            <button
+              onClick={() => setShowLoginCards(true)}
+              className="px-3.5 py-2.5 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border border-deep-navy border-4 text-deep-navy text-xs font-black uppercase transition-all tracking-wider flex items-center gap-1.5 cursor-pointer shadow-md"
+            >
+              <Printer size={14} /> Login Cards
+            </button>
+
+            <button
+              onClick={onSignOut}
+              className="px-3.5 py-2.5 rounded-2xl bg-white backdrop-blur-md hover:bg-rose-500/10 border border-deep-navy border-4 hover:border-rose-500/20 text-deep-navy hover:text-rose-400 text-xs font-bold uppercase transition-all tracking-wider flex items-center gap-1.5 cursor-pointer"
+            >
+              <LogOut size={13} /> Sign Out
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Intelligent AI Recommendation Banner */}
+      <TeacherRecommendationCard
+        students={students}
+        onBuildLesson={(topic, skill) => {
+          setActiveDashboardTab('live_session');
+        }}
+      />
 
       {/* Classroom Stats Widget Row */}
       <div id="classroom-tracker-widgets" className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -482,28 +535,68 @@ export default function TeacherDashboard({
       </div>
 
       {/* Dashboard Sub-Tab Navigation */}
-      <div className="flex bg-white p-1 rounded-2xl border border-deep-navy border-4 gap-1.5 shadow-md">
+      <div className="flex flex-wrap bg-white p-1.5 rounded-2xl border border-deep-navy border-4 gap-1.5 shadow-md">
         <button
           onClick={() => setActiveDashboardTab('roster')}
-          className={`flex-1 py-3 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            activeDashboardTab === 'roster'
-              ? 'bg-deep-navy text-white shadow-md'
-              : 'text-deep-navy hover:bg-slate-50'
+          className={`flex-1 min-w-[120px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'roster' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
           }`}
         >
-          <Users size={15} />
-          Roster & Registrations
+          <Users size={14} /> Roster
         </button>
+
+        <button
+          onClick={() => setActiveDashboardTab('live_session')}
+          className={`flex-1 min-w-[120px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'live_session' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
+          }`}
+        >
+          <Activity size={14} className="text-rose-400" /> Live & Desks
+        </button>
+
+        <button
+          onClick={() => setActiveDashboardTab('differentiation')}
+          className={`flex-1 min-w-[120px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'differentiation' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
+          }`}
+        >
+          <Layers size={14} className="text-indigo-400" /> Interventions
+        </button>
+
+        <button
+          onClick={() => setActiveDashboardTab('homework')}
+          className={`flex-1 min-w-[120px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'homework' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
+          }`}
+        >
+          <BookOpen size={14} className="text-amber-400" /> Homework & Exit
+        </button>
+
+        <button
+          onClick={() => setActiveDashboardTab('assessments')}
+          className={`flex-1 min-w-[120px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'assessments' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
+          }`}
+        >
+          <FileCheck size={14} className="text-emerald-400" /> Assessment Builder
+        </button>
+
+        <button
+          onClick={() => setActiveDashboardTab('school_admin')}
+          className={`flex-1 min-w-[120px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'school_admin' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
+          }`}
+        >
+          <Building size={14} className="text-violet-400" /> School Org
+        </button>
+
         <button
           onClick={() => setActiveDashboardTab('class_login')}
-          className={`flex-1 py-3 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            activeDashboardTab === 'class_login'
-              ? 'bg-deep-navy text-white shadow-md'
-              : 'text-deep-navy hover:bg-slate-50'
+          className={`flex-1 min-w-[120px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'class_login' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
           }`}
         >
-          <Globe size={15} />
-          Class Login Hub 👑
+          <Globe size={14} className="text-cyan-400" /> Class Code
         </button>
       </div>
 
@@ -729,12 +822,26 @@ export default function TeacherDashboard({
                               )}
                             </td>
                             <td className="p-4 text-center">
-                              <button
-                                onClick={() => setSelectedStudentForDetails(student)}
-                                className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white font-black text-[10px] uppercase rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1 mx-auto"
-                              >
-                                <Activity size={11} /> View Details
-                              </button>
+                              <div className="flex flex-col gap-1 items-center">
+                                <button
+                                  onClick={() => setSelectedStudentForDetails(student)}
+                                  className="px-2.5 py-1 bg-violet-600 hover:bg-violet-700 text-white font-black text-[10px] uppercase rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1 w-full justify-center"
+                                >
+                                  <Activity size={11} /> Details
+                                </button>
+                                <button
+                                  onClick={() => setSelectedStudentForJourney(student)}
+                                  className="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-[10px] uppercase rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1 w-full justify-center"
+                                >
+                                  <History size={11} /> Journey
+                                </button>
+                                <button
+                                  onClick={() => setSelectedStudentForParentReport(student)}
+                                  className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[10px] uppercase rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1 w-full justify-center"
+                                >
+                                  <Heart size={11} /> Parent Report
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         );
@@ -746,8 +853,77 @@ export default function TeacherDashboard({
             </div>
           </div>
         </div>
+      ) : activeDashboardTab === 'live_session' ? (
+        <div className="space-y-6">
+          <LiveSessionManager
+            teacherId={resolvedId}
+            classId="c1"
+            className={className || "Year 5A"}
+            students={students}
+          />
+          <ClassroomSeatingChart students={students} />
+        </div>
+      ) : activeDashboardTab === 'differentiation' ? (
+        <div className="space-y-6">
+          <InterventionGroupBuilder
+            students={students}
+            onAssignGroupActivities={(groups) => {
+              console.log("Assigned group activities:", groups);
+            }}
+          />
+        </div>
+      ) : activeDashboardTab === 'homework' ? (
+        <div className="space-y-6">
+          <MisconceptionDetectorCard
+            onBuildMiniLesson={(topic, skill) => setActiveDashboardTab('live_session')}
+            onCreatePractice={(topic, skill) => setActiveDashboardTab('homework')}
+          />
+          <ExitTicketManager
+            teacherId={resolvedId}
+            classId="c1"
+            students={students}
+            onAssignPractice={(skill) => console.log("Assigning follow-up practice:", skill)}
+          />
+          <HomeworkManager
+            teacherId={resolvedId}
+            classId="c1"
+            students={students}
+          />
+        </div>
+      ) : activeDashboardTab === 'assessments' ? (
+        <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 text-white">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-2xl">
+                <FileCheck size={24} />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">CLASSROOM EVALUATION ENGINE</span>
+                <h3 className="text-xl font-display font-bold">ASSESSMENTS & TESTS</h3>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowAssessmentBuilder(true)}
+              className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-2xl text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-lg shadow-emerald-500/20"
+            >
+              <FileCheck size={16} /> BUILD NEW ASSESSMENT
+            </button>
+          </div>
+
+          <div className="p-8 text-center bg-slate-950 border border-dashed border-slate-800 rounded-2xl space-y-2">
+            <FileCheck size={36} className="mx-auto text-emerald-500/50" />
+            <h4 className="font-bold text-white text-base">Assessment Builder Ready</h4>
+            <p className="text-xs text-slate-400 max-w-md mx-auto">Create custom curriculum tests with multiple choice, short answers, word problems, and auto-generated post-test analytics.</p>
+          </div>
+        </div>
+      ) : activeDashboardTab === 'school_admin' ? (
+        <SchoolAdminSection
+          currentTeacher={{ id: resolvedId, teacher_name: resolvedName, email: resolvedEmail }}
+          students={students}
+        />
       ) : (
-        /* TAB 2: Class Login Code and Student Join Approvals */
+        /* TAB: Class Login Code and Student Join Approvals */
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left panel column container */}
           <div className="space-y-6 lg:col-span-1 flex flex-col">
@@ -1300,6 +1476,57 @@ export default function TeacherDashboard({
           </div>
         </div>
       )}
+      {/* Bulk CSV Student Import Modal */}
+      <BulkStudentImportModal
+        isOpen={showBulkImport}
+        onClose={() => setShowBulkImport(false)}
+        teacherId={resolvedId}
+        onRefreshRoster={() => {}}
+      />
+
+      {/* Printable Student Login Cards Modal */}
+      <StudentLoginCardsModal
+        isOpen={showLoginCards}
+        onClose={() => setShowLoginCards(false)}
+        students={students}
+        className={className || "Year 5A"}
+      />
+
+      {/* Live Student Help Center Drawer */}
+      <StudentHelpCenterDrawer
+        teacherId={resolvedId}
+      />
+
+      {/* Student Journey Replay Modal */}
+      {selectedStudentForJourney && (
+        <StudentJourneyReplay
+          student={selectedStudentForJourney}
+          onClose={() => setSelectedStudentForJourney(null)}
+        />
+      )}
+
+      {/* Parent Report Printable Modal */}
+      {selectedStudentForParentReport && (
+        <ParentReportModal
+          isOpen={!!selectedStudentForParentReport}
+          onClose={() => setSelectedStudentForParentReport(null)}
+          student={selectedStudentForParentReport}
+          className={className || "Year 5A"}
+        />
+      )}
+
+      {/* Assessment Builder Modal */}
+      <AssessmentBuilderModal
+        isOpen={showAssessmentBuilder}
+        onClose={() => setShowAssessmentBuilder(false)}
+        teacherId={resolvedId}
+        classId="c1"
+        onAssignAssessment={(assessment) => {
+          console.log("Assessment assigned:", assessment);
+          setShowAssessmentBuilder(false);
+        }}
+      />
+
       {/* Itch.io Embed */}
       <div className="flex justify-center mt-4 mb-0 w-full">
          <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>

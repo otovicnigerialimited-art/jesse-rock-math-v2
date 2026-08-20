@@ -32,9 +32,11 @@ import {
   Gamepad2,
   Flame,
   Smartphone,
-  Download
+  Download,
+  GraduationCap
 } from 'lucide-react';
 import { UserStats, Difficulty, Lesson } from './types';
+import { ExtendedUserStats } from './types/extendedTypes';
 import { cn } from './lib/utils';
 import { calculateLevel } from './lib/badges';
 import { getWeeklyData } from './lib/dateUtils';
@@ -51,6 +53,7 @@ const ClassPlayground = React.lazy(() => import('./components/ClassPlayground'))
 const DeveloperPage = React.lazy(() => import('./components/DeveloperPage'));
 const LearnArena = React.lazy(() => import('./components/LearnArena'));
 const SchoolDashboards = React.lazy(() => import('./components/SchoolDashboards'));
+const ParentDashboard = React.lazy(() => import('./components/ParentDashboard'));
 const CreatorPanel = React.lazy(() => import('./components/CreatorPanel'));
 const Dashboard = React.lazy(() => import('./components/Dashboard'));
 const Leaderboard = React.lazy(() => import('./components/Leaderboard'));
@@ -65,8 +68,14 @@ const InstallGuideModal = React.lazy(() => import('./components/InstallGuideModa
 
 import AvatarPreview from './components/AvatarPreview';
 import { updateSchoolStudentProgress } from './lib/schoolDb';
+const SatsHub = React.lazy(() => import('./components/sats/SatsHub'));
+const DiagnosticModal = React.lazy(() => import('./components/DiagnosticModal'));
+const MistakeIntelligenceModal = React.lazy(() => import('./components/MistakeIntelligenceModal'));
+const SmartNotificationsModal = React.lazy(() => import('./components/SmartNotificationsModal'));
+const ChildSafetyModal = React.lazy(() => import('./components/ChildSafetyModal'));
+const SpacedPracticeView = React.lazy(() => import('./components/SpacedPracticeView'));
 
-const INITIAL_STATS: UserStats = {
+const INITIAL_STATS: ExtendedUserStats = {
   totalSolved: 0,
   correctAnswers: 0,
   level: 1,
@@ -80,7 +89,11 @@ const INITIAL_STATS: UserStats = {
 
 export default function App() {
   console.log('[JesseMath] Rendering App component...');
-  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade' | 'arena'>('home');
+  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade' | 'arena' | 'sats' | 'spaced_practice'>('home');
+  const [showDiagnosticModal, setShowDiagnosticModal] = useState(false);
+  const [showMistakeModal, setShowMistakeModal] = useState(false);
+  const [showNotificationsModal, setShowNotificationsModal] = useState(false);
+  const [showSafetyModal, setShowSafetyModal] = useState(false);
   const [rewardTimer, setRewardTimer] = useState(300);
   const [isWorkspaceLocked, setIsWorkspaceLocked] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -107,7 +120,7 @@ export default function App() {
       delay: `${-((i * 13) % 25)}s`
     }));
   }, []);
-  const [stats, setStats] = useState<UserStats>(() => {
+  const [stats, setStats] = useState<ExtendedUserStats>(() => {
     try {
       const saved = safeStorage.getItem('math_rockstar_stats');
       return saved ? JSON.parse(saved) : INITIAL_STATS;
@@ -184,7 +197,7 @@ export default function App() {
     isCookieBlocked: boolean;
     message: string;
     username: string | null;
-    role?: 'student' | 'teacher' | 'admin' | 'individual' | 'guest' | 'class_student';
+    role?: 'student' | 'teacher' | 'parent' | 'individual' | 'guest' | 'class_student';
     schoolId?: string | null;
     schoolName?: string | null;
     className?: string | null;
@@ -1137,7 +1150,7 @@ export default function App() {
     );
   }
 
-  if (authState.role === 'teacher' || authState.role === 'admin') {
+  if (authState.role === 'teacher') {
     return (
       <React.Suspense fallback={
         <div className="h-full flex items-center justify-center bg-slate-950 text-white">
@@ -1147,6 +1160,22 @@ export default function App() {
         <SchoolDashboards 
           authState={authState as any} 
           onSignOut={handleSignOut} 
+        />
+      </React.Suspense>
+    );
+  }
+
+  if (authState.role === 'parent') {
+    return (
+      <React.Suspense fallback={
+        <div className="h-full flex items-center justify-center bg-slate-950 text-white">
+          <Loader2 className="animate-spin text-brand-primary w-12 h-12" />
+        </div>
+      }>
+        <ParentDashboard
+          parentId={authState.userId || ''}
+          parentName={authState.realName || authState.username || 'Parent'}
+          onSignOut={handleSignOut}
         />
       </React.Suspense>
     );
@@ -1171,6 +1200,7 @@ export default function App() {
         { id: 'shop', label: '🔥 Rock Shop', icon: ShoppingBag },
         { id: 'arcade', label: 'Fun Arcade 🕹️', icon: Gamepad2 },
         { id: 'hub', label: 'Learning Hub', icon: BookOpen },
+        { id: 'sats', label: '🎓 SATs Prep Hub', icon: GraduationCap },
         { id: 'quiz', label: 'Play Arena', icon: Trophy },
         { id: 'learn', label: 'Learn Arena', icon: BookOpen },
         { id: 'arena', label: 'Multiplayer Arena', icon: LogoIcon },
@@ -1406,7 +1436,26 @@ export default function App() {
                       <HomeLanding userId={authState.userId || userDeviceId || ''} username={authState.username || 'Guest'} userRole={authState.role as any} stats={stats} onNavigateToTab={setActiveTab} onNavigateToLesson={(l: any) => { setPracticeLesson(l); setActiveTab('learn'); }} onNavigateToTermsSection={handleNavigateToTermsSection} />
                     )
                   )}
-                  {activeTab === 'dashboard' && <Dashboard stats={stats} onStartQuiz={() => setActiveTab('quiz')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} />}
+                  {activeTab === 'dashboard' && (
+                    <Dashboard 
+                      stats={stats} 
+                      onStartQuiz={() => setActiveTab('quiz')} 
+                      isGuest={authState.role === 'guest'} 
+                      onConvertProgress={() => { setShowConvertModal(true); }} 
+                      onStartDiagnostic={() => setShowDiagnosticModal(true)}
+                      onStartSpacedPractice={() => setActiveTab('spaced_practice')}
+                      onOpenMistakes={() => setShowMistakeModal(true)}
+                      onOpenNotifications={() => setShowNotificationsModal(true)}
+                      onOpenSafety={() => setShowSafetyModal(true)}
+                    />
+                  )}
+                  {activeTab === 'spaced_practice' && (
+                    <SpacedPracticeView 
+                      stats={stats}
+                      onUpdateStats={(updated) => setStats(updated)}
+                      onExit={() => setActiveTab('dashboard')}
+                    />
+                  )}
                   {activeTab === 'leaderboard' && (
                     <React.Suspense fallback={<div className="h-full flex items-center justify-center bg-slate-950 text-white"><Loader2 className="animate-spin text-brand-primary w-12 h-12" /></div>}>
                       <Leaderboard currentUser={{ uid: authState.userId || null, username: authState.username || null, role: authState.role }} currentStreak={stats.streak} stats={stats} />
@@ -1421,6 +1470,13 @@ export default function App() {
                   {activeTab === 'developer' && <DeveloperPage currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', role: authState.role || 'guest' }} />}
                   {activeTab === 'learn' && <LearnArena onFinish={handleLearnArenaFinish} onExit={() => setActiveTab('hub')} lesson={practiceLesson} />}
                   {activeTab === 'shop' && <RockShop userId={authState.userId || userDeviceId || ''} role={authState.role as any} onNavigateToTab={setActiveTab} />}
+                  {activeTab === 'sats' && (
+                    <SatsHub 
+                      userId={authState.userId || userDeviceId || 'guest'} 
+                      studentName={authState.username || 'Rockstar'} 
+                      onExitToRockstarMode={() => setActiveTab('home')} 
+                    />
+                  )}
                   {activeTab === 'arcade' && <FunArcade stats={stats} onExit={() => setActiveTab('home')} />}
                   {activeTab === 'creator' && <CreatorPanel />}
                 </motion.div>
@@ -1516,6 +1572,65 @@ export default function App() {
             <InstallGuideModal 
               isOpen={showInstallGuide} 
               onClose={() => setShowInstallGuide(false)} 
+            />
+          </React.Suspense>
+        )}
+
+        {/* Upgrade Modals */}
+        {showDiagnosticModal && (
+          <React.Suspense fallback={null}>
+            <DiagnosticModal 
+              isOpen={showDiagnosticModal}
+              onClose={() => setShowDiagnosticModal(false)}
+              onSaveResult={(res) => {
+                setStats(prev => ({
+                  ...prev,
+                  diagnosticResult: res
+                }));
+              }}
+            />
+          </React.Suspense>
+        )}
+
+        {showMistakeModal && (
+          <React.Suspense fallback={null}>
+            <MistakeIntelligenceModal 
+              isOpen={showMistakeModal}
+              onClose={() => setShowMistakeModal(false)}
+              misconceptions={stats.misconceptions || {}}
+              onClearMistake={(tag) => {
+                setStats(prev => {
+                  const updated = { ...(prev.misconceptions || {}) };
+                  delete updated[tag];
+                  return { ...prev, misconceptions: updated };
+                });
+              }}
+            />
+          </React.Suspense>
+        )}
+
+        {showNotificationsModal && (
+          <React.Suspense fallback={null}>
+            <SmartNotificationsModal 
+              isOpen={showNotificationsModal}
+              onClose={() => setShowNotificationsModal(false)}
+              stats={stats}
+              onToggleNotifications={(enabled) => {
+                setStats(prev => ({ ...prev, notificationsEnabled: enabled }));
+              }}
+            />
+          </React.Suspense>
+        )}
+
+        {showSafetyModal && (
+          <React.Suspense fallback={null}>
+            <ChildSafetyModal 
+              isOpen={showSafetyModal}
+              onClose={() => setShowSafetyModal(false)}
+              currentUsername={authState.username || 'RockstarMathPro'}
+              onUpdateUsername={(newName) => {
+                setAuthState(prev => ({ ...prev, username: newName }));
+              }}
             />
           </React.Suspense>
         )}

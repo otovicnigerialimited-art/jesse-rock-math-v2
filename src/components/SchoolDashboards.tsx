@@ -6,7 +6,7 @@ interface SchoolDashboardsProps {
   authState: {
     isAuthenticated: boolean;
     username: string | null;
-    role?: 'student' | 'teacher' | 'admin' | 'individual';
+    role?: 'student' | 'teacher' | 'individual' | 'parent';
     userId?: string | null;
     realName?: string | null;
     email?: string | null;

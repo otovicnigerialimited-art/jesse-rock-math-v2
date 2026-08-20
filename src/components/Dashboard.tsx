@@ -7,20 +7,44 @@ import {
   Target, 
   Calendar,
   ChevronRight,
-  Zap
+  Zap,
+  Brain,
+  AlertCircle,
+  Bell,
+  ShieldCheck,
+  RotateCcw
 } from 'lucide-react';
 import { UserStats } from '../types';
+import { ExtendedUserStats } from '../types/extendedTypes';
 import { cn } from '../lib/utils';
 import DailyTip from './DailyTip';
+import NextGigCard from './NextGigCard';
+import RockstarProgressionCard from './RockstarProgressionCard';
+import PersonalBestsSection from './PersonalBestsSection';
 
 interface DashboardProps {
-  stats: UserStats;
+  stats: ExtendedUserStats;
   onStartQuiz: () => void;
   isGuest?: boolean;
   onConvertProgress?: () => void;
+  onStartDiagnostic?: () => void;
+  onStartSpacedPractice?: () => void;
+  onOpenMistakes?: () => void;
+  onOpenNotifications?: () => void;
+  onOpenSafety?: () => void;
 }
 
-export default function Dashboard({ stats, onStartQuiz, isGuest, onConvertProgress }: DashboardProps) {
+export default function Dashboard({ 
+  stats, 
+  onStartQuiz, 
+  isGuest, 
+  onConvertProgress,
+  onStartDiagnostic,
+  onStartSpacedPractice,
+  onOpenMistakes,
+  onOpenNotifications,
+  onOpenSafety
+}: DashboardProps) {
   if (!stats) return null;
   const accuracy = stats.totalSolved > 0 
     ? Math.round((stats.correctAnswers / stats.totalSolved) * 100) 
@@ -91,11 +115,65 @@ export default function Dashboard({ stats, onStartQuiz, isGuest, onConvertProgre
             />
           </div>
         </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-64 h-64 bg-brand-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-64 h-64 bg-brand-secondary/10 rounded-full blur-3xl" />
       </div>
+
+      {/* Quick Intelligence & Feature Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button
+          onClick={onStartDiagnostic}
+          className="p-4 rounded-2xl bg-indigo-900 text-white border-3 border-indigo-700 shadow-md hover:bg-indigo-800 transition-all cursor-pointer text-left space-y-1"
+        >
+          <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider">
+            <Brain size={16} /> Diagnostic
+          </div>
+          <p className="text-[11px] text-indigo-200 font-medium">Test & Calibrate Ability</p>
+        </button>
+
+        <button
+          onClick={onOpenMistakes}
+          className="p-4 rounded-2xl bg-amber-500 text-slate-950 border-3 border-amber-600 shadow-md hover:bg-amber-400 transition-all cursor-pointer text-left space-y-1"
+        >
+          <div className="flex items-center gap-2 font-bold text-xs uppercase tracking-wider text-slate-950">
+            <AlertCircle size={16} /> Mistakes
+          </div>
+          <p className="text-[11px] text-slate-900 font-medium">Identify Misconceptions</p>
+        </button>
+
+        <button
+          onClick={onOpenNotifications}
+          className="p-4 rounded-2xl bg-purple-900 text-white border-3 border-purple-700 shadow-md hover:bg-purple-800 transition-all cursor-pointer text-left space-y-1"
+        >
+          <div className="flex items-center gap-2 text-purple-300 font-bold text-xs uppercase tracking-wider">
+            <Bell size={16} /> Alerts
+          </div>
+          <p className="text-[11px] text-purple-200 font-medium">Smart Streak Reminders</p>
+        </button>
+
+        <button
+          onClick={onOpenSafety}
+          className="p-4 rounded-2xl bg-emerald-700 text-white border-3 border-emerald-600 shadow-md hover:bg-emerald-600 transition-all cursor-pointer text-left space-y-1"
+        >
+          <div className="flex items-center gap-2 text-emerald-200 font-bold text-xs uppercase tracking-wider">
+            <ShieldCheck size={16} /> Child Safety
+          </div>
+          <p className="text-[11px] text-emerald-100 font-medium">Safe Name Generator</p>
+        </button>
+      </div>
+
+      {/* Your Next Gig Recommended Action Card */}
+      <NextGigCard 
+        stats={stats}
+        onStartDiagnostic={onStartDiagnostic || (() => {})}
+        onStartLesson={() => {}}
+        onStartSpacedPractice={onStartSpacedPractice || (() => {})}
+        onStartQuiz={onStartQuiz}
+      />
+
+      {/* Rockstar Progression Roadmap */}
+      <RockstarProgressionCard stats={stats} />
+
+      {/* Verified Personal Bests */}
+      <PersonalBestsSection bests={stats.personalBests} />
 
       {/* Stats Grid */}
       <div className="grid md:grid-cols-3 gap-6">
