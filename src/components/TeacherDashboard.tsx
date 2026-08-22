@@ -14,7 +14,7 @@ import {
   deleteDoc
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { SchoolStudent, addStudentToTeacher, generateClassCode, deleteClassroom, wipeClassroomData } from '../lib/schoolDb';
+import { SchoolStudent, addStudentToTeacher, generateClassCode, deleteClassroom, wipeClassroomData, resetStudentCredentials } from '../lib/schoolDb';
 import { LESSONS } from '../data/lessons';
 import { 
   Users, 
@@ -24,28 +24,31 @@ import {
   RefreshCw, 
   Award, 
   GraduationCap, 
-  Sparkles,
-  UserPlus,
-  Coins,
-  CheckCircle,
-  AlertCircle,
-  Globe,
-  Activity,
-  Check,
-  X,
-  BookOpen,
-  FileText,
-  Pencil,
-  Building,
-  Upload,
-  Printer,
-  Ticket,
-  LayoutGrid,
-  Layers,
-  History,
-  FileCheck,
-  Heart,
-  Lightbulb
+  Sparkles, 
+  UserPlus, 
+  Coins, 
+  CheckCircle, 
+  AlertCircle, 
+  Globe, 
+  Activity, 
+  Check, 
+  X, 
+  BookOpen, 
+  FileText, 
+  Pencil, 
+  Building, 
+  Upload, 
+  Printer, 
+  Ticket, 
+  LayoutGrid, 
+  Layers, 
+  History, 
+  FileCheck, 
+  Heart, 
+  Lightbulb,
+  Key,
+  ShieldCheck,
+  Copy
 } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -125,6 +128,15 @@ export default function TeacherDashboard({
   const [deleteError, setDeleteError] = useState('');
   const [studentToRemove, setStudentToRemove] = useState<string | null>(null);
   const [selectedStudentForDetails, setSelectedStudentForDetails] = useState<SchoolStudent | null>(null);
+
+  // Credential Reset and Temporary Session PIN Tracking
+  const [temporarySessionPins, setTemporarySessionPins] = useState<Record<string, string>>({});
+  const [resetModalStudent, setResetModalStudent] = useState<SchoolStudent | null>(null);
+  const [resetCustomPin, setResetCustomPin] = useState('');
+  const [resetSuccessData, setResetSuccessData] = useState<{ username: string; pin: string } | null>(null);
+  const [isResetting, setIsResetting] = useState(false);
+  const [resetError, setResetError] = useState<string | null>(null);
+  const [copiedPin, setCopiedPin] = useState(false);
 
   // Active Class Students state
   const [activeSessions, setActiveSessions] = useState<any[]>([]);
@@ -424,6 +436,13 @@ export default function TeacherDashboard({
       const result = await addStudentToTeacher(cleanFirstName, cleanUsername, cleanPassword, resolvedId);
       if (result.success) {
         setFormSuccess(`Successfully registered rockstar student @${cleanUsername}!`);
+        if (result.studentId) {
+          setTemporarySessionPins(prev => ({
+            ...prev,
+            [result.studentId!]: cleanPassword,
+            [cleanUsername]: cleanPassword
+          }));
+        }
         // Reset local form immediately
         setFirstName('');
         setUsername('');
@@ -435,6 +454,51 @@ export default function TeacherDashboard({
       setFormError(err.message || "A network error occurred while writing to the registry.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Initiate Credential Reset Workflow
+  const handleOpenResetModal = (student: SchoolStudent) => {
+    setResetModalStudent(student);
+    setResetCustomPin('rock' + Math.floor(100 + Math.random() * 900));
+    setResetSuccessData(null);
+    setResetError(null);
+    setCopiedPin(false);
+  };
+
+  // Confirm and Execute Credential Reset
+  const handleConfirmResetPassword = async () => {
+    if (!resetModalStudent) return;
+    setIsResetting(true);
+    setResetError(null);
+
+    const pinToSet = resetCustomPin.trim();
+    if (!pinToSet || pinToSet.length < 4) {
+      setResetError("PIN must be at least 4 characters.");
+      setIsResetting(false);
+      return;
+    }
+
+    try {
+      const res = await resetStudentCredentials(resolvedId, resetModalStudent.id, pinToSet);
+      if (res.success && res.temporaryPin) {
+        const finalPin = res.temporaryPin;
+        setResetSuccessData({
+          username: resetModalStudent.username,
+          pin: finalPin
+        });
+        setTemporarySessionPins(prev => ({
+          ...prev,
+          [resetModalStudent.id]: finalPin,
+          [resetModalStudent.username]: finalPin
+        }));
+      } else {
+        setResetError(res.error || "Failed to reset credentials.");
+      }
+    } catch (e: any) {
+      setResetError(e.message || "Error processing credential reset.");
+    } finally {
+      setIsResetting(false);
     }
   };
 
@@ -776,9 +840,18 @@ export default function TeacherDashboard({
                               <div className="text-cyan-600 font-mono font-bold text-xs">
                                 @{student.username}
                               </div>
-                              <span className="px-2 py-0.5 bg-white backdrop-blur-md rounded text-deep-navy font-bold font-mono border border-deep-navy border-2 inline-flex items-center gap-1">
-                                <Lock size={9} className="text-slate-700" /> {student.password}
-                              </span>
+                              <div className="flex items-center gap-1.5">
+                                <span className="px-2 py-0.5 bg-emerald-50 rounded text-emerald-800 font-bold font-mono border border-emerald-300 text-[10px] inline-flex items-center gap-1">
+                                  <ShieldCheck size={10} className="text-emerald-600" /> Protected PIN
+                                </span>
+                                <button
+                                  onClick={() => handleOpenResetModal(student)}
+                                  className="p-1 text-slate-500 hover:text-amber-600 hover:bg-amber-100 rounded-lg transition-all cursor-pointer"
+                                  title="Reset Student PIN"
+                                >
+                                  <Key size={12} />
+                                </button>
+                              </div>
                             </td>
                             <td className="p-4 text-center font-extrabold text-rose-500 text-sm">
                               {progress.highScore}
@@ -840,6 +913,12 @@ export default function TeacherDashboard({
                                   className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[10px] uppercase rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1 w-full justify-center"
                                 >
                                   <Heart size={11} /> Parent Report
+                                </button>
+                                <button
+                                  onClick={() => handleOpenResetModal(student)}
+                                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-900 text-amber-400 font-black text-[10px] uppercase rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1 w-full justify-center"
+                                >
+                                  <Key size={11} /> Reset PIN
                                 </button>
                               </div>
                             </td>
@@ -1490,7 +1569,148 @@ export default function TeacherDashboard({
         onClose={() => setShowLoginCards(false)}
         students={students}
         className={className || "Year 5A"}
+        temporaryPins={temporarySessionPins}
+        onResetStudentPin={handleOpenResetModal}
       />
+
+      {/* Teacher Credential Reset Modal */}
+      {resetModalStudent && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border-2 border-amber-500/40 rounded-3xl p-6 md:p-8 max-w-md w-full text-white shadow-2xl relative space-y-5">
+            <button
+              onClick={() => {
+                setResetModalStudent(null);
+                setResetSuccessData(null);
+                setResetError(null);
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
+              <div className="p-3 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-2xl">
+                <Key size={24} />
+              </div>
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">STUDENT CREDENTIAL RECOVERY</span>
+                <h3 className="text-xl font-display font-bold">Reset Student PIN</h3>
+              </div>
+            </div>
+
+            {!resetSuccessData ? (
+              <div className="space-y-4 text-xs">
+                <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Student Name:</span>
+                    <strong className="text-white uppercase">{resetModalStudent.real_first_name}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Username:</span>
+                    <strong className="text-amber-400 font-mono">@{resetModalStudent.username}</strong>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-300 text-[11px] leading-relaxed">
+                  🛡️ <strong>Zero-Plaintext Policy:</strong> In compliance with COPPA/FERPA student privacy standards, past passwords cannot be viewed. Generating a new temporary PIN will immediately invalidate any previous credential.
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold text-slate-300 uppercase tracking-wider block">
+                    New Temporary PIN / Password
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={resetCustomPin}
+                      onChange={(e) => setResetCustomPin(e.target.value)}
+                      placeholder="e.g. rock782"
+                      className="flex-1 px-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-amber-400 font-mono font-bold text-sm focus:outline-none focus:border-amber-400"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setResetCustomPin('rock' + Math.floor(100 + Math.random() * 900))}
+                      className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl font-bold text-xs shrink-0 cursor-pointer"
+                      title="Generate random PIN"
+                    >
+                      Randomize
+                    </button>
+                  </div>
+                </div>
+
+                {resetError && (
+                  <div className="p-3 bg-rose-500/20 border border-rose-500 text-rose-300 rounded-xl font-bold">
+                    {resetError}
+                  </div>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setResetModalStudent(null)}
+                    className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold uppercase tracking-wider text-xs rounded-xl cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleConfirmResetPassword}
+                    disabled={isResetting}
+                    className="flex-1 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black uppercase tracking-wider text-xs rounded-xl cursor-pointer shadow-lg shadow-amber-500/20 disabled:opacity-50"
+                  >
+                    {isResetting ? "Updating..." : "Generate New PIN"}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4 text-xs">
+                <div className="p-5 bg-emerald-500/10 border-2 border-emerald-500/30 rounded-2xl space-y-3">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 block">
+                    Credential Reset Successful
+                  </span>
+                  
+                  <div className="space-y-1 font-mono text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-400 font-sans text-xs">Student:</span>
+                      <strong className="text-white font-bold">@{resetSuccessData.username}</strong>
+                    </div>
+                    <div className="flex justify-between items-center bg-slate-950 p-3 rounded-xl border border-slate-800 mt-2">
+                      <span className="text-slate-400 font-sans text-xs">New Access PIN:</span>
+                      <strong className="text-amber-400 text-lg font-black tracking-widest">{resetSuccessData.pin}</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  📢 Give this new PIN directly to the student. The security audit log has recorded the credential update.
+                </p>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(`Username: @${resetSuccessData.username}\nPIN: ${resetSuccessData.pin}`);
+                      setCopiedPin(true);
+                      setTimeout(() => setCopiedPin(false), 2000);
+                    }}
+                    className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold uppercase text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Copy size={14} /> {copiedPin ? "Copied to Clipboard!" : "Copy PIN Details"}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setResetModalStudent(null);
+                      setResetSuccessData(null);
+                    }}
+                    className="px-6 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black uppercase text-xs rounded-xl cursor-pointer"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Live Student Help Center Drawer */}
       <StudentHelpCenterDrawer

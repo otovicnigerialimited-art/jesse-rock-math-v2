@@ -6,8 +6,13 @@
       "type": "object",
       "properties": {
         "username": { "type": "string" },
+        "role": { "type": "string" },
+        "accountType": { "type": "string" },
         "createdAt": { "type": "number" },
-        "streakScore": { "type": "number" }
+        "lastLoginAt": { "type": "number" },
+        "streak": { "type": "number" },
+        "xp": { "type": "number" },
+        "coins": { "type": "number" }
       },
       "required": ["username"]
     },
@@ -26,22 +31,28 @@
       "type": "object",
       "properties": {
         "teacher_name": { "type": "string" },
-        "email": { "type": "string" }
+        "email": { "type": "string" },
+        "created_at": { "type": "number" }
       },
       "required": ["teacher_name", "email"]
     },
-    "Student": {
-      "title": "Student",
-      "description": "Student profile",
+    "SchoolStudent": {
+      "title": "SchoolStudent",
+      "description": "Student profile managed by teacher",
       "type": "object",
       "properties": {
-        "username": { "type": "string" }
+        "real_first_name": { "type": "string" },
+        "username": { "type": "string" },
+        "teacher_id": { "type": "string" },
+        "school_math_progress": { "type": "object" },
+        "xp": { "type": "number" },
+        "coins": { "type": "number" }
       },
-      "required": ["username"]
+      "required": ["username", "real_first_name", "teacher_id"]
     },
     "LeaderboardEntry": {
       "title": "LeaderboardEntry",
-      "description": "An entry on the explicit leaderboard collection",
+      "description": "An entry on the public leaderboard collection",
       "type": "object",
       "properties": {
         "userId": { "type": "string" },
@@ -57,7 +68,8 @@
       "type": "object",
       "properties": {
         "class_name": { "type": "string" },
-        "school_id": { "type": "string" }
+        "school_id": { "type": "string" },
+        "teacherId": { "type": "string" }
       }
     },
     "ClassSession": {
@@ -71,10 +83,12 @@
     },
     "StudentHelpRequest": {
       "title": "StudentHelpRequest",
-      "description": "I Need Help request from student",
+      "description": "Help request from student isolated to authorized teacher",
       "type": "object",
       "properties": {
         "student_name": { "type": "string" },
+        "student_id": { "type": "string" },
+        "teacher_id": { "type": "string" },
         "topic": { "type": "string" }
       }
     },
@@ -83,7 +97,8 @@
       "description": "Assigned homework task",
       "type": "object",
       "properties": {
-        "title": { "type": "string" }
+        "title": { "type": "string" },
+        "teacher_id": { "type": "string" }
       }
     },
     "ExitTicket": {
@@ -91,7 +106,8 @@
       "description": "Lesson closure exit ticket",
       "type": "object",
       "properties": {
-        "topic": { "type": "string" }
+        "topic": { "type": "string" },
+        "teacher_id": { "type": "string" }
       }
     },
     "Assessment": {
@@ -99,7 +115,8 @@
       "description": "Custom created test or assessment",
       "type": "object",
       "properties": {
-        "title": { "type": "string" }
+        "title": { "type": "string" },
+        "teacher_id": { "type": "string" }
       }
     },
     "StudentJourneyEvent": {
@@ -108,8 +125,21 @@
       "type": "object",
       "properties": {
         "title": { "type": "string" },
-        "student_id": { "type": "string" }
+        "student_id": { "type": "string" },
+        "teacher_id": { "type": "string" }
       }
+    },
+    "SecurityAuditLog": {
+      "title": "SecurityAuditLog",
+      "description": "Security audit record for administrative events",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "teacher_id": { "type": "string" },
+        "student_id": { "type": "string" },
+        "timestamp": { "type": "number" }
+      },
+      "required": ["action", "timestamp"]
     },
     "Review": {
       "title": "Review",
@@ -128,11 +158,11 @@
     }
   },
   "firestore": {
-    "/usernames/{username}": { "schema": "User", "description": "Usernames collection" },
+    "/usernames/{username}": { "schema": "User", "description": "Usernames registry" },
     "/users/{userId}": { "schema": "User", "description": "Users collection" },
     "/schools/{schoolId}": { "schema": "School", "description": "Schools collection" },
     "/teachers/{teacherId}": { "schema": "Teacher", "description": "Teachers collection" },
-    "/students/{studentId}": { "schema": "Student", "description": "Students collection" },
+    "/school_students/{studentId}": { "schema": "SchoolStudent", "description": "Teacher-managed students collection" },
     "/classes/{classId}": { "schema": "ClassRoom", "description": "Classes collection" },
     "/class_sessions/{sessionId}": { "schema": "ClassSession", "description": "Live class sessions collection" },
     "/student_help_requests/{requestId}": { "schema": "StudentHelpRequest", "description": "Student help requests collection" },
@@ -140,7 +170,8 @@
     "/exit_tickets/{ticketId}": { "schema": "ExitTicket", "description": "Exit tickets collection" },
     "/assessments/{assessmentId}": { "schema": "Assessment", "description": "Assessments collection" },
     "/student_journey_events/{eventId}": { "schema": "StudentJourneyEvent", "description": "Student journey timeline events collection" },
-    "/leaderboard/{document}": { "schema": "LeaderboardEntry", "description": "Leaderboard collection" },
+    "/security_audit_logs/{logId}": { "schema": "SecurityAuditLog", "description": "Security audit logs collection" },
+    "/leaderboard/{document}": { "schema": "LeaderboardEntry", "description": "Public leaderboard collection" },
     "/reviews/{reviewId}": { "schema": "Review", "description": "User reviews and ratings collection" }
   }
 }

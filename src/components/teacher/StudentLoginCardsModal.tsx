@@ -1,5 +1,5 @@
 import React from 'react';
-import { Printer, Download, X, QrCode, Lock, GraduationCap } from 'lucide-react';
+import { Printer, Download, X, QrCode, Lock, GraduationCap, ShieldCheck, Key } from 'lucide-react';
 import { SchoolStudent } from '../../lib/schoolDb';
 
 interface StudentLoginCardsModalProps {
@@ -7,9 +7,18 @@ interface StudentLoginCardsModalProps {
   onClose: () => void;
   students: SchoolStudent[];
   className?: string;
+  temporaryPins?: Record<string, string>;
+  onResetStudentPin?: (student: SchoolStudent) => void;
 }
 
-export default function StudentLoginCardsModal({ isOpen, onClose, students, className = 'Year 5A' }: StudentLoginCardsModalProps) {
+export default function StudentLoginCardsModal({
+  isOpen,
+  onClose,
+  students,
+  className = 'Year 5A',
+  temporaryPins = {},
+  onResetStudentPin
+}: StudentLoginCardsModalProps) {
   if (!isOpen) return null;
 
   const handlePrint = () => {
@@ -34,55 +43,71 @@ export default function StudentLoginCardsModal({ isOpen, onClose, students, clas
             </div>
           </div>
 
-          <button
-            onClick={handlePrint}
-            className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-2xl text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
-          >
-            <Printer size={16} /> PRINT ALL LOGIN CARDS
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handlePrint}
+              className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-2xl text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-lg shadow-amber-500/20"
+            >
+              <Printer size={16} /> PRINT ALL LOGIN CARDS
+            </button>
+          </div>
         </div>
+
+        <p className="text-xs text-slate-400 print:hidden">
+          🔒 In compliance with student data privacy standards, passwords are never stored in plaintext in the database. Cards show initial creation PINs or active protected status.
+        </p>
 
         {/* Printable Cards Grid */}
         <div className="overflow-y-auto flex-1 grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-2">
-          {students.map((st, idx) => (
-            <div
-              key={st.id || idx}
-              className="p-5 rounded-2xl bg-slate-950 border-2 border-indigo-500/40 space-y-3 relative overflow-hidden print:border-black print:text-black print:bg-white"
-            >
-              <div className="flex items-center justify-between border-b border-slate-800 print:border-slate-300 pb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">🎸</span>
-                  <span className="font-black text-xs uppercase tracking-wider text-amber-400 print:text-black">JESSE MATH ROCKSTAR</span>
+          {students.map((st, idx) => {
+            const tempPin = temporaryPins[st.id] || temporaryPins[st.username];
+            return (
+              <div
+                key={st.id || idx}
+                className="p-5 rounded-2xl bg-slate-950 border-2 border-indigo-500/40 space-y-3 relative overflow-hidden print:border-black print:text-black print:bg-white print:break-inside-avoid"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 print:border-slate-300 pb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">🎸</span>
+                    <span className="font-black text-xs uppercase tracking-wider text-amber-400 print:text-black">JESSE MATH ROCKSTAR</span>
+                  </div>
+                  <span className="text-[10px] font-bold bg-slate-800 print:bg-slate-200 px-2 py-0.5 rounded text-slate-300 print:text-black">
+                    {className}
+                  </span>
                 </div>
-                <span className="text-[10px] font-bold bg-slate-800 print:bg-slate-200 px-2 py-0.5 rounded text-slate-300 print:text-black">
-                  {className}
-                </span>
-              </div>
 
-              <div>
-                <span className="text-[10px] text-slate-400 uppercase font-bold print:text-slate-600">Student Name</span>
-                <h4 className="text-lg font-black text-white print:text-black uppercase tracking-tight">{st.real_first_name}</h4>
-              </div>
-
-              <div className="p-3 bg-slate-900 print:bg-slate-100 rounded-xl space-y-1 font-mono text-xs border border-slate-800 print:border-slate-300">
-                <div className="flex justify-between">
-                  <span className="text-slate-400 print:text-slate-600 font-sans">Username:</span>
-                  <strong className="text-amber-400 print:text-black font-bold">@{st.username}</strong>
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase font-bold print:text-slate-600">Student Name</span>
+                  <h4 className="text-lg font-black text-white print:text-black uppercase tracking-tight">{st.real_first_name}</h4>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400 print:text-slate-600 font-sans">Temp Pass/PIN:</span>
-                  <strong className="text-emerald-400 print:text-black font-bold">{st.password || 'star123'}</strong>
+
+                <div className="p-3 bg-slate-900 print:bg-slate-100 rounded-xl space-y-1 font-mono text-xs border border-slate-800 print:border-slate-300">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400 print:text-slate-600 font-sans">Username:</span>
+                    <strong className="text-amber-400 print:text-black font-bold">@{st.username}</strong>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400 print:text-slate-600 font-sans">Access PIN:</span>
+                    {tempPin ? (
+                      <strong className="text-emerald-400 print:text-black font-bold">{tempPin}</strong>
+                    ) : (
+                      <span className="text-slate-300 print:text-slate-700 font-sans text-[11px] italic font-semibold">
+                        [Active Secret PIN]
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400 print:text-slate-600">
+                  <span>jesse-math-rockstar</span>
+                  <QrCode size={18} className="text-indigo-400 print:text-black" />
                 </div>
               </div>
-
-              <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400 print:text-slate-600">
-                <span>https://jesse-math-rockstar-app.vercel.app</span>
-                <QrCode size={20} className="text-indigo-400 print:text-black" />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
   );
 }
+

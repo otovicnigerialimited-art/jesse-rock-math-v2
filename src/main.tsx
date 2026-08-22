@@ -8,6 +8,19 @@ import './index.css';
 
 console.log('[JesseMath] Initializing React application root...');
 
+// Register Service Worker for Push API & Background Notifications
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then((reg) => {
+        console.log('[JesseMath] Service Worker registered successfully:', reg.scope);
+      })
+      .catch((err) => {
+        console.warn('[JesseMath] Service Worker registration failed:', err);
+      });
+  });
+}
+
 const rootElement = document.getElementById('root');
 if (!rootElement) {
   console.error('[JesseMath] CRITICAL: #root element not found in DOM!');

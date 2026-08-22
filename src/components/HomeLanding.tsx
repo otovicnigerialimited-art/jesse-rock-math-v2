@@ -21,7 +21,8 @@ import {
   Gamepad2,
   Github,
   ExternalLink,
-  Smartphone
+  Smartphone,
+  Bell
 } from 'lucide-react';
 import AboutSection from './AboutSection';
 import ReviewSection from './ReviewSection';
@@ -40,6 +41,7 @@ interface HomeLandingProps {
   onNavigateToTab: (tab: any) => void;
   onNavigateToLesson: (lessonId: string) => void;
   onNavigateToTermsSection?: (section: 'privacy' | 'terms' | 'dual') => void;
+  onOpenNotifications?: () => void;
 }
 
 const SUPPORTED_SKILLS = [
@@ -91,7 +93,8 @@ export default function HomeLanding({
   stats, 
   onNavigateToTab, 
   onNavigateToLesson, 
-  onNavigateToTermsSection 
+  onNavigateToTermsSection,
+  onOpenNotifications 
 }: HomeLandingProps) {
   if (!stats) return null;
   const [searchQuery, setSearchQuery] = useState('');
@@ -141,7 +144,7 @@ export default function HomeLanding({
           </div>
 
           {/* Primary & Secondary CTAs */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
+          <div className="flex flex-wrap items-center gap-4 pt-4">
             <button
               onClick={() => onNavigateToTab('quiz')}
               className="w-full sm:w-auto px-8 py-4 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm tracking-wider uppercase rounded-2xl shadow-xl flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
@@ -160,6 +163,14 @@ export default function HomeLanding({
             >
               <Brain size={20} className="text-amber-300" /> Digital SAT (DSAT)
             </button>
+            {onOpenNotifications && (
+              <button
+                onClick={onOpenNotifications}
+                className="w-full sm:w-auto px-6 py-4 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-black text-sm tracking-wider uppercase rounded-2xl border border-amber-400/30 backdrop-blur-md flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
+              >
+                <Bell size={18} className="text-amber-400" /> Notifications
+              </button>
+            )}
             <button
               onClick={() => onNavigateToTab('hub')}
               className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-black text-sm tracking-wider uppercase rounded-2xl border border-white/20 backdrop-blur-md flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"

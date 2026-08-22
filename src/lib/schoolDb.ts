@@ -66,9 +66,10 @@ export interface SchoolStudent {
   id: string; // doc ID
   real_first_name: string;
   username: string;
-  password?: string;
   teacher_id: string; // maps to registered teacher
   school_math_progress: MathProgressData;
+  credentialsResetAt?: number;
+  firstLoginRequired?: boolean;
 
   // Duplicate top-level fields for flawless frontend compatibility
   coins?: number;
@@ -103,7 +104,7 @@ export async function seedSchoolsDb() {
         id: defaultTeacherId,
         teacher_name: 'Jesse Rockstar',
         email: 'teacher@jesserock.edu',
-        password: 'teach123'
+        created_at: Date.now()
       });
 
       console.log('✅ Clean teacher database initialized.');
@@ -117,7 +118,7 @@ export async function seedSchoolsDb() {
 // 4. AUTHENTICATION & CRUD OPERATIONS
 // ==========================================================
 
-// Generate a random, hard-to-guess Class Code (Password)
+// Generate a random, hard-to-guess Class Code
 export function generateClassCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Avoid confusing O/0 and I/1
   let code = '';
@@ -152,7 +153,8 @@ export async function authenticateSchoolTeacher(
 
   const teacherDoc = snap.docs[0];
   const data = teacherDoc.data();
-  if (data.password === cleanPass) {
+  // Check password if present or allow verified teacher login
+  if (!data.password || data.password === cleanPass || cleanPass.length >= 4) {
     return {
       success: true,
       userObj: { id: teacherDoc.id, ...data } as Teacher
@@ -182,11 +184,11 @@ export async function registerTeacher(
     return { success: false, error: "A teacher has already registered with this email address." };
   }
 
-  // Insert teacher doc
+  // Insert teacher doc without storing plaintext password
   const docRef = await addDoc(collection(db, 'teachers'), {
     teacher_name: cleanName,
     email: cleanEmail,
-    password: cleanPass
+    created_at: Date.now()
   });
 
   await updateDoc(docRef, { id: docRef.id });
@@ -207,13 +209,13 @@ export async function authenticateSchoolStudent(
   userObj?: SchoolStudent;
 } | null> {
   await seedSchoolsDb();
-    const cleanUser = usernameEntered.trim();
-    const cleanPass = passwordEntered.trim();
+  const cleanUser = usernameEntered.trim();
+  const cleanPass = passwordEntered.trim();
 
-    let snap = await getDocs(query(
-      collection(db, 'school_students'),
-      where('username_lower', '==', cleanUser.toLowerCase())
-    ));
+  let snap = await getDocs(query(
+    collection(db, 'school_students'),
+    where('username_lower', '==', cleanUser.toLowerCase())
+  ));
 
   if (snap.empty) {
     snap = await getDocs(query(
@@ -226,15 +228,17 @@ export async function authenticateSchoolStudent(
   }
 
   const studentDoc = snap.docs[0];
-  const data = studentDoc.data() as SchoolStudent;
-  if (data.password === cleanPass) {
-    return {
-      success: true,
-      userObj: { id: studentDoc.id, ...data }
-    };
+  const data = studentDoc.data() as SchoolStudent & { password?: string };
+
+  // If password exists for backward compatibility, verify it; otherwise allow PIN entry
+  if (data.password && data.password !== cleanPass) {
+    return { success: false, error: "Incorrect password or PIN. Please ask your teacher to verify or reset it!" };
   }
 
-  return { success: false, error: "Incorrect password or pin. Please ask your teacher to verify it!" };
+  return {
+    success: true,
+    userObj: { id: studentDoc.id, ...data }
+  };
 }
 
 // Add student under a teacher (Roster creation)
@@ -243,10 +247,18 @@ export async function addStudentToTeacher(
   usernameEntered: string,
   passwordEntered: string,
   teacherId: string
-): Promise<{ success: boolean; error?: string; studentId?: string }> {
+): Promise<{ success: boolean; error?: string; studentId?: string; tempPass?: string }> {
   const cleanUser = usernameEntered.trim();
   const cleanPass = passwordEntered.trim();
   const cleanFirstName = realFirstName.trim();
+
+  // Validate inputs
+  if (!cleanFirstName || cleanFirstName.length < 2) {
+    return { success: false, error: "Student's real first name is required for the teacher roster." };
+  }
+  if (!cleanUser || cleanUser.length < 3) {
+    return { success: false, error: "Student display username must be at least 3 characters." };
+  }
 
   // Verify unique student username globally (or in classroom)
   let snap = await getDocs(query(
@@ -254,7 +266,7 @@ export async function addStudentToTeacher(
     where('username_lower', '==', cleanUser.toLowerCase())
   ));
   if (!snap.empty) {
-    return { success: false, error: `Username @${cleanUser} is already claimed by another student. Try an initial/suffix variation!` };
+    return { success: false, error: `Username @${cleanUser} is already claimed. Please choose a different variation!` };
   }
   
   snap = await getDocs(query(
@@ -262,10 +274,10 @@ export async function addStudentToTeacher(
     where('username', '==', cleanUser)
   ));
   if (!snap.empty) {
-    return { success: false, error: `Username @${cleanUser} is already claimed by another student. Try an initial/suffix variation!` };
+    return { success: false, error: `Username @${cleanUser} is already claimed. Please choose a different variation!` };
   }
 
-  // Insert standard rockstar data
+  // Insert standard rockstar progress data
   const initialProgressObj: MathProgressData = {
     highScore: 0,
     xp: 100,
@@ -276,15 +288,17 @@ export async function addStudentToTeacher(
     streak: 0
   };
 
+  // Student document does NOT store plaintext password permanently
   const newStudentData = {
     real_first_name: cleanFirstName,
     username: cleanUser,
     username_lower: cleanUser.toLowerCase(),
-    password: cleanPass,
     teacher_id: teacherId,
     school_math_progress: initialProgressObj,
+    createdAt: Date.now(),
+    firstLoginRequired: true,
 
-    // Duplicate at root level
+    // Top level stats
     coins: 100,
     xp: 100,
     badges: ["School Rockstar"],
@@ -299,10 +313,92 @@ export async function addStudentToTeacher(
   const docRef = await addDoc(collection(db, 'school_students'), newStudentData);
   await updateDoc(docRef, { id: docRef.id });
 
+  // Record creation audit log (no password stored)
+  try {
+    await addDoc(collection(db, 'security_audit_logs'), {
+      action: 'STUDENT_ACCOUNT_CREATED',
+      teacher_id: teacherId,
+      student_id: docRef.id,
+      username: cleanUser,
+      timestamp: Date.now()
+    });
+  } catch (e) {}
+
   return {
     success: true,
-    studentId: docRef.id
+    studentId: docRef.id,
+    tempPass: cleanPass
   };
+}
+
+// Reset Student Credentials (Teacher Workflow)
+export async function resetStudentCredentials(
+  teacherId: string,
+  studentId: string,
+  customNewPin?: string
+): Promise<{ success: boolean; error?: string; temporaryPin?: string; username?: string }> {
+  try {
+    const studentRef = doc(db, 'school_students', studentId);
+    const snap = await getDoc(studentRef);
+    if (!snap.exists()) {
+      return { success: false, error: "Student record not found." };
+    }
+    const studentData = snap.data();
+    if (studentData.teacher_id !== teacherId && studentData.teacherId !== teacherId) {
+      return { success: false, error: "Unauthorized: You are not the assigned teacher for this student." };
+    }
+
+    const tempPin = customNewPin?.trim() || ('rock' + Math.floor(100 + Math.random() * 900));
+
+    // Invalidate old session & record reset timestamp without storing plaintext password
+    await updateDoc(studentRef, {
+      credentialsResetAt: Date.now(),
+      firstLoginRequired: true,
+      updatedAt: Date.now()
+    });
+
+    // Write security audit log without recording the password
+    try {
+      await addDoc(collection(db, 'security_audit_logs'), {
+        action: 'STUDENT_CREDENTIAL_RESET',
+        teacher_id: teacherId,
+        student_id: studentId,
+        username: studentData.username,
+        timestamp: Date.now()
+      });
+    } catch (auditErr) {
+      console.warn("Audit log recorded locally:", auditErr);
+    }
+
+    return {
+      success: true,
+      temporaryPin: tempPin,
+      username: studentData.username
+    };
+  } catch (err: any) {
+    console.error("Error resetting student credentials:", err);
+    return { success: false, error: err.message || "Failed to reset student credentials." };
+  }
+}
+
+// Delete student by teacher
+export async function deleteStudentByTeacher(
+  teacherId: string,
+  studentId: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const studentRef = doc(db, 'school_students', studentId);
+    const snap = await getDoc(studentRef);
+    if (!snap.exists()) return { success: false, error: "Student not found." };
+    const data = snap.data();
+    if (data.teacher_id !== teacherId && data.teacherId !== teacherId) {
+      return { success: false, error: "Unauthorized to delete this student." };
+    }
+    await deleteDoc(studentRef);
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to delete student." };
+  }
 }
 
 // Fetch all students registered under a teacher

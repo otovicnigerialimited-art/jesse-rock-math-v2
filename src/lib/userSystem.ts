@@ -716,8 +716,8 @@ export async function studentUpdatePassword(
     const ssSnap = await getDoc(ssRef);
     if (ssSnap.exists()) {
       await updateDoc(ssRef, {
-        password: newPasswordEntered,
-        firstLoginRequired: false
+        firstLoginRequired: false,
+        updatedAt: Date.now()
       });
     }
 

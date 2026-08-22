@@ -34,7 +34,8 @@ import {
   Smartphone,
   Download,
   GraduationCap,
-  Brain
+  Brain,
+  Bell
 } from 'lucide-react';
 import { UserStats, Difficulty, Lesson } from './types';
 import { ExtendedUserStats } from './types/extendedTypes';
@@ -1192,11 +1193,13 @@ export default function App() {
   const navItems = authState.role === 'class_student'
     ? [
         { id: 'home', label: 'Classroom Playground', icon: Home },
+        { id: 'notifications', label: '🔔 Notifications', icon: Bell },
         { id: 'quiz', label: 'Play Quiz Battle 🏆', icon: Trophy },
         { id: 'terms', label: 'Terms & Policies', icon: FileText }
       ]
     : [
         { id: 'home', label: 'Welcome Home', icon: Home },
+        { id: 'notifications', label: '🔔 Notifications Hub', icon: Bell },
         { id: 'dashboard', label: 'My Progress Stats', icon: Award },
         { id: 'leaderboard', label: '🏆 Global Leaderboard', icon: Trophy },
         { id: 'shop', label: '🔥 Rock Shop', icon: ShoppingBag },
@@ -1279,7 +1282,11 @@ export default function App() {
                 key={`${item.id}-${idx}`}
                 onClick={() => {
                   setIsSidebarOpen(false);
-                  setActiveTab(item.id as any);
+                  if (item.id === 'notifications') {
+                    setShowNotificationsModal(true);
+                  } else {
+                    setActiveTab(item.id as any);
+                  }
                 }}
                 aria-label={`Navigate to ${item.label}`}
                 className={cn(
@@ -1380,6 +1387,15 @@ export default function App() {
               <Menu size={24} />
               <span className="text-xs font-black uppercase tracking-wider">Jesse Math Menu</span>
             </button>
+            
+            <button
+              onClick={() => setShowNotificationsModal(true)}
+              aria-label="Open Notifications"
+              className="p-3 bg-indigo-600 hover:bg-indigo-700 rounded-2xl text-amber-300 shadow-md border-2 border-white/50 transition-all flex items-center gap-1.5 active:scale-95 min-h-[44px] cursor-pointer"
+            >
+              <Bell size={20} />
+              <span className="text-xs font-black uppercase tracking-wider text-white hidden sm:inline">Alerts</span>
+            </button>
             {deferredPrompt ? (
               <button
                 onClick={() => {
@@ -1436,7 +1452,16 @@ export default function App() {
                         onNavigateToTab={(tab: string) => setActiveTab(tab as any)}
                       />
                     ) : (
-                      <HomeLanding userId={authState.userId || userDeviceId || ''} username={authState.username || 'Guest'} userRole={authState.role as any} stats={stats} onNavigateToTab={setActiveTab} onNavigateToLesson={(l: any) => { setPracticeLesson(l); setActiveTab('learn'); }} onNavigateToTermsSection={handleNavigateToTermsSection} />
+                      <HomeLanding 
+                        userId={authState.userId || userDeviceId || ''} 
+                        username={authState.username || 'Guest'} 
+                        userRole={authState.role as any} 
+                        stats={stats} 
+                        onNavigateToTab={setActiveTab} 
+                        onNavigateToLesson={(l: any) => { setPracticeLesson(l); setActiveTab('learn'); }} 
+                        onNavigateToTermsSection={handleNavigateToTermsSection}
+                        onOpenNotifications={() => setShowNotificationsModal(true)}
+                      />
                     )
                   )}
                   {activeTab === 'dashboard' && (
@@ -1499,7 +1524,21 @@ export default function App() {
 
 
       <AnimatePresence>
-        {isSettingsOpen && <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} config={configSettings} setConfig={setConfigSettings} />}
+        {isSettingsOpen && (
+          <SettingsModal 
+            isOpen={isSettingsOpen} 
+            onClose={() => setIsSettingsOpen(false)} 
+            config={configSettings} 
+            setConfig={setConfigSettings}
+            username={authState.username || 'Rockstar'}
+            userRole={authState.role || 'Student'}
+            stats={stats}
+            onOpenNotifications={() => {
+              setIsSettingsOpen(false);
+              setShowNotificationsModal(true);
+            }}
+          />
+        )}
         {showGuestFinishDialog && <GuestFinishDialog isOpen={showGuestFinishDialog} onClose={() => setShowGuestFinishDialog(false)} stats={stats} onConvert={() => { setShowGuestFinishDialog(false); setShowConvertModal(true); }} />}
         {showConvertModal && (
           <React.Suspense fallback={null}>
