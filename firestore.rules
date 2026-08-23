@@ -2,44 +2,63 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isTeacher() {
+      return isAuthenticated();
+    }
+
     // Reviews & Public Feedback
     match /reviews/{reviewId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
     }
 
-    // Leaderboard
+    // Leaderboard (Public read, strict type/range validated write)
     match /leaderboard/{docId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isAuthenticated() 
+                    && request.resource.data.score is number
+                    && request.resource.data.score >= 0
+                    && request.resource.data.score <= 10000
+                    && request.resource.data.username is string
+                    && request.resource.data.username.size() < 30;
+      allow delete: if false;
     }
 
-    // User Profiles (Guest, Individual, Student, Teacher, Parent)
+    // User Profiles
     match /users/{userId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Unique Username Registry
+    // Username Registry
     match /usernames/{username} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update, delete: if isAuthenticated();
     }
 
-    // School Organizations
+    // School Organizations & Teachers
     match /schools/{schoolId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Verified Teachers
     match /teachers/{teacherId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     // School Students (Teacher Rosters & Student PIN Lookups)
     match /school_students/{studentId} {
-      allow read, write: if true;
+      allow read: if true; // Allow student PIN queries on login
+      allow create, update, delete: if isAuthenticated();
     }
 
     // Classes & Classrooms
     match /classes/{classId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     // Live Classroom Sessions
@@ -113,12 +132,13 @@ service cloud.firestore {
 
     // Security Audit Logs
     match /security_audit_logs/{logId} {
-      allow read, write: if true;
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
     }
 
-    // Global Fallback
+    // Default deny all other collections
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
   }
 }

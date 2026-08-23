@@ -5,6 +5,7 @@ import {
   memoryLocalCache,
   setLogLevel
 } from "firebase/firestore";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAlDrGsdzlB4kpcqHT65Y6r8VxatkO8Sv0",
@@ -26,5 +27,24 @@ const auth = getAuth(app);
 const db = initializeFirestore(app, {
   localCache: memoryLocalCache(),
 }, "(default)");
+
+// Initialize App Check for production bot & abuse protection
+if (typeof window !== 'undefined') {
+  // Enable debug token in development if needed
+  if (process.env.NODE_ENV !== 'production') {
+    (window as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  }
+  
+  try {
+    initializeAppCheck(app, {
+      provider: new ReCaptchaEnterpriseProvider(
+        import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // Placeholder/Test key
+      ),
+      isTokenAutoRefreshEnabled: true
+    });
+  } catch (e) {
+    console.warn("App Check initialization:", e);
+  }
+}
 
 export { app, auth, db };
