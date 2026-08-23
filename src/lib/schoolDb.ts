@@ -230,9 +230,9 @@ export async function authenticateSchoolStudent(
   const studentDoc = snap.docs[0];
   const data = studentDoc.data() as SchoolStudent & { password?: string };
 
-  // If password exists for backward compatibility, verify it; otherwise allow PIN entry
+  // If password exists in record, verify it strictly and reject old passwords
   if (data.password && data.password !== cleanPass) {
-    return { success: false, error: "Incorrect password or PIN. Please ask your teacher to verify or reset it!" };
+    return { success: false, error: "Incorrect password or PIN. The password has been updated by your teacher—please check your login card!" };
   }
 
   return {
@@ -288,14 +288,15 @@ export async function addStudentToTeacher(
     streak: 0
   };
 
-  // Student document does NOT store plaintext password permanently
   const newStudentData = {
     real_first_name: cleanFirstName,
     username: cleanUser,
     username_lower: cleanUser.toLowerCase(),
+    password: cleanPass,
     teacher_id: teacherId,
     school_math_progress: initialProgressObj,
     createdAt: Date.now(),
+    lastPasswordResetAt: Date.now(),
     firstLoginRequired: true,
 
     // Top level stats
@@ -313,7 +314,7 @@ export async function addStudentToTeacher(
   const docRef = await addDoc(collection(db, 'school_students'), newStudentData);
   await updateDoc(docRef, { id: docRef.id });
 
-  // Record creation audit log (no password stored)
+  // Record creation audit log
   try {
     await addDoc(collection(db, 'security_audit_logs'), {
       action: 'STUDENT_ACCOUNT_CREATED',
@@ -331,7 +332,7 @@ export async function addStudentToTeacher(
   };
 }
 
-// Reset Student Credentials (Teacher Workflow)
+// Reset Student Credentials (Teacher Workflow) with Strict Once-Per-Month Rate Limit
 export async function resetStudentCredentials(
   teacherId: string,
   studentId: string,
@@ -348,23 +349,37 @@ export async function resetStudentCredentials(
       return { success: false, error: "Unauthorized: You are not the assigned teacher for this student." };
     }
 
-    const tempPin = customNewPin?.trim() || ('rock' + Math.floor(100 + Math.random() * 900));
+    // Strict Rate Limit: Once per month (30 days / 2,592,000,000 ms) to prevent spam
+    const lastReset = studentData.lastPasswordResetAt || studentData.credentialsResetAt || 0;
+    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+    if (lastReset && (Date.now() - lastReset < thirtyDaysMs)) {
+      const daysRemaining = Math.ceil((thirtyDaysMs - (Date.now() - lastReset)) / (24 * 60 * 60 * 1000));
+      return { 
+        success: false, 
+        error: `Strict Security Policy: Student passwords can only be reset once per month (30 days) to prevent spam. Please wait ${daysRemaining} more days before resetting @${studentData.username}'s credentials.` 
+      };
+    }
 
-    // Invalidate old session & record reset timestamp without storing plaintext password
+    const tempPin = customNewPin?.trim() || ('rock' + Math.floor(100 + Math.random() * 900));
+    const now = Date.now();
+
+    // Update password in database so old password is immediately rejected and new password is required
     await updateDoc(studentRef, {
-      credentialsResetAt: Date.now(),
+      password: tempPin,
+      lastPasswordResetAt: now,
+      credentialsResetAt: now,
       firstLoginRequired: true,
-      updatedAt: Date.now()
+      updatedAt: now
     });
 
-    // Write security audit log without recording the password
+    // Write security audit log
     try {
       await addDoc(collection(db, 'security_audit_logs'), {
         action: 'STUDENT_CREDENTIAL_RESET',
         teacher_id: teacherId,
         student_id: studentId,
         username: studentData.username,
-        timestamp: Date.now()
+        timestamp: now
       });
     } catch (auditErr) {
       console.warn("Audit log recorded locally:", auditErr);

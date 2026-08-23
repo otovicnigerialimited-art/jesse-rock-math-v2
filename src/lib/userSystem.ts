@@ -702,22 +702,39 @@ export async function studentUpdatePassword(
   }
 
   try {
+    const studentRef = doc(db, "school_students", studentUid);
+    const ssSnap = await getDoc(studentRef);
+    if (ssSnap.exists()) {
+      const data = ssSnap.data();
+      const lastReset = data.lastPasswordResetAt || data.credentialsResetAt || 0;
+      const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+      if (lastReset && (Date.now() - lastReset < thirtyDaysMs)) {
+        const daysRemaining = Math.ceil((thirtyDaysMs - (Date.now() - lastReset)) / (24 * 60 * 60 * 1000));
+        return { success: false, error: `Strict Security Policy: Passwords can only be changed once per month (30 days) to prevent spam. Please wait ${daysRemaining} more days.` };
+      }
+    }
+
     if (auth.currentUser) {
       await updateAuthPassword(auth.currentUser, newPasswordEntered);
     }
 
+    const now = Date.now();
+
     // Update user profile
     await updateDoc(doc(db, "users", studentUid), {
-      firstLoginRequired: false
+      password: newPasswordEntered,
+      firstLoginRequired: false,
+      lastPasswordResetAt: now
     });
 
     // Update school_students doc if exists
-    const ssRef = doc(db, "school_students", studentUid);
-    const ssSnap = await getDoc(ssRef);
     if (ssSnap.exists()) {
-      await updateDoc(ssRef, {
+      await updateDoc(studentRef, {
+        password: newPasswordEntered,
         firstLoginRequired: false,
-        updatedAt: Date.now()
+        lastPasswordResetAt: now,
+        credentialsResetAt: now,
+        updatedAt: now
       });
     }
 
