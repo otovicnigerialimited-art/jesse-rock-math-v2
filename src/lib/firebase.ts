@@ -1,34 +1,30 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { 
   initializeFirestore, 
   memoryLocalCache,
   setLogLevel
 } from "firebase/firestore";
 
-// Security Note: These are public identifiers for the Firebase Client SDK.
-// Access control is strictly enforced server-side via Firestore Security Rules.
 const firebaseConfig = {
-  apiKey: "AIzaSyC9osCI680YaE-HFoj-g8OuA63iVpJjaNM",
-  authDomain: "silver-linker-scf5x.firebaseapp.com",
-  projectId: "silver-linker-scf5x",
-  storageBucket: "silver-linker-scf5x.firebasestorage.app",
-  messagingSenderId: "483318254290",
-  appId: "1:483318254290:web:a78237bdcc85fb05433b0b"
+  apiKey: "AIzaSyAlDrGsdzlB4kpcqHT65Y6r8VxatkO8Sv0",
+  authDomain: "jesse-math-rockstar.firebaseapp.com",
+  projectId: "jesse-math-rockstar",
+  storageBucket: "jesse-math-rockstar.firebasestorage.app",
+  messagingSenderId: "461112227439",
+  appId: "1:461112227439:web:a106ade74c039e16a97f9a",
+  measurementId: "G-9G1YH5SBPB"
 };
 
-// Silence non-critical lease notices and all Firestore logging
+// Silence non-critical logs
 setLogLevel('error');
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Use the explicit database ID provided by the platform
-const databaseId = "ai-studio-mathrockstar-fdec55b7-ba82-44d4-ae95-0c5de616e19f";
-
-// Initialize Firestore with memory cache only to avoid IndexedDB transaction errors
+// Initialize Firestore with default database and memory cache
 const db = initializeFirestore(app, {
   localCache: memoryLocalCache(),
-}, databaseId);
+}, "(default)");
 
 export { app, auth, db };

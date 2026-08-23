@@ -1,10 +1,10 @@
 {
-  "projectId": "silver-linker-scf5x",
-  "appId": "1:483318254290:web:a78237bdcc85fb05433b0b",
-  "apiKey": "AIzaSyC9osCI680YaE-HFoj-g8OuA63iVpJjaNM",
-  "authDomain": "silver-linker-scf5x.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-mathrockstar-fdec55b7-ba82-44d4-ae95-0c5de616e19f",
-  "storageBucket": "silver-linker-scf5x.firebasestorage.app",
-  "messagingSenderId": "483318254290",
-  "measurementId": ""
+  "projectId": "jesse-math-rockstar",
+  "appId": "1:461112227439:web:a106ade74c039e16a97f9a",
+  "apiKey": "AIzaSyAlDrGsdzlB4kpcqHT65Y6r8VxatkO8Sv0",
+  "authDomain": "jesse-math-rockstar.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "jesse-math-rockstar.firebasestorage.app",
+  "messagingSenderId": "461112227439",
+  "measurementId": "G-9G1YH5SBPB"
 }
