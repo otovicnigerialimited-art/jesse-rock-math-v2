@@ -16,10 +16,10 @@
   "orientation": "any",
   "background_color": "#0f172a",
   "theme_color": "#7c3aed",
-  "description": "Jesse Math Rockstar is the official verified EdTech platform designed by 11-year-old software founder Jesse Otobo to boost mental math speed and eliminate math anxiety.",
+  "description": "Jesse Math Rockstar is the official verified gamified math learning platform created by 11-year-old software founder Jesse Otobo. Master mental math, UK KS2 SATs exam prep, interactive visual models, and Google Classroom teacher sync.",
   "lang": "en-US",
   "dir": "ltr",
-  "categories": ["education", "games", "kids"],
+  "categories": ["education", "games", "kids", "productivity", "utilities"],
   "icons": [
     {
       "src": "/icon.png",
@@ -59,9 +59,16 @@
   "shortcuts": [
     {
       "name": "Play Speed Arena",
-      "short_name": "Play Arena",
-      "description": "Jump straight into real-time math speed duels",
+      "short_name": "Arena",
+      "description": "Jump straight into real-time math speed duels and gigs",
       "url": "/?tab=arena",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "KS2 SATs Exam Hub",
+      "short_name": "KS2 SATs",
+      "description": "Paper 1 Arithmetic and Papers 2 & 3 Reasoning prep",
+      "url": "/?tab=sats",
       "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
     },
     {
@@ -69,6 +76,20 @@
       "short_name": "Learn",
       "description": "Interactive visual math models and lesson drills",
       "url": "/?tab=learn",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Teacher Dashboard",
+      "short_name": "Teachers",
+      "description": "Classroom rosters, PIN cards, and Google Classroom sync",
+      "url": "/?tab=teacher",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Rock Shop",
+      "short_name": "Shop",
+      "description": "Customize rock avatars, guitars, hairstyles, and outfits",
+      "url": "/?tab=shop",
       "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
     }
   ]

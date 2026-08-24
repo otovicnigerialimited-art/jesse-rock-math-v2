@@ -17,7 +17,6 @@ import SatsMockTests from './SatsMockTests';
 import SatsProgressAnalytics from './SatsProgressAnalytics';
 import SatsExamGuide from './SatsExamGuide';
 import SatsMindset from './SatsMindset';
-import SatsDsatTutor from './SatsDsatTutor';
 import SatsCalmBreakModal from './SatsCalmBreakModal';
 import SatsParentSummaryModal from './SatsParentSummaryModal';
 import { 
@@ -35,7 +34,6 @@ import {
   Coffee,
   Menu,
   X,
-  Brain,
   ChevronDown,
   CheckCircle,
   Database,
@@ -133,16 +131,16 @@ export default function SatsHub({
 
               <div className="h-8 w-px bg-slate-200 hidden sm:block" />
 
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-2xl bg-indigo-900 text-amber-400 flex items-center justify-center font-bold shadow">
-                  <GraduationCap size={22} />
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-indigo-900 text-amber-400 flex items-center justify-center font-bold shadow shrink-0">
+                  <GraduationCap size={20} />
                 </div>
                 <div>
-                  <h1 className="text-base sm:text-lg font-display font-black text-slate-900 tracking-tight leading-none">
+                  <h1 className="text-sm sm:text-lg font-display font-black text-slate-900 tracking-tight leading-none">
                     UK KS2 SATs HUB
                   </h1>
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-indigo-700 block mt-0.5">
-                    UK Primary Key Stage 2 Prep
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-widest text-indigo-700 block mt-0.5">
+                    Primary Key Stage 2 Prep
                   </span>
                 </div>
               </div>
@@ -230,7 +228,7 @@ export default function SatsHub({
                 { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
                 { id: 'practice', label: 'Practice', icon: Zap },
                 { id: 'mocks', label: 'Mocks', icon: Trophy },
-                { id: 'dsat_tutor', label: 'AI DSAT', icon: Brain }
+                { id: 'learn', label: 'Lessons', icon: BookOpen }
               ].map(tab => {
                 const isActive = activeTab === tab.id;
                 const Icon = tab.icon;
@@ -423,13 +421,6 @@ export default function SatsHub({
         {activeTab === 'mindset' && (
           <SatsMindset
             onOpenCalmBreathing={() => setIsCalmModalOpen(true)}
-          />
-        )}
-
-        {activeTab === 'dsat_tutor' && (
-          <SatsDsatTutor
-            progress={progress}
-            onUpdateProgress={handleUpdateProgress}
           />
         )}
       </main>

@@ -7,7 +7,6 @@ export type SatsNavTab =
   | 'progress' 
   | 'guide' 
   | 'mindset' 
-  | 'dsat_tutor'
   | 'settings';
 
 export type SatsDomain = 

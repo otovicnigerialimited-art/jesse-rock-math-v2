@@ -71,7 +71,6 @@ const InstallGuideModal = React.lazy(() => import('./components/InstallGuideModa
 import AvatarPreview from './components/AvatarPreview';
 import { updateSchoolStudentProgress } from './lib/schoolDb';
 const SatsHub = React.lazy(() => import('./components/sats/SatsHub'));
-const DsatHub = React.lazy(() => import('./components/dsat/DsatHub'));
 const DiagnosticModal = React.lazy(() => import('./components/DiagnosticModal'));
 const MistakeIntelligenceModal = React.lazy(() => import('./components/MistakeIntelligenceModal'));
 const SmartNotificationsModal = React.lazy(() => import('./components/SmartNotificationsModal'));
@@ -92,7 +91,7 @@ const INITIAL_STATS: ExtendedUserStats = {
 
 export default function App() {
   console.log('[JesseMath] Rendering App component...');
-  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade' | 'arena' | 'sats' | 'dsat' | 'spaced_practice'>('home');
+  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade' | 'arena' | 'sats' | 'spaced_practice'>('home');
   const [showDiagnosticModal, setShowDiagnosticModal] = useState(false);
   const [showMistakeModal, setShowMistakeModal] = useState(false);
   const [showNotificationsModal, setShowNotificationsModal] = useState(false);
@@ -1206,7 +1205,6 @@ export default function App() {
         { id: 'arcade', label: 'Fun Arcade 🕹️', icon: Gamepad2 },
         { id: 'hub', label: 'Learning Hub', icon: BookOpen },
         { id: 'sats', label: '🎓 KS2 SATs Prep Hub', icon: GraduationCap },
-        { id: 'dsat', label: '⚡ Digital SAT (DSAT) Academy', icon: Brain },
         { id: 'quiz', label: 'Play Arena', icon: Trophy },
         { id: 'learn', label: 'Learn Arena', icon: BookOpen },
         { id: 'arena', label: 'Multiplayer Arena', icon: LogoIcon },
@@ -1500,13 +1498,6 @@ export default function App() {
                   {activeTab === 'shop' && <RockShop userId={authState.userId || userDeviceId || ''} role={authState.role as any} onNavigateToTab={setActiveTab} />}
                   {activeTab === 'sats' && (
                     <SatsHub 
-                      userId={authState.userId || userDeviceId || 'guest'} 
-                      studentName={authState.username || 'Rockstar'} 
-                      onExitToRockstarMode={() => setActiveTab('home')} 
-                    />
-                  )}
-                  {activeTab === 'dsat' && (
-                    <DsatHub 
                       userId={authState.userId || userDeviceId || 'guest'} 
                       studentName={authState.username || 'Rockstar'} 
                       onExitToRockstarMode={() => setActiveTab('home')} 

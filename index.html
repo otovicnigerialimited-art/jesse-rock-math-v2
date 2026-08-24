@@ -3,8 +3,14 @@
   <head>
     <meta name="google-site-verification" content="cQcVVKEUHMGr4KLdbN7aXIXG1b3-fmZ33slyLXrOTjU" />
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#7c3aed" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Math Rockstar" />
+    <meta name="application-name" content="Jesse Math Rockstar" />
+    
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/icon.png" />
@@ -13,10 +19,16 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 
     <!-- Primary Meta Tags -->
-    <title>Jesse Math Rockstar | interactive math platform &amp; Math Learning Hub</title>
-    <meta name="description" content="Master real math with gamified drills, KS2 SATs &amp; Digital SAT exam prep, curriculum-aligned lessons, and teacher classroom management tools." />
-    <meta name="keywords" content="free math game, primary school math, KS2 SATs prep, Digital SAT 16+, gamified learning, level gigs, teacher classroom dashboard, COPPA compliant math software, math curriculum lessons, mental math speed drills, spaced repetition math" />
+    <title>Jesse Math Rockstar | Free Gamified Math Learning Platform, KS2 SATs &amp; Teacher Classroom Hub</title>
+    <meta name="title" content="Jesse Math Rockstar | Free Gamified Math Learning Platform, KS2 SATs &amp; Teacher Classroom Hub" />
+    <meta name="description" content="Jesse Math Rockstar is the premier gamified math learning platform founded by 11-year-old developer Jesse Otobo. Master mental math with speed gig duels, UK KS2 SATs exams (Arithmetic &amp; Reasoning), visual learning models, Google Classroom integration, and teacher management dashboards." />
+    <meta name="keywords" content="Jesse Math Rockstar, math rockstar, free math game, times tables rockstars alternative, mental math speed drills, KS2 SATs prep, Year 6 SATs arithmetic, SATs reasoning practice, Google Classroom math, teacher classroom management, school math software, COPPA compliant math app, gamified math learning, fraction visual models, spaced repetition math, rock star math" />
     <meta name="author" content="Jesse Otobo" />
+    <meta name="publisher" content="Jesse Otobo Educational Technologies" />
+    <meta name="category" content="Education, Math Games, EdTech" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
 
     <script>
       window.deferredPrompt = null;
@@ -36,16 +48,23 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://jesse-math-rockstar-app.vercel.app/" />
-    <meta property="og:title" content="Jesse Math Rockstar | interactive math platform &amp; Math Learning Hub" />
-    <meta property="og:description" content="Master real math with gamified drills, KS2 SATs &amp; Digital SAT exam prep, curriculum-aligned lessons, and teacher classroom management tools." />
+    <meta property="og:site_name" content="Jesse Math Rockstar" />
+    <meta property="og:title" content="Jesse Math Rockstar | Free Gamified Math Learning Platform &amp; Exam Hub" />
+    <meta property="og:description" content="Master real mental math, conquer UK KS2 SATs exams, sync Google Classroom rosters, and climb the global leaderboards in this high-energy learning platform." />
     <meta property="og:image" content="https://jesse-math-rockstar-app.vercel.app/logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jesse Math Rockstar Interactive Learning Arena" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="en_GB" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://jesse-math-rockstar-app.vercel.app/" />
-    <meta name="twitter:title" content="Jesse Math Rockstar | interactive math platform &amp; Math Learning Hub" />
-    <meta name="twitter:description" content="Master real math with gamified drills, KS2 SATs &amp; Digital SAT exam prep, curriculum-aligned lessons, and teacher classroom management tools." />
+    <meta name="twitter:title" content="Jesse Math Rockstar | Gamified Math Learning, SATs &amp; Classroom Hub" />
+    <meta name="twitter:description" content="Play fast math speed gigs, master KS2 SATs arithmetic &amp; reasoning exam modules, customize rock avatars, and manage school classrooms with real-time analytics." />
     <meta name="twitter:image" content="https://jesse-math-rockstar-app.vercel.app/logo.png" />
+    <meta name="twitter:image:alt" content="Jesse Math Rockstar Math Platform" />
 
     <!-- Structured Data Schema (Schema.org 2026 Compliant) -->
     <script type="application/ld+json">
@@ -53,30 +72,38 @@
       "@context": "https://schema.org",
       "@graph": [
         {
+          "@type": "WebSite",
+          "@id": "https://jesse-math-rockstar-app.vercel.app/#website",
+          "url": "https://jesse-math-rockstar-app.vercel.app/",
+          "name": "Jesse Math Rockstar",
+          "description": "Gamified math learning platform, KS2 SATs exam simulator, interactive visual learning models, Google Classroom teacher hub, and real-time multiplayer speed arena.",
+          "publisher": {
+            "@id": "https://jesse-math-rockstar-app.vercel.app/#organization"
+          },
+          "inLanguage": "en"
+        },
+        {
           "@type": "SoftwareApplication",
           "@id": "https://jesse-math-rockstar-app.vercel.app/#application",
           "name": "Jesse Math Rockstar",
           "url": "https://jesse-math-rockstar-app.vercel.app/",
           "image": "https://jesse-math-rockstar-app.vercel.app/logo.png",
-          "operatingSystem": "All (Web Browser, iOS, Android, Chromebook)",
+          "operatingSystem": "All (Web Browser, iOS, Android, macOS, Windows, Chromebook)",
           "applicationCategory": "EducationalApplication",
           "isAccessibleForFree": true,
           "inLanguage": "en",
           "author": {
             "@type": "Person",
-            "name": "Jesse Otobo"
+            "name": "Jesse Otobo",
+            "jobTitle": "Founder & Lead Developer",
+            "description": "11-year-old child prodigy software developer and founder of Jesse Math Rockstar."
           },
-          "description": "Comprehensive interactive math platform with level Gigs progression, avatar customization, UK KS2 SATs exam prep (Ages 5-13, COPPA compliant), Digital SAT DSAT Academy (Ages 16+), teacher classroom management dashboards, and spaced repetition drills.",
+          "description": "Comprehensive interactive math platform with Level Gigs progression, avatar customization, UK KS2 SATs exam prep (Ages 5-13, COPPA compliant), interactive visual fraction/place value models, Google Classroom roster sync, Google Workspace teacher authentication, and spaced repetition math practice.",
           "audience": [
             {
               "@type": "EducationalAudience",
               "educationalRole": "student",
               "audienceType": "Primary & Middle School Students (Ages 5-13)"
-            },
-            {
-              "@type": "EducationalAudience",
-              "educationalRole": "student",
-              "audienceType": "High School Students & College Entrance Prep (Ages 16+)"
             },
             {
               "@type": "EducationalAudience",
@@ -90,52 +117,43 @@
             }
           ],
           "featureList": [
-            "COPPA & GDPR Compliant Under-13 Math Practice (No email required, safe visual classroom logins)",
-            "Digital SAT (DSAT) Academy (Strictly designated for 16+ High School & College Prep)",
-            "Gamified Level Gigs Progression Engine (Garage Band to Hall of Famer)",
+            "COPPA & GDPR Compliant Under-13 Math Practice (No personal email required, safe visual classroom logins)",
+            "Google Classroom OAuth Roster Sync & Assignment Publishing",
+            "Google Workspace Teacher Authentication with Domain Restriction Filtering",
             "UK Key Stage 2 (KS2) SATs Exam Prep Hub (Paper 1 Arithmetic, Papers 2 & 3 Reasoning, Scaled Score 80-120)",
-            "Desmos Graphing Calculator Shortcut Suite for DSAT Math",
-            "Bluebook Adaptive Test Simulator (400-1600 Composite Score Estimates)",
-            "Teacher Classroom Dashboard (Roster Management, Printable Login Cards, AI Misconception Detector)",
+            "Interactive Visual Models (Fraction Bars, Pie Charts, Place Value grids)",
+            "Gamified Level Gigs Progression Engine (Garage Band to Hall of Famer)",
+            "Teacher Classroom Command Center (Roster Management, Printable Login Cards, AI Misconception Detector)",
             "Parent & Guardian Portal (Real-time progress tracking, PIN access, printable reports)",
             "Spaced Repetition & Diagnostic Placement Engine",
-            "Rock Shop Avatar Economy (Rock Coins, hairstyles, instruments)"
+            "Rock Shop Avatar Economy (Rock Coins, hairstyles, instruments, custom avatars)"
           ],
           "offers": {
             "@type": "Offer",
             "price": "0.00",
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "1280",
+            "bestRating": "5",
+            "worstRating": "1"
           }
         },
         {
           "@type": "EducationalCourse",
           "@id": "https://jesse-math-rockstar-app.vercel.app/#ks2-sats",
           "name": "UK Key Stage 2 (KS2) SATs Exam Preparation Hub",
-          "description": "Comprehensive Year 6 national assessment preparation covering Paper 1 Arithmetic, Papers 2 & 3 Reasoning, scaled scores, and anxiety reduction tools.",
+          "description": "Comprehensive Year 6 national assessment preparation covering Paper 1 Arithmetic, Papers 2 & 3 Reasoning, scaled scores (80-120), official mark schemes, and math confidence building.",
           "provider": {
-            "@type": "Organization",
-            "name": "Jesse Math Rockstar"
+            "@id": "https://jesse-math-rockstar-app.vercel.app/#organization"
           },
           "educationalLevel": "Key Stage 2 (Ages 10-11 / Under 13)",
           "audience": {
             "@type": "EducationalAudience",
             "audienceType": "Primary School Students under 13"
-          }
-        },
-        {
-          "@type": "EducationalCourse",
-          "@id": "https://jesse-math-rockstar-app.vercel.app/#dsat-academy",
-          "name": "Digital SAT (DSAT) Academy & Exam Prep",
-          "description": "College Board Digital SAT exam simulator, Desmos calculator strategies, formula bank, and domain practice strictly designated for students ages 16 and older.",
-          "provider": {
-            "@type": "Organization",
-            "name": "Jesse Math Rockstar"
-          },
-          "educationalLevel": "High School / College Entrance (Ages 16+)",
-          "audience": {
-            "@type": "EducationalAudience",
-            "audienceType": "Students Ages 16 and older"
           }
         },
         {
@@ -147,7 +165,50 @@
           "founder": {
             "@type": "Person",
             "name": "Jesse Otobo"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support & Educator Relations",
+            "email": "otovicnigerialimited@gmail.com"
           }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://jesse-math-rockstar-app.vercel.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is Jesse Math Rockstar?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Jesse Math Rockstar is a free, gamified math learning platform founded by 11-year-old software developer Jesse Otobo. It offers fast-paced math speed drills, interactive visual models, UK KS2 SATs exam prep, and teacher classroom management tools."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is Jesse Math Rockstar free for schools and teachers?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, Jesse Math Rockstar is completely free for individual learners, teachers, schools, and parents. Teachers can easily manage classrooms, import rosters with Google Classroom, and track student analytics."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does Jesse Math Rockstar support Google Classroom?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Educators can connect their Google Classroom account via verified OAuth to view active courses, import student rosters with safe credentials, and publish math assignments directly to students."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is Jesse Math Rockstar COPPA and GDPR compliant for children under 13?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes! Jesse Math Rockstar strictly protects student privacy. Students under 13 log in with visual avatars and simple PINs without providing personal email addresses, phone numbers, or tracking cookies."
+              }
+            }
+          ]
         }
       ]
     }

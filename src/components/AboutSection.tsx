@@ -88,16 +88,16 @@ export default function AboutSection() {
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
-            <div className="flex items-center gap-2 text-indigo-400 font-bold text-sm">
-              <GraduationCap size={16} /> Ages 16+ (Digital SAT High School &amp; College Prep)
+            <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+              <ShieldCheck size={16} /> COPPA & GDPR Privacy Compliance (Under 13 Safe)
             </div>
             <p className="text-xs text-slate-300 leading-relaxed font-medium">
-              The <strong>Digital SAT (DSAT) Academy</strong> is explicitly designated for secondary students aged <strong>16 and older</strong> preparing for university entrance exams. Features full College Board math and reading/writing domains, Desmos calculator shortcuts, and Bluebook test simulators.
+              Child privacy and safety are built into every layer. Students under 13 log in securely with visual avatars and simple PIN codes without providing email addresses, phone numbers, or personal identifying data.
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
-              <span className="px-2.5 py-1 bg-indigo-400/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-bold rounded-lg">16+ Designated</span>
-              <span className="px-2.5 py-1 bg-indigo-400/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-bold rounded-lg">Desmos Suite</span>
-              <span className="px-2.5 py-1 bg-indigo-400/10 border border-indigo-400/30 text-indigo-300 text-[10px] font-bold rounded-lg">Bluebook Simulator</span>
+              <span className="px-2.5 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold rounded-lg">Zero Tracking</span>
+              <span className="px-2.5 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold rounded-lg">No Email Required</span>
+              <span className="px-2.5 py-1 bg-emerald-400/10 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold rounded-lg">School Approved</span>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function AboutSection() {
         </div>
       </div>
 
-      {/* 3. EXAM HUBS: KS2 SATS (UNDER 13) & DIGITAL SAT (16+) */}
+      {/* 3. EXAM HUBS & CURRICULUM LEARNING */}
       <div className="grid lg:grid-cols-2 gap-6">
         {/* KS2 SATs */}
         <div className="p-7 rounded-3xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 border-4 border-deep-navy space-y-4 shadow-md">
@@ -152,20 +152,20 @@ export default function AboutSection() {
           </ul>
         </div>
 
-        {/* DSAT 16+ */}
+        {/* Visual Learning Models & Spaced Repetition */}
         <div className="p-7 rounded-3xl bg-gradient-to-br from-indigo-900 to-slate-950 text-white border-4 border-deep-navy space-y-4 shadow-md">
           <div className="inline-block px-3 py-1 bg-indigo-500 text-white font-black text-[10px] uppercase rounded-full tracking-wider">
-            Ages 16+ High School &amp; College Prep
+            Visual Math &amp; Spaced Repetition
           </div>
-          <h3 className="text-2xl font-black font-display tracking-tight">Digital SAT (DSAT) Academy</h3>
+          <h3 className="text-2xl font-black font-display tracking-tight">Interactive Visual Models &amp; Lesson Hub</h3>
           <p className="text-xs font-medium leading-relaxed text-slate-300">
-            Strictly designated for older students preparing for university entrance examinations:
+            Empowering students to truly visualize mathematics through step-by-step conceptual modeling:
           </p>
           <ul className="space-y-2 text-xs font-bold text-slate-200">
-            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Algebra, Advanced Math, Geometry &amp; Trigonometry</li>
-            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Integrated Desmos Graphing Calculator shortcut suite</li>
-            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Bluebook adaptive test simulator with countdown clock</li>
-            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Target score predictor (400–1600 Composite Score)</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Dynamic Fraction Bars, Pie Visualizers &amp; Place Value Charts</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Step-by-step worked examples with guided self-check exercises</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Spaced repetition diagnostic engine that targets personal weak spots</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Real-time multiplayer rockstar speed duels and live arena gigs</li>
           </ul>
         </div>
       </div>
