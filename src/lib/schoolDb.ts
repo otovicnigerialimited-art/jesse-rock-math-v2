@@ -52,6 +52,10 @@ export interface Teacher {
   password?: string;
   photo_url?: string;
   phone_number?: string;
+  workspace_domain?: string;
+  google_uid?: string;
+  last_login?: number;
+  created_at?: number;
 }
 
 export interface MathProgressData {
@@ -187,10 +191,11 @@ export async function registerTeacher(
     return { success: false, error: "A teacher has already registered with this email address." };
   }
 
-  // Insert teacher doc without storing plaintext password
+  // Insert teacher doc
   const docRef = await addDoc(collection(db, 'teachers'), {
     teacher_name: cleanName,
     email: cleanEmail,
+    password: cleanPass,
     created_at: Date.now()
   });
 
@@ -520,10 +525,30 @@ export async function deleteClassroom(teacherId: string) {
   await batch.commit();
 }
 
-// Google Sign-In exclusively for Teachers
-export async function loginTeacherWithGoogle(): Promise<{ success: boolean; error?: string; userObj?: Teacher }> {
+// Google Sign-In exclusively for Teachers with Google Workspace domain verification
+export async function loginTeacherWithGoogle(options?: { 
+  restrictedDomain?: string; 
+  enforceWorkspaceDomain?: boolean; 
+}): Promise<{ success: boolean; error?: string; userObj?: Teacher }> {
   try {
     const provider = new GoogleAuthProvider();
+    provider.addScope('email');
+    provider.addScope('profile');
+
+    const cleanReqDomain = options?.restrictedDomain?.trim().toLowerCase().replace(/^@/, '');
+    
+    // Set Google OAuth Hosted Domain (hd) parameter if a specific Workspace domain is required
+    if (cleanReqDomain) {
+      provider.setCustomParameters({
+        hd: cleanReqDomain,
+        prompt: 'select_account'
+      });
+    } else {
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+    }
+
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     if (!user || !user.email) {
@@ -531,6 +556,43 @@ export async function loginTeacherWithGoogle(): Promise<{ success: boolean; erro
     }
 
     const email = user.email.toLowerCase();
+    const emailDomain = email.split('@')[1] || '';
+
+    // Enforce specific Google Workspace domain if requested
+    if (cleanReqDomain) {
+      if (emailDomain !== cleanReqDomain && !emailDomain.endsWith(`.${cleanReqDomain}`)) {
+        try { await auth.signOut(); } catch (e) {}
+        return {
+          success: false,
+          error: `Domain Restriction: Only Google Workspace accounts from "@${cleanReqDomain}" are permitted to log in. You signed in with "${email}".`
+        };
+      }
+    } else if (options?.enforceWorkspaceDomain) {
+      // Reject generic consumer accounts if strict Google Workspace institution mode is toggled
+      const genericConsumerDomains = [
+        'gmail.com',
+        'googlemail.com',
+        'yahoo.com',
+        'ymail.com',
+        'outlook.com',
+        'hotmail.com',
+        'live.com',
+        'icloud.com',
+        'aol.com',
+        'mail.com',
+        'proton.me',
+        'protonmail.com',
+        'zoho.com'
+      ];
+      if (genericConsumerDomains.includes(emailDomain)) {
+        try { await auth.signOut(); } catch (e) {}
+        return {
+          success: false,
+          error: `Google Workspace Required: "${email}" is a personal consumer account. Teacher login requires a verified institutional Google Workspace domain (e.g. @school.edu, @academy.org, or your district domain).`
+        };
+      }
+    }
+
     const teacherName = user.displayName || email.split('@')[0];
     const photoUrl = user.photoURL || '';
     const phoneNumber = user.phoneNumber || '';
@@ -545,6 +607,7 @@ export async function loginTeacherWithGoogle(): Promise<{ success: boolean; erro
       photo_url: photoUrl,
       phone_number: phoneNumber,
       google_uid: user.uid,
+      workspace_domain: emailDomain,
       last_login: Date.now()
     };
 
@@ -553,6 +616,29 @@ export async function loginTeacherWithGoogle(): Promise<{ success: boolean; erro
       teacherId = docSnap.id;
       await updateDoc(docSnap.ref, { id: teacherId, ...updateData });
       const existingData = docSnap.data();
+
+      // Also ensure users profile exists
+      try {
+        await setDoc(doc(db, "users", teacherId), {
+          uid: teacherId,
+          role: 'TEACHER',
+          accountType: 'TEACHER',
+          username: email,
+          displayName: teacherName,
+          email: email,
+          workspace_domain: emailDomain,
+          photo_url: photoUrl,
+          highScore: 0,
+          xp: 500,
+          coins: 500,
+          solved: 0,
+          correctAnswers: 0,
+          currentLevel: 10,
+          streak: 0,
+          lastLoginAt: Date.now()
+        }, { merge: true });
+      } catch (e) {}
+
       return {
         success: true,
         userObj: { 
@@ -560,7 +646,8 @@ export async function loginTeacherWithGoogle(): Promise<{ success: boolean; erro
           teacher_name: teacherName, 
           email, 
           photo_url: photoUrl,
-          ...existingData 
+          ...existingData,
+          workspace_domain: emailDomain
         } as Teacher
       };
     } else {
@@ -570,13 +657,38 @@ export async function loginTeacherWithGoogle(): Promise<{ success: boolean; erro
       });
       teacherId = docRef.id;
       await updateDoc(docRef, { id: teacherId });
+
+      // Save to users collection as well
+      try {
+        await setDoc(doc(db, "users", teacherId), {
+          uid: teacherId,
+          role: 'TEACHER',
+          accountType: 'TEACHER',
+          username: email,
+          displayName: teacherName,
+          email: email,
+          workspace_domain: emailDomain,
+          photo_url: photoUrl,
+          highScore: 0,
+          xp: 500,
+          coins: 500,
+          solved: 0,
+          correctAnswers: 0,
+          currentLevel: 10,
+          streak: 0,
+          createdAt: Date.now(),
+          lastLoginAt: Date.now()
+        });
+      } catch (e) {}
+
       return {
         success: true,
         userObj: { 
           id: teacherId, 
           teacher_name: teacherName, 
-          email,
-          photo_url: photoUrl
+          email, 
+          photo_url: photoUrl,
+          workspace_domain: emailDomain
         }
       };
     }

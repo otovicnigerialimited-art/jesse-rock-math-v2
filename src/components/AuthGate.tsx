@@ -32,7 +32,11 @@ import {
   Github,
   ExternalLink,
   Globe,
-  BookOpen
+  BookOpen,
+  Building2,
+  Shield,
+  Settings2,
+  CheckCircle
 } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, onSnapshot, deleteDoc } from 'firebase/firestore';
@@ -262,6 +266,13 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
   const [teacherEmail, setTeacherEmail] = useState('');
   const [teacherPassword, setTeacherPassword] = useState('');
   const [showTeacherPassword, setShowTeacherPassword] = useState(false);
+
+  // Google Workspace Domain Restriction States for Educators
+  const [teacherWorkspaceDomain, setTeacherWorkspaceDomain] = useState(() => {
+    return safeStorage.getItem('jesse_rock_teacher_domain_filter') || '';
+  });
+  const [enforceWorkspaceDomain, setEnforceWorkspaceDomain] = useState(true);
+  const [showDomainSettings, setShowDomainSettings] = useState(false);
 
   const [teacherNameSignup, setTeacherNameSignup] = useState('');
   const [teacherEmailSignup, setTeacherEmailSignup] = useState('');
@@ -665,9 +676,18 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     setError(null);
     setLoading(true);
     try {
-      const res = await loginTeacherWithGoogle();
+      const cleanDomain = teacherWorkspaceDomain.trim().toLowerCase().replace(/^@/, '');
+      if (cleanDomain) {
+        safeStorage.setItem('jesse_rock_teacher_domain_filter', cleanDomain);
+      }
+
+      const res = await loginTeacherWithGoogle({
+        restrictedDomain: cleanDomain || undefined,
+        enforceWorkspaceDomain: enforceWorkspaceDomain
+      });
+
       if (!res || !res.success || !res.userObj) {
-        setError(res?.error || "Google teacher login failed.");
+        setError(res?.error || "Google Workspace teacher login failed.");
         setLoading(false);
         return;
       }
@@ -677,12 +697,13 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       safeStorage.setItem('jesse_rock_my_username', teacher.email);
       safeStorage.setItem('jesse_rock_real_name', teacher.teacher_name);
 
-      setSuccess(`Welcome back, Educator ${teacher.teacher_name}! Synchronising...`);
+      const domainDisplay = teacher.workspace_domain || (teacher.email.includes('@') ? teacher.email.split('@')[1] : 'workspace');
+      setSuccess(`Welcome back, Educator ${teacher.teacher_name}! Verified Workspace Domain: @${domainDisplay}`);
       setTimeout(() => {
         onAuthSuccess(teacher.email, teacher.id);
       }, 400);
     } catch (err: any) {
-      setError(err.message || "Google teacher sign-in error.");
+      setError(err.message || "Google Workspace teacher sign-in error.");
     } finally {
       setLoading(false);
     }
@@ -1851,6 +1872,93 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               {!isTeacherSignUp ? (
                 /* Teacher SignIn Form */
                 <form onSubmit={handleTeacherLoginSubmit} className="space-y-4 text-left">
+                  {/* Google Workspace Sign-In with Domain Restriction */}
+                  <div className="space-y-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={handleTeacherGoogleLogin}
+                      disabled={loading}
+                      className="w-full py-3.5 px-4 bg-white hover:bg-slate-50 text-slate-800 border-2 border-slate-300 hover:border-cyan-600 font-bold uppercase tracking-wider transition-all duration-200 rounded-xl flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50 shadow-sm relative group"
+                    >
+                      <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                      </svg>
+                      <div className="flex flex-col items-start leading-tight">
+                        <span className="text-xs font-black tracking-wide text-slate-900">Sign in with Google Workspace</span>
+                        <span className="text-[9px] text-cyan-700 font-bold uppercase tracking-wider">
+                          {teacherWorkspaceDomain ? `@${teacherWorkspaceDomain.replace(/^@/, '')} Domain Only` : 'Verified School Domain Only'}
+                        </span>
+                      </div>
+                    </button>
+
+                    {/* Google Workspace Domain Settings Toggle & Box */}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-left text-xs space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 text-slate-700 font-bold text-[11px]">
+                          <Shield size={12} className="text-emerald-600" />
+                          <span>Google Workspace Domain Security</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setShowDomainSettings(!showDomainSettings)}
+                          className="text-[10px] text-cyan-600 hover:text-cyan-700 font-bold uppercase tracking-wider flex items-center gap-1 cursor-pointer"
+                        >
+                          <Settings2 size={11} />
+                          <span>{showDomainSettings ? "Hide Filter" : "Filter Domain"}</span>
+                        </button>
+                      </div>
+
+                      {showDomainSettings ? (
+                        <div className="space-y-2 pt-1 border-t border-slate-200">
+                          <div>
+                            <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block mb-1">
+                              Restrict to School Domain (e.g. school.edu)
+                            </label>
+                            <div className="relative">
+                              <Building2 size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                              <input
+                                type="text"
+                                placeholder="e.g. stmarys.edu or district.k12.us"
+                                value={teacherWorkspaceDomain}
+                                onChange={(e) => setTeacherWorkspaceDomain(e.target.value.trim().toLowerCase())}
+                                className="w-full pl-8 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-slate-900 text-xs font-mono font-medium outline-none focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50"
+                              />
+                            </div>
+                            <p className="text-[9px] text-slate-500 mt-1">
+                              When specified, only Google accounts from this exact domain will be permitted to log in.
+                            </p>
+                          </div>
+
+                          <label className="flex items-center gap-2 text-[10px] text-slate-700 font-medium cursor-pointer pt-0.5">
+                            <input
+                              type="checkbox"
+                              checked={enforceWorkspaceDomain}
+                              onChange={(e) => setEnforceWorkspaceDomain(e.target.checked)}
+                              className="rounded border-slate-300 text-cyan-600 focus:ring-cyan-500"
+                            />
+                            <span>Reject personal consumer accounts (e.g. @gmail.com)</span>
+                          </label>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between text-[10px] text-slate-500">
+                          <span>Domain restriction: {teacherWorkspaceDomain ? `@${teacherWorkspaceDomain.replace(/^@/, '')}` : 'Any Verified Workspace'}</span>
+                          <span className="text-emerald-600 font-bold flex items-center gap-0.5">
+                            <CheckCircle size={10} /> Active
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="relative flex py-1 items-center">
+                    <div className="flex-grow border-t border-slate-200"></div>
+                    <span className="flex-shrink mx-4 text-[10px] uppercase font-bold text-slate-400">or sign in with password</span>
+                    <div className="flex-grow border-t border-slate-200"></div>
+                  </div>
+
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
                       Registered Email
@@ -1903,27 +2011,6 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                     <span>{loading ? "Authenticating..." : "Teacher Cabinet Login"}</span>
                   </button>
 
-                  <div className="relative flex py-1 items-center">
-                    <div className="flex-grow border-t border-slate-200"></div>
-                    <span className="flex-shrink mx-4 text-[10px] uppercase font-bold text-slate-400">or educator access</span>
-                    <div className="flex-grow border-t border-slate-200"></div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handleTeacherGoogleLogin}
-                    disabled={loading}
-                    className="w-full py-3.5 bg-white hover:bg-slate-50 text-slate-700 border-2 border-slate-200 font-bold uppercase tracking-wider transition-all duration-200 rounded-xl flex items-center justify-center gap-2.5 cursor-pointer disabled:opacity-50 shadow-sm"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24">
-                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                    </svg>
-                    <span>Sign in with Google (Teachers Only)</span>
-                  </button>
-
                   <div className="text-center pt-2">
                     <button
                       type="button"
@@ -1937,6 +2024,32 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               ) : (
                 /* Teacher Registration Form */
                 <form onSubmit={handleTeacherSignupSubmit} className="space-y-4 text-left">
+                  {/* Google Workspace Fast Sign-Up */}
+                  <div className="space-y-2">
+                    <button
+                      type="button"
+                      onClick={handleTeacherGoogleLogin}
+                      disabled={loading}
+                      className="w-full py-3 px-4 bg-white hover:bg-slate-50 text-slate-800 border-2 border-slate-300 hover:border-cyan-600 font-bold uppercase tracking-wider transition-all duration-200 rounded-xl flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50 shadow-sm"
+                    >
+                      <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                      </svg>
+                      <div className="flex flex-col items-start leading-tight">
+                        <span className="text-xs font-black tracking-wide text-slate-900">Sign up with Google Workspace</span>
+                        <span className="text-[9px] text-cyan-700 font-bold uppercase tracking-wider">Instant Institutional Verification</span>
+                      </div>
+                    </button>
+                  </div>
+
+                  <div className="relative flex py-1 items-center">
+                    <div className="flex-grow border-t border-slate-200"></div>
+                    <span className="flex-shrink mx-4 text-[10px] uppercase font-bold text-slate-400">or manual registration</span>
+                    <div className="flex-grow border-t border-slate-200"></div>
+                  </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase text-deep-navy tracking-wider block font-mono">
                       Your Full Name

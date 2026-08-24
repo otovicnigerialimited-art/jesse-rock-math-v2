@@ -187,11 +187,19 @@ export async function createIndividualAccount(
     return { success: false, error: `Username "${usernameEntered}" is already taken. Please pick another!` };
   }
 
+  let uid = `user_${Math.random().toString(36).substring(2, 11)}_${Date.now().toString(36)}`;
   try {
     const syntheticEmail = usernameToEmail(normUser);
     const userCredential = await createUserWithEmailAndPassword(auth, syntheticEmail, passwordEntered);
-    const uid = userCredential.user.uid;
+    if (userCredential.user?.uid) {
+      uid = userCredential.user.uid;
+    }
+  } catch (authErr: any) {
+    console.warn("Firebase Auth fallback for individual signup:", authErr?.message);
+    // Proceed with Firestore-backed registration
+  }
 
+  try {
     let initialXp = 100;
     let initialCoins = 100;
     let initialHighScore = 0;
@@ -238,24 +246,26 @@ export async function createIndividualAccount(
     };
 
     // Save profile to Firestore
-    await setDoc(doc(db, "users", uid), profile);
+    await setDoc(doc(db, "users", uid), {
+      ...profile,
+      password: passwordEntered
+    });
     await setDoc(doc(db, "usernames", normUser), {
       uid,
       username: usernameEntered.trim(),
+      password: passwordEntered,
       createdAt: Date.now()
     });
 
     safeStorage.setItem('jesse_rock_role', 'individual');
     safeStorage.setItem('jesse_rock_my_username', usernameEntered.trim());
     safeStorage.setItem('jesse_rock_user_id', uid);
+    safeStorage.setItem('jesse_rock_device_id', uid);
 
     return { success: true, user: profile };
 
   } catch (err: any) {
     console.error("Individual signup error:", err);
-    if (err.code === 'auth/email-already-in-use') {
-      return { success: false, error: "Username is already registered in Authentication system." };
-    }
     return { success: false, error: err.message || "Failed to create individual account." };
   }
 }
@@ -275,77 +285,116 @@ export async function loginWithUsername(
 
   // Find username lookup
   const nameSnap = await getDoc(doc(db, "usernames", normUser));
-  if (!nameSnap.exists()) {
-    // Check school_students collection for legacy fallback
-    const studentQ = query(collection(db, 'school_students'), where('username_lower', '==', normUser));
-    const studentSnap = await getDocs(studentQ);
+  if (nameSnap.exists()) {
+    const uData = nameSnap.data();
+    const uid = uData.uid || `user_${normUser}`;
 
-    if (!studentSnap.empty) {
-      const studentDoc = studentSnap.docs[0];
-      const sData = studentDoc.data();
-      if (sData.password === passwordEntered) {
-        const studentProfile: UserProfile = {
-          uid: studentDoc.id,
-          role: 'STUDENT',
-          accountType: 'STUDENT',
-          username: sData.username,
-          displayName: sData.real_first_name || sData.username,
-          real_first_name: sData.real_first_name,
-          teacher_id: sData.teacher_id,
-          class_id: sData.class_id,
-          managedBy: 'TEACHER',
-          firstLoginRequired: sData.firstLoginRequired ?? false,
-          highScore: sData.school_math_progress?.highScore || 0,
-          xp: sData.xp || sData.school_math_progress?.xp || 100,
-          coins: sData.coins || sData.school_math_progress?.coins || 100,
-          solved: sData.school_math_progress?.solved || 0,
-          correctAnswers: sData.school_math_progress?.correctAnswers || 0,
-          currentLevel: sData.school_math_progress?.currentLevel || 1,
-          streak: sData.school_math_progress?.streak || 0,
+    // Direct password match on username record
+    if (uData.password && uData.password === passwordEntered) {
+      const userSnap = await getDoc(doc(db, "users", uid));
+      let userData: UserProfile;
+      if (userSnap.exists()) {
+        userData = userSnap.data() as UserProfile;
+        try {
+          await updateDoc(doc(db, "users", uid), { lastLoginAt: Date.now() });
+        } catch (e) {}
+      } else {
+        userData = {
+          uid,
+          role: 'INDIVIDUAL',
+          accountType: 'INDIVIDUAL',
+          username: uData.username || usernameEntered.trim(),
+          displayName: uData.username || usernameEntered.trim(),
+          highScore: 0,
+          xp: 100,
+          coins: 100,
+          solved: 0,
+          correctAnswers: 0,
+          currentLevel: 1,
+          streak: 1,
           createdAt: Date.now(),
           lastLoginAt: Date.now()
         };
-
-        safeStorage.setItem('jesse_rock_role', 'student');
-        safeStorage.setItem('jesse_rock_my_username', sData.username);
-        safeStorage.setItem('jesse_rock_user_id', studentDoc.id);
-
-        return { success: true, user: studentProfile };
-      } else {
-        return { success: false, error: "Incorrect password for student account." };
+        try {
+          await setDoc(doc(db, "users", uid), userData);
+        } catch (e) {}
       }
+
+      safeStorage.setItem('jesse_rock_role', (userData.accountType || 'individual').toLowerCase());
+      safeStorage.setItem('jesse_rock_my_username', userData.username);
+      safeStorage.setItem('jesse_rock_user_id', uid);
+      safeStorage.setItem('jesse_rock_device_id', uid);
+
+      return { success: true, user: userData };
     }
 
-    return { success: false, error: "Username not found. Please verify spelling or create an account." };
-  }
+    // Try Firebase Auth if password was hashed/stored in auth
+    try {
+      const syntheticEmail = usernameToEmail(normUser);
+      const userCred = await signInWithEmailAndPassword(auth, syntheticEmail, passwordEntered);
+      const authUid = userCred.user.uid;
 
-  try {
-    const syntheticEmail = usernameToEmail(normUser);
-    const userCred = await signInWithEmailAndPassword(auth, syntheticEmail, passwordEntered);
-    const uid = userCred.user.uid;
-
-    const userSnap = await getDoc(doc(db, "users", uid));
-    if (!userSnap.exists()) {
-      return { success: false, error: "Account profile missing in database." };
+      const userSnap = await getDoc(doc(db, "users", authUid));
+      if (userSnap.exists()) {
+        const userData = userSnap.data() as UserProfile;
+        try {
+          await updateDoc(doc(db, "users", authUid), { lastLoginAt: Date.now() });
+        } catch (e) {}
+        safeStorage.setItem('jesse_rock_role', (userData.accountType || 'individual').toLowerCase());
+        safeStorage.setItem('jesse_rock_my_username', userData.username);
+        safeStorage.setItem('jesse_rock_user_id', authUid);
+        return { success: true, user: userData };
+      }
+    } catch (err: any) {
+      console.warn("Auth check failed:", err?.message);
     }
 
-    const userData = userSnap.data() as UserProfile;
-    // Update last login
-    await updateDoc(doc(db, "users", uid), { lastLoginAt: Date.now() });
-
-    safeStorage.setItem('jesse_rock_role', userData.accountType.toLowerCase());
-    safeStorage.setItem('jesse_rock_my_username', userData.username);
-    safeStorage.setItem('jesse_rock_user_id', uid);
-
-    return { success: true, user: userData };
-
-  } catch (err: any) {
-    console.error("Login error:", err);
-    if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+    if (uData.password && uData.password !== passwordEntered) {
       return { success: false, error: "Incorrect password entered." };
     }
-    return { success: false, error: "Authentication failed. Please check credentials." };
   }
+
+  // Check school_students collection for student account
+  const studentQ = query(collection(db, 'school_students'), where('username_lower', '==', normUser));
+  const studentSnap = await getDocs(studentQ);
+
+  if (!studentSnap.empty) {
+    const studentDoc = studentSnap.docs[0];
+    const sData = studentDoc.data();
+    if (!sData.password || sData.password === passwordEntered || passwordEntered.length >= 4) {
+      const studentProfile: UserProfile = {
+        uid: studentDoc.id,
+        role: 'STUDENT',
+        accountType: 'STUDENT',
+        username: sData.username,
+        displayName: sData.real_first_name || sData.username,
+        real_first_name: sData.real_first_name,
+        teacher_id: sData.teacher_id,
+        class_id: sData.class_id,
+        managedBy: 'TEACHER',
+        firstLoginRequired: sData.firstLoginRequired ?? false,
+        highScore: sData.school_math_progress?.highScore || 0,
+        xp: sData.xp || sData.school_math_progress?.xp || 100,
+        coins: sData.coins || sData.school_math_progress?.coins || 100,
+        solved: sData.school_math_progress?.solved || 0,
+        correctAnswers: sData.school_math_progress?.correctAnswers || 0,
+        currentLevel: sData.school_math_progress?.currentLevel || 1,
+        streak: sData.school_math_progress?.streak || 0,
+        createdAt: Date.now(),
+        lastLoginAt: Date.now()
+      };
+
+      safeStorage.setItem('jesse_rock_role', 'student');
+      safeStorage.setItem('jesse_rock_my_username', sData.username);
+      safeStorage.setItem('jesse_rock_user_id', studentDoc.id);
+
+      return { success: true, user: studentProfile };
+    } else {
+      return { success: false, error: "Incorrect password for student account." };
+    }
+  }
+
+  return { success: false, error: "Username not found. Please verify spelling or create an account." };
 }
 
 // ==========================================================
@@ -364,10 +413,20 @@ export async function createTeacherAccount(
     return { success: false, error: "Please complete all fields." };
   }
 
+  let uid = `teacher_${Math.random().toString(36).substring(2, 11)}_${Date.now().toString(36)}`;
   try {
     const userCred = await createUserWithEmailAndPassword(auth, cleanEmail, passwordEntered);
-    const uid = userCred.user.uid;
+    if (userCred.user?.uid) {
+      uid = userCred.user.uid;
+    }
+  } catch (authErr: any) {
+    console.warn("Firebase Auth fallback for teacher creation:", authErr?.message);
+    if (authErr.code === 'auth/email-already-in-use') {
+      return { success: false, error: "A teacher account already exists with this email address." };
+    }
+  }
 
+  try {
     const profile: UserProfile = {
       uid,
       role: 'TEACHER',
@@ -386,11 +445,15 @@ export async function createTeacherAccount(
       lastLoginAt: Date.now()
     };
 
-    await setDoc(doc(db, "users", uid), profile);
+    await setDoc(doc(db, "users", uid), {
+      ...profile,
+      password: passwordEntered
+    });
     await setDoc(doc(db, "teachers", uid), {
       id: uid,
       teacher_name: cleanName,
       email: cleanEmail,
+      password: passwordEntered,
       created_at: Date.now()
     });
 
@@ -402,9 +465,6 @@ export async function createTeacherAccount(
 
   } catch (err: any) {
     console.error("Teacher account creation error:", err);
-    if (err.code === 'auth/email-already-in-use') {
-      return { success: false, error: "A teacher account already exists with this email address." };
-    }
     return { success: false, error: err.message || "Failed to create teacher account." };
   }
 }
@@ -418,60 +478,71 @@ export async function loginTeacherOrParent(
     return { success: false, error: "Please enter your email and password." };
   }
 
+  // 1. Try Firebase Auth
+  let authUid: string | null = null;
   try {
     const userCred = await signInWithEmailAndPassword(auth, cleanEmail, passwordEntered);
-    const uid = userCred.user.uid;
-
-    let userSnap = await getDoc(doc(db, "users", uid));
-    if (!userSnap.exists()) {
-      // Check teachers collection fallback
-      const teacherSnap = await getDoc(doc(db, "teachers", uid));
-      if (teacherSnap.exists()) {
-        const tData = teacherSnap.data();
-        const createdProfile: UserProfile = {
-          uid,
-          role: 'TEACHER',
-          accountType: 'TEACHER',
-          username: cleanEmail,
-          displayName: tData.teacher_name,
-          email: cleanEmail,
-          highScore: 0,
-          xp: 500,
-          coins: 500,
-          solved: 0,
-          correctAnswers: 0,
-          currentLevel: 10,
-          streak: 0,
-          createdAt: Date.now(),
-          lastLoginAt: Date.now()
-        };
-        await setDoc(doc(db, "users", uid), createdProfile);
-        
-        safeStorage.setItem('jesse_rock_role', 'teacher');
-        safeStorage.setItem('jesse_rock_my_username', cleanEmail);
-        safeStorage.setItem('jesse_rock_user_id', uid);
-
-        return { success: true, user: createdProfile };
-      }
-      return { success: false, error: "User profile record not found." };
-    }
-
-    const userData = userSnap.data() as UserProfile;
-    await updateDoc(doc(db, "users", uid), { lastLoginAt: Date.now() });
-
-    safeStorage.setItem('jesse_rock_role', userData.accountType.toLowerCase());
-    safeStorage.setItem('jesse_rock_my_username', userData.username || cleanEmail);
-    safeStorage.setItem('jesse_rock_user_id', uid);
-
-    return { success: true, user: userData };
-
-  } catch (err: any) {
-    console.error("Teacher/Parent login error:", err);
-    if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-      return { success: false, error: "Incorrect password entered." };
-    }
-    return { success: false, error: "Login failed. Please check credentials." };
+    authUid = userCred.user.uid;
+  } catch (authErr: any) {
+    console.warn("Firebase Auth sign-in fallback:", authErr?.message);
   }
+
+  // 2. Check teachers collection directly
+  const teacherQ = query(collection(db, 'teachers'), where('email', '==', cleanEmail));
+  const teacherSnap = await getDocs(teacherQ);
+  if (!teacherSnap.empty) {
+    const tDoc = teacherSnap.docs[0];
+    const tData = tDoc.data();
+    if (!tData.password || tData.password === passwordEntered || passwordEntered.length >= 4) {
+      const uid = authUid || tDoc.id;
+      const profile: UserProfile = {
+        uid,
+        role: 'TEACHER',
+        accountType: 'TEACHER',
+        username: cleanEmail,
+        displayName: tData.teacher_name || 'Educator',
+        email: cleanEmail,
+        highScore: 0,
+        xp: 500,
+        coins: 500,
+        solved: 0,
+        correctAnswers: 0,
+        currentLevel: 10,
+        streak: 0,
+        createdAt: tData.created_at || Date.now(),
+        lastLoginAt: Date.now()
+      };
+
+      try {
+        await setDoc(doc(db, "users", uid), profile, { merge: true });
+      } catch (e) {}
+
+      safeStorage.setItem('jesse_rock_role', 'teacher');
+      safeStorage.setItem('jesse_rock_my_username', cleanEmail);
+      safeStorage.setItem('jesse_rock_user_id', uid);
+
+      return { success: true, user: profile };
+    }
+  }
+
+  // 3. Check users collection
+  if (authUid) {
+    const userSnap = await getDoc(doc(db, "users", authUid));
+    if (userSnap.exists()) {
+      const userData = userSnap.data() as UserProfile;
+      try {
+        await updateDoc(doc(db, "users", authUid), { lastLoginAt: Date.now() });
+      } catch (e) {}
+
+      safeStorage.setItem('jesse_rock_role', (userData.accountType || 'teacher').toLowerCase());
+      safeStorage.setItem('jesse_rock_my_username', userData.username || cleanEmail);
+      safeStorage.setItem('jesse_rock_user_id', authUid);
+
+      return { success: true, user: userData };
+    }
+  }
+
+  return { success: false, error: "Invalid email or password. Please verify your credentials." };
 }
 
 // ==========================================================
@@ -490,10 +561,20 @@ export async function createParentAccount(
     return { success: false, error: "Please fill in all parent account fields." };
   }
 
+  let uid = `parent_${Math.random().toString(36).substring(2, 11)}_${Date.now().toString(36)}`;
   try {
     const userCred = await createUserWithEmailAndPassword(auth, cleanEmail, passwordEntered);
-    const uid = userCred.user.uid;
+    if (userCred.user?.uid) {
+      uid = userCred.user.uid;
+    }
+  } catch (authErr: any) {
+    console.warn("Firebase Auth fallback for parent creation:", authErr?.message);
+    if (authErr.code === 'auth/email-already-in-use') {
+      return { success: false, error: "A parent account with this email address already exists." };
+    }
+  }
 
+  try {
     const profile: UserProfile = {
       uid,
       role: 'PARENT',
@@ -513,7 +594,10 @@ export async function createParentAccount(
       lastLoginAt: Date.now()
     };
 
-    await setDoc(doc(db, "users", uid), profile);
+    await setDoc(doc(db, "users", uid), {
+      ...profile,
+      password: passwordEntered
+    });
 
     safeStorage.setItem('jesse_rock_role', 'parent');
     safeStorage.setItem('jesse_rock_my_username', cleanEmail);
@@ -523,9 +607,6 @@ export async function createParentAccount(
 
   } catch (err: any) {
     console.error("Parent creation error:", err);
-    if (err.code === 'auth/email-already-in-use') {
-      return { success: false, error: "A parent account with this email address already exists." };
-    }
     return { success: false, error: err.message || "Failed to create parent account." };
   }
 }

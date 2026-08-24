@@ -28,22 +28,18 @@ const db = initializeFirestore(app, {
   localCache: memoryLocalCache(),
 }, "(default)");
 
-// Initialize App Check for production bot & abuse protection
-if (typeof window !== 'undefined') {
-  // Enable debug token in development if needed
-  if (process.env.NODE_ENV !== 'production') {
-    (window as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-  }
-  
+// Initialize App Check only if an explicit, valid reCAPTCHA site key is provided
+if (typeof window !== 'undefined' && import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   try {
+    if (process.env.NODE_ENV !== 'production') {
+      (window as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+    }
     initializeAppCheck(app, {
-      provider: new ReCaptchaEnterpriseProvider(
-        import.meta.env.VITE_RECAPTCHA_SITE_KEY || '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI' // Placeholder/Test key
-      ),
+      provider: new ReCaptchaEnterpriseProvider(import.meta.env.VITE_RECAPTCHA_SITE_KEY),
       isTokenAutoRefreshEnabled: true
     });
   } catch (e) {
-    console.warn("App Check initialization:", e);
+    console.warn("App Check initialization skipped/failed:", e);
   }
 }
 
