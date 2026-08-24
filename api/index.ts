@@ -7,6 +7,7 @@ import rateLimit from "express-rate-limit";
 import compression from "compression";
 import { initializeApp as initializeServerFirebase } from "firebase/app";
 import { getFirestore as getServerFirestore, doc as serverDoc, getDoc as serverGetDoc, updateDoc as serverUpdateDoc } from "firebase/firestore";
+import * as admin from "firebase-admin";
 import crypto from "crypto";
 import helmet from "helmet";
 import cors from "cors";
@@ -14,6 +15,28 @@ import { z } from "zod";
 
 // Load environment variables securely
 dotenv.config();
+
+// Initialize Firebase Admin SDK if not already initialized
+if (!(admin as any).apps?.length) {
+  try {
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+      (admin as any).initializeApp({
+        credential: (admin as any).credential.cert(serviceAccount),
+        databaseURL: process.env.FIREBASE_DATABASE_URL || "https://jesse-math-rockstar-default-rtdb.firebaseio.com"
+      });
+      console.log("[FIREBASE ADMIN] Initialized with Service Account JSON");
+    } else {
+      (admin as any).initializeApp({
+        credential: (admin as any).credential.applicationDefault(),
+        databaseURL: "https://jesse-math-rockstar-default-rtdb.firebaseio.com"
+      });
+      console.log("[FIREBASE ADMIN] Initialized with Application Default Credentials");
+    }
+  } catch (adminErr) {
+    console.warn("[FIREBASE ADMIN] Initialization warning (running client/server hybrid mode):", adminErr);
+  }
+}
 
 /**
  * MANDATORY ENVIRONMENT VALIDATION (ZERO-TRUST)
