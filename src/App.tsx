@@ -1280,7 +1280,6 @@ export default function App() {
     <div className="h-dvh w-screen overflow-hidden bg-daytime flex flex-col text-deep-navy font-sans selection:bg-pastel-pink selection:text-deep-navy relative z-10">
       {/* Dynamic Floating Emojis Background */}
       <div className="floating-bg-container fixed inset-0 pointer-events-none">
-        {activeTab !== 'quiz' && <div className={`landscape-overlay ${isNight ? 'landscape-night' : ''}`} />}
         {activeTab !== 'quiz' && backgroundEmojis.map((emoji, idx) => (
           <div
             key={`${emoji.id}-${idx}`}
