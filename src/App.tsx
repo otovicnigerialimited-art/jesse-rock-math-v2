@@ -5,6 +5,7 @@ import SettingsModal from './components/SettingsModal';
 import GuestFinishDialog from './components/GuestFinishDialog';
 import AnniversaryDialog from './components/AnniversaryDialog';
 import GiftDialog from './components/GiftDialog';
+import { dispatchNotification, NotificationCategorySettings } from './lib/notificationManager';
 import { 
   LayoutDashboard, 
   BookOpen, 
@@ -69,6 +70,7 @@ const CertificateModal = React.lazy(() => import('./components/CertificateModal'
 const InstallGuideModal = React.lazy(() => import('./components/InstallGuideModal'));
 
 import AvatarPreview from './components/AvatarPreview';
+import NotificationToast from './components/NotificationToast';
 import { updateSchoolStudentProgress } from './lib/schoolDb';
 const SatsHub = React.lazy(() => import('./components/sats/SatsHub'));
 const DiagnosticModal = React.lazy(() => import('./components/DiagnosticModal'));
@@ -136,6 +138,65 @@ export default function App() {
   React.useEffect(() => {
     const hour = new Date().getHours();
     setIsNight(hour >= 18 || hour < 6);
+  }, []);
+
+  // Real-time proactive notification simulator & dispatcher
+  React.useEffect(() => {
+    const initialTimer = setTimeout(() => {
+      dispatchNotification(
+        'motivation',
+        'peerUpdates',
+        '⚡ Live Speed Duel Challenge!',
+        'Alex just challenged you to a 60-second multiplication duel in the Multiplayer Arena!'
+      );
+    }, 6000);
+
+    const recurringInterval = setInterval(() => {
+      const scenarios: Array<{
+        group: 'motivation' | 'learning' | 'progress' | 'discovery' | 'system';
+        key: keyof NotificationCategorySettings;
+        title: string;
+        body: string;
+      }> = [
+        {
+          group: 'motivation',
+          key: 'streakReminders',
+          title: '🔥 Streak & Daily Reminder',
+          body: 'Your math rockstar streak is active! Complete one speed gig today to keep your crown.'
+        },
+        {
+          group: 'learning',
+          key: 'deadlines',
+          title: '⏰ Assignment Deadline Alert',
+          body: 'Mr. Otobo’s Year 6 KS2 Arithmetic assignment is due by Friday EOD. Tap to solve!'
+        },
+        {
+          group: 'system',
+          key: 'scheduleReminders',
+          title: '🚨 Emergency Math Practice',
+          body: 'Quick mental math check: What is 9 × 8? Tap to boost your arithmetic speed!'
+        },
+        {
+          group: 'progress',
+          key: 'praiseAndRewards',
+          title: '🏆 Achievement Unlocked!',
+          body: 'You earned a new badge for mastering long division with 100% accuracy!'
+        },
+        {
+          group: 'discovery',
+          key: 'dailyChallenges',
+          title: '💡 Daily Challenge Ready',
+          body: 'New fraction and algebra puzzles have dropped in the Learning Hub. Check them out!'
+        }
+      ];
+      const randomScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+      dispatchNotification(randomScenario.group, randomScenario.key, randomScenario.title, randomScenario.body);
+    }, 60000); // Every 60 seconds a true real-time simulated notification pops up
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(recurringInterval);
+    };
   }, []);
 
   React.useEffect(() => {
@@ -1674,6 +1735,7 @@ export default function App() {
             />
           </React.Suspense>
         )}
+        <NotificationToast onOpenHub={() => setShowNotificationsModal(true)} />
       </AnimatePresence>
       
       <div className="fixed inset-0 pointer-events-none z-0" />

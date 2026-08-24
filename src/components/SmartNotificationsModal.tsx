@@ -83,6 +83,14 @@ export default function SmartNotificationsModal({
     if (result === 'granted') {
       setEnabled(true);
       onToggleNotifications(true);
+      dispatchNotification(
+        'motivation',
+        'streakReminders',
+        '🔔 Real Web Push Notifications Active!',
+        'You successfully allowed browser notifications. Real-time alerts, streak warnings, and rewards are now active!'
+      );
+      setTestSuccessMessage('✅ Notifications allowed & real test alert dispatched!');
+      setTimeout(() => setTestSuccessMessage(null), 4000);
     }
   };
 

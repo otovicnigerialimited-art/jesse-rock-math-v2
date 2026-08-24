@@ -138,17 +138,57 @@ export function dispatchNotification(
 
   saveNotificationLog(newLog);
 
-  // Send Browser Web Push Notification if permission granted
+  // Dispatch real-time window event for floating toast banner and play audio chime
+  if (typeof window !== 'undefined') {
+    try {
+      window.dispatchEvent(new CustomEvent('jesse-math-notification', { detail: newLog }));
+
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextClass) {
+        const audioCtx = new AudioContextClass();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15); // A5
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      }
+    } catch (e) {
+      console.warn('Audio/event dispatch warning:', e);
+    }
+  }
+
+  // Send Browser Web Push Notification or Service Worker Notification if permission granted
   if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
     try {
-      new Notification(title, {
-        body,
-        icon,
-        badge: '/logo.png',
-        tag: settingKey,
-      });
+      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          type: 'SHOW_NOTIFICATION',
+          title,
+          options: {
+            body,
+            icon,
+            tag: settingKey,
+            data: { url: '/' }
+          }
+        });
+      } else {
+        new Notification(title, {
+          body,
+          icon,
+          badge: '/logo.png',
+          tag: settingKey,
+          requireInteraction: true,
+          renotify: true
+        } as any);
+      }
     } catch (e) {
-      console.warn('Native notification trigger warning:', e);
+      console.warn('Native/SW notification trigger warning:', e);
     }
   }
 
