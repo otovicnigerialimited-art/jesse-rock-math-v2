@@ -43,7 +43,7 @@ export default function AboutSection() {
       <div className="p-8 md:p-10 rounded-[2.5rem] bg-gradient-to-br from-violet-600 via-indigo-700 to-slate-900 text-white border-4 border-deep-navy shadow-xl relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
           <div className="w-24 h-24 rounded-3xl bg-white/10 border-2 border-white/20 p-2 shrink-0 backdrop-blur-md shadow-inner flex items-center justify-center">
-            <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-contain rounded-2xl" />
+            <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-contain rounded-2xl" />
           </div>
 
           <div className="space-y-3 text-center md:text-left">

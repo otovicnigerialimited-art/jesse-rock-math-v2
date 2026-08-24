@@ -151,6 +151,9 @@ export async function authenticateSchoolTeacher(
   try {
     await signInWithEmailAndPassword(auth, cleanEmail, cleanPass);
   } catch (authErr: any) {
+    if (authErr?.code === 'auth/user-disabled') {
+      return { success: false, error: "ACCESS DENIED: This teacher account has been permanently disabled or blocked by the administration." };
+    }
     console.warn("Firebase Auth sign in fallback for teacher:", authErr?.message);
   }
 
@@ -594,6 +597,9 @@ export async function loginTeacherWithGoogle(options?: {
     photoUrl = user.photoURL || '';
     googleUid = user.uid;
   } catch (err: any) {
+    if (err?.code === 'auth/user-disabled') {
+      return { success: false, error: "ACCESS DENIED: This account has been permanently disabled or blocked by the administration." };
+    }
     console.warn("Google popup auth error (internal-error/blocked), using secure Workspace login fallback:", err);
     // Sandbox / Popup restriction fallback
     const fallbackEmail = prompt("Enter your verified Google Workspace / School Teacher Email (e.g. teacher@school.edu):", "teacher@school.edu");

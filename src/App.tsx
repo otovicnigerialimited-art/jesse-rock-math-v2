@@ -43,8 +43,9 @@ import { ExtendedUserStats } from './types/extendedTypes';
 import { cn } from './lib/utils';
 import { calculateLevel } from './lib/badges';
 import { getWeeklyData } from './lib/dateUtils';
-import { db } from './lib/firebase';
+import { db, auth } from './lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, increment } from 'firebase/firestore';
+import { onIdTokenChanged, signOut } from 'firebase/auth';
 import { handleFirestoreError, OperationType } from './lib/firestoreUtils';
 
 import AuthGate from './components/AuthGate';
@@ -558,6 +559,34 @@ export default function App() {
         username: null
       });
     }
+
+    // Actively monitor Firebase Auth for disabled or deleted accounts
+    const unsubAuth = onIdTokenChanged(auth, async (user) => {
+      if (user) {
+        try {
+          // Force token refresh to detect disabled state immediately
+          await user.getIdToken(true);
+        } catch (err: any) {
+          if (err?.code === 'auth/user-disabled' || err?.code === 'auth/user-not-found' || err?.code === 'auth/user-token-expired') {
+            console.warn("User has been disabled or deleted by admin. Forcing logout...");
+            await signOut(auth);
+            safeStorage.removeItem('jesse_rock_my_username');
+            safeStorage.removeItem('jesse_rock_user_id');
+            safeStorage.removeItem('jesse_rock_role');
+            setAuthState({
+              isAuthenticated: false,
+              isChecking: false,
+              isCookieBlocked: false,
+              message: "Your account has been permanently disabled or blocked by the administration.",
+              username: null
+            });
+            window.location.reload();
+          }
+        }
+      }
+    });
+
+    return () => unsubAuth();
   }, []);
 
   // Real-time equipped avatar subscription hook
@@ -1246,7 +1275,7 @@ export default function App() {
 
   const LogoIcon = ({ size }: { size?: number }) => (
     <div style={{ width: size, height: size }} className="rounded-full overflow-hidden border border-deep-navy/20">
-      <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+      <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Logo" className="w-full h-full object-cover" />
     </div>
   );
 
@@ -1319,7 +1348,7 @@ export default function App() {
           <div className="flex items-center justify-between gap-3 p-4 border-b border-deep-navy/10">
             <div className="flex items-center gap-3">
               <a href="https://jesse-math-rockstar-app.vercel.app/" className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0 block">
-                <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </a>
               <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE ROCK<br />
                 <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>

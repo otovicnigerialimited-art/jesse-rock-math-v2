@@ -1562,7 +1562,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm border border-slate-200 mx-auto"
             >
               <a href="https://jesse-math-rockstar-app.vercel.app/" className="block w-full h-full">
-                <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </a>
             </motion.div>
             
@@ -1828,7 +1828,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                       </label>
                       <div className="relative group">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full overflow-hidden border border-slate-200">
-                          <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+                          <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Logo" className="w-full h-full object-cover" />
                         </div>
                         <input
                           type="text"

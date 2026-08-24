@@ -522,7 +522,7 @@ export default function HomeLanding({
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5 text-left">
             <div className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0">
-              <img src="/logo.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" />
+              <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="text-xs font-black text-deep-navy uppercase">Jesse Math Rockstar</p>

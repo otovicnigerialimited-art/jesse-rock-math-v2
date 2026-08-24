@@ -346,6 +346,9 @@ export async function loginWithUsername(
         return { success: true, user: userData };
       }
     } catch (err: any) {
+      if (err?.code === 'auth/user-disabled') {
+        return { success: false, error: "ACCESS DENIED: This account has been completely blocked and disabled by the administration." };
+      }
       console.warn("Auth check failed:", err?.message);
     }
 
@@ -484,6 +487,9 @@ export async function loginTeacherOrParent(
     const userCred = await signInWithEmailAndPassword(auth, cleanEmail, passwordEntered);
     authUid = userCred.user.uid;
   } catch (authErr: any) {
+    if (authErr?.code === 'auth/user-disabled') {
+      return { success: false, error: "ACCESS DENIED: This account has been completely blocked and disabled by the administration." };
+    }
     console.warn("Firebase Auth sign-in fallback:", authErr?.message);
   }
 
