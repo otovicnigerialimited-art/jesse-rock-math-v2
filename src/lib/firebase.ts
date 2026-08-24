@@ -5,11 +5,13 @@ import {
   memoryLocalCache,
   setLogLevel
 } from "firebase/firestore";
+import { getAnalytics, isSupported as isAnalyticsSupported } from "firebase/analytics";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAlDrGsdzlB4kpcqHT65Y6r8VxatkO8Sv0",
   authDomain: "jesse-math-rockstar.firebaseapp.com",
+  databaseURL: "https://jesse-math-rockstar-default-rtdb.firebaseio.com",
   projectId: "jesse-math-rockstar",
   storageBucket: "jesse-math-rockstar.firebasestorage.app",
   messagingSenderId: "461112227439",
@@ -28,6 +30,15 @@ const db = initializeFirestore(app, {
   localCache: memoryLocalCache(),
 }, "(default)");
 
+let analytics = null;
+if (typeof window !== 'undefined') {
+  isAnalyticsSupported().then((supported) => {
+    if (supported) {
+      analytics = getAnalytics(app);
+    }
+  }).catch(() => {});
+}
+
 // Initialize App Check only if an explicit, valid reCAPTCHA site key is provided
 if (typeof window !== 'undefined' && import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   try {
@@ -43,4 +54,4 @@ if (typeof window !== 'undefined' && import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   }
 }
 
-export { app, auth, db };
+export { app, auth, db, analytics };
