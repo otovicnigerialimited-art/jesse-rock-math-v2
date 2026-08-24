@@ -1,5 +1,5 @@
 import { db, auth } from './firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { 
   collection, 
   getDocs, 
@@ -148,6 +148,12 @@ export async function authenticateSchoolTeacher(
   const cleanEmail = emailEntered.trim().toLowerCase();
   const cleanPass = passwordEntered.trim();
 
+  try {
+    await signInWithEmailAndPassword(auth, cleanEmail, cleanPass);
+  } catch (authErr: any) {
+    console.warn("Firebase Auth sign in fallback for teacher:", authErr?.message);
+  }
+
   const q = query(
     collection(db, 'teachers'),
     where('email', '==', cleanEmail)
@@ -191,6 +197,12 @@ export async function registerTeacher(
     return { success: false, error: "A teacher has already registered with this email address." };
   }
 
+  try {
+    await createUserWithEmailAndPassword(auth, cleanEmail, cleanPass);
+  } catch (authErr: any) {
+    console.warn("Firebase Auth registration note:", authErr?.message);
+  }
+
   // Insert teacher doc
   const docRef = await addDoc(collection(db, 'teachers'), {
     teacher_name: cleanName,
@@ -200,6 +212,25 @@ export async function registerTeacher(
   });
 
   await updateDoc(docRef, { id: docRef.id });
+
+  try {
+    await setDoc(doc(db, "users", docRef.id), {
+      uid: docRef.id,
+      role: 'TEACHER',
+      accountType: 'TEACHER',
+      username: cleanEmail,
+      displayName: cleanName,
+      email: cleanEmail,
+      highScore: 0,
+      xp: 500,
+      coins: 500,
+      solved: 0,
+      correctAnswers: 0,
+      currentLevel: 10,
+      streak: 0,
+      lastLoginAt: Date.now()
+    }, { merge: true });
+  } catch (e) {}
 
   return {
     success: true,
