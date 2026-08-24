@@ -1,4 +1,5 @@
-import { db } from './firebase';
+import { db, auth } from './firebase';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { 
   collection, 
   getDocs, 
@@ -49,6 +50,8 @@ export interface Teacher {
   teacher_name: string;
   email: string;
   password?: string;
+  photo_url?: string;
+  phone_number?: string;
 }
 
 export interface MathProgressData {
@@ -515,6 +518,72 @@ export async function deleteClassroom(teacherId: string) {
   batch.delete(doc(db, 'teachers', teacherId));
   
   await batch.commit();
+}
+
+// Google Sign-In exclusively for Teachers
+export async function loginTeacherWithGoogle(): Promise<{ success: boolean; error?: string; userObj?: Teacher }> {
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    if (!user || !user.email) {
+      return { success: false, error: "Google authentication failed. No email returned." };
+    }
+
+    const email = user.email.toLowerCase();
+    const teacherName = user.displayName || email.split('@')[0];
+    const photoUrl = user.photoURL || '';
+    const phoneNumber = user.phoneNumber || '';
+
+    const q = query(collection(db, 'teachers'), where('email', '==', email));
+    const snap = await getDocs(q);
+
+    let teacherId = '';
+    const updateData = {
+      teacher_name: teacherName,
+      email: email,
+      photo_url: photoUrl,
+      phone_number: phoneNumber,
+      google_uid: user.uid,
+      last_login: Date.now()
+    };
+
+    if (!snap.empty) {
+      const docSnap = snap.docs[0];
+      teacherId = docSnap.id;
+      await updateDoc(docSnap.ref, { id: teacherId, ...updateData });
+      const existingData = docSnap.data();
+      return {
+        success: true,
+        userObj: { 
+          id: teacherId, 
+          teacher_name: teacherName, 
+          email, 
+          photo_url: photoUrl,
+          ...existingData 
+        } as Teacher
+      };
+    } else {
+      const docRef = await addDoc(collection(db, 'teachers'), {
+        ...updateData,
+        created_at: Date.now()
+      });
+      teacherId = docRef.id;
+      await updateDoc(docRef, { id: teacherId });
+      return {
+        success: true,
+        userObj: { 
+          id: teacherId, 
+          teacher_name: teacherName, 
+          email,
+          photo_url: photoUrl
+        }
+      };
+    }
+  } catch (err: any) {
+    console.error("Google teacher login error:", err);
+    return { success: false, error: err.message || "Google sign-in failed." };
+  }
 }
 
 // Re-exports/shims for compatibility

@@ -67,6 +67,7 @@ import StudentJourneyReplay from './teacher/StudentJourneyReplay';
 import AssessmentBuilderModal from './teacher/AssessmentBuilderModal';
 import ParentReportModal from './teacher/ParentReportModal';
 import StudentHelpCenterDrawer from './teacher/StudentHelpCenterDrawer';
+import GoogleClassroomSection from './teacher/GoogleClassroomSection';
 
 interface TeacherDashboardProps {
   teacher?: {
@@ -92,7 +93,7 @@ export default function TeacherDashboard({
   const resolvedName = teacher?.teacher_name || teacherName || 'Rockstar Educator';
   const resolvedEmail = teacher?.email || teacherEmail || '';
 
-  const [activeDashboardTab, setActiveDashboardTab] = useState<'roster' | 'class_login' | 'live_session' | 'school_admin' | 'assessments' | 'homework' | 'differentiation'>('roster');
+  const [activeDashboardTab, setActiveDashboardTab] = useState<'roster' | 'class_login' | 'live_session' | 'school_admin' | 'assessments' | 'homework' | 'differentiation' | 'google_classroom'>('roster');
 
   // Modals state
   const [showBulkImport, setShowBulkImport] = useState(false);
@@ -662,6 +663,15 @@ export default function TeacherDashboard({
         >
           <Globe size={14} className="text-cyan-400" /> Class Code
         </button>
+
+        <button
+          onClick={() => setActiveDashboardTab('google_classroom')}
+          className={`flex-1 min-w-[140px] py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+            activeDashboardTab === 'google_classroom' ? 'bg-deep-navy text-white shadow-md' : 'text-deep-navy hover:bg-slate-50'
+          }`}
+        >
+          <BookOpen size={14} className="text-blue-400" /> Google Classroom
+        </button>
       </div>
 
       {/* Conditional Dashboard Tab Content */}
@@ -996,6 +1006,12 @@ export default function TeacherDashboard({
             <p className="text-xs text-slate-400 max-w-md mx-auto">Create custom curriculum tests with multiple choice, short answers, word problems, and auto-generated post-test analytics.</p>
           </div>
         </div>
+      ) : activeDashboardTab === 'google_classroom' ? (
+        <GoogleClassroomSection
+          teacherId={resolvedId}
+          teacherEmail={resolvedEmail}
+          teacherName={resolvedName}
+        />
       ) : activeDashboardTab === 'school_admin' ? (
         <SchoolAdminSection
           currentTeacher={{ id: resolvedId, teacher_name: resolvedName, email: resolvedEmail }}
