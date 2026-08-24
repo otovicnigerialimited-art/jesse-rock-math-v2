@@ -23,7 +23,8 @@ import {
   MessageSquare,
   Lock,
   Wrench,
-  Check
+  Check,
+  Smartphone
 } from 'lucide-react';
 import {
   getNotificationPreferences,
@@ -36,6 +37,7 @@ import {
   NotificationCategorySettings,
   NotificationLogItem
 } from '../lib/notificationManager';
+import MobileLockScreenPreview from './MobileLockScreenPreview';
 
 interface SmartNotificationsModalProps {
   isOpen: boolean;
@@ -50,7 +52,7 @@ export default function SmartNotificationsModal({
   stats,
   onToggleNotifications
 }: SmartNotificationsModalProps) {
-  const [activeTab, setActiveTab] = useState<'preferences' | 'feed' | 'testing'>('preferences');
+  const [activeTab, setActiveTab] = useState<'preferences' | 'feed' | 'testing' | 'mobile'>('preferences');
   const [enabled, setEnabled] = useState(!!stats.notificationsEnabled);
   const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>(getBrowserNotificationPermission());
   const [settings, setSettings] = useState<NotificationCategorySettings>(getNotificationPreferences());
@@ -202,6 +204,16 @@ export default function SmartNotificationsModal({
               }`}
             >
               Test Notifications
+            </button>
+            <button
+              onClick={() => setActiveTab('mobile')}
+              className={`px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'mobile' 
+                  ? 'bg-white text-indigo-950 shadow-sm' 
+                  : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Smartphone size={13} /> Mobile Lock Screen
             </button>
           </div>
 
@@ -508,6 +520,13 @@ export default function SmartNotificationsModal({
                   )}
                 />
               </div>
+            </div>
+          )}
+
+          {/* TAB 4: MOBILE LOCK SCREEN PREVIEW */}
+          {activeTab === 'mobile' && (
+            <div className="p-6 space-y-4 overflow-y-auto">
+              <MobileLockScreenPreview />
             </div>
           )}
 
