@@ -13,6 +13,7 @@ import {
   VolumeX, 
   Star 
 } from 'lucide-react';
+import PublicSeoHub from './PublicSeoHub';
 
 interface RulesPageProps {
   onNavigateToTab: (tab: any) => void;
@@ -160,6 +161,10 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
             </button>
           </div>
         </div>
+      </div>
+
+      <div className="mt-16 pt-16 border-t-4 border-slate-200">
+        <PublicSeoHub />
       </div>
     </div>
   );
