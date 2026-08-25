@@ -8,6 +8,7 @@ import { generateArenaQuestions } from '../lib/mathUtils';
 import { playCorrectSound, playWrongSound, setGlobalMuted, startBGM, stopBGM } from '../lib/audioUtils';
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
+import RockstarCoach from './RockstarCoach';
 
 interface ArenaMatchesProps {
   currentUser: {
@@ -911,8 +912,9 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="space-y-6"
+            className="space-y-6 relative"
           >
+            <RockstarCoach isPlaying={gameState === 'playing'} />
             {/* Split Opponent Progress Hub */}
             <div className="grid md:grid-cols-2 gap-4">
               {/* Player 1 card */}
