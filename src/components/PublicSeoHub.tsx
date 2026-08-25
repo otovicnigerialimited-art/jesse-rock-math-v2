@@ -167,6 +167,56 @@ export default function PublicSeoHub() {
           </a>
         </div>
       </div>
+
+      {/* FAQ Section for SEO and Users */}
+      <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 md:p-12 space-y-8 shadow-xl">
+        <div className="text-center space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border-2 border-amber-500/30 rounded-full text-xs font-black uppercase text-amber-700 tracking-wider">
+            ❓ Frequently Asked Questions
+          </div>
+          <h2 className="text-3xl font-display font-black text-deep-navy">Everything You Need to Know About Jesse Rock Math</h2>
+          <p className="text-xs md:text-sm text-slate-600 max-w-xl mx-auto">
+            Clear answers for teachers, school administrators, parents, and young rockstar students.
+          </p>
+        </div>
+
+        <div className="space-y-4 max-w-3xl mx-auto">
+          <div className="p-6 bg-slate-50 border-2 border-slate-100 rounded-3xl space-y-2">
+            <h3 className="text-base font-black text-deep-navy">What is Jesse Rock Math?</h3>
+            <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+              Jesse Rock Math is a zero-lag interactive EdTech math learning platform and game engine designed for primary and elementary schools, teachers, parents, and students. It features 1v1 multiplayer math arenas, gig progression career modes, unlockable reward systems, coin shops, daily streaks, and KS1/KS2 SATs revision hubs.
+            </p>
+          </div>
+
+          <div className="p-6 bg-slate-50 border-2 border-slate-100 rounded-3xl space-y-2">
+            <h3 className="text-base font-black text-deep-navy">Is Jesse Rock Math free for teachers and classrooms?</h3>
+            <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+              Yes! Teachers can create secure classroom lobbies, generate student access codes, assign homework, and monitor real-time speed and accuracy analytics completely free of charge.
+            </p>
+          </div>
+
+          <div className="p-6 bg-slate-50 border-2 border-slate-100 rounded-3xl space-y-2">
+            <h3 className="text-base font-black text-deep-navy">How does the Multiplayer Arena work?</h3>
+            <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+              The Multiplayer Arena enables students to engage in live 1v1 math duels with zero-lag synchronization. Registered players race against opponents while solving multiplication and arithmetic problems to climb the leaderboard.
+            </p>
+          </div>
+
+          <div className="p-6 bg-slate-50 border-2 border-slate-100 rounded-3xl space-y-2">
+            <h3 className="text-base font-black text-deep-navy">Can parents track their child's math progress?</h3>
+            <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+              Yes, parents have access to progress trackers, weekly milestone email summaries, and customizable practice drills to support homework mastery at home.
+            </p>
+          </div>
+
+          <div className="p-6 bg-slate-50 border-2 border-slate-100 rounded-3xl space-y-2">
+            <h3 className="text-base font-black text-deep-navy">Is Jesse Rock Math COPPA and GDPR-K compliant?</h3>
+            <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+              Absolutely. Jesse Rock Math adheres strictly to child data privacy standards, offering secure guest modes and protected student accounts without unauthorized data sharing.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
