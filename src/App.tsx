@@ -1628,12 +1628,54 @@ export default function App() {
                     />
                   )}
                   {activeTab === 'leaderboard' && (
-                    <React.Suspense fallback={<div className="h-full flex items-center justify-center bg-slate-950 text-white"><Loader2 className="animate-spin text-brand-primary w-12 h-12" /></div>}>
-                      <Leaderboard currentUser={{ uid: authState.userId || null, username: authState.username || null, role: authState.role }} currentStreak={stats.streak} stats={stats} />
-                    </React.Suspense>
+                    authState.role === 'guest' ? (
+                      <div className="max-w-lg mx-auto my-16 p-8 bg-white border-2 border-amber-500/30 rounded-[3rem] shadow-2xl text-center space-y-6">
+                        <div className="w-20 h-20 bg-amber-500/10 rounded-3xl flex items-center justify-center mx-auto text-4xl shadow-inner">
+                          🏆
+                        </div>
+                        <div className="space-y-3">
+                          <h3 className="text-2xl font-display font-black text-deep-navy">Leaderboard Ranks Locked in Guest Mode</h3>
+                          <p className="text-sm font-medium text-slate-600 leading-relaxed">
+                            Hey Rockstar! Sign in or register to unlock global leaderboard rankings, compete against players worldwide, and save your permanent streak & rewards! 🎸
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setShowConvertModal(true)}
+                          className="w-full py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all cursor-pointer active:scale-95"
+                        >
+                          Sign In / Register to Unlock 🚀
+                        </button>
+                      </div>
+                    ) : (
+                      <React.Suspense fallback={<div className="h-full flex items-center justify-center bg-slate-950 text-white"><Loader2 className="animate-spin text-brand-primary w-12 h-12" /></div>}>
+                        <Leaderboard currentUser={{ uid: authState.userId || null, username: authState.username || null, role: authState.role }} currentStreak={stats.streak} stats={stats} />
+                      </React.Suspense>
+                    )
                   )}
                   {activeTab === 'hub' && <LearningHub onStartLesson={(lesson) => { setPracticeLesson(lesson); setActiveTab('learn'); }} stats={stats} />}
-                  {activeTab === 'arena' && <ArenaMatches currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', classCode: authState.classCode }} onExit={() => setActiveTab('home')} soundEffectsEnabled={configSettings?.soundEffectsEnabled ?? true} onMatchFinished={handlePlayArenaFinish} />}
+                  {activeTab === 'arena' && (
+                    authState.role === 'guest' ? (
+                      <div className="max-w-lg mx-auto my-16 p-8 bg-white border-2 border-amber-500/30 rounded-[3rem] shadow-2xl text-center space-y-6">
+                        <div className="w-20 h-20 bg-amber-500/10 rounded-3xl flex items-center justify-center mx-auto text-4xl shadow-inner">
+                          ⚔️
+                        </div>
+                        <div className="space-y-3">
+                          <h3 className="text-2xl font-display font-black text-deep-navy">Multiplayer Arena Locked in Guest Mode</h3>
+                          <p className="text-sm font-medium text-slate-600 leading-relaxed">
+                            Hey Rockstar! Sign in or register to enter live 1v1 multiplayer math duels, challenge real opponents, and claim epic victory badges! 🎸
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setShowConvertModal(true)}
+                          className="w-full py-4 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-xl transition-all cursor-pointer active:scale-95"
+                        >
+                          Sign In / Register to Unlock 🚀
+                        </button>
+                      </div>
+                    ) : (
+                      <ArenaMatches currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', classCode: authState.classCode }} onExit={() => setActiveTab('home')} soundEffectsEnabled={configSettings?.soundEffectsEnabled ?? true} onMatchFinished={handlePlayArenaFinish} />
+                    )
+                  )}
                   {activeTab === 'quiz' && <Quiz onFinish={handleQuizFinish} difficulty={selectedDifficulty} onExit={() => setActiveTab('home')} isGuest={authState.role === 'guest'} onConvertProgress={() => { setShowConvertModal(true); }} lesson={practiceLesson} />}
                   {activeTab === 'badges' && <BadgesSection stats={stats} username={authState.username || 'Guest'} onClaimWeeklyBadge={handleClaimWeeklyBadge} />}
                   {activeTab === 'rules' && <RulesPage onNavigateToTab={(tab: string) => setActiveTab(tab as any)} />}
