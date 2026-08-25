@@ -9,6 +9,7 @@ import { playCorrectSound, playWrongSound, setGlobalMuted, startBGM, stopBGM } f
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
 import RockstarCoach from './RockstarCoach';
+import RockstarKeypad from './RockstarKeypad';
 
 interface ArenaMatchesProps {
   currentUser: {
@@ -503,8 +504,8 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
   };
 
   // Submit Answer
-  const handleAnswerSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAnswerSubmit = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (userInput.trim() === '' || questionIndex >= 20) return;
 
     if (userInput.length > 30) {
@@ -1156,23 +1157,37 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                     <input
                       ref={inputRef}
                       type="text"
+                      inputMode="none"
                       value={userInput}
                       onChange={(e) => {
                         const val = e.target.value.replace(/[^0-9-\/]/g, '');
                         setUserInput(val);
                       }}
                       placeholder="Type result..."
-                      className="w-full text-center py-4 bg-white backdrop-blur-sm/80 border border-slate-200 rounded-2xl font-black font-mono text-3xl text-deep-navy outline-none focus:border-brand-primary placeholder:text-slate-400 transition-all shadow-inner"
+                      className="w-full text-center py-4 bg-white backdrop-blur-sm/80 border-deep-navy border-4 rounded-2xl font-black font-mono text-3xl text-deep-navy outline-none focus:border-brand-primary placeholder:text-slate-400 transition-all shadow-inner"
                       autoComplete="off"
                       autoFocus
                     />
                     <button
                       type="submit"
-                      className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white font-black text-xs uppercase tracking-widest rounded-2xl transition-all cursor-pointer"
+                      className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white font-black text-xs uppercase tracking-widest rounded-2xl transition-all cursor-pointer shadow-md"
                     >
                       SUBMIT ANSWER
                     </button>
                   </form>
+
+                  {/* Rockstar Touchpad */}
+                  <div className="pt-2">
+                    <RockstarKeypad
+                      value={userInput}
+                      onChange={(val) => {
+                        setUserInput(val);
+                        setTimeout(() => inputRef.current?.focus(), 10);
+                      }}
+                      onSubmit={() => handleAnswerSubmit()}
+                      showFraction={questions[questionIndex]?.question.includes('/') || questions[questionIndex]?.answer.includes('/')}
+                    />
+                  </div>
                 </motion.div>
               )}
             </div>

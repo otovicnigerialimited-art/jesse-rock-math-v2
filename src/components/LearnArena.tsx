@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Brain, Settings, Trophy, Flame, Play, HelpCircle, CheckCircle2, GraduationCap, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
+import RockstarKeypad from './RockstarKeypad';
 import { Difficulty, Problem } from '../types';
 import { generateProblem, calculateXP } from '../lib/mathUtils';
 import { playCorrectSound, playWrongSound } from '../lib/audioUtils';
@@ -30,6 +31,7 @@ const difficultyDetails: Record<Difficulty, { label: string; desc: string; color
 
 export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps) {
   const [isStarted, setIsStarted] = useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [types, setTypes] = useState<string[]>(['addition', 'subtraction']);
   const [questions, setQuestions] = useState<Problem[]>([]);
@@ -497,6 +499,7 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
           className="max-w-xs mx-auto"
         >
           <input
+            ref={inputRef}
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             className="w-full bg-white backdrop-blur-sm/60 border-2 border-slate-200 hover:border-deep-navy border-4 focus:border-violet-500 rounded-2xl py-5 px-4 text-4xl text-center font-black text-deep-navy focus:outline-none focus:ring-4 focus:ring-violet-500/20 transition-all duration-300 shadow-inner font-mono"
@@ -504,7 +507,7 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
             autoFocus
             type="text"
             pattern="-?[0-9]*\/?[0-9]*"
-            inputMode={currentProblem.type === 'fractions_addition' ? 'text' : 'decimal'}
+            inputMode="none"
           />
           <button
             type="submit"
@@ -513,6 +516,19 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
             Submit Answer
           </button>
         </form>
+
+        {/* Rockstar Touchpad */}
+        <div className="pt-2">
+          <RockstarKeypad
+            value={userInput}
+            onChange={(val) => {
+              setUserInput(val);
+              setTimeout(() => inputRef.current?.focus(), 10);
+            }}
+            onSubmit={submitAnswer}
+            showFraction={currentProblem.type === 'fractions_addition'}
+          />
+        </div>
 
         <p className="text-xs text-slate-500 leading-relaxed font-medium">
           {currentProblem.type === 'fractions_addition' 
