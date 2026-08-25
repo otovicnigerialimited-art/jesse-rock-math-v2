@@ -615,45 +615,46 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
     }
 
     // Award +40 Streak points to the real winner on Firebase
-    if (winnerUID === currentUser.uid && !streakAwarded) {
+    if ((winnerUID === currentUser.uid || winnerName === 'Tie' || winnerName === 'Draw') && !streakAwarded) {
       setStreakAwarded(true);
-      try {
-        // Get existing user stats on firestore
-        const userRef = doc(db, "users", currentUser.uid);
-        let userSnap;
+      if (winnerUID === currentUser.uid) {
         try {
-          userSnap = await getDoc(userRef);
-        } catch (err) {
-          handleFirestoreError(err, OperationType.GET, `users/${currentUser.uid}`);
-        }
-        if (userSnap && userSnap.exists()) {
-          const stats = userSnap.data();
-          const curStreak = stats.streak || 0;
-          const nextStreakVal = curStreak + 20;
-          const nextBestVal = Math.max(stats.bestStreak || 0, nextStreakVal);
+          const userRef = doc(db, "users", currentUser.uid);
+          let userSnap;
           try {
-            await updateDoc(userRef, {
-              streak: nextStreakVal,
-              bestStreak: nextBestVal,
-              streakScore: nextBestVal,
-              xp: (stats.xp || 0) + 200, // custom XP reward
-              coins: nextStreakVal // Math balance (coins) is now the same as streak
-            });
+            userSnap = await getDoc(userRef);
           } catch (err) {
-            handleFirestoreError(err, OperationType.UPDATE, `users/${currentUser.uid}`);
+            handleFirestoreError(err, OperationType.GET, `users/${currentUser.uid}`);
           }
+          if (userSnap && userSnap.exists()) {
+            const stats = userSnap.data();
+            const curStreak = stats.streak || 0;
+            const nextStreakVal = curStreak + 20;
+            const nextBestVal = Math.max(stats.bestStreak || 0, nextStreakVal);
+            try {
+              await updateDoc(userRef, {
+                streak: nextStreakVal,
+                bestStreak: nextBestVal,
+                streakScore: nextBestVal,
+                xp: (stats.xp || 0) + 200,
+                coins: nextStreakVal
+              });
+            } catch (err) {
+              handleFirestoreError(err, OperationType.UPDATE, `users/${currentUser.uid}`);
+            }
+          }
+        } catch (err) {
+          console.error(err);
         }
-        
-        // Trigger confetti!
-        confetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.5 },
-          colors: ['#FFD700', '#f43f5e', '#a855f7']
-        });
-      } catch (err) {
-        console.error(err);
       }
+      
+      // Trigger magnificent rockstar confetti celebration!
+      confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.5 },
+        colors: ['#FFD700', '#f43f5e', '#a855f7', '#00d2ff', '#34d399']
+      });
     }
 
     const localScore = isPlayer1 ? finalData.player1Correct : finalData.player2Correct;
