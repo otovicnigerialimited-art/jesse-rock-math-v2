@@ -565,28 +565,13 @@ export default function App() {
         userId: storedDeviceId
       });
       fetchAndSyncProfile(storedUsername, storedDeviceId);
-    } else if (pathName && pathName !== 'home') {
-      // Auto-authenticate as guest for deep links to allow crawler indexing & direct sharing
-      const savedGuest = safeStorage.getItem('guest_rockstar_stats');
-      if (savedGuest) {
-        setStats(JSON.parse(savedGuest));
-      }
-      setAuthState({
-        isAuthenticated: true,
-        isChecking: false,
-        isCookieBlocked: false,
-        message: "Welcome Guest!",
-        username: "Guest",
-        role: "guest",
-        userId: null,
-        classCode: null
-      });
     } else {
+      // If user is not stored/signed in, prompt sign in even when landing on a sitelink from Google Search
       setAuthState({
         isAuthenticated: false,
         isChecking: false,
         isCookieBlocked: false,
-        message: "Please register to begin.",
+        message: "Please sign in to begin.",
         username: null
       });
     }
