@@ -532,6 +532,16 @@ export default function HomeLanding({
 
           <div className="flex flex-wrap justify-center gap-4 text-xs font-bold text-slate-600">
             <button 
+              onClick={() => {
+                safeStorage.removeItem('jesse_rock_my_username');
+                safeStorage.removeItem('jesse_rock_role');
+                window.location.reload();
+              }}
+              className="hover:text-indigo-800 underline transition-colors cursor-pointer text-indigo-600 font-black"
+            >
+              Login Portal
+            </button>
+            <button 
               onClick={() => onNavigateToTermsSection?.('privacy')}
               className="hover:text-indigo-800 underline transition-colors cursor-pointer"
             >

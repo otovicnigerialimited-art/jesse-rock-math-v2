@@ -5,7 +5,7 @@ import { db } from '../lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs, deleteDoc, limit } from 'firebase/firestore';
 import { handleFirestoreError, OperationType } from '../lib/firestoreUtils';
 import { generateArenaQuestions } from '../lib/mathUtils';
-import { playCorrectSound, playWrongSound, setGlobalMuted } from '../lib/audioUtils';
+import { playCorrectSound, playWrongSound, setGlobalMuted, startBGM, stopBGM } from '../lib/audioUtils';
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
 
@@ -21,6 +21,11 @@ interface ArenaMatchesProps {
 }
 
 export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled, onMatchFinished }: ArenaMatchesProps) {
+  useEffect(() => {
+    startBGM();
+    return () => stopBGM();
+  }, []);
+
   // Game states: 'idle' | 'searching' | 'playing' | 'ended'
   const [gameState, setGameState] = useState<'idle' | 'searching' | 'playing' | 'ended'>('idle');
   const [isSolo, setIsSolo] = useState(false);

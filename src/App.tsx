@@ -263,19 +263,8 @@ export default function App() {
       document.body.classList.remove('quiet-mode');
     }
 
-    if (!configSettings.quietMode && configSettings.rockMusic) {
-      // Browsers require interaction to start AudioContext.
-      // We will set up a one-time click listener to start it,
-      // and also try to start it immediately (it might be allowed).
-      startBGM();
-      const handleInteraction = () => {
-        if (!configSettings.quietMode && configSettings.rockMusic) {
-           startBGM();
-        }
-      };
-      document.addEventListener('click', handleInteraction, { once: true });
-      document.addEventListener('touchstart', handleInteraction, { once: true });
-    } else {
+    // BGM will only play in ArenaMatches and Quiz now.
+    if (configSettings.quietMode || !configSettings.rockMusic) {
       stopBGM();
     }
   }, [configSettings.rockMusic, configSettings.quietMode]);

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Trophy, Timer, Zap, ArrowRight, RefreshCcw, Home, Flame, Play, Sparkles, GraduationCap, ArrowLeft, BookOpen } from 'lucide-react';
 import { generateProblem, calculateXP } from '../lib/mathUtils';
-import { playCorrectSound, playWrongSound } from '../lib/audioUtils';
+import { playCorrectSound, playWrongSound, startBGM, stopBGM } from '../lib/audioUtils';
 import { Difficulty, Problem, UserStats, Lesson } from '../types';
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
@@ -36,6 +36,11 @@ const getDifficultyForLevel = (level: number): Difficulty => {
 };
 
 export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertProgress, allowedTypes, lesson }: QuizProps) {
+  useEffect(() => {
+    startBGM();
+    return () => stopBGM();
+  }, []);
+
   const [hasStarted, setHasStarted] = useState(false);
   const [selectedWelcomeDifficulty, setSelectedWelcomeDifficulty] = useState<Difficulty>(difficulty);
   const adaptiveLogic = useAdaptiveLogic(getInitialLevel(selectedWelcomeDifficulty));

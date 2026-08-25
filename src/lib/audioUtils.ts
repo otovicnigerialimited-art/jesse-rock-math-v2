@@ -91,10 +91,10 @@ let bgmTimerID: NodeJS.Timeout | null = null;
 let isBgmPlaying = false;
 let nextNoteTime = 0;
 let current16thNote = 0;
-
 const tempo = 120;
 const lookahead = 25.0; // ms
 const scheduleAheadTime = 0.1; // s
+let masterGain: GainNode | null = null;
 
 function nextNote() {
     const secondsPerBeat = 60.0 / tempo;
@@ -106,38 +106,38 @@ function nextNote() {
 }
 
 function playDrum(type: string, time: number) {
-    if (!bgmAudioCtx) return;
+    if (!bgmAudioCtx || !masterGain) return;
     const osc = bgmAudioCtx.createOscillator();
     const gain = bgmAudioCtx.createGain();
     osc.connect(gain);
-    gain.connect(bgmAudioCtx.destination);
+    gain.connect(masterGain);
     
     if (type === 'kick') {
         osc.frequency.setValueAtTime(120, time);
         osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.1);
-        gain.gain.setValueAtTime(0.03, time); // very quiet
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+        gain.gain.setValueAtTime(0.3, time); // boosted
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
         osc.start(time);
         osc.stop(time + 0.1);
     } else if (type === 'snare') {
         osc.type = 'square';
         osc.frequency.setValueAtTime(250, time);
-        gain.gain.setValueAtTime(0.015, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.1);
+        gain.gain.setValueAtTime(0.15, time); // boosted
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
         osc.start(time);
         osc.stop(time + 0.1);
     } else if (type === 'hihat') {
         osc.type = 'square';
         osc.frequency.setValueAtTime(800, time);
-        gain.gain.setValueAtTime(0.005, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+        gain.gain.setValueAtTime(0.05, time); // boosted
+        gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
         osc.start(time);
         osc.stop(time + 0.05);
     }
 }
 
 function playBass(freq: number, time: number) {
-    if (!bgmAudioCtx) return;
+    if (!bgmAudioCtx || !masterGain) return;
     const osc = bgmAudioCtx.createOscillator();
     const gain = bgmAudioCtx.createGain();
     const filter = bgmAudioCtx.createBiquadFilter();
@@ -150,17 +150,17 @@ function playBass(freq: number, time: number) {
     
     osc.connect(filter);
     filter.connect(gain);
-    gain.connect(bgmAudioCtx.destination);
+    gain.connect(masterGain);
     
-    gain.gain.setValueAtTime(0.015, time); // very quiet
-    gain.gain.linearRampToValueAtTime(0.001, time + 0.2);
+    gain.gain.setValueAtTime(0.15, time); // boosted
+    gain.gain.linearRampToValueAtTime(0.01, time + 0.2);
     
     osc.start(time);
     osc.stop(time + 0.2);
 }
 
 function playLead(freq: number, time: number) {
-    if (!bgmAudioCtx) return;
+    if (!bgmAudioCtx || !masterGain) return;
     const osc = bgmAudioCtx.createOscillator();
     const gain = bgmAudioCtx.createGain();
     
@@ -168,11 +168,11 @@ function playLead(freq: number, time: number) {
     osc.frequency.value = freq;
     
     osc.connect(gain);
-    gain.connect(bgmAudioCtx.destination);
+    gain.connect(masterGain);
     
     gain.gain.setValueAtTime(0, time);
-    gain.gain.linearRampToValueAtTime(0.015, time + 0.02);
-    gain.gain.linearRampToValueAtTime(0.005, time + 0.1);
+    gain.gain.linearRampToValueAtTime(0.15, time + 0.02); // boosted
+    gain.gain.linearRampToValueAtTime(0.05, time + 0.1);
     gain.gain.linearRampToValueAtTime(0, time + 0.3);
     
     osc.start(time);
@@ -180,28 +180,21 @@ function playLead(freq: number, time: number) {
 }
 
 function scheduleNote(beatNumber: number, time: number) {
-    // Basic rock beat
-    // Kick on 0, 8, 16, 24
-    // Snare on 4, 12, 20, 28
     if (beatNumber % 8 === 0) playDrum('kick', time);
     if (beatNumber % 8 === 4) playDrum('snare', time);
     if (beatNumber % 2 === 0) playDrum('hihat', time);
     
-    // Bass line (C - G - Am - F)
-    // C2: 65.41, G2: 98.00, A2: 110.00, F2: 87.31
     if (beatNumber % 2 === 0) {
         const notes = [
-           65.41, 65.41, 65.41, 65.41, // Bar 1 Beat 1,2
-           98.00, 98.00, 98.00, 98.00, // Bar 1 Beat 3,4
-           110.00, 110.00, 110.00, 110.00, // Bar 2 Beat 1,2
-           87.31, 87.31, 87.31, 87.31 // Bar 2 Beat 3,4
+           65.41, 65.41, 65.41, 65.41, 
+           98.00, 98.00, 98.00, 98.00, 
+           110.00, 110.00, 110.00, 110.00, 
+           87.31, 87.31, 87.31, 87.31 
         ];
-        const n = notes[(beatNumber / 2) % 16];
+        const n = notes[Math.floor(beatNumber / 2) % 16];
         playBass(n, time);
     }
     
-    // Lead melody (pentatonic C: C4 261.63, D4 293.66, E4 329.63, G4 392.00, A4 440.00)
-    // Let's add a playful rock melody
     if (beatNumber === 0) playLead(392.00, time);
     if (beatNumber === 3) playLead(329.63, time);
     if (beatNumber === 6) playLead(261.63, time);
@@ -237,12 +230,17 @@ export const startBGM = () => {
         bgmAudioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
         if (!bgmAudioCtx) return;
         
+        masterGain = bgmAudioCtx.createGain();
+        masterGain.connect(bgmAudioCtx.destination);
+        // "Increase volume to 25 over 50 volume percent" 
+        // We'll set master gain to a loud but reasonable level (0.25 - 0.5 range)
+        masterGain.gain.value = 0.35; 
+        
         isBgmPlaying = true;
         current16thNote = 0;
         nextNoteTime = bgmAudioCtx.currentTime + 0.1;
         scheduler();
         
-        // Handle autoplay policy
         if (bgmAudioCtx.state === 'suspended') {
             const resumeAudio = () => {
                 bgmAudioCtx?.resume();
@@ -276,4 +274,3 @@ export const toggleBGM = () => {
         startBGM();
     }
 };
-
