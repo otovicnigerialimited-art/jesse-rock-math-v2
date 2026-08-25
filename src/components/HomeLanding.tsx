@@ -201,6 +201,31 @@ export default function HomeLanding({
         </div>
       </section>
 
+      {/* YOUTUBE PROMO VIDEO AD */}
+      <section className="relative overflow-hidden p-8 rounded-[3rem] bg-slate-950 border-4 border-amber-400 shadow-2xl">
+        <div className="relative z-10 max-w-4xl mx-auto space-y-6 text-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-full text-xs font-black text-amber-400 uppercase tracking-widest">
+            🎬 Official YouTube Promo Trailer
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+            See Jesse Rock Math in Action!
+          </h2>
+          <p className="text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            Discover how we turn times tables, mental arithmetic drills, and competitive multiplayer practice into a legendary rockstar journey. Watch our video ad directly from our YouTube channel!
+          </p>
+          <div className="aspect-video w-full max-w-3xl mx-auto rounded-3xl overflow-hidden border-4 border-slate-800 shadow-2xl bg-black">
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/kBjfLeranG4"
+              title="Jesse Rock Math YouTube Promo Ad"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
       {/* 2. QUICK EXPLORER & SEARCH */}
       <section className="relative">
         <div className="p-4 md:p-6 rounded-3xl bg-white/60 border-4 border-deep-navy backdrop-blur-md flex flex-col md:flex-row items-center justify-between gap-4 shadow-md">

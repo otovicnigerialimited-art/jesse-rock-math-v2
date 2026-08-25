@@ -18,6 +18,31 @@ export default function PublicSeoHub() {
         </p>
       </div>
 
+      {/* YOUTUBE PROMO VIDEO AD SPLITLIGHT */}
+      <div className="bg-slate-950 border-4 border-amber-400 rounded-[2.5rem] p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        <div className="text-center space-y-4 mb-6">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-500/20 border border-amber-500/40 rounded-full text-xs font-black uppercase text-amber-400 tracking-wider">
+            🎬 Featured Promo Trailer
+          </div>
+          <h2 className="text-2xl md:text-3xl font-display font-black text-white">
+            See Jesse Rock Math in Action!
+          </h2>
+          <p className="text-xs md:text-sm text-slate-300 max-w-xl mx-auto">
+            Discover how we turn times tables, mental calculation drills, and 1v1 multiplayer arenas into a legendary rockstar journey.
+          </p>
+        </div>
+        <div className="aspect-video w-full max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-800 bg-black">
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/kBjfLeranG4"
+            title="Jesse Rock Math Promo Video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          ></iframe>
+        </div>
+      </div>
+
       {/* Grid of Indexable Public Portals */}
       <div className="grid md:grid-cols-2 gap-8">
         {/* Teacher Classroom Management & Lobbies */}
