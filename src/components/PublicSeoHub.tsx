@@ -68,19 +68,51 @@ export default function PublicSeoHub() {
           </ul>
         </div>
 
-        {/* Kids Multiplayer Arena */}
+        {/* Kids Multiplayer Arena & Gig Modes */}
         <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-rose-500 transition-all">
           <div className="w-14 h-14 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-600 text-2xl font-black">
-            🎮
+            🎸
           </div>
-          <h2 className="text-2xl font-display font-black text-deep-navy">Kids Multiplayer Math Game & Speed Drills</h2>
+          <h2 className="text-2xl font-display font-black text-deep-navy">Kids Multiplayer Arena & Rockstar Gig Modes</h2>
           <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-            Engage children with rockstar-themed avatars, tactile on-screen keypads, streak multipliers, and exciting 1v1 multiplayer math duels that make learning multiplication tables thrilling.
+            Engage children with rockstar-themed avatars, tactile on-screen keypads, streak multipliers, immersive Gig progression career modes, and exciting 1v1 multiplayer math duels that make learning multiplication tables thrilling.
           </p>
           <ul className="space-y-2 text-xs font-bold text-slate-700">
-            <li className="flex items-center gap-2">✅ 1v1 Live Multiplayer Battles</li>
+            <li className="flex items-center gap-2">✅ 1v1 Live Multiplayer Battles & Arena Duels</li>
+            <li className="flex items-center gap-2">✅ Career Gig Progression & Stage Tours</li>
             <li className="flex items-center gap-2">✅ Unlockable Rockstar Badges & Trophies</li>
-            <li className="flex items-center gap-2">✅ Arcade Keypad & Sound Effects</li>
+          </ul>
+        </div>
+
+        {/* Reward Systems & Coin Shop */}
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-amber-500 transition-all">
+          <div className="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-600 text-2xl font-black">
+            🪙
+          </div>
+          <h2 className="text-2xl font-display font-black text-deep-navy">Reward Systems, Coin Shop & Daily Streaks</h2>
+          <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+            Our gamified economy rewards students with coins, XP, and collectible avatar items in the Rock Shop as they maintain daily practice streaks and solve arithmetic challenges correctly.
+          </p>
+          <ul className="space-y-2 text-xs font-bold text-slate-700">
+            <li className="flex items-center gap-2">✅ Coin Shop & Avatar Customization</li>
+            <li className="flex items-center gap-2">✅ Daily Practice Streaks & XP Multipliers</li>
+            <li className="flex items-center gap-2">✅ Mystery Box Rewards & Milestone Trophies</li>
+          </ul>
+        </div>
+
+        {/* SATs Revision & Hub */}
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-violet-500 transition-all">
+          <div className="w-14 h-14 bg-violet-500/10 rounded-2xl flex items-center justify-center text-violet-600 text-2xl font-black">
+            📝
+          </div>
+          <h2 className="text-2xl font-display font-black text-deep-navy">SATs Revision Hub & Advanced Curriculum</h2>
+          <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+            Targeted preparation modules covering National Curriculum KS1 & KS2 SATs math papers, arithmetic practice, reasoning tests, and structured learning hubs for exam success.
+          </p>
+          <ul className="space-y-2 text-xs font-bold text-slate-700">
+            <li className="flex items-center gap-2">✅ KS1 & KS2 SATs Practice Papers</li>
+            <li className="flex items-center gap-2">✅ Timed Arithmetic & Reasoning Drills</li>
+            <li className="flex items-center gap-2">✅ Spaced Repetition & Misconception Analysis</li>
           </ul>
         </div>
       </div>
