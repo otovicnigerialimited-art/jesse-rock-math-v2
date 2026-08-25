@@ -816,7 +816,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
           f'(x) = lim(h→0) [f(x+h) - f(x)] / h
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24 relative z-10 space-y-12 sm:space-y-16">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24 relative z-10 space-y-12 sm:space-y-16">
           
           <div className="grid lg:grid-cols-12 gap-12 items-center">
             
@@ -1310,7 +1310,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
           </motion.div>
 
-        </div>
+        </section>
       </div>
     );
   }

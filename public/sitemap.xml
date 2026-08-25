@@ -1,84 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  <!-- Primary Application Canonical Domain Root -->
   <url>
     <loc>https://jesse-math-rockstar-app.vercel.app/</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-
-  <!-- Speed Arena & Multiplayer Gigs -->
-  <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?tab=arena</loc>
-    <lastmod>2026-08-24</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.95</priority>
   </url>
-
-  <!-- Interactive Curriculum Learning Hub & Visual Models -->
   <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?tab=learn</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- UK Key Stage 2 (KS2) SATs Exam Prep Hub -->
-  <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?tab=sats</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Teacher Command Center & Google Classroom Roster Hub -->
-  <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?tab=teacher</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- Parent & Guardian Learning Dashboard -->
-  <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?tab=parent</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://jesse-math-rockstar-app.vercel.app/arena</loc>
     <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
-
-  <!-- Global Math Rockstar Leaderboard & Hall of Fame -->
   <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?tab=leaderboard</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.85</priority>
+    <loc>https://jesse-math-rockstar-app.vercel.app/sats</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
   </url>
-
-  <!-- Rock Shop & Custom Avatar Studio -->
   <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?tab=shop</loc>
-    <lastmod>2026-08-24</lastmod>
+    <loc>https://jesse-math-rockstar-app.vercel.app/hub</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://jesse-math-rockstar-app.vercel.app/badges</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://jesse-math-rockstar-app.vercel.app/shop</loc>
+    <priority>0.6</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://jesse-math-rockstar-app.vercel.app/learn</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://jesse-math-rockstar-app.vercel.app/dashboard</loc>
+    <priority>0.5</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://jesse-math-rockstar-app.vercel.app/terms</loc>
+    <priority>0.3</priority>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
   </url>
-
-  <!-- Official Competition Rules, COPPA Safety & FAQ -->
   <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?page=rules</loc>
-    <lastmod>2026-08-24</lastmod>
+    <loc>https://jesse-math-rockstar-app.vercel.app/rules</loc>
+    <priority>0.4</priority>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
-
-  <!-- Founder Story & Engineering Details -->
-  <url>
-    <loc>https://jesse-math-rockstar-app.vercel.app/?page=developer</loc>
-    <lastmod>2026-08-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
 </urlset>

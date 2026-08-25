@@ -1,54 +1,9 @@
-# Jesse Math Rockstar Robots Configuration
-# https://jesse-math-rockstar-app.vercel.app/
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Baiduspider
-Allow: /
-
-User-agent: YandexBot
-Allow: /
-
-# AI Search & Knowledge Engine Crawlers
-User-agent: Google-Extended
-Allow: /
-
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-# General Crawlers
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /config/
-Disallow: /admin/
-Disallow: /session/
+Allow: /arena
+Allow: /hub
+Allow: /sats
+Allow: /badges
+Allow: /learn
 
-# Sitemap index
 Sitemap: https://jesse-math-rockstar-app.vercel.app/sitemap.xml
-

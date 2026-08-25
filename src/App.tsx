@@ -1,5 +1,8 @@
 import { safeStorage } from "./lib/storage";
 import React, { useState, useEffect, useTransition } from 'react';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { startBGM, stopBGM } from './lib/audioUtils';
 import { motion, AnimatePresence } from 'motion/react';
 import SettingsModal from './components/SettingsModal';
 import GuestFinishDialog from './components/GuestFinishDialog';
@@ -94,7 +97,14 @@ const INITIAL_STATS: ExtendedUserStats = {
 
 export default function App() {
   console.log('[JesseMath] Rendering App component...');
-  const [activeTab, setActiveTab ] = useState<'home' | 'dashboard' | 'leaderboard' | 'hub' | 'quiz' | 'badges' | 'rules' | 'terms' | 'seo' | 'developer' | 'learn' | 'shop' | 'creator' | 'arcade' | 'arena' | 'sats' | 'spaced_practice'>('home');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const pathName = location.pathname.substring(1) || 'home';
+  const validTabs = ['home', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'arena', 'sats', 'spaced_practice'];
+  const activeTab = validTabs.includes(pathName) ? pathName : 'home';
+  const setActiveTab = (tab: any) => {
+    navigate(tab === 'home' ? '/' : `/${tab}`);
+  };
   const [showDiagnosticModal, setShowDiagnosticModal] = useState(false);
   const [showMistakeModal, setShowMistakeModal] = useState(false);
   const [showNotificationsModal, setShowNotificationsModal] = useState(false);
@@ -252,7 +262,23 @@ export default function App() {
     } else {
       document.body.classList.remove('quiet-mode');
     }
-  }, [configSettings]);
+
+    if (!configSettings.quietMode && configSettings.rockMusic) {
+      // Browsers require interaction to start AudioContext.
+      // We will set up a one-time click listener to start it,
+      // and also try to start it immediately (it might be allowed).
+      startBGM();
+      const handleInteraction = () => {
+        if (!configSettings.quietMode && configSettings.rockMusic) {
+           startBGM();
+        }
+      };
+      document.addEventListener('click', handleInteraction, { once: true });
+      document.addEventListener('touchstart', handleInteraction, { once: true });
+    } else {
+      stopBGM();
+    }
+  }, [configSettings.rockMusic, configSettings.quietMode]);
 
   // Interactive Authentication State
   const [authState, setAuthState] = useState<{
@@ -550,6 +576,22 @@ export default function App() {
         userId: storedDeviceId
       });
       fetchAndSyncProfile(storedUsername, storedDeviceId);
+    } else if (pathName && pathName !== 'home') {
+      // Auto-authenticate as guest for deep links to allow crawler indexing & direct sharing
+      const savedGuest = safeStorage.getItem('guest_rockstar_stats');
+      if (savedGuest) {
+        setStats(JSON.parse(savedGuest));
+      }
+      setAuthState({
+        isAuthenticated: true,
+        isChecking: false,
+        isCookieBlocked: false,
+        message: "Welcome Guest!",
+        username: "Guest",
+        role: "guest",
+        userId: null,
+        classCode: null
+      });
     } else {
       setAuthState({
         isAuthenticated: false,
@@ -675,6 +717,7 @@ export default function App() {
       username: null,
       role: 'individual'
     });
+    navigate('/');
   };
 
   useEffect(() => {
@@ -1363,31 +1406,51 @@ export default function App() {
             </button>
           </div>
           
-          <nav className="flex-1 overflow-y-auto space-y-1.5 p-4 scrollbar-thin-custom">
-            {navItems.map((item, idx) => (
-              <button
-                key={`${item.id}-${idx}`}
-                onClick={() => {
-                  setIsSidebarOpen(false);
-                  if (item.id === 'notifications') {
-                    setShowNotificationsModal(true);
-                  } else {
-                    setActiveTab(item.id as any);
-                  }
-                }}
-                aria-label={`Navigate to ${item.label}`}
-                className={cn(
-                  "w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-xs font-bold transition-all border border-transparent min-h-[44px]",
-                  activeTab === item.id 
-                    ? "bg-deep-navy text-clean-white border-deep-navy shadow-md scale-[1.02]" 
-                    : "text-deep-navy hover:bg-sky-blue/40 hover:border-deep-navy/20"
-                )}
-              >
-                <item.icon size={20} />
-                {item.label}
-              </button>
-            ))}
-            {deferredPrompt ? (
+          
+          <nav className="flex-1 overflow-y-auto space-y-1.5 p-4 scrollbar-thin-custom" role="navigation" aria-label="Main Navigation">
+            {navItems.map((item, idx) => {
+              if (item.id === 'notifications') {
+                return (
+                  <button
+                    key={`${item.id}-${idx}`}
+                    onClick={() => {
+                      setIsSidebarOpen(false);
+                      setShowNotificationsModal(true);
+                    }}
+                    aria-label={`Navigate to ${item.label}`}
+                    className={cn(
+                      "w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-xs font-bold transition-all border border-transparent min-h-[44px]",
+                      activeTab === item.id 
+                        ? "bg-deep-navy text-clean-white border-deep-navy shadow-md scale-[1.02]" 
+                        : "text-deep-navy hover:bg-sky-blue/40 hover:border-deep-navy/20"
+                    )}
+                  >
+                    <item.icon size={20} />
+                    {item.label}
+                  </button>
+                );
+              }
+
+              return (
+                <Link
+                  key={`${item.id}-${idx}`}
+                  to={item.id === 'home' ? '/' : `/${item.id}`}
+                  onClick={() => setIsSidebarOpen(false)}
+                  aria-label={`Navigate to ${item.label}`}
+                  className={cn(
+                    "w-full flex items-center gap-4 px-4 py-4 rounded-2xl text-xs font-bold transition-all border border-transparent min-h-[44px]",
+                    activeTab === item.id 
+                      ? "bg-deep-navy text-clean-white border-deep-navy shadow-md scale-[1.02]" 
+                      : "text-deep-navy hover:bg-sky-blue/40 hover:border-deep-navy/20"
+                  )}
+                  title={item.label}
+                >
+                  <item.icon size={20} />
+                  {item.label}
+                </Link>
+              );
+            })}
+{deferredPrompt ? (
               <button
                 onClick={() => {
                   deferredPrompt.prompt();
@@ -1464,6 +1527,25 @@ export default function App() {
 
         {/* Main Content */}
         <main className="flex-1 flex flex-col overflow-hidden">
+        <Helmet>
+          <title>
+            {activeTab === 'home' ? 'Jesse Rock Math | Free Multiplayer Classroom Math Games' : 
+             activeTab === 'arena' ? 'Math Arena | Multiplayer Speed Drills | Jesse Rock Math' :
+             activeTab === 'sats' ? 'KS2 SATs Practice | Exam Simulator | Jesse Rock Math' :
+             activeTab === 'hub' ? 'Learning Hub | Classroom Activities | Jesse Rock Math' :
+             activeTab === 'dashboard' ? 'Student Dashboard | Track Progress | Jesse Rock Math' :
+             activeTab === 'shop' ? 'Rock Shop | Customize Avatar | Jesse Rock Math' :
+             'Jesse Rock Math | Educational Platform'}
+          </title>
+          <meta name="description" content={
+             activeTab === 'home' ? 'Play Jesse Rock Math, a zero-lag free multiplayer math game for kids. Interactive classroom application featuring mental math calculation speed drills.' :
+             activeTab === 'arena' ? 'Compete in real-time math speed drills. Our multiplayer arena helps students master calculations instantly.' :
+             activeTab === 'sats' ? 'Practice for UK KS2 SATs with our free online exam simulator. Includes arithmetic and reasoning papers.' :
+             'Explore Jesse Rock Math, a COPPA-compliant educational platform for primary school math.'
+          } />
+          <link rel="canonical" href={`https://jesse-math-rockstar-app.vercel.app/${activeTab === 'home' ? '' : activeTab}`} />
+        </Helmet>
+
           {/* Header/Toggle */}
           <header className="p-3 sm:p-4 flex items-center justify-between gap-4 lg:hidden bg-clean-white/40 border-b border-deep-navy/10 backdrop-blur-md">
             <button 

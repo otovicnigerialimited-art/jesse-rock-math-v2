@@ -1,0 +1,13 @@
+--- src/lib/audioUtils.ts
++++ src/lib/audioUtils.ts
+@@ -192,6 +192,10 @@
+ export const startBGM = () => {
+     if (isGlobalMuted || isBgmPlaying) return;
+     try {
++        if (bgmAudioCtx && bgmAudioCtx.state === 'suspended') {
++             bgmAudioCtx.resume();
++             return;
++        }
+         bgmAudioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+         if (!bgmAudioCtx) return;
+         
