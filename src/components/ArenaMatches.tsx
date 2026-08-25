@@ -27,8 +27,10 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
     return () => stopBGM();
   }, []);
 
-  // Game states: 'idle' | 'searching' | 'playing' | 'ended'
-  const [gameState, setGameState] = useState<'idle' | 'searching' | 'playing' | 'ended'>('idle');
+  // Game states: 'idle' | 'searching' | 'countdown' | 'playing' | 'ended'
+  const [gameState, setGameState] = useState<'idle' | 'searching' | 'countdown' | 'playing' | 'ended'>('idle');
+  const [warmupSeconds, setWarmupSeconds] = useState(3);
+  const [userAnswersRecord, setUserAnswersRecord] = useState<{ question: string; userAnswer: string; correctAnswer: string; isCorrect: boolean }[]>([]);
   const [isSolo, setIsSolo] = useState(false);
   const [soloStreak, setSoloStreak] = useState(0);
   const [gameId, setGameId] = useState<string>('');
@@ -135,6 +137,21 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
     };
   }, [queueDocRef]);
 
+  // Countdown timer effect
+  useEffect(() => {
+    if (gameState === 'countdown') {
+      if (warmupSeconds > 0) {
+        const timer = setTimeout(() => {
+          setWarmupSeconds(prev => prev - 1);
+        }, 1000);
+        return () => clearTimeout(timer);
+      } else {
+        setGameState('playing');
+        setTimeLeft(300);
+      }
+    }
+  }, [gameState, warmupSeconds]);
+
   // Timer logic
   useEffect(() => {
     if (gameState === 'playing' && timeLeft > 0) {
@@ -159,11 +176,13 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
     }
 
     setIsSolo(true);
-    setGameState('playing');
+    setWarmupSeconds(3);
+    setGameState('countdown');
     setQuestionIndex(0);
     setUserCorrectCount(0);
+    setUserAnswersRecord([]);
     setSoloStreak(0);
-    setTimeLeft(300); // 5 minutes warm-up just like multiplayer
+    setTimeLeft(300);
     setQuestions(generateArenaQuestions());
     setP1Name(currentUser.username);
     setP2Name("Confidence Helper Engine");
@@ -349,25 +368,18 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
           handleFirestoreError(err, OperationType.CREATE, `matchmaking_queue/${currentUser.uid}`);
         }
 
-        // Listen for another match to claim our room!
+        // Listen for another match to claim our room! (No bots, patient waiting for real players)
         if (queueDocRef) {
-          const matchmakingTimeout = setTimeout(() => {
-            // If still searching after 15s, auto-start solo mode to avoid infinite wait
-            handleStartSoloWarmup();
-          }, 15000);
-
           const unsubQueue = onSnapshot(queueDocRef, async (snap) => {
             if (snap.exists()) {
               const data = snap.data();
               if (data.status === 'matched') {
-                clearTimeout(matchmakingTimeout);
                 unsubQueue(); // stop listening queue
                 setGameId(data.matchedRoomId);
                 listenToGameRoom(data.matchedRoomId);
               }
             }
           }, (err) => {
-            clearTimeout(matchmakingTimeout);
             handleFirestoreError(err, OperationType.GET, `matchmaking_queue/${currentUser.uid}`);
           });
         }
@@ -380,7 +392,9 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
 
   // Listen to Game Room updates
   const listenToGameRoom = (activeGameId: string) => {
-    setGameState('playing');
+    setWarmupSeconds(3);
+    setGameState('countdown');
+    setUserAnswersRecord([]);
     const gameDocRef = doc(db, "arena_games", activeGameId);
 
     const unsubRoom = onSnapshot(gameDocRef, async (snap) => {
@@ -440,6 +454,16 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
 
     const currentQ = questions[questionIndex];
     const isCorrect = userInput.trim() === String(currentQ.answer);
+
+    setUserAnswersRecord(prev => [
+      ...prev,
+      {
+        question: currentQ.question,
+        userAnswer: userInput.trim(),
+        correctAnswer: String(currentQ.answer),
+        isCorrect
+      }
+    ]);
     
     let nextCorrectCount = userCorrectCount;
     if (isCorrect) {
@@ -907,145 +931,169 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
           </motion.div>
         )}
 
-        {/* VIEW C: PLAYING COMPETITION */}
+        {/* VIEW B2: 3-SECOND WARM-UP COUNTDOWN */}
+        {gameState === 'countdown' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="glass p-16 rounded-[3.5rem] border-slate-200 text-center space-y-6 max-w-xl mx-auto my-12"
+          >
+            <div className="w-28 h-28 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto text-deep-navy font-display font-black text-6xl shadow-2xl animate-bounce border-4 border-white">
+              {warmupSeconds}
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-3xl font-black text-deep-navy">GET READY TO ROCK! 🎸</h3>
+              <p className="text-sm font-bold text-slate-700">Both players are paired. The 5-minute math timer starts in...</p>
+            </div>
+            <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs font-mono font-black text-amber-600 uppercase tracking-widest inline-block">
+              ★ Identical Synchronized Equations Loaded ★
+            </div>
+          </motion.div>
+        )}
+
+        {/* VIEW C: PLAYING COMPETITION WITH BIG SIDE COACH */}
         {gameState === 'playing' && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="space-y-6 relative"
+            className="grid lg:grid-cols-12 gap-8 items-start relative"
           >
-            <RockstarCoach isPlaying={gameState === 'playing'} />
-            {/* Split Opponent Progress Hub */}
-            <div className="grid md:grid-cols-2 gap-4">
-              {/* Player 1 card */}
-              <div className={cn(
-                "p-4 rounded-2xl border transition-all flex items-center justify-between",
-                isPlayer1 
-                  ? "bg-brand-primary/10 border-brand-primary/20 text-deep-navy" 
-                  : "bg-white/5 border-slate-200 text-deep-navy"
-              )}>
-                <div>
-                  <span className="text-[9px] uppercase font-black text-slate-700 block tracking-wider">Player 1 {isPlayer1 && "(YOU)"}</span>
-                  <span className="text-md font-black">{p1Name || "Loading..."}</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs text-slate-700 block font-bold">Solved: {p1Progress}/20</span>
-                  <span className="text-sm font-black text-brand-primary" style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}>{p1Correct} Pts Correct</span>
-                </div>
-              </div>
-
-              {/* Player 2 card */}
-              <div className={cn(
-                "p-4 rounded-2xl border transition-all flex items-center justify-between",
-                !isPlayer1 
-                  ? "bg-violet-600/10 border-violet-500/20 text-deep-navy" 
-                  : "bg-white/5 border-slate-200 text-deep-navy"
-              )}>
-                <div>
-                  <span className="text-[9px] uppercase font-black text-slate-700 block tracking-wider">Player 2 {!isPlayer1 && "(YOU)"}</span>
-                  <span className="text-md font-black">{p2Name || "Loading..."}</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs text-slate-700 block font-bold">Solved: {p2Progress}/20</span>
-                  <span className="text-sm font-black text-violet-400" style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}>{p2Correct} Pts Correct</span>
-                </div>
-              </div>
+            {/* Left Column: Big Stationary Rockstar Coach Side Panel */}
+            <div className="lg:col-span-4">
+              <RockstarCoach isPlaying={true} isLargeSidePanel={true} />
             </div>
 
-            {/* Timer & Global match stats */}
-            <div className="flex items-center justify-between bg-white border border-slate-200 p-4 rounded-2xl">
-              <div className="flex items-center gap-2">
-                <Timer size={18} className="text-[#00d2ff]" />
-                <span className={cn(
-                  "font-mono text-xl font-black",
-                  timeLeft < 30 ? "text-red-500 animate-pulse" : "text-deep-navy"
-                )} style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}>
-                  {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
-                </span>
-                <span className="text-[10px] font-bold text-slate-500 uppercase">Limit: 5 min</span>
-              </div>
-
-              {/* Progress visual connector */}
-              <div className="hidden sm:flex flex-1 mx-8 h-2 bg-white backdrop-blur-sm rounded-full overflow-hidden relative">
-                <div 
-                  className="absolute left-0 top-0 h-full bg-brand-primary transition-all duration-300" 
-                  style={{ width: `${(p1Progress / 20) * 100}%` }}
-                />
-                <div 
-                  className="absolute left-0 top-0 h-full bg-violet-500 transition-all duration-300 opacity-65" 
-                  style={{ width: `${(p2Progress / 20) * 100}%` }}
-                />
-              </div>
-
-              <div className="text-right">
-                <span className="text-xs font-black text-yellow-400">HARD MODE ARENA</span>
-              </div>
-            </div>
-
-            {/* Main Interactive battlefield */}
-            {((isPlayer1 && p1Finished) || (!isPlayer1 && p2Finished)) ? (
-              // Our player has finished and is waiting for opponent
-              <div className="glass p-12 rounded-[3.5rem] border-slate-200 text-center space-y-6">
-                <div className="relative w-16 h-16 mx-auto flex items-center justify-center">
-                  <div className="absolute inset-0 bg-amber-400/10 rounded-full animate-ping" />
-                  <Loader2 className="animate-spin text-amber-400" size={32} />
+            {/* Right Column: Game Layout */}
+            <div className="lg:col-span-8 space-y-6">
+              {/* Split Opponent Progress Hub */}
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Player 1 card */}
+                <div className={cn(
+                  "p-4 rounded-2xl border transition-all flex items-center justify-between",
+                  isPlayer1 
+                    ? "bg-brand-primary/10 border-brand-primary/20 text-deep-navy" 
+                    : "bg-white/5 border-slate-200 text-deep-navy"
+                )}>
+                  <div>
+                    <span className="text-[9px] uppercase font-black text-slate-700 block tracking-wider">Player 1 {isPlayer1 && "(YOU)"}</span>
+                    <span className="text-md font-black">{p1Name || "Loading..."}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs text-slate-700 block font-bold">Solved: {p1Progress}/20</span>
+                    <span className="text-sm font-black text-brand-primary">{p1Correct} Pts Correct</span>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-black text-deep-navy">Wonderful Session Completed! ⚡</h3>
-                  <p className="text-slate-700 text-xs max-w-sm mx-auto leading-relaxed">
-                    You have finished your 20 problems. Hold standard position while your challenger completes theirs to trigger the winner validation!
-                  </p>
-                </div>
-                <div className="p-4 bg-white/5 rounded-2xl max-w-xs mx-auto border border-slate-200">
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Your Finished Record</p>
-                  <p className="text-2xl font-black text-emerald-400 mt-1">{userCorrectCount} / 20 Correct</p>
+
+                {/* Player 2 card */}
+                <div className={cn(
+                  "p-4 rounded-2xl border transition-all flex items-center justify-between",
+                  !isPlayer1 
+                    ? "bg-violet-600/10 border-violet-500/20 text-deep-navy" 
+                    : "bg-white/5 border-slate-200 text-deep-navy"
+                )}>
+                  <div>
+                    <span className="text-[9px] uppercase font-black text-slate-700 block tracking-wider">Player 2 {!isPlayer1 && "(YOU)"}</span>
+                    <span className="text-md font-black">{p2Name || "Loading..."}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-xs text-slate-700 block font-bold">Solved: {p2Progress}/20</span>
+                    <span className="text-sm font-black text-violet-400">{p2Correct} Pts Correct</span>
+                  </div>
                 </div>
               </div>
-            ) : (
-              // Active Problem Solving Card
-              <motion.div
-                key={questions[questionIndex]?.id || 'loading'}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                className={cn(
-                  "glass p-10 md:p-14 rounded-[3.5rem] text-center space-y-8 duration-300 transition-colors border",
-                  feedback === 'correct' ? "bg-green-500/10 border-green-500/30" : 
-                  feedback === 'wrong' ? "bg-red-500/10 border-red-500/30" : "border-slate-200"
-                )}
-              >
-                <div className="space-y-1.5">
-                  <span className="text-[10px] uppercase font-black bg-white/10 px-3 py-1 rounded-full text-zinc-400 tracking-wider">
-                    PROBLEM #{questionIndex + 1} OF 20
+
+              {/* Timer & Global match stats */}
+              <div className="flex items-center justify-between bg-white border border-slate-200 p-4 rounded-2xl">
+                <div className="flex items-center gap-2">
+                  <Timer size={18} className="text-[#00d2ff]" />
+                  <span className={cn(
+                    "font-mono text-xl font-black",
+                    timeLeft < 30 ? "text-red-500 animate-pulse" : "text-deep-navy"
+                  )}>
+                    {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
                   </span>
-                  <p className="text-6xl md:text-8xl font-black text-deep-navy font-display tracking-tighter">
-                    {questions[questionIndex]?.question || 'Generating...'}
-                  </p>
+                  <span className="text-[10px] font-bold text-slate-500 uppercase">Limit: 5 min</span>
                 </div>
 
-                <form onSubmit={handleAnswerSubmit} className="max-w-xs mx-auto space-y-4">
-                  <input
-                    ref={inputRef}
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => {
-                      // restrict to clean numeric & fraction digits
-                      const val = e.target.value.replace(/[^0-9-\/]/g, '');
-                      setUserInput(val);
-                    }}
-                    placeholder="Type result..."
-                    className="w-full text-center py-4 bg-white backdrop-blur-sm/80 border border-slate-200 rounded-2xl font-black font-mono text-3xl text-deep-navy outline-none focus:border-brand-primary placeholder:text-zinc-700 transition-all shadow-inner"
-                    autoComplete="off"
-                    autoFocus
+                <div className="hidden sm:flex flex-1 mx-6 h-2 bg-slate-100 rounded-full overflow-hidden relative">
+                  <div 
+                    className="absolute left-0 top-0 h-full bg-brand-primary transition-all duration-300" 
+                    style={{ width: `${(p1Progress / 20) * 100}%` }}
                   />
-                  <button
-                    type="submit"
-                    className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-deep-navy font-black text-xs uppercase tracking-widest rounded-2xl transition-all cursor-pointer"
-                  >
-                    SUBMIT ANSWER
-                  </button>
-                </form>
-              </motion.div>
-            )}
+                  <div 
+                    className="absolute left-0 top-0 h-full bg-violet-500 transition-all duration-300 opacity-65" 
+                    style={{ width: `${(p2Progress / 20) * 100}%` }}
+                  />
+                </div>
+
+                <div className="text-right">
+                  <span className="text-xs font-black text-amber-600">5-MIN MATCH</span>
+                </div>
+              </div>
+
+              {/* Main Interactive battlefield */}
+              {((isPlayer1 && p1Finished) || (!isPlayer1 && p2Finished)) ? (
+                <div className="glass p-12 rounded-[3.5rem] border-slate-200 text-center space-y-6">
+                  <div className="relative w-16 h-16 mx-auto flex items-center justify-center">
+                    <div className="absolute inset-0 bg-amber-400/10 rounded-full animate-ping" />
+                    <Loader2 className="animate-spin text-amber-400" size={32} />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-black text-deep-navy">Wonderful Session Completed! ⚡</h3>
+                    <p className="text-slate-700 text-xs max-w-sm mx-auto leading-relaxed">
+                      You finished all 20 problems. Waiting for challenger to complete theirs or timer expiration!
+                    </p>
+                  </div>
+                  <div className="p-4 bg-white/5 rounded-2xl max-w-xs mx-auto border border-slate-200">
+                    <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Your Finished Score</p>
+                    <p className="text-2xl font-black text-emerald-600 mt-1">{userCorrectCount} / 20 Correct</p>
+                  </div>
+                </div>
+              ) : (
+                <motion.div
+                  key={questions[questionIndex]?.id || 'loading'}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={cn(
+                    "glass p-10 md:p-14 rounded-[3.5rem] text-center space-y-8 duration-300 transition-colors border",
+                    feedback === 'correct' ? "bg-green-500/10 border-green-500/30" : 
+                    feedback === 'wrong' ? "bg-red-500/10 border-red-500/30" : "border-slate-200"
+                  )}
+                >
+                  <div className="space-y-1.5">
+                    <span className="text-[10px] uppercase font-black bg-white/10 px-3 py-1 rounded-full text-slate-500 tracking-wider">
+                      PROBLEM #{questionIndex + 1} OF 20
+                    </span>
+                    <p className="text-6xl md:text-8xl font-black text-deep-navy font-display tracking-tighter">
+                      {questions[questionIndex]?.question || 'Generating...'}
+                    </p>
+                  </div>
+
+                  <form onSubmit={handleAnswerSubmit} className="max-w-xs mx-auto space-y-4">
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      value={userInput}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^0-9-\/]/g, '');
+                        setUserInput(val);
+                      }}
+                      placeholder="Type result..."
+                      className="w-full text-center py-4 bg-white backdrop-blur-sm/80 border border-slate-200 rounded-2xl font-black font-mono text-3xl text-deep-navy outline-none focus:border-brand-primary placeholder:text-slate-400 transition-all shadow-inner"
+                      autoComplete="off"
+                      autoFocus
+                    />
+                    <button
+                      type="submit"
+                      className="w-full py-4 bg-slate-800 hover:bg-slate-700 text-white font-black text-xs uppercase tracking-widest rounded-2xl transition-all cursor-pointer"
+                    >
+                      SUBMIT ANSWER
+                    </button>
+                  </form>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         )}
 
@@ -1123,6 +1171,36 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                 <p className="text-slate-700 text-[10px] uppercase font-black">{p2Name}</p>
                 <p className="text-2xl font-black text-violet-400 mt-1">{p2Correct} / 20</p>
                 <span className="text-[10px] text-slate-500 font-bold block mt-0.5">Correct</span>
+              </div>
+            </div>
+
+            {/* Question-by-Question Review Breakdown */}
+            <div className="p-6 bg-white rounded-[2.5rem] border border-slate-200 max-w-2xl mx-auto space-y-4 text-left">
+              <h4 className="text-xs font-black uppercase tracking-wider text-deep-navy flex items-center gap-2">
+                📋 Performance & Answer Review
+              </h4>
+              <div className="space-y-2 max-h-60 overflow-y-auto pr-2">
+                {userAnswersRecord.map((rec, idx) => (
+                  <div key={idx} className={cn(
+                    "p-3 rounded-xl border flex items-center justify-between text-xs font-mono",
+                    rec.isCorrect ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-900" : "bg-rose-500/10 border-rose-500/30 text-rose-900"
+                  )}>
+                    <div className="flex items-center gap-3">
+                      <span className="font-bold">Q{idx+1}: {rec.question}</span>
+                      <span>Your Answer: <strong>{rec.userAnswer || "(Skipped)"}</strong></span>
+                    </div>
+                    <div className="text-right">
+                      {rec.isCorrect ? (
+                        <span className="px-2 py-0.5 bg-emerald-500 text-white rounded font-black text-[10px]">CORRECT ✓</span>
+                      ) : (
+                        <span className="text-rose-600 font-bold">Correct: {rec.correctAnswer} ✗</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                {userAnswersRecord.length === 0 && (
+                  <p className="text-xs text-slate-500 text-center py-4">No answers recorded for this session.</p>
+                )}
               </div>
             </div>
 
