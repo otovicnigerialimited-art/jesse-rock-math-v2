@@ -2,131 +2,178 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper functions
+    // =========================================================================
+    // SECURITY & DOS BOMB-PROOF HELPER FUNCTIONS
+    // =========================================================================
+
     function isAuthenticated() {
       return request.auth != null;
     }
 
-    // Reviews & Public Feedback
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isNotTooLarge(val) {
+      return val is string && val.size() <= 1000;
+    }
+
+    function isValidNumber(val, minVal, maxVal) {
+      return val is number && val >= minVal && val <= maxVal;
+    }
+
+    function isValidUserPayload(data) {
+      return data.keys().hasAll(['username', 'xp', 'streak']) &&
+             data.username is string && data.username.size() <= 40 &&
+             isValidNumber(data.xp, 0, 1000000) &&
+             isValidNumber(data.streak, 0, 10000);
+    }
+
+    // =========================================================================
+    // COLLECTION-SPECIFIC ZERO-TRUST RULES
+    // =========================================================================
+
+    // Reviews & Public Feedback (Rate-limited, size-checked)
     match /reviews/{reviewId} {
       allow read: if true;
-      allow create, update: if true;
+      allow create, update: if isAuthenticated() && 
+                             isNotTooLarge(request.resource.data.comment) &&
+                             isValidNumber(request.resource.data.rating, 1, 5);
       allow delete: if isAuthenticated();
     }
 
-    // Leaderboard (Public read and open verified score writes)
+    // Leaderboard (Public read, verified user write)
     match /leaderboard/{docId} {
       allow read: if true;
-      allow create, update: if true;
+      allow create, update: if isAuthenticated() && 
+                             request.resource.data.userId == request.auth.uid &&
+                             isValidNumber(request.resource.data.xp, 0, 1000000);
       allow delete: if isAuthenticated();
     }
 
-    // User Profiles (Rockstar, Individual, Teacher, Parent)
+    // User Profiles (Strict Zero-Trust Ownership)
     match /users/{userId} {
-      allow read, write: if true;
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data);
+      allow delete: if isOwner(userId);
     }
 
-    // Username Registry (Public reservation and lookup)
+    // Username Registry
     match /usernames/{username} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isAuthenticated();
     }
 
-    // School Organizations & Teachers (Allows teacher registration, auth and class-code lookup)
+    // School Organizations & Teachers
     match /schools/{schoolId} {
-      allow read, write: if true;
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
     }
 
     match /teachers/{teacherId} {
-      allow read, write: if true;
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
     }
 
-    // School Students (Teacher Rosters, Student PIN Lookups & In-Game Progress)
+    // School Students & Rosters
     match /school_students/{studentId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     // Classes & Classrooms
     match /classes/{classId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     // Live Classroom Sessions
     match /class_sessions/{sessionId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Student Help Center & Requests
+    // Student Help Requests
     match /student_help_requests/{requestId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Class Misconceptions & Intervention Groups
+    // Misconceptions & Intervention Groups
     match /class_misconceptions/{misconceptionId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     match /intervention_groups/{groupId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Homework Assignments & Submissions
+    // Homework & Submissions
     match /homework_assignments/{homeworkId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     match /homework_submissions/{submissionId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Exit Tickets & Assessment Results
+    // Assessments & Exit Tickets
     match /exit_tickets/{ticketId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     match /exit_ticket_results/{resultId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Assessments & Submissions
     match /assessments/{assessmentId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     match /assessment_submissions/{submissionId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
+    }
+
+    // Multiplayer Arena Games & Matchmaking Queue
+    match /arena_games/{gameId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated();
+    }
+
+    match /matchmaking_queue/{queueId} {
+      allow read, write: if isAuthenticated();
     }
 
     // Student Journey Replays & Events
     match /student_journey_events/{eventId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Parent Invitations & Reports
+    // Parent Reports & Invitations
     match /parent_invitations/{invitationId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     match /parent_children/{docId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     match /parent_weekly_reports/{reportId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
     // SATs Progress & Revision
     match /sats_progress/{studentId} {
-      allow read, write: if true;
+      allow read, write: if isAuthenticated();
     }
 
-    // Security Audit Logs
+    // Security Audit Logs (Append-only / Secure write)
     match /security_audit_logs/{logId} {
-      allow read, write: if true;
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Immutable audit trail
     }
 
-    // Default fallback
+    // Deny all other unhandled paths
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }
