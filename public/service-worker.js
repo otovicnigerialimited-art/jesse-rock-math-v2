@@ -5,7 +5,7 @@ const CACHE_NAME = 'jesse-math-rockstar-v4';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/logo.png',
+  'https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png',
   '/icon.png'
 ];
 
@@ -52,8 +52,8 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
     const { title, options } = event.data;
     self.registration.showNotification(title, {
-      icon: '/logo.png',
-      badge: '/logo.png',
+      icon: 'https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png',
+      badge: 'https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png',
       vibrate: [200, 100, 200, 100, 200],
       requireInteraction: true,
       renotify: true,
@@ -68,8 +68,8 @@ self.addEventListener('push', (event) => {
   let notificationData = {
     title: '🔥 Jesse Math Rockstar Alert',
     body: 'Keep your streak alive with today\'s math practice challenge!',
-    icon: '/logo.png',
-    badge: '/logo.png',
+    icon: 'https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png',
+    badge: 'https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png',
     tag: 'general-notification',
     data: { url: '/' }
   };

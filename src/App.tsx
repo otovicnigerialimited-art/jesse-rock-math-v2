@@ -1347,9 +1347,9 @@ export default function App() {
         )}>
           <div className="flex items-center justify-between gap-3 p-4 border-b border-deep-navy/10">
             <div className="flex items-center gap-3">
-              <a href="https://jesse-math-rockstar-app.vercel.app/" className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0 block">
+              <div className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0 block">
                 <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-              </a>
+              </div>
               <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE ROCK<br />
                 <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>
               </h1>
