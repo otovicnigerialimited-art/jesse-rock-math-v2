@@ -546,13 +546,21 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         await setDoc(userProfileRef, {
           uid: uid,
           username: cleanUsername,
+          displayName: cleanUsername,
           password: cleanPassword,
+          role: 'INDIVIDUAL',
+          accountType: 'INDIVIDUAL',
           xp: 100,
           streak: 1, 
           coins: 100,
+          highScore: 0,
+          solved: 0,
+          correctAnswers: 0,
+          currentLevel: 1,
           badges: ["Genius Debut"],
-          createdAt: Date.now()
-        });
+          createdAt: Date.now(),
+          lastLoginAt: Date.now()
+        }, { merge: true });
       } catch (err) {
         console.warn("Could not save initial user profile doc, falling back securely:", err);
       }
@@ -1717,6 +1725,10 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   >
                     {loading ? "Initializing..." : "Authorize Entry"}
                   </button>
+
+                  <p className="text-[10px] text-slate-400 text-center font-medium">
+                    ⚡ New player? Enter a unique username & PIN to instantly create your account!
+                  </p>
                 </form>
               )}
 
@@ -2112,7 +2124,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-deep-navy font-black uppercase tracking-wider transform hover:scale-105 active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(236,72,153,0.3)] rounded-xl flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="w-full py-3 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-black uppercase tracking-wider transform hover:scale-[1.02] active:scale-95 transition-all duration-200 shadow-[0_0_15px_rgba(236,72,153,0.3)] rounded-xl flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     <UserPlus size={13} />
                     <span>{loading ? "Creating..." : "REGISTER TEACHER CABINET"}</span>
