@@ -208,7 +208,7 @@ export default function CreatorPanel() {
                     Jesse's Active Players Desk
                   </h3>
                   <p className="text-xs text-deep-navy">
-                    See sign-in details, passwords, and send users a FREE STREAK bonus directly here.
+                    See active player statuses, milestones, and send users a FREE STREAK bonus directly here.
                   </p>
                 </div>
               </div>

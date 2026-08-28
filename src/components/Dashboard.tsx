@@ -12,7 +12,8 @@ import {
   AlertCircle,
   Bell,
   ShieldCheck,
-  RotateCcw
+  RotateCcw,
+  Trophy
 } from 'lucide-react';
 import { UserStats } from '../types';
 import { ExtendedUserStats } from '../types/extendedTypes';
@@ -21,6 +22,7 @@ import DailyTip from './DailyTip';
 import NextGigCard from './NextGigCard';
 import RockstarProgressionCard from './RockstarProgressionCard';
 import PersonalBestsSection from './PersonalBestsSection';
+import AnimatedCounter from './AnimatedCounter';
 
 interface DashboardProps {
   stats: ExtendedUserStats;
@@ -100,7 +102,7 @@ export default function Dashboard({
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 w-full md:w-auto">
+          <div className="grid grid-cols-2 gap-4 w-full md:w-auto shrink-0">
             <StatCard 
               icon={<Flame className="text-orange-400 animate-pulse" />} 
               label="Brain Streak" 
@@ -112,6 +114,18 @@ export default function Dashboard({
               label="Solves Accuracy" 
               value={`${accuracy}%`} 
               subValue={`${stats.correctAnswers} correct`}
+            />
+            <StatCard 
+              icon={<Award className="text-amber-400" />} 
+              label="Total Solved" 
+              value={<AnimatedCounter value={stats.totalSolved} />} 
+              subValue="Math Challenges"
+            />
+            <StatCard 
+              icon={<Trophy className="text-brand-accent animate-pulse" />} 
+              label="Total XP" 
+              value={<AnimatedCounter value={stats.xp} suffix=" XP" />} 
+              subValue={`Level ${stats.level}`}
             />
           </div>
         </div>
@@ -183,7 +197,9 @@ export default function Dashboard({
               <h3 className="font-bold flex items-center gap-2">
                 <TrendingUp size={18} className="text-green-400" /> Progress
               </h3>
-              <span className="text-xs text-slate-500">XP: {stats.xp}</span>
+              <span className="text-xs text-slate-500 font-bold">
+                XP: <AnimatedCounter value={stats.xp} />
+              </span>
             </div>
             <div className="h-4 bg-white/5 rounded-full overflow-hidden">
               <motion.div 
@@ -280,7 +296,7 @@ export default function Dashboard({
   );
 }
 
-function StatCard({ icon, label, value, subValue }: { icon: React.ReactNode, label: string, value: string | number, subValue: string }) {
+function StatCard({ icon, label, value, subValue }: { icon: React.ReactNode, label: string, value: React.ReactNode, subValue: string }) {
   return (
     <div className="glass p-6 rounded-3xl min-w-[140px] space-y-2">
       <div className="p-2 bg-white/5 w-fit rounded-xl">
