@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { collection, onSnapshot, doc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { Send, Clock, User, Zap } from 'lucide-react';
+import { Send, Clock, User, Zap, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function PlayerSignIns() {
   const [players, setPlayers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [streakAmounts, setStreakAmounts] = useState<Record<string, number>>({});
+  const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
+
+  const togglePasswordVisibility = (playerId: string) => {
+    setShowPasswords(prev => ({
+      ...prev,
+      [playerId]: !prev[playerId]
+    }));
+  };
 
   useEffect(() => {
     // We fetch from both users and school_students
@@ -95,9 +103,21 @@ export default function PlayerSignIns() {
                       {p.collection === 'users' ? 'Home' : 'School'}
                     </span>
                   </h4>
-                  <p className="text-[11px] text-deep-navy mt-2 flex items-center gap-1.5 font-mono">
-                    Password: <span className="text-deep-navy font-black">{p.password || 'N/A'}</span>
-                  </p>
+                  <div className="text-[11px] text-deep-navy mt-2 flex items-center justify-between gap-1.5 font-mono bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-lg">
+                    <span className="font-bold">Password:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="font-black text-slate-700 tracking-wider">
+                        {showPasswords[p.id] ? (p.password || 'N/A') : '••••••••'}
+                      </span>
+                      <button 
+                        onClick={() => togglePasswordVisibility(p.id)}
+                        className="text-slate-400 hover:text-slate-600 transition-colors p-0.5 cursor-pointer focus:outline-none"
+                        title={showPasswords[p.id] ? "Hide password" : "Show password"}
+                      >
+                        {showPasswords[p.id] ? <EyeOff size={12} /> : <Eye size={12} />}
+                      </button>
+                    </div>
+                  </div>
                   <p className="text-[10px] text-emerald-400 mt-2 flex items-center gap-1.5 font-mono uppercase tracking-wider bg-emerald-500/10 w-fit px-2 py-0.5 rounded-full border border-emerald-500/20">
                     <Clock size={10} /> 
                     {p.createdAt ? new Date(p.createdAt).toLocaleString() : 'No Date Found'}
