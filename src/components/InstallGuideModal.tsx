@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Smartphone, Monitor, Download, DownloadCloud, CheckCircle2, ArrowDownCircle, Laptop, Sparkles } from 'lucide-react';
+import { X, Smartphone, Monitor, Download, DownloadCloud, CheckCircle2, ArrowDownCircle, Laptop, Sparkles, Share, Plus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import JSZip from 'jszip';
 
@@ -360,23 +360,53 @@ pause
                   <h3 className="font-black text-slate-900 mb-2.5 text-xs uppercase tracking-wide">
                     Apple Safari (iPhone / iPad)
                   </h3>
-                  <ol className="space-y-3">
-                    <li className="flex items-start gap-2.5 text-xs text-slate-700 font-medium">
-                      <span className="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
-                      Tap the <strong>Share</strong> button at the bottom of the screen (the square with an arrow pointing up).
-                    </li>
-                    <li className="flex items-start gap-2.5 text-xs text-slate-700 font-medium">
-                      <span className="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
-                      Scroll down and tap <strong>Add to Home Screen</strong>.
-                    </li>
-                    <li className="flex items-start gap-2.5 text-xs text-slate-700 font-medium">
-                      <span className="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
-                      Tap <strong>Add</strong>. Jesse Math Rockstar will appear on your home screen!
-                    </li>
-                  </ol>
+                  
+                  {/* Custom Visual Safari Mockup Instructions */}
+                  <div className="mb-4 bg-white border border-slate-200 rounded-xl p-3.5 space-y-3 shadow-sm">
+                    <p className="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider text-center">Visual Safari Install Guide</p>
+                    
+                    {/* Step 1 Visual */}
+                    <div className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0">1</span>
+                        <span className="text-xs text-slate-700 font-bold">Tap Safari Share button</span>
+                      </div>
+                      <div className="p-1.5 bg-slate-200 rounded-lg text-slate-800 flex items-center justify-center border border-slate-300 shadow-sm shrink-0">
+                        <Share size={14} />
+                      </div>
+                    </div>
+
+                    {/* Step 2 Visual */}
+                    <div className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0">2</span>
+                        <span className="text-xs text-slate-700 font-bold">Select "Add to Home Screen"</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 rounded-lg text-slate-800 border border-slate-200 shadow-sm shrink-0">
+                        <Plus size={12} className="text-slate-800 bg-slate-200 rounded p-0.5" />
+                        <span className="text-[9px] font-black uppercase tracking-wider">Add to Home Screen</span>
+                      </div>
+                    </div>
+
+                    {/* Step 3 Visual */}
+                    <div className="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0">3</span>
+                        <span className="text-xs text-slate-700 font-bold">Tap "Add" in top-right corner</span>
+                      </div>
+                      <div className="px-2.5 py-1 bg-blue-600 rounded-lg text-white font-extrabold text-[9px] uppercase tracking-wider shadow-sm shrink-0">
+                        Add
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-slate-500 font-medium leading-relaxed mb-3">
+                    Apple iOS Safari does not support automated installation triggers. Following the quick 3-step guide above saves <strong>Jesse Math Rockstar</strong> directly to your home screen with standalone features!
+                  </p>
+
                   <button
                     onClick={handleDownloadOfflinePackage}
-                    className="mt-3 w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
+                    className="mt-1 w-full py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-amber-400 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-95"
                   >
                     <DownloadCloud size={14} /> Download iPhone App Shortcut Package (.ZIP)
                   </button>
