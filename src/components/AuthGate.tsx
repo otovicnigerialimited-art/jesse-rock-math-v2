@@ -529,9 +529,11 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         return;
       }
 
+      const newUid = `dev_${Math.floor(100000 + Math.random() * 900000)}_${Date.now().toString(36)}`;
+
       try {
         await setDoc(nameDocRef, {
-          uid: uid,
+          uid: newUid,
           username: cleanUsername,
           password: cleanPassword,
           createdAt: Date.now()
@@ -541,10 +543,10 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         throw new Error("Failed to reserve legendary username. Please try again!");
       }
 
-      const userProfileRef = doc(db, "users", uid);
+      const userProfileRef = doc(db, "users", newUid);
       try {
         await setDoc(userProfileRef, {
-          uid: uid,
+          uid: newUid,
           username: cleanUsername,
           displayName: cleanUsername,
           password: cleanPassword,
@@ -566,14 +568,14 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       }
 
       safeStorage.setItem('jesse_rock_role', 'individual');
-      safeStorage.setItem('jesse_rock_device_id', uid);
-      safeStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, uid);
+      safeStorage.setItem('jesse_rock_device_id', newUid);
+      safeStorage.setItem(`jesse_rock_uid_${cleanUsername.toLowerCase()}`, newUid);
       safeStorage.setItem('jesse_rock_my_username', cleanUsername);
-      safeStorage.setItem('jesse_rock_user_id', uid);
+      safeStorage.setItem('jesse_rock_user_id', newUid);
 
       setSuccess(`Congratulations! Username "${cleanUsername}" is now registered.`);
       setTimeout(() => {
-        onAuthSuccess(cleanUsername, uid);
+        onAuthSuccess(cleanUsername, newUid);
       }, 400);
 
     } catch (err: any) {
@@ -1620,9 +1622,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="p-3 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[11px] font-bold rounded-xl flex items-start gap-2 text-left"
+              className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold rounded-xl flex items-start gap-2 text-left"
             >
-              <ShieldAlert size={14} className="shrink-0 mt-0.5" />
+              <ShieldAlert size={14} className="shrink-0 mt-0.5 text-rose-600" />
               <span>{error}</span>
             </motion.div>
           )}
@@ -1631,9 +1633,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             <motion.div 
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="p-3 bg-[#10b981]/10 border border-[#10b981]/20 text-[#10b981] text-[11px] font-bold rounded-xl flex items-start gap-2 text-left"
+              className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold rounded-xl flex items-start gap-2 text-left"
             >
-              <Check size={14} className="shrink-0 mt-0.5" />
+              <Check size={14} className="shrink-0 mt-0.5 text-emerald-600" />
               <span>{success}</span>
             </motion.div>
           )}
