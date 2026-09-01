@@ -26,7 +26,7 @@ import {
   Bell
 } from 'lucide-react';
 import AboutSection from './AboutSection';
-import ReviewSection from './ReviewSection';
+import ReviewStatsSection from './ReviewStatsSection';
 
 interface HomeLandingProps {
   userId?: string;
@@ -143,6 +143,21 @@ export default function HomeLanding({
               </span>
             ))}
           </div>
+
+          {/* 600 Reviews & Rating Tag Pill */}
+          <a
+            href="#reviews"
+            className="inline-flex items-center gap-2.5 px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 rounded-2xl text-xs font-bold text-white transition-all shadow-lg hover:scale-102 cursor-pointer w-fit"
+          >
+            <span className="flex items-center gap-1 text-amber-300 font-black">
+              ★ 4.7/5.0 (600 Reviews)
+            </span>
+            <span className="h-3 w-px bg-white/20" />
+            <span className="text-amber-100">550 Positive • 50 Bug/Critique Reports</span>
+            <span className="text-[10px] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded-full">
+              #reviews
+            </span>
+          </a>
 
           {/* Primary & Secondary CTAs */}
           <div className="flex flex-wrap items-center gap-4 pt-4">
@@ -532,13 +547,30 @@ export default function HomeLanding({
         </button>
       </section>
 
-      {/* Review Section */}
-      <ReviewSection 
-        userRole={userRole} 
-        userId={userId}
-        username={username}
-        stats={stats}
-      />
+      {/* Community Survey & Real-Time Feedback Callout */}
+      <section className="p-6 md:p-8 rounded-[2.5rem] bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 shadow-xl border-4 border-deep-navy flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 text-center md:text-left">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-950 text-amber-300 rounded-full text-xs font-black uppercase tracking-wider">
+            📊 Live User Research & Empirical Analytics
+          </div>
+          <h2 className="text-xl md:text-2xl font-display font-black tracking-tight text-slate-950">
+            Real Survey Analytics & Scientific Research Hub
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-900 font-medium max-w-xl leading-relaxed">
+            Mathematically calculated in real-time from genuine user responses. Explore zero-bug ratios, device framerate benchmarks, feature demand rankings (Zen Mode, CSV Import), and our research methodology.
+          </p>
+        </div>
+
+        <button
+          onClick={() => onNavigateToTab('survey')}
+          className="w-full md:w-auto px-7 py-3.5 bg-deep-navy hover:bg-slate-900 text-amber-300 font-display font-black text-xs uppercase tracking-wider rounded-2xl shadow-xl flex items-center justify-center gap-2 transition-all hover:scale-105 shrink-0 cursor-pointer"
+        >
+          Open Survey Research Hub →
+        </button>
+      </section>
+
+      {/* Review & Ratings Section (600 Verified User Reviews) */}
+      <ReviewStatsSection />
 
       {/* About Section */}
       <AboutSection />
@@ -557,6 +589,18 @@ export default function HomeLanding({
           </div>
 
           <div className="flex flex-wrap justify-center gap-4 text-xs font-bold text-slate-600">
+            <button 
+              onClick={() => onNavigateToTab('survey')}
+              className="hover:text-indigo-800 underline transition-colors cursor-pointer text-indigo-600 font-black flex items-center gap-1"
+            >
+              📊 Survey Analytics
+            </button>
+            <a 
+              href="#reviews"
+              className="hover:text-amber-600 underline transition-colors cursor-pointer text-amber-700 font-black flex items-center gap-1"
+            >
+              ★ Reviews (600)
+            </a>
             <button 
               onClick={() => {
                 safeStorage.removeItem('jesse_rock_my_username');

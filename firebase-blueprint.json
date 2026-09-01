@@ -155,6 +155,20 @@
         "role": { "type": "string" }
       },
       "required": ["userId", "displayName", "rating", "reviewText", "createdAt", "verifiedPlayer"]
+    },
+    "SurveyResponse": {
+      "title": "SurveyResponse",
+      "description": "Anonymized structured user feedback response",
+      "type": "object",
+      "properties": {
+        "bugsEncountered": { "type": "string" },
+        "performanceRating": { "type": "string" },
+        "topMissingFeature": { "type": "string" },
+        "shopFeedback": { "type": "string" },
+        "developerPriority": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["bugsEncountered", "performanceRating", "topMissingFeature", "shopFeedback", "developerPriority", "createdAt"]
     }
   },
   "firestore": {
@@ -172,6 +186,7 @@
     "/student_journey_events/{eventId}": { "schema": "StudentJourneyEvent", "description": "Student journey timeline events collection" },
     "/security_audit_logs/{logId}": { "schema": "SecurityAuditLog", "description": "Security audit logs collection" },
     "/leaderboard/{document}": { "schema": "LeaderboardEntry", "description": "Public leaderboard collection" },
-    "/reviews/{reviewId}": { "schema": "Review", "description": "User reviews and ratings collection" }
+    "/reviews/{reviewId}": { "schema": "Review", "description": "User reviews and ratings collection" },
+    "/survey_responses/{surveyId}": { "schema": "SurveyResponse", "description": "Anonymized user feedback surveys collection" }
   }
 }

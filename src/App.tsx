@@ -39,7 +39,8 @@ import {
   Download,
   GraduationCap,
   Brain,
-  Bell
+  Bell,
+  BarChart3
 } from 'lucide-react';
 import { UserStats, Difficulty, Lesson } from './types';
 import { ExtendedUserStats } from './types/extendedTypes';
@@ -82,6 +83,9 @@ const MistakeIntelligenceModal = React.lazy(() => import('./components/MistakeIn
 const SmartNotificationsModal = React.lazy(() => import('./components/SmartNotificationsModal'));
 const ChildSafetyModal = React.lazy(() => import('./components/ChildSafetyModal'));
 const SpacedPracticeView = React.lazy(() => import('./components/SpacedPracticeView'));
+const SurveyHub = React.lazy(() => import('./components/SurveyHub'));
+import SurveyPopupModal from './components/SurveyPopupModal';
+import { hasCompletedSurvey } from './lib/surveyManager';
 
 const INITIAL_STATS: ExtendedUserStats = {
   totalSolved: 0,
@@ -229,6 +233,23 @@ export default function App() {
   };
 
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('easy');
+
+  // One-time Survey Pop-up handler (never shows again once completed/dismissed)
+  const [showSurveyPopup, setShowSurveyPopup] = useState<boolean>(false);
+
+  useEffect(() => {
+    try {
+      const alreadyDone = hasCompletedSurvey();
+      if (!alreadyDone) {
+        const timer = setTimeout(() => {
+          setShowSurveyPopup(true);
+        }, 2200);
+        return () => clearTimeout(timer);
+      }
+    } catch (e) {
+      console.warn('[JesseMath] Could not check survey completion status', e);
+    }
+  }, []);
 
 
   // Custom configurations (Sound, avatars & speed)
@@ -1300,6 +1321,7 @@ export default function App() {
     ? [
         { id: 'home', label: 'Classroom Playground', icon: Home },
         { id: 'notifications', label: '🔔 Notifications', icon: Bell },
+        { id: 'survey', label: '📊 Survey Hub', icon: BarChart3 },
         { id: 'quiz', label: 'Play Quiz Battle 🏆', icon: Trophy },
         { id: 'terms', label: 'Terms & Policies', icon: FileText }
       ]
@@ -1312,6 +1334,7 @@ export default function App() {
         { id: 'arcade', label: 'Fun Arcade 🕹️', icon: Gamepad2 },
         { id: 'hub', label: 'Learning Hub', icon: BookOpen },
         { id: 'sats', label: '🎓 KS2 SATs Prep Hub', icon: GraduationCap },
+        { id: 'survey', label: '📊 Survey Hub', icon: BarChart3 },
         { id: 'quiz', label: 'Play Arena', icon: Trophy },
         { id: 'learn', label: 'Learn Arena', icon: BookOpen },
         { id: 'arena', label: 'Multiplayer Arena', icon: LogoIcon },
@@ -1382,6 +1405,41 @@ export default function App() {
           
           
           <nav className="flex-1 overflow-y-auto space-y-1.5 p-4 scrollbar-thin-custom" role="navigation" aria-label="Main Navigation">
+            {/* Animated Sliding PWA Download Banner */}
+            <motion.div
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+              onClick={() => {
+                if (deferredPrompt) {
+                  deferredPrompt.prompt();
+                  deferredPrompt.userChoice.then((choiceResult: any) => {
+                    if (choiceResult.outcome === 'accepted') {
+                      console.log('User accepted PWA installation');
+                    }
+                    setDeferredPrompt(null);
+                  });
+                } else {
+                  setShowInstallGuide(true);
+                }
+              }}
+              className="group cursor-pointer bg-gradient-to-r from-amber-500 via-action-orange to-amber-600 hover:from-action-orange hover:to-amber-500 text-white rounded-2xl p-3 border-2 border-deep-navy shadow-[0_4px_12px_rgba(255,140,0,0.15)] hover:shadow-[0_6px_20px_rgba(255,140,0,0.25)] transition-all duration-300 relative overflow-hidden mb-3 select-none"
+            >
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              <div className="flex items-center gap-2.5 relative z-10">
+                <div className="p-1.5 bg-white/20 rounded-lg animate-bounce shrink-0">
+                  <Download size={16} className="text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[11px] font-black uppercase tracking-widest block text-amber-100">PWA Offline Mode</span>
+                  <h4 className="text-xs font-black leading-tight truncate">⚡ INSTALL APP NOW!</h4>
+                </div>
+                <span className="text-[10px] font-black bg-white text-action-orange px-2 py-0.5 rounded-full border border-deep-navy shrink-0 animate-pulse">
+                  GO 🚀
+                </span>
+              </div>
+            </motion.div>
+
             {navItems.map((item, idx) => {
               if (item.id === 'notifications') {
                 return (
@@ -1690,6 +1748,7 @@ export default function App() {
                       onExitToRockstarMode={() => setActiveTab('home')} 
                     />
                   )}
+                  {activeTab === 'survey' && <SurveyHub onNavigateToTab={setActiveTab} />}
                   {activeTab === 'arcade' && <FunArcade stats={stats} onExit={() => setActiveTab('home')} />}
                   {activeTab === 'creator' && <CreatorPanel />}
                 </motion.div>
@@ -1861,6 +1920,17 @@ export default function App() {
             />
           </React.Suspense>
         )}
+
+        {/* 1-Time 5-Question Feedback Survey Pop-up */}
+        <SurveyPopupModal
+          isOpen={showSurveyPopup}
+          onClose={() => setShowSurveyPopup(false)}
+          onNavigateToSurveyHub={() => {
+            setShowSurveyPopup(false);
+            setActiveTab('survey');
+          }}
+        />
+
         <NotificationToast onOpenHub={() => setShowNotificationsModal(true)} />
       </AnimatePresence>
       

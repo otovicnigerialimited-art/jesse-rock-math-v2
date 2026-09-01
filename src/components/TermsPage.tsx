@@ -1,78 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Shield, 
-  ShieldAlert, 
-  ShieldCheck, 
-  Scale, 
-  Lock, 
-  FileText, 
-  Eye, 
-  Server, 
-  Database, 
-  Heart,
-  Layers,
-  CheckCircle,
-  Copy,
-  Check,
-  Globe,
-  Award,
-  BookOpen,
-  UserCheck,
-  Cpu,
-  Key,
-  Flame,
-  AlertTriangle,
-  Trophy
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState } from 'react';
+import { Copy, Check, Printer } from 'lucide-react';
 
 export default function TermsPage() {
-  const [activeTab, setActiveTab] = useState<'dual' | 'privacy' | 'terms'>('dual');
   const [copied, setCopied] = useState(false);
-  const [shareUrl, setShareUrl] = useState('');
 
-  // Handle URL matching on mount and browser navigation/popstate events
-  useEffect(() => {
-    const handleUrlSync = () => {
-      if (typeof window !== 'undefined') {
-        const params = new URLSearchParams(window.location.search);
-        const section = params.get('section');
-        if (section === 'privacy' || section === 'terms' || section === 'dual') {
-          setActiveTab(section as any);
-        }
-      }
-    };
-
-    handleUrlSync();
-    window.addEventListener('popstate', handleUrlSync);
-    return () => window.removeEventListener('popstate', handleUrlSync);
-  }, []);
-
-  // Update shareUrl on activeTab change
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const url = `${window.location.origin}${window.location.pathname}?tab=terms&section=${activeTab}`;
-      setShareUrl(url);
-    }
-  }, [activeTab]);
-
-  const handleTabChange = (tabName: 'dual' | 'privacy' | 'terms') => {
-    setActiveTab(tabName);
-    if (typeof window !== 'undefined') {
-      const newUrl = `${window.location.origin}${window.location.pathname}?tab=terms&section=${tabName}`;
-      window.history.replaceState({ path: newUrl }, '', newUrl);
-    }
-  };
-
-  const handleCopyLink = async () => {
+  const handleCopyAll = async () => {
+    const fullText = document.getElementById('terms-document-content')?.innerText || '';
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(fullText);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      // Fallback in case of iframe browser permission restrictions
-      const tempInput = document.createElement('input');
-      tempInput.value = shareUrl;
+    } catch {
+      const tempInput = document.createElement('textarea');
+      tempInput.value = fullText;
       document.body.appendChild(tempInput);
       tempInput.select();
       document.execCommand('copy');
@@ -82,622 +22,713 @@ export default function TermsPage() {
     }
   };
 
-  const trustBadges = [
-    { title: "COPPA Compliant", desc: "No PII collected under age 13", icon: <ShieldCheck className="text-emerald-800" size={16} /> },
-    { title: "FERPA Aligned", desc: "No central student databases", icon: <Lock className="text-pink-800" size={16} /> },
-    { title: "GDPR Compliant", desc: "Strict data minimization model", icon: <Shield className="text-indigo-800" size={16} /> },
-    { title: "Child Digital Safety", desc: "You own your educational milestones", icon: <Heart className="text-rose-800" size={16} /> }
-  ];
+  const handlePrint = () => {
+    window.print();
+  };
 
   return (
-    <div className="space-y-8 py-4 max-w-7xl mx-auto px-4 sm:px-6 text-deep-navy">
-      
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-deep-navy/25 pb-8">
-        <div className="space-y-3 max-w-2xl text-left">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border-2 border-emerald-500/30 rounded-full text-[10px] font-black uppercase text-emerald-800 tracking-wider font-mono">
-            <Shield size={12} /> SECURE LEGAL COMPLIANCE CENTER
-          </div>
-          <h1 className="text-3xl md:text-5xl font-display font-black text-deep-navy tracking-tight leading-tight">
-            Official Legal Framework & <span className="text-[#0D9488]">Privacy Architecture</span>
-          </h1>
-          <p className="text-deep-navy text-xs sm:text-sm font-semibold leading-relaxed">
-            Operated under the Young Genius Studios Educational Architecture Framework. Effective Date: July 5, 2026.
+    <div className="min-h-screen bg-slate-100 py-8 px-4 sm:px-6 md:px-8 text-slate-900">
+      {/* Top Document Controls */}
+      <div className="max-w-4xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-300 shadow-sm print:hidden">
+        <div className="text-sm font-bold text-slate-700">
+          Jesse Math Rockstar — Legal Document View
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleCopyAll}
+            className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+          >
+            {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+            {copied ? 'Copied Full Text' : 'Copy Plain Text'}
+          </button>
+          <button
+            onClick={handlePrint}
+            className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"
+          >
+            <Printer size={14} /> Print Document
+          </button>
+        </div>
+      </div>
+
+      {/* Main Word / Document Style Sheet */}
+      <div 
+        id="terms-document-content"
+        className="max-w-4xl mx-auto bg-white border border-slate-300 shadow-md p-8 sm:p-12 md:p-16 rounded-sm text-left font-serif leading-relaxed text-slate-900"
+        style={{ fontFamily: 'Georgia, Cambria, "Times New Roman", Times, serif' }}
+      >
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 mb-2 font-sans">
+          JESSE MATH ROCKSTAR
+        </h1>
+        <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 font-sans">
+          TERMS OF SERVICE
+        </h2>
+
+        <div className="mb-8 text-sm text-slate-700 font-sans border-b border-slate-200 pb-4">
+          <p><strong>Effective Date:</strong> 31 August 2026</p>
+          <p><strong>Last Updated:</strong> 31 August 2026</p>
+        </div>
+
+        <div className="space-y-6 text-base text-slate-900 leading-relaxed">
+          <p>
+            Welcome to <strong>Jesse Math Rockstar</strong>.
           </p>
-        </div>
 
-        {/* Share Link Card */}
-        <div className="bg-clean-white border border-deep-navy border-4 p-4 rounded-3xl shrink-0 md:max-w-sm w-full space-y-3 shadow-md text-left">
-          <div className="flex items-center gap-2 text-xs font-black uppercase font-mono tracking-wider">
-            <Globe size={14} className="text-[#0D9488]" />
-            <span>Public Shareable Link</span>
-          </div>
-          <p className="text-[10px] font-semibold text-slate-700 leading-normal">
-            Share this live, verifiable legal document with school districts, parents, or compliance officers:
+          <p>
+            These Terms of Service (“Terms”) explain the rules for using Jesse Math Rockstar (“Jesse Math Rockstar”, “the Service”, “we”, “us”, or “our”).
           </p>
-          <div className="flex gap-2">
-            <input 
-              type="text" 
-              readOnly 
-              value={shareUrl}
-              onClick={(e) => (e.target as HTMLInputElement).select()}
-              className="flex-1 bg-slate-100 border border-deep-navy border-2 px-3 py-1.5 rounded-xl font-mono text-[10px] font-bold text-slate-800 focus:outline-none"
-            />
-            <button
-              onClick={handleCopyLink}
-              className={`px-3 py-1.5 border border-deep-navy border-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-1 shrink-0 ${
-                copied 
-                  ? 'bg-green-600 text-clean-white border-green-700' 
-                  : 'bg-sunny-yellow hover:bg-sunny-yellow/80 text-deep-navy'
-              }`}
-            >
-              {copied ? (
-                <>
-                  <Check size={12} /> Copied
-                </>
-              ) : (
-                <>
-                  <Copy size={12} /> Copy
-                </>
-              )}
-            </button>
+
+          <p>
+            Jesse Math Rockstar is operated by <strong>Jesse Otobo</strong> in the United Kingdom.
+          </p>
+
+          <p>
+            By accessing or using Jesse Math Rockstar, you agree to follow these Terms. If you do not agree with them, please do not use the Service.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 1 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            1. ABOUT JESSE MATH ROCKSTAR
+          </h3>
+          <p>
+            Jesse Math Rockstar is an educational mathematics platform created to make learning and practising maths more interactive, useful and enjoyable.
+          </p>
+          <p>
+            Depending on the features available at the time, the Service may include:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>Mathematics lessons and explanations;</li>
+            <li>Interactive learning activities;</li>
+            <li>Multiplication and arithmetic practice;</li>
+            <li>Flashcards and spaced-repetition activities;</li>
+            <li>KS2 SATs preparation;</li>
+            <li>Mathematics games and challenges;</li>
+            <li>Multiplayer mathematics activities;</li>
+            <li>Teacher classroom tools;</li>
+            <li>Parent progress tools;</li>
+            <li>Student progress tracking;</li>
+            <li>Educational assignments;</li>
+            <li>Leaderboards using appropriate display names;</li>
+            <li>Virtual rewards and Rock Coins;</li>
+            <li>Avatar and cosmetic customisation; and</li>
+            <li>Surveys and feedback tools.</li>
+          </ul>
+          <p>
+            We may add, improve, change or remove features from time to time.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 2 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            2. EDUCATIONAL PURPOSE
+          </h3>
+          <p>
+            Jesse Math Rockstar is designed to <strong>support education and mathematics practice</strong>.
+          </p>
+          <p>
+            It is not intended to replace:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>a qualified teacher;</li>
+            <li>a school;</li>
+            <li>formal classroom teaching;</li>
+            <li>professional educational assessment; or</li>
+            <li>official examination services.</li>
+          </ul>
+          <p>
+            While we work hard to provide useful and accurate educational content, we cannot promise that using Jesse Math Rockstar will automatically improve a user's academic performance.
+          </p>
+          <p>
+            We also cannot guarantee a particular SATs result, examination result, school grade, mathematics ability or academic achievement.
+          </p>
+          <p>
+            If you notice something that appears to be incorrect in our educational content, please let us know so we can investigate and correct it where appropriate.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 3 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            3. ELIGIBILITY AND CHILDREN
+          </h3>
+          <p>
+            Jesse Math Rockstar is intended for users aged <strong>4 and above</strong>.
+          </p>
+          <p>
+            Because the Service may be used by children, parents, guardians, schools and teachers should make sure that children use the Service in an appropriate and safe way.
+          </p>
+          <p>
+            Children under 13 should use Jesse Math Rockstar with appropriate parent, guardian, school or educational authorisation.
+          </p>
+          <p>
+            Please do not enter unnecessary personal information into the Service.
+          </p>
+          <p>
+            This includes things such as:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>your home address;</li>
+            <li>personal telephone number;</li>
+            <li>social-media username or handle;</li>
+            <li>unnecessary real-world identifying information; or</li>
+            <li>any other information that is not needed to use the Service.</li>
+          </ul>
+          <p>
+            Jesse Math Rockstar does not provide open text or voice communication between students.
+          </p>
+          <p>
+            Where social or competitive features are available, we may use display names, avatars, badges and mathematics scores rather than publicly displaying a child's real identity.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 4 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            4. ACCOUNT TYPES
+          </h3>
+          <p>
+            Jesse Math Rockstar may provide different types of accounts, including:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>Student Accounts;</li>
+            <li>Teacher Accounts;</li>
+            <li>Parent/Guardian Accounts;</li>
+            <li>Guest or Anonymous Accounts; and</li>
+            <li>Administrative or Creator Accounts.</li>
+          </ul>
+          <p>
+            Some features may require an account.
+          </p>
+          <p>
+            Guest users may be able to use certain parts of Jesse Math Rockstar without creating a permanent account.
+          </p>
+          <p>
+            Please be aware that guest progress may be stored locally on the device being used. This means that progress could be lost if browser storage is cleared, private browsing is used, the device is changed, or the stored data is otherwise removed.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 5 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            5. ACCOUNT SECURITY
+          </h3>
+          <p>
+            Please keep your account credentials and access information safe.
+          </p>
+          <p>
+            If you are using classroom access provided by a teacher, follow the instructions given by your teacher or parent/guardian.
+          </p>
+          <p>
+            Teachers may manage student credentials for students within their authorised classrooms.
+          </p>
+          <p>
+            You must not:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>use another person's credentials without permission;</li>
+            <li>attempt to access another person's account;</li>
+            <li>guess or repeatedly attempt passwords;</li>
+            <li>bypass authentication or security systems;</li>
+            <li>interfere with authentication systems; or</li>
+            <li>knowingly allow someone else to use your account in a way that violates these Terms.</li>
+          </ul>
+          <p>
+            If we reasonably believe that an account has been compromised, abused or used in an unsafe way, we may temporarily restrict or suspend access to protect the account and the Service.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 6 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            6. TEACHER ACCOUNTS
+          </h3>
+          <p>
+            Teacher Accounts may provide tools for managing educational activities and classrooms.
+          </p>
+          <p>
+            Depending on the features available, teachers may be able to:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>create and manage classrooms;</li>
+            <li>create student accounts;</li>
+            <li>assign mathematics activities;</li>
+            <li>provide students with login information;</li>
+            <li>view authorised student progress;</li>
+            <li>review mathematics performance;</li>
+            <li>export authorised educational reports;</li>
+            <li>reset classroom credentials;</li>
+            <li>remove students from classrooms; and</li>
+            <li>use other classroom-management features provided by Jesse Math Rockstar.</li>
+          </ul>
+          <p>
+            Teachers must only access information they are authorised to access.
+          </p>
+          <p>
+            Teachers must not attempt to access students, classrooms or information belonging to another teacher or school without appropriate authorisation.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 7 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            7. PARENT/GUARDIAN ACCOUNTS
+          </h3>
+          <p>
+            Parents and guardians may use the Parent Portal to view information relating to their linked child, where the relevant features are available.
+          </p>
+          <p>
+            This may include:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>mathematics scores;</li>
+            <li>learning progress;</li>
+            <li>accuracy;</li>
+            <li>practice time;</li>
+            <li>calculation speed;</li>
+            <li>areas that may need additional practice;</li>
+            <li>incorrect-answer reviews;</li>
+            <li>practice reminders; and</li>
+            <li>account-management controls.</li>
+          </ul>
+          <p>
+            Parent access is intended to support a child's education.
+          </p>
+          <p>
+            Parents and guardians must not use the Service to access information belonging to unrelated users.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 8 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            8. VIRTUAL ITEMS AND ROCK COINS
+          </h3>
+          <p>
+            Jesse Math Rockstar may include virtual items such as <strong>Rock Coins, avatars, instruments, badges and other digital rewards</strong>.
+          </p>
+          <p>
+            Unless we clearly state otherwise:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>Rock Coins have no real-world monetary value;</li>
+            <li>Rock Coins cannot be exchanged for cash;</li>
+            <li>Rock Coins cannot be sold or transferred outside Jesse Math Rockstar;</li>
+            <li>virtual items do not represent real-world property; and</li>
+            <li>virtual items may be changed, removed or discontinued.</li>
+          </ul>
+          <p>
+            At the time these Terms were last updated, Jesse Math Rockstar does not charge users for Rock Coins or ordinary Rock Shop items.
+          </p>
+          <p>
+            If paid features are introduced in the future, additional terms will apply where required.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 9 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            9. ACCEPTABLE USE
+          </h3>
+          <p>
+            We want Jesse Math Rockstar to remain safe, fair and enjoyable for everyone.
+          </p>
+          <p>
+            You must not use the Service to:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>hack or attack Jesse Math Rockstar;</li>
+            <li>carry out DDoS attacks;</li>
+            <li>perform brute-force attacks;</li>
+            <li>abuse or overload APIs;</li>
+            <li>scrape or systematically collect Service data;</li>
+            <li>upload or distribute malicious software;</li>
+            <li>use automated bots to gain an unfair advantage;</li>
+            <li>manipulate scores or rankings;</li>
+            <li>cheat in competitive activities;</li>
+            <li>bypass security controls;</li>
+            <li>access another user's information without authorisation;</li>
+            <li>steal or take over accounts;</li>
+            <li>impersonate another person;</li>
+            <li>interfere with the normal operation of the Service;</li>
+            <li>upload harmful or malicious material;</li>
+            <li>exploit security vulnerabilities without permission; or</li>
+            <li>otherwise misuse the Service.</li>
+          </ul>
+          <p>
+            Unauthorised security testing, penetration testing or exploitation of vulnerabilities is not permitted unless Jesse Math Rockstar has expressly authorised it.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 10 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            10. FAIR PLAY
+          </h3>
+          <p>
+            If you participate in competitive features, please play fairly.
+          </p>
+          <p>
+            Do not use:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>scripts;</li>
+            <li>bots;</li>
+            <li>automated answer systems;</li>
+            <li>injected code;</li>
+            <li>exploits; or</li>
+            <li>other methods designed to manipulate scores or gain an unfair advantage.</li>
+          </ul>
+          <p>
+            We may investigate activity that appears suspicious or unfair.
+          </p>
+          <p>
+            Depending on the circumstances, we may remove affected scores, temporarily suspend an account or terminate an account.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 11 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            11. INTELLECTUAL PROPERTY
+          </h3>
+          <p>
+            Unless stated otherwise, Jesse Math Rockstar and its original materials belong to <strong>Jesse Otobo</strong> and/or the applicable rights holder.
+          </p>
+          <p>
+            This may include:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>the Jesse Math Rockstar name;</li>
+            <li>branding;</li>
+            <li>logos;</li>
+            <li>source code;</li>
+            <li>website design;</li>
+            <li>interface designs;</li>
+            <li>educational content;</li>
+            <li>mathematics question systems;</li>
+            <li>graphics;</li>
+            <li>original game systems;</li>
+            <li>written materials; and</li>
+            <li>other original intellectual property.</li>
+          </ul>
+          <p>
+            Using Jesse Math Rockstar does not transfer ownership of these materials to you.
+          </p>
+          <p>
+            You receive a limited, personal, non-exclusive and non-transferable right to use the Service for its intended educational purpose.
+          </p>
+          <p>
+            You must not copy, reproduce, redistribute, sell, commercially exploit, reverse engineer or create unauthorised derivative works from protected parts of the Service.
+          </p>
+          <p>
+            Commercial use requires prior permission unless we have expressly authorised it.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 12 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            12. FEEDBACK AND REVIEWS
+          </h3>
+          <p>
+            We welcome feedback because it helps us improve Jesse Math Rockstar.
+          </p>
+          <p>
+            You may submit feedback, reviews, survey responses, ideas or suggestions through available feedback tools.
+          </p>
+          <p>
+            Please do not include confidential, unnecessary or sensitive personal information in feedback submissions.
+          </p>
+          <p>
+            Where legally permitted, you give Jesse Math Rockstar permission to use submitted feedback to operate, improve and research the Service.
+          </p>
+          <p>
+            If feedback is publicly shared, we will handle it consistently with our Privacy Policy, especially where children may be involved.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 13 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            13. SERVICE AVAILABILITY
+          </h3>
+          <p>
+            We work to keep Jesse Math Rockstar reliable and available, but we cannot promise that the Service will always be online.
+          </p>
+          <p>
+            Temporary interruptions may happen because of:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>maintenance;</li>
+            <li>updates;</li>
+            <li>technical problems;</li>
+            <li>security measures;</li>
+            <li>third-party infrastructure problems;</li>
+            <li>internet connectivity issues; or</li>
+            <li>circumstances outside our reasonable control.</li>
+          </ul>
+          <p>
+            We may also modify, suspend or discontinue individual features when reasonably necessary.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 14 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            14. THIRD-PARTY SERVICES
+          </h3>
+          <p>
+            Jesse Math Rockstar relies on third-party infrastructure and services, including <strong>Firebase</strong>, for certain functions such as authentication and database functionality.
+          </p>
+          <p>
+            Because these services are operated by third parties, outages, technical failures or other problems may sometimes affect Jesse Math Rockstar.
+          </p>
+          <p>
+            We are not responsible for problems caused by third-party services that are outside our reasonable control.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 15 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            15. ACCOUNT SUSPENSION AND TERMINATION
+          </h3>
+          <p>
+            We may suspend, restrict or terminate an account if we reasonably believe that a user has:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>seriously violated these Terms;</li>
+            <li>attempted to hack or attack the Service;</li>
+            <li>manipulated or damaged data;</li>
+            <li>repeatedly abused the Service;</li>
+            <li>attempted to access information without authorisation;</li>
+            <li>used bots or automation to cheat;</li>
+            <li>committed a serious security violation; or</li>
+            <li>created a significant risk to the Service or other users.</li>
+          </ul>
+          <p>
+            Serious security or abuse incidents may result in immediate suspension or termination.
+          </p>
+          <p>
+            Where appropriate and legally permitted, we will explain the reason for an account action.
+          </p>
+          <p>
+            Users may contact support if they wish to appeal an account action.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 16 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            16. ACCOUNT AND DATA DELETION
+          </h3>
+          <p>
+            Users may request deletion of their account through available account settings or by contacting support.
+          </p>
+          <p>
+            Parents or guardians may request deletion of information relating to their child where applicable.
+          </p>
+          <p>
+            Teachers may also request deletion of student information where they are authorised to make such a request.
+          </p>
+          <p>
+            Where applicable, personal information may be removed within approximately <strong>30 days</strong>, subject to technical, legal and security requirements.
+          </p>
+          <p>
+            Certain information may need to be retained when required by law or when reasonably necessary for security, fraud prevention or legal purposes.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 17 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            17. PRIVACY
+          </h3>
+          <p>
+            Your privacy matters to us.
+          </p>
+          <p>
+            Our <strong>Privacy Policy</strong> explains what information we collect, why we collect it, how we use it and how we protect it.
+          </p>
+          <p>
+            The Privacy Policy forms part of these Terms.
+          </p>
+          <p>
+            Jesse Math Rockstar does <strong>not sell or rent users' personal information</strong>.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 18 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            18. CHILD SAFETY
+          </h3>
+          <p>
+            We take the safety and privacy of children seriously.
+          </p>
+          <p>
+            Jesse Math Rockstar is designed to minimise the collection of unnecessary information from children.
+          </p>
+          <p>
+            The Service does not provide open student-to-student text or voice chat.
+          </p>
+          <p>
+            Children should never enter unnecessary personal or identifying information into the Service.
+          </p>
+          <p>
+            Additional information about children's privacy and safety is provided in our <strong>Children's Privacy & Safety Policy</strong>.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 19 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            19. SECURITY
+          </h3>
+          <p>
+            We use reasonable security measures designed to help protect Jesse Math Rockstar and user information.
+          </p>
+          <p>
+            These measures may include:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>authentication controls;</li>
+            <li>database security rules;</li>
+            <li>input validation;</li>
+            <li>access controls;</li>
+            <li>rate limiting; and</li>
+            <li>security monitoring.</li>
+          </ul>
+          <p>
+            However, no internet-based service can promise <strong>100% security</strong>.
+          </p>
+          <p>
+            If you believe you have found a security vulnerability, please report it responsibly rather than attempting to exploit it.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 20 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            20. LIMITATION OF LIABILITY
+          </h3>
+          <p>
+            To the extent permitted by applicable law, Jesse Math Rockstar is not responsible for losses caused by circumstances such as:
+          </p>
+          <ul className="list-disc pl-6 space-y-1.5 my-3">
+            <li>temporary Service interruptions;</li>
+            <li>misuse of the Service;</li>
+            <li>problems with a user's device;</li>
+            <li>internet connection problems;</li>
+            <li>loss of locally stored guest progress;</li>
+            <li>third-party service failures;</li>
+            <li>incorrect educational content;</li>
+            <li>unauthorised activity outside our reasonable control; or</li>
+            <li>other circumstances that cannot reasonably be prevented.</li>
+          </ul>
+          <p>
+            Nothing in these Terms excludes or limits liability where the law does not allow us to do so.
+          </p>
+          <p>
+            Nothing in these Terms affects any statutory consumer rights that cannot legally be excluded.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 21 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            21. CHANGES TO THE SERVICE
+          </h3>
+          <p>
+            Jesse Math Rockstar is a growing Service.
+          </p>
+          <p>
+            We may add, improve, modify or remove features as the platform develops.
+          </p>
+          <p>
+            We may also discontinue individual features or, where necessary, the Service itself.
+          </p>
+          <p>
+            If we make material changes to these Terms, we will provide appropriate notice where required by law.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 22 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            22. FUTURE PAID FEATURES
+          </h3>
+          <p>
+            At the time these Terms were last updated, Jesse Math Rockstar is provided without paywalls or paid features as described in the current Service.
+          </p>
+          <p>
+            In the future, we may introduce optional paid services.
+          </p>
+          <p>
+            If this happens, separate pricing, payment, renewal and refund terms will apply where required.
+          </p>
+          <p>
+            We will not automatically make future paid features applicable to existing users without appropriate notice and, where required, agreement.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 23 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            23. GOVERNING LAW
+          </h3>
+          <p>
+            These Terms are governed by the laws applicable in <strong>England and Wales</strong>, subject to any mandatory legal rights or protections that apply to you under the laws of your place of residence.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 24 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            24. CONTACT US
+          </h3>
+          <p>
+            If you need help, want to make a privacy request, have a complaint, want to report a copyright concern, or need to report a security issue, please contact us.
+          </p>
+          <p>
+            <strong>General Support:</strong><br />
+            <a href="mailto:otobokids9@gmail.com" className="text-indigo-600 underline">otobokids9@gmail.com</a>
+          </p>
+          <p>
+            <strong>Security:</strong><br />
+            <a href="mailto:otobokids9@gmail.com" className="text-indigo-600 underline">otobokids9@gmail.com</a>
+          </p>
+          <p>
+            For security issues, please use the security contact where possible so the matter can be handled appropriately.
+          </p>
+
+          <hr className="my-8 border-slate-300" />
+
+          {/* SECTION 25 */}
+          <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
+            25. ENTIRE AGREEMENT
+          </h3>
+          <p>
+            These Terms, together with our Privacy Policy and any other policies specifically incorporated into them, set out the rules for using Jesse Math Rockstar.
+          </p>
+          <p>
+            If any part of these Terms is found to be unlawful or unenforceable, the remaining provisions will continue to apply to the extent permitted by law.
+          </p>
+
+          <hr className="my-10 border-slate-400" />
+
+          {/* Document Footer */}
+          <div className="pt-2 text-sm font-sans text-slate-800 space-y-1">
+            <h4 className="text-base font-bold text-slate-950">JESSE MATH ROCKSTAR</h4>
+            <p><strong>Operated by:</strong> Jesse Otobo</p>
+            <p><strong>Country:</strong> United Kingdom</p>
+            <p><strong>Effective Date:</strong> 31 August 2026</p>
+            <p><strong>Last Updated:</strong> 31 August 2026</p>
           </div>
         </div>
       </div>
-
-      {/* Trust Badges */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        {trustBadges.map((badge, idx) => (
-          <div key={idx} className="p-4 rounded-3xl bg-clean-white border border-deep-navy border-4 text-left shadow-sm flex items-start gap-3">
-            <div className="p-2 bg-slate-100 border border-deep-navy border-2 rounded-xl shrink-0">
-              {badge.icon}
-            </div>
-            <div>
-              <span className="text-[11px] font-black uppercase tracking-wider font-mono block">{badge.title}</span>
-              <p className="text-[10px] text-slate-700 font-bold mt-0.5 leading-normal">{badge.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* View Switcher / Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-sunny-yellow/20 p-2 border border-deep-navy border-4 rounded-2xl">
-        <div className="flex p-1 bg-white border border-deep-navy border-4 rounded-xl w-full sm:w-auto gap-1">
-          <button
-            onClick={() => handleTabChange('dual')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              activeTab === 'dual'
-                ? 'bg-deep-navy text-clean-white shadow-md'
-                : 'text-deep-navy hover:bg-sky-blue/40'
-            }`}
-          >
-            <Layers size={12} />
-            Dual-Pane (See All)
-          </button>
-          <button
-            onClick={() => handleTabChange('privacy')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              activeTab === 'privacy'
-                ? 'bg-deep-navy text-clean-white shadow-md'
-                : 'text-deep-navy hover:bg-sky-blue/40'
-            }`}
-          >
-            <Eye size={12} />
-            1. Privacy Policy
-          </button>
-          <button
-            onClick={() => handleTabChange('terms')}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              activeTab === 'terms'
-                ? 'bg-deep-navy text-clean-white shadow-md'
-                : 'text-deep-navy hover:bg-sky-blue/40'
-            }`}
-          >
-            <FileText size={12} />
-            2. Terms of Service
-          </button>
-          <button
-            onClick={() => handleTabChange('why-us' as any)}
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 cursor-pointer ${
-              activeTab as any === 'why-us'
-                ? 'bg-deep-navy text-clean-white shadow-md'
-                : 'text-deep-navy hover:bg-sky-blue/40'
-            }`}
-          >
-            <Flame size={12} />
-            3. Why Choose Us?
-          </button>
-        </div>
-
-        <div className="text-[10px] text-deep-navy font-mono flex items-center gap-1.5 px-2 font-bold">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
-          <span>Official Legal Blueprint</span>
-        </div>
-      </div>
-
-      {/* Content Viewer */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.2 }}
-          className="w-full text-left"
-        >
-          {activeTab as any === 'why-us' && (
-            <div className="space-y-8 max-w-4xl mx-auto">
-              <div className="p-8 rounded-[2rem] bg-gradient-to-br from-sunny-yellow/10 to-orange-500/10 border border-deep-navy border-4 space-y-4 text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-orange-500 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                  <Flame size={14} className="animate-pulse" /> Platform Comparison Guide
-                </div>
-                <h2 className="text-3xl md:text-5xl font-display font-black text-deep-navy leading-none">
-                  Jesse Rock Math vs. The World: <br />
-                  <span className="text-orange-600 italic">Why Our App Wins</span>
-                </h2>
-                <div className="p-4 bg-white/50 border-2 border-deep-navy rounded-2xl text-[11px] font-bold text-deep-navy uppercase tracking-wider leading-relaxed">
-                  <span className="text-orange-600">Originality Notice:</span> This application is not a replica or clone of any teaching application, but a fully independent, next-generation educational tech engine built from the ground up for high-speed mastery.
-                </div>
-                <p className="text-slate-700 font-bold max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-                  There are over 10,000 math apps out there today, but Jesse Rock Math is designed to be better than 90% of them. 
-                  Here is the brutal truth about why our indie code beats the corporate giants:
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-4 shadow-xl hover:translate-y-[-4px] transition-all">
-                  <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center border-2 border-deep-navy">
-                    <Layers className="text-blue-700" size={24} />
-                  </div>
-                  <h3 className="text-xl font-black text-deep-navy leading-tight">We Beat 5,000+ <br/> "One-Trick" Apps</h3>
-                  <p className="text-sm text-slate-700 font-semibold leading-relaxed">
-                    Most apps only teach one thing, like just times tables. If you finish them, you have to download a completely new app. 
-                    <strong> Jesse Rock Math</strong> has 7 massive modules in a single place—taking you smoothly from simple addition all the way to fractions, algebra (PEMDAS), and 3D geometry.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-4 shadow-xl hover:translate-y-[-4px] transition-all">
-                  <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center border-2 border-deep-navy">
-                    <Cpu className="text-emerald-700" size={24} />
-                  </div>
-                  <h3 className="text-xl font-black text-deep-navy leading-tight">We Beat 3,000+ <br/> "Slow & Laggy" Web Apps</h3>
-                  <p className="text-sm text-slate-700 font-semibold leading-relaxed">
-                    Free school game sites are packed with heavy animations and tracking cookies that cause massive lag on school tablets. 
-                    <strong> Jesse Rock Math</strong> is built with advanced Zero-Loading Time architecture. No lag means students can solve up to 3x more problems in the exact same amount of time.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-4 shadow-xl hover:translate-y-[-4px] transition-all">
-                  <div className="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center border-2 border-deep-navy">
-                    <Trophy className="text-amber-700" size={24} />
-                  </div>
-                  <h3 className="text-xl font-black text-deep-navy leading-tight">We Beat 1,000+ <br/> "Boring Reward" Apps</h3>
-                  <p className="text-sm text-slate-700 font-semibold leading-relaxed">
-                    Most apps just give you a digital sticker or a boring coin. <strong>Jesse Rock Math</strong> uses high-stakes gaming psychology. 
-                    Hitting a massive 200+ answer streak unlocks an entire hidden Secret Arcade Zone. Plus, our engine instantly builds a personalized, printable PDF certificate with your unique username on it.
-                  </p>
-                </div>
-
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-4 shadow-xl hover:translate-y-[-4px] transition-all">
-                  <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center border-2 border-deep-navy">
-                    <CheckCircle className="text-indigo-700" size={24} />
-                  </div>
-                  <h3 className="text-xl font-black text-deep-navy leading-tight">We Even Beat Giants <br/> Like TTRS on Features</h3>
-                  <p className="text-sm text-slate-700 font-semibold leading-relaxed">
-                    Big corporate apps like Times Tables Rock Stars lock you into multiplication and division forever. 
-                    <strong> Jesse Rock Math</strong> matches the high-octane rockstar vibe but gives you a full math curriculum campaign.
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-6 rounded-3xl bg-deep-navy text-white border-4 border-deep-navy space-y-4">
-                <p className="text-xs font-mono font-black uppercase tracking-[0.2em] text-sunny-yellow">Verified Result</p>
-                <p className="text-lg md:text-xl font-black italic">
-                  "I built this app because I was bored of the standard school math games. I wanted something that actually feels like a game but teaches everything."
-                </p>
-                <div className="flex items-center gap-3 border-t border-white/20 pt-4">
-                  <div className="w-10 h-10 rounded-full bg-sunny-yellow border-2 border-white flex items-center justify-center text-deep-navy font-black">JO</div>
-                  <div className="text-left">
-                    <p className="text-sm font-black">Jesse Otobo</p>
-                    <p className="text-[10px] font-mono text-sunny-yellow/80">Lead Developer & Founder</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'dual' && (
-            <div className="grid lg:grid-cols-2 gap-8 items-start">
-              
-              {/* Privacy Column */}
-              <div className="space-y-6">
-                <div className="p-5 rounded-3xl bg-emerald-50 border border-deep-navy border-4 space-y-2">
-                  <span className="text-[9px] font-mono text-emerald-800 font-black tracking-widest uppercase">REGULATORY DECAL PRIV-100</span>
-                  <h2 className="text-xl font-black text-deep-navy font-mono flex items-center gap-2">
-                    <Eye size={20} className="text-[#0D9488]" />
-                    1. PRIVACY & DATA GOVERNANCE
-                  </h2>
-                  <p className="text-[11px] text-slate-800 font-bold">Comprehensive data minimization models & global statutory compliance structures.</p>
-                </div>
-
-                {/* Privacy Content Modules */}
-                <div className="space-y-4">
-                  
-                  {/* Core Commitment */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-emerald-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <Heart size={14} className="text-red-600" />
-                      Core Commitment & Transparency
-                    </div>
-                    <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                      Jesse Math Rockstar is designed to follow strict data minimization practices. We prioritize student privacy by avoiding unnecessary tracking cookies or commercial ad networks. While no digital platform can claim absolute infallibility, we maintain robust encryption in transit (HTTPS/TLS 1.3) and secure Firestore data storage via Google Cloud to safeguard user records.
-                    </p>
-                  </div>
-
-                  {/* A. Statutory Compliance */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-emerald-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <ShieldAlert size={14} className="text-[#0D9488]" />
-                      A. Statutory Frameworks & Educational Alignment
-                    </div>
-                    <p className="text-xs text-slate-800 font-semibold leading-relaxed">
-                      This platform is structured to support school districts and educators in meeting major student data privacy guidelines:
-                    </p>
-                    <ul className="space-y-3.5 pl-1 pt-1 text-xs">
-                      <li className="flex items-start gap-2.5 text-slate-800 font-bold">
-                        <span className="mt-1 font-mono text-[9px] px-1.5 py-0.5 bg-emerald-100 border border-deep-navy rounded">COPPA</span>
-                        <p className="font-semibold leading-relaxed">
-                          <strong>Children's Online Privacy Protection Act:</strong> We design our application flow to minimize personal data collection from minors under 13, relying on anonymous nicknames and local device storage unless school accounts are explicitly provisioned.
-                        </p>
-                      </li>
-                      <li className="flex items-start gap-2.5 text-slate-800 font-bold">
-                        <span className="mt-1 font-mono text-[9px] px-1.5 py-0.5 bg-indigo-100 border border-deep-navy rounded">FERPA</span>
-                        <p className="font-semibold leading-relaxed">
-                          <strong>FERPA Compliance Alignment:</strong> Educational records generated by students remain under teacher review and administrative oversight, with secure authentication safeguards.
-                        </p>
-                      </li>
-                      <li className="flex items-start gap-2.5 text-slate-800 font-bold">
-                        <span className="mt-1 font-mono text-[9px] px-1.5 py-0.5 bg-pink-100 border border-deep-navy rounded">GDPR</span>
-                        <p className="font-semibold leading-relaxed">
-                          <strong>Data Protection Principles:</strong> We adhere to data minimization, limiting stored records to necessary academic metrics (scores, streaks, and custom display names).
-                        </p>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* B. Information Architecture */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-4 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-emerald-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <Database size={14} className="text-indigo-600" />
-                      B. Information Architecture: What We Process
-                    </div>
-                    <p className="text-xs text-slate-800 font-semibold leading-relaxed">
-                      To deliver a high-speed, gamified experience without compromising identity security, our data layout is explicitly divided:
-                    </p>
-                    
-                    <div className="grid gap-3 pt-1">
-                      <div className="p-3 border border-deep-navy border-2 bg-slate-50 rounded-2xl space-y-1">
-                        <span className="text-[10px] font-mono font-black uppercase text-pink-800 block">1. Identity Information</span>
-                        <p className="text-[11px] text-slate-800 font-bold"><strong>Processed:</strong> Custom Display Nicknames Only (e.g., SpeedDemon88). Real names and email addresses are prohibited.</p>
-                        <p className="text-[10px] text-slate-700 font-semibold"><strong>Storage:</strong> Local Device & Cloud Database | <strong>Retention:</strong> Volatile / Cleared at user request or cache wipe.</p>
-                      </div>
-
-                      <div className="p-3 border border-deep-navy border-2 bg-slate-50 rounded-2xl space-y-1">
-                        <span className="text-[10px] font-mono font-black uppercase text-[#0D9488] block">2. Progression Analytics</span>
-                        <p className="text-[11px] text-slate-800 font-bold"><strong>Processed:</strong> Earned Math Tokens, active answer streaks, accuracy percentages, unlocked cosmetic badges.</p>
-                        <p className="text-[10px] text-slate-700 font-semibold"><strong>Storage:</strong> Browser localStorage | <strong>Retention:</strong> Persistent until browser cache is cleared.</p>
-                      </div>
-
-                      <div className="p-3 border border-deep-navy border-2 bg-slate-50 rounded-2xl space-y-1">
-                        <span className="text-[10px] font-mono font-black uppercase text-violet-850 text-violet-800 block">3. Optional Account Cloud-Sync</span>
-                        <p className="text-[11px] text-slate-800 font-bold"><strong>Processed:</strong> Secure, unique cryptographic UID tokens mapped through Firebase Authentication.</p>
-                        <p className="text-[10px] text-slate-700 font-semibold"><strong>Storage:</strong> Encrypted Firestore Database | <strong>Retention:</strong> Indefinite until account closure requested.</p>
-                      </div>
-
-                      <div className="p-3 border border-deep-navy border-2 bg-slate-50 rounded-2xl space-y-1">
-                        <span className="text-[10px] font-mono font-black uppercase text-red-800 block">4. Tracking & Telemetry</span>
-                        <p className="text-[11px] text-slate-800 font-bold"><strong>Processed:</strong> Strictly zero third-party advertising cookies, marketing tracking pixels, or cross-site telemetry.</p>
-                        <p className="text-[10px] text-slate-700 font-semibold"><strong>Storage:</strong> Non-Existent | <strong>Retention:</strong> N/A</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  
-                  {/* D. Third-Party Integrations */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-blue-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <Globe size={14} className="text-blue-600" />
-                      D. Third-Party Educational Integrations (Google Interland)
-                    </div>
-                    <p className="text-xs text-slate-800 font-semibold leading-relaxed">
-                      To reward students with high streaks, we unlock the <strong>Fun Arcade</strong>, which provides direct links to highly vetted, educational games produced by Google (e.g., Kind Kingdom, Reality River). 
-                    </p>
-                    <ul className="space-y-3 pl-1 text-xs text-slate-800 font-semibold leading-relaxed list-disc ml-4">
-                      <li><strong>COPPA Compliance Maintained:</strong> These games are hosted directly on Google Interland (Be Internet Awesome), which is a COPPA-compliant, kid-safe environment designed to teach digital citizenship.</li>
-                      <li><strong>No Data Sharing:</strong> Jesse Rock Math does not transmit any student data, IDs, or tracking pixels to Google. We merely provide a hyperlink to their public educational resources.</li>
-                      <li><strong>Zero Trackers:</strong> Our application does not embed external third-party ad networks or hidden tracking cookies alongside these games.</li>
-                    </ul>
-                  </div>
-
-                  {/* C. Data Portability */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-emerald-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <Server size={14} className="text-[#0D9488]" />
-                      C. Data Portability & The Conversion Pipeline
-                    </div>
-                    <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                      For students migrating their offline, browser-bound progress (localStorage) to a cloud-saved framework for home learning, data security is handled entirely via secure Firebase tokens. All cloud traffic is encrypted in transit using industry-standard HTTPS/TLS 1.3.
-                    </p>
-                    <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                      <strong>Data Erasure (Right to be Forgotten):</strong> Because player profiles are tied entirely to anonymous local tokens, users, parents, or educators can permanently purge all data and cloud-linked history instantly by clearing their browser cache or selecting the "Reset Profile" utility directly inside the application settings. No email contact or administrative request is required.
-                    </p>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* Terms Column */}
-              <div className="space-y-6">
-                <div className="p-5 rounded-3xl bg-indigo-50 border border-deep-navy border-4 space-y-2">
-                  <span className="text-[9px] font-mono text-indigo-800 font-black tracking-widest uppercase">REGULATORY DECAL TERM-200</span>
-                  <h2 className="text-xl font-black text-deep-navy font-mono flex items-center gap-2">
-                    <FileText size={20} className="text-indigo-800" />
-                    2. TERMS & FAIR PLAY AGREEMENT
-                  </h2>
-                  <p className="text-[11px] text-slate-800 font-bold">Acceptable educational use cases, fair play codes, and server performance bounds.</p>
-                </div>
-
-                {/* Terms Content Modules */}
-                <div className="space-y-4">
-                  
-                  {/* A. Authorized Use Case */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-indigo-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <BookOpen size={14} className="text-[#0D9488]" />
-                      A. Authorized Use Case
-                    </div>
-                    <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                      Jesse Math Rockstar is a 100% free, un-monetized educational utility provided open-access to school computer labs, classroom environments, and residential homes. Commercial extraction, white-labeling, or paid distribution of this platform without explicit written authorization is legally actionable.
-                    </p>
-                  </div>
-
-                  {/* B. Behavioral Code of Conduct */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-indigo-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <UserCheck size={14} className="text-orange-600" />
-                      B. Behavioral Code & System Moderation
-                    </div>
-                    <ul className="space-y-3 pl-1 text-xs font-semibold leading-relaxed text-slate-800">
-                      <li>
-                        <strong>Nickname Integrity:</strong> The system automatically flags and scrubs profane, personally identifiable, or offensive language from global real-time leaderboards.
-                      </li>
-                      <li>
-                        <strong>Algorithmic Fair Play:</strong> The Adaptive Math Engine is explicitly designed to measure human cognitive memory. The deployment of automated query scripts, browser extension macros, or API-injection bots to falsely generate Math Tokens constitutes a breach of service and will result in a permanent hardware/IP ban from the global leaderboards.
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* C. System Warranties */}
-                  <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3 shadow-sm hover:scale-[1.01] transition-transform">
-                    <div className="flex items-center gap-2.5 text-indigo-800 font-black text-xs font-mono uppercase tracking-wider border-b border-deep-navy/10 pb-2">
-                      <Server size={14} className="text-pink-600" />
-                      C. System Warranties & Server Infrastructure
-                    </div>
-                    <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                      This software is deployed utilizing enterprise-grade server frameworks via Vercel and Google Cloud Architecture. While we maintain optimized server uptime, the platform is provided on an "as-is" basis. Young Genius Studios is not liable for data loss occurring from hardware malfunctions, local browser profile clearing, or regional institutional web filters.
-                    </p>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-          )}
-
-          {activeTab === 'privacy' && (
-            <div className="space-y-6 max-w-4xl mx-auto">
-              <div className="p-6 rounded-3xl bg-emerald-50 border border-deep-navy border-4 space-y-2">
-                <span className="text-[10px] font-mono text-emerald-800 font-bold">OFFICIAL DIRECTIVE</span>
-                <h2 className="text-2xl font-black text-deep-navy font-mono">1. Privacy Policy & Data Governance</h2>
-                <p className="text-xs text-slate-800 font-bold">Comprehensive disclosure regarding static and volatile information structures.</p>
-              </div>
-
-              <div className="space-y-4">
-                {/* Core */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <Heart className="text-red-600" size={16} /> Core Commitment
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    Jesse Math Rockstar is engineered natively to uphold the highest global standards of data minimization, guaranteeing absolute child digital safety. We believe student data should belong to the student—not corporate databases.
-                  </p>
-                </div>
-
-                {/* A */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <ShieldCheck className="text-emerald-700" size={16} /> A. Statutory Compliance & Legal Frameworks
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    Young Genius Studios engineered this platform to structurally align with and enforce major global student privacy statutes. Because our architecture intentionally avoids harvesting personal identifiers, schools can deploy this application without executing complex data sharing agreements (DPAs):
-                  </p>
-                  <div className="grid md:grid-cols-3 gap-4 pt-2">
-                    <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl space-y-1">
-                      <span className="text-[10px] font-mono font-black text-emerald-800 block">COPPA</span>
-                      <p className="text-[10px] text-slate-800 font-semibold leading-normal">
-                        <strong>Children&apos;s Online Privacy Protection Act:</strong> We strictly adhere to FTC guidelines. The platform does not collect, track, or maintain personal information from children under the age of 13.
-                      </p>
-                    </div>
-                    <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl space-y-1">
-                      <span className="text-[10px] font-mono font-black text-indigo-800 block">FERPA</span>
-                      <p className="text-[10px] text-slate-800 font-semibold leading-normal">
-                        <strong>FERPA (Federal Educational Rights and Privacy Act):</strong> This application does not maintain student educational records on central servers, ensuring absolute compliance with school district operational guidelines.
-                      </p>
-                    </div>
-                    <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl space-y-1">
-                      <span className="text-[10px] font-mono font-black text-pink-850 text-pink-800 block">UK & EU GDPR</span>
-                      <p className="text-[10px] text-slate-800 font-semibold leading-normal">
-                        <strong>Data Protection Act 2018:</strong> Young Genius Studios functions entirely within a data-minimization model. We do not act as a traditional "Data Controller" because we do not capture personal user profiles.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* B */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <Database className="text-indigo-600" size={16} /> B. Information Architecture: What We Process
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed mb-4">
-                    To deliver a high-speed, gamified experience without compromising identity security, our data layout is explicitly divided:
-                  </p>
-                  <div className="space-y-3">
-                    <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl">
-                      <span className="text-xs font-black text-pink-800 font-mono">1. IDENTITY INFORMATION</span>
-                      <p className="text-xs text-slate-800 font-semibold leading-relaxed mt-1">
-                        <strong>Data Elements Processed:</strong> Custom Display Nicknames Only (e.g., SpeedDemon88). Real names and email addresses are prohibited.
-                      </p>
-                      <p className="text-[11px] text-slate-700 font-medium mt-1">
-                        <strong>Storage:</strong> Local Device & Cloud Database | <strong>Retention Protocol:</strong> Volatile / Cleared at user request or local browser cache wipe.
-                      </p>
-                    </div>
-                    <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl">
-                      <span className="text-xs font-black text-[#0D9488] font-mono">2. PROGRESSION ANALYTICS</span>
-                      <p className="text-xs text-slate-800 font-semibold leading-relaxed mt-1">
-                        <strong>Data Elements Processed:</strong> Earned Math Tokens, active answer streaks, accuracy percentages, unlocked cosmetic badges.
-                      </p>
-                      <p className="text-[11px] text-slate-700 font-medium mt-1">
-                        <strong>Storage:</strong> Browser localStorage | <strong>Retention Protocol:</strong> Persistent on device until browser cache is cleared.
-                      </p>
-                    </div>
-                    <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl">
-                      <span className="text-xs font-black text-violet-850 text-violet-800 font-mono">3. OPTIONAL ACCOUNT CLOUD-SYNC</span>
-                      <p className="text-xs text-slate-800 font-semibold leading-relaxed mt-1">
-                        <strong>Data Elements Processed:</strong> Secure, unique cryptographic UID tokens mapped through Firebase Authentication.
-                      </p>
-                      <p className="text-[11px] text-slate-700 font-medium mt-1">
-                        <strong>Storage:</strong> Encrypted Firestore Database | <strong>Retention Protocol:</strong> Indefinite until account closure is requested.
-                      </p>
-                    </div>
-                    <div className="p-4 bg-slate-50 border border-deep-navy border-2 rounded-2xl">
-                      <span className="text-xs font-black text-red-850 text-red-800 font-mono">4. TRACKING & TELEMETRY</span>
-                      <p className="text-xs text-slate-800 font-semibold leading-relaxed mt-1">
-                        <strong>Data Elements Processed:</strong> Strictly zero third-party advertising cookies, marketing tracking pixels, or cross-site telemetry.
-                      </p>
-                      <p className="text-[11px] text-slate-700 font-medium mt-1">
-                        <strong>Storage:</strong> Non-Existent | <strong>Retention Protocol:</strong> N/A
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* D */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <Globe className="text-blue-600" size={16} /> D. Third-Party Educational Integrations (Google Interland)
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    To reward students with high streaks, we unlock the <strong>Fun Arcade</strong>, which provides direct links to highly vetted, educational games produced by Google (e.g., Kind Kingdom, Reality River).
-                  </p>
-                  <ul className="space-y-2 pl-4 text-[11px] text-slate-800 font-semibold leading-relaxed list-disc">
-                    <li><strong>COPPA Compliance Maintained:</strong> These games are hosted directly on Google Interland (Be Internet Awesome), which is a COPPA-compliant, kid-safe environment designed to teach digital citizenship.</li>
-                    <li><strong>No Data Sharing:</strong> Jesse Rock Math does not transmit any student data, IDs, or tracking pixels to Google. We merely provide a hyperlink to their public educational resources.</li>
-                    <li><strong>Zero Trackers:</strong> Our application does not embed external third-party ad networks or hidden tracking cookies alongside these games.</li>
-                  </ul>
-                  <p className="text-[10px] text-slate-600 font-bold italic mt-2">
-                    <strong>Note on App Access:</strong> Jesse Rock Math is a web-based application (Progressive Web Hub) deployed via secure cloud infrastructure. It requires no downloads or invasive local installations, maintaining a sandboxed environment that respects all modern privacy and safety standards for young learners.
-                  </p>
-                </div>
-
-                {/* C */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <Server className="text-pink-600" size={16} /> C. Data Portability & The Conversion Pipeline
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    For students migrating their offline, browser-bound progress (localStorage) to a cloud-saved framework for home learning, data security is handled entirely via secure Firebase tokens. All cloud traffic is encrypted in transit using industry-standard HTTPS/TLS 1.3.
-                  </p>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    <strong>Data Erasure (Right to be Forgotten):</strong> Because player profiles are tied entirely to anonymous local tokens, users, parents, or educators can permanently purge all data and cloud-linked history instantly by clearing their browser cache or selecting the "Reset Profile" utility directly inside the application settings. No email contact or administrative request is required.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'terms' && (
-            <div className="space-y-6 max-w-4xl mx-auto">
-              <div className="p-6 rounded-3xl bg-indigo-50 border border-deep-navy border-4 space-y-2">
-                <span className="text-[10px] font-mono text-indigo-800 font-bold">OFFICIAL DIRECTIVE</span>
-                <h2 className="text-2xl font-black text-deep-navy font-mono">2. Terms of Service & Fair Play Agreement</h2>
-                <p className="text-xs text-slate-800 font-bold">Authorized use policy, anti-cheat codes, and operational limits.</p>
-              </div>
-
-              <div className="space-y-4">
-                {/* A */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <BookOpen className="text-indigo-800" size={16} /> A. Authorized Use Case
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    Jesse Math Rockstar is a 100% free, un-monetized educational utility provided open-access to school computer labs, classroom environments, and residential homes. Commercial extraction, white-labeling, or paid distribution of this platform without explicit written authorization is legally actionable.
-                  </p>
-                </div>
-
-                {/* B */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <UserCheck className="text-orange-600" size={16} /> B. Behavioral Code of Conduct & System Moderation
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    To preserve a healthy, encouraging environment for young learners, the following operational bounds are actively enforced:
-                  </p>
-                  <ul className="space-y-3 pl-1 pt-1 text-xs">
-                                        <li className="flex items-start gap-2 text-slate-800 font-bold">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-deep-navy shrink-0"></span>
-                      <p className="font-semibold leading-relaxed">
-                        <strong>Nickname Integrity & Automated Filters:</strong> The platform explicitly blocks users from signing in or registering with usernames containing swear words, slurs, or inappropriate language. The system incorporates a robust real-time profanity filter to actively intercept, block, and scrub any offensive submissions. Failure to abide by clean naming conventions will result in account creation denial or immediate removal from global real-time leaderboards.
-                      </p>
-
-                    </li>
-                    <li className="flex items-start gap-2 text-slate-800 font-bold">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-deep-navy shrink-0"></span>
-                      <p className="font-semibold leading-relaxed">
-                        <strong>Algorithmic Fair Play:</strong> The Adaptive Math Engine is explicitly designed to measure human cognitive memory. The deployment of automated query scripts, browser extension macros, or API-injection bots to falsely generate Math Tokens constitutes a breach of service and will result in a permanent hardware/IP ban from the global leaderboards.
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* C */}
-                <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 space-y-3">
-                  <h3 className="text-sm font-black font-mono uppercase text-deep-navy border-b border-deep-navy/10 pb-2 flex items-center gap-2">
-                    <Server className="text-pink-600" size={16} /> C. System Warranties & Server Infrastructure
-                  </h3>
-                  <p className="text-xs text-slate-800 font-bold leading-relaxed">
-                    This software is deployed utilizing enterprise-grade server frameworks via Vercel and Google Cloud Architecture. While we maintain optimized server uptime, the platform is provided on an "as-is" basis. Young Genius Studios is not liable for data loss occurring from hardware malfunctions, local browser profile clearing, or regional institutional web filters.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Disclaimers Panel */}
-      <div className="p-6 rounded-3xl bg-white border border-deep-navy border-4 space-y-3 text-left">
-        <div className="flex items-center gap-2 text-rose-800 font-black text-xs uppercase tracking-wider font-mono">
-          <AlertTriangle size={14} className="text-rose-600 shrink-0" />
-          Critical Platform Disclaimer
-        </div>
-        <p className="text-[11px] text-deep-navy leading-relaxed font-bold">
-          THIS SOFTWARE IS PROVIDED "AS IS" BY THE YOUNG GENIUS STUDIOS TEAM WITHOUT ANY EXPRESSED OR IMPLIED WARRANTIES. WE ARE NOT LIABLE FOR TRANSITIONAL DATA DROPS OR LOCAL REGISTRY EXPIRES. MATCH RECORDS ARE KEPT ON SECURE MULTI-REGION REALTIME FIREBASE REPOSITORIES TO PRESERVE MAXIMUM STRETCHES OF HISTORY.
-        </p>
-        <p className="text-[10px] text-slate-700 font-mono font-bold">
-          Last Revision: July 5, 2026. Approved under Young Genius Educational Standard Code. Authorized by Lead Architect Jesse Otobo.
-        </p>
-      </div>
-
     </div>
   );
 }

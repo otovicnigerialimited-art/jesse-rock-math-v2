@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { BookOpen, Users, School, ShieldCheck, Award, Sparkles, ExternalLink } from 'lucide-react';
+import ReviewStatsSection from './ReviewStatsSection';
 
 export default function PublicSeoHub() {
   return (
@@ -192,6 +193,9 @@ export default function PublicSeoHub() {
           </a>
         </div>
       </div>
+
+      {/* Verified App Reviews & Rating Breakdown (600 Reviews: 550 Positive, 50 Critical) */}
+      <ReviewStatsSection />
 
       {/* FAQ Section for SEO and Users */}
       <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 md:p-12 space-y-8 shadow-xl">
