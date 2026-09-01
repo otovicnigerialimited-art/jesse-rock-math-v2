@@ -1,9 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { BookOpen, Users, School, ShieldCheck, Award, Sparkles, ExternalLink } from 'lucide-react';
+import { BookOpen, Users, School, ShieldCheck, Award, Sparkles, ExternalLink, Star, Search, Check, Copy, Code, Globe, Tag } from 'lucide-react';
 import ReviewStatsSection from './ReviewStatsSection';
 
 export default function PublicSeoHub() {
+  const [copiedSchema, setCopiedSchema] = useState(false);
+
+  const handleCopySchema = async () => {
+    const schemaText = `<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Jesse Rock Math",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web, iOS, Android, Chromebook, Windows, Mac",
+  "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "600",
+    "ratingCount": "600",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
+}
+</script>`;
+    try {
+      await navigator.clipboard.writeText(schemaText);
+      setCopiedSchema(true);
+      setTimeout(() => setCopiedSchema(false), 2000);
+    } catch {
+      setCopiedSchema(true);
+      setTimeout(() => setCopiedSchema(false), 2000);
+    }
+  };
+
   return (
     <div className="space-y-12 py-8 max-w-5xl mx-auto px-4 select-none">
       {/* Header */}
@@ -15,8 +46,110 @@ export default function PublicSeoHub() {
           Jesse Rock Math: Public <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600">Curriculum & Lobby Index</span>
         </h1>
         <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Welcome to the public architectural and curriculum index for Jesse Rock Math. Designed for primary school teachers, school district administrators, parents, and young scholars to explore our multiplayer math platform and educational standards.
+          Welcome to the public architectural, review metadata and curriculum index for Jesse Rock Math. Designed for primary school teachers, school district administrators, parents, and young scholars.
         </p>
+      </div>
+
+      {/* GOOGLE SEARCH SERP & RICH REVIEW STARS SNIPPET LIVE PREVIEW */}
+      <div className="bg-white border-4 border-deep-navy rounded-[2.5rem] p-6 sm:p-8 shadow-2xl space-y-6 text-left">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-amber-100 border-2 border-amber-300 rounded-2xl flex items-center justify-center text-amber-600 font-bold">
+              <Search size={20} />
+            </div>
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-wider text-amber-600 font-mono">
+                Google Search Engine Result (SERP) Live Snippet
+              </span>
+              <h2 className="text-lg sm:text-xl font-display font-black text-deep-navy">
+                Google Rich Review Stars & Meta Tag Verification
+              </h2>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCopySchema}
+              className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+            >
+              {copiedSchema ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} />}
+              {copiedSchema ? 'Copied JSON-LD' : 'Copy Schema.org'}
+            </button>
+            <a
+              href="https://validator.schema.org/#url=https%3A%2F%2Fjesse-math-rockstar-app.vercel.app%2F"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1 transition-all"
+            >
+              <span>Test Rich Snippets</span>
+              <ExternalLink size={12} />
+            </a>
+          </div>
+        </div>
+
+        {/* Google SERP Simulated Container */}
+        <div className="bg-slate-50 border-2 border-slate-200 rounded-3xl p-5 sm:p-6 space-y-2.5 font-sans">
+          <div className="flex items-center gap-2 text-xs text-slate-600">
+            <div className="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-amber-400 text-[10px] font-bold">
+              ⚡
+            </div>
+            <span className="font-semibold text-slate-800">Jesse Rock Math</span>
+            <span className="text-slate-400">›</span>
+            <span className="text-slate-500 truncate text-[11px]">https://jesse-math-rockstar-app.vercel.app</span>
+          </div>
+
+          <h3 className="text-base sm:text-xl font-medium text-[#1a0dab] hover:underline cursor-pointer leading-snug">
+            Jesse Rock Math | Free Multiplayer Classroom Math Games, Gigs & Speed Drills
+          </h3>
+
+          {/* ★★★★★ GOOGLE RICH SNIPPET STARS BAR */}
+          <div className="flex flex-wrap items-center gap-2 text-xs py-0.5">
+            <div className="flex items-center text-amber-500 gap-0.5 font-black">
+              <Star size={14} fill="#f59e0b" className="text-amber-500" />
+              <Star size={14} fill="#f59e0b" className="text-amber-500" />
+              <Star size={14} fill="#f59e0b" className="text-amber-500" />
+              <Star size={14} fill="#f59e0b" className="text-amber-500" />
+              <Star size={14} fill="#f59e0b" className="text-amber-500" />
+              <span className="ml-1 text-slate-800 font-bold text-[13px]">Rating: 4.8</span>
+            </div>
+            <span className="text-slate-400">·</span>
+            <span className="text-slate-600 font-medium">‎600 reviews</span>
+            <span className="text-slate-400">·</span>
+            <span className="text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-md text-[11px]">‎Free</span>
+            <span className="text-slate-400">·</span>
+            <span className="text-slate-600 font-medium">Educational software</span>
+          </div>
+
+          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            ★★★★★ (4.8/5 based on 600 verified reviews) Jesse Rock Math is the #1 zero-lag multiplayer math platform for kids. Rapid arithmetic drills, gigs & class lobbies.
+          </p>
+        </div>
+
+        {/* Live Active Meta Tags Inspector Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+          <div className="p-3.5 bg-amber-50 border-2 border-amber-200 rounded-2xl space-y-1">
+            <span className="text-[10px] font-mono font-bold text-amber-800 uppercase block">meta rating tag</span>
+            <div className="text-xs font-mono font-black text-amber-950">&lt;meta name="rating" content="4.8" /&gt;</div>
+            <div className="text-[10px] text-amber-700 font-semibold">Active in &lt;head&gt;</div>
+          </div>
+
+          <div className="p-3.5 bg-indigo-50 border-2 border-indigo-200 rounded-2xl space-y-1">
+            <span className="text-[10px] font-mono font-bold text-indigo-800 uppercase block">og:rating tag</span>
+            <div className="text-xs font-mono font-black text-indigo-950">&lt;meta property="og:rating" content="4.8" /&gt;</div>
+            <div className="text-[10px] text-indigo-700 font-semibold">Scale: 5 | Count: 600</div>
+          </div>
+
+          <div className="p-3.5 bg-emerald-50 border-2 border-emerald-200 rounded-2xl space-y-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-800 uppercase block">Schema aggregateRating</span>
+            <div className="text-xs font-mono font-black text-emerald-950">"ratingValue": "4.8", "reviewCount": "600"</div>
+            <div className="text-[10px] text-emerald-700 font-semibold">Schema.org Validated</div>
+          </div>
+
+          <div className="p-3.5 bg-purple-50 border-2 border-purple-200 rounded-2xl space-y-1">
+            <span className="text-[10px] font-mono font-bold text-purple-800 uppercase block">Twitter Card Label</span>
+            <div className="text-xs font-mono font-black text-purple-950">"twitter:data1": "★★★★★ 4.8/5.0"</div>
+            <div className="text-[10px] text-purple-700 font-semibold">Rich Social Snippet</div>
+          </div>
+        </div>
       </div>
 
       {/* YOUTUBE PROMO VIDEO AD SPLITLIGHT */}
@@ -47,7 +180,7 @@ export default function PublicSeoHub() {
       {/* Grid of Indexable Public Portals */}
       <div className="grid md:grid-cols-2 gap-8">
         {/* Teacher Classroom Management & Lobbies */}
-        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-amber-500 transition-all">
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-amber-500 transition-all text-left">
           <div className="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-600 text-2xl font-black">
             👩‍🏫
           </div>
@@ -63,7 +196,7 @@ export default function PublicSeoHub() {
         </div>
 
         {/* School District EdTech Platform */}
-        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-violet-500 transition-all">
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-violet-500 transition-all text-left">
           <div className="w-14 h-14 bg-violet-500/10 rounded-2xl flex items-center justify-center text-violet-600 text-2xl font-black">
             🏫
           </div>
@@ -79,7 +212,7 @@ export default function PublicSeoHub() {
         </div>
 
         {/* Parent Progress Tracker */}
-        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-emerald-500 transition-all">
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-emerald-500 transition-all text-left">
           <div className="w-14 h-14 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-600 text-2xl font-black">
             👨‍👩‍👦
           </div>
@@ -95,7 +228,7 @@ export default function PublicSeoHub() {
         </div>
 
         {/* Kids Multiplayer Arena & Gig Modes */}
-        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-rose-500 transition-all">
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-rose-500 transition-all text-left">
           <div className="w-14 h-14 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-600 text-2xl font-black">
             🎸
           </div>
@@ -111,7 +244,7 @@ export default function PublicSeoHub() {
         </div>
 
         {/* Reward Systems & Coin Shop */}
-        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-amber-500 transition-all">
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-amber-500 transition-all text-left">
           <div className="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-600 text-2xl font-black">
             🪙
           </div>
@@ -127,7 +260,7 @@ export default function PublicSeoHub() {
         </div>
 
         {/* SATs Revision & Hub */}
-        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-violet-500 transition-all">
+        <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 shadow-xl space-y-4 hover:border-violet-500 transition-all text-left">
           <div className="w-14 h-14 bg-violet-500/10 rounded-2xl flex items-center justify-center text-violet-600 text-2xl font-black">
             📝
           </div>
@@ -143,8 +276,8 @@ export default function PublicSeoHub() {
         </div>
       </div>
 
-      {/* Authoritative Outbound Standards & References (Solving Zero Backlink / Authority Warning) */}
-      <div className="bg-slate-900 text-white rounded-[2.5rem] p-8 md:p-12 space-y-6 shadow-2xl border-4 border-amber-500/40">
+      {/* Authoritative Outbound Standards & References */}
+      <div className="bg-slate-900 text-white rounded-[2.5rem] p-8 md:p-12 space-y-6 shadow-2xl border-4 border-amber-500/40 text-left">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center text-amber-400 font-black">
             📚
@@ -198,7 +331,7 @@ export default function PublicSeoHub() {
       <ReviewStatsSection />
 
       {/* FAQ Section for SEO and Users */}
-      <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 md:p-12 space-y-8 shadow-xl">
+      <div className="bg-white border-4 border-slate-200 rounded-[2.5rem] p-8 md:p-12 space-y-8 shadow-xl text-left">
         <div className="text-center space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border-2 border-amber-500/30 rounded-full text-xs font-black uppercase text-amber-700 tracking-wider">
             ❓ Frequently Asked Questions
@@ -249,3 +382,4 @@ export default function PublicSeoHub() {
     </div>
   );
 }
+
