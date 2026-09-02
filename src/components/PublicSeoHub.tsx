@@ -134,6 +134,10 @@ export default function PublicSeoHub() {
   "@type": "Organization",
   "@id": "https://jesse-math-rockstar-app.vercel.app/#organization",
   "name": "Jesse Math Rockstar",
+  "alternateName": "Jesse Math Rockstar EdTech",
+  "description": "Jesse Math Rockstar is the ultimate premium gamified EdTech platform designed for primary schools. We provide 1v1 live multiplayer math arenas, zero-lag calculation speed drills, UK KS2 SATs exam prep simulators, and comprehensive teacher dashboards to guarantee mathematical mastery and eliminate hesitation.",
+  "slogan": "The #1 Zero-Lag Multiplayer Math Platform for Kids",
+  "knowsAbout": ["Mathematics Education", "EdTech", "Primary School Math", "Mental Arithmetic", "KS2 SATs"],
   "url": "https://jesse-math-rockstar-app.vercel.app/",
   "founder": {
     "@type": "Person",
@@ -143,7 +147,8 @@ export default function PublicSeoHub() {
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "Customer Support & Educator Relations",
-    "email": "otovicnigerialimited@gmail.com"
+    "email": "otovicnigerialimited@gmail.com",
+    "availableLanguage": ["English"]
   }
 }
 </script>`
