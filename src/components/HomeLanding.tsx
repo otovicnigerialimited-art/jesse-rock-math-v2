@@ -223,7 +223,7 @@ export default function HomeLanding({
             🎬 Official YouTube Promo Trailer
           </div>
           <h2 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
-            See Jesse Rock Math in Action!
+            See Jesse Math Rockstar in Action!
           </h2>
           <p className="text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Discover how we turn times tables, mental arithmetic drills, and competitive multiplayer practice into a legendary rockstar journey. Watch our video ad directly from our YouTube channel!
@@ -232,7 +232,7 @@ export default function HomeLanding({
             <iframe
               className="w-full h-full"
               src="https://www.youtube.com/embed/kBjfLeranG4"
-              title="Jesse Rock Math YouTube Promo Ad"
+              title="Jesse Math Rockstar YouTube Promo Ad"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen

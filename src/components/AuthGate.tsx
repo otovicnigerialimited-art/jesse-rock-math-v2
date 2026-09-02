@@ -580,7 +580,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Failed to enter Jesse Rock Math Arena. Check internet connection.");
+      setError(err.message || "Failed to enter Jesse Math Rockstar Arena. Check internet connection.");
     } finally {
       setLoading(false);
     }
@@ -965,7 +965,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 Born from a Passion for Fearless Mathematics
               </h2>
               <p className="text-slate-600 leading-relaxed text-base">
-                Jesse Rock Math was founded on June 20, 2026, by visionary educator and developer <strong>Jesse Otobo</strong>. Witnessing how standard timed drills paralyzed young learners with math anxiety, Jesse set out to bridge the gap between high-octane arcade gaming and rigorous mathematics.
+                Jesse Math Rockstar was founded on June 20, 2026, by visionary educator and developer <strong>Jesse Otobo</strong>. Witnessing how standard timed drills paralyzed young learners with math anxiety, Jesse set out to bridge the gap between high-octane arcade gaming and rigorous mathematics.
               </p>
               <p className="text-slate-600 leading-relaxed text-base">
                 What started as a simple mental arithmetic prototype rapidly evolved into an elite multiplayer EdTech arena trusted by classrooms worldwide, empowering thousands of students to rock their arithmetic, algebra, and fractions without fear.
@@ -1017,7 +1017,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 <span>▶️</span> Watch Platform Demo
               </div>
               <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-                See Jesse Rock Math in Action
+                See Jesse Math Rockstar in Action
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed">
                 Watch our official walkthrough video to see how live multiplayer battles, zero-lag mechanics, and adaptive speed drills transform math practice into an addictive rock show.
@@ -1084,7 +1084,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               >
                 <img 
                   src="https://img.youtube.com/vi/BiOiAtKTfsQ/maxresdefault.jpg" 
-                  alt="Jesse Rock Math 8K Video Thumbnail" 
+                  alt="Jesse Math Rockstar 8K Video Thumbnail" 
                   className="w-full h-full object-cover filter contrast-110 saturate-120 transform group-hover:scale-105 transition-transform duration-700"
                   onError={(e) => { e.currentTarget.src = 'https://img.youtube.com/vi/BiOiAtKTfsQ/hqdefault.jpg'; }}
                 />
@@ -1097,7 +1097,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-white drop-shadow-md">
                   <div className="flex items-center gap-3">
                     <span className="px-3 py-1 bg-red-600 rounded-xl text-xs font-mono font-black uppercase tracking-wider">8K Ultra HD</span>
-                    <span className="font-bold text-lg md:text-xl">Watch Jesse Rock Math on YouTube</span>
+                    <span className="font-bold text-lg md:text-xl">Watch Jesse Math Rockstar on YouTube</span>
                   </div>
                   <span className="text-sm font-semibold underline text-cyan-300 group-hover:text-white transition-colors">Open YouTube ↗</span>
                 </div>
@@ -1114,7 +1114,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   A Complete Mathematical Ecosystem for K-12 & Beyond
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Jesse Rock Math is meticulously engineered to cover every essential pillar of early and intermediate mathematical proficiency, ensuring students develop intuition rather than rote memorization.
+                  Jesse Math Rockstar is meticulously engineered to cover every essential pillar of early and intermediate mathematical proficiency, ensuring students develop intuition rather than rote memorization.
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-4 pt-2">
@@ -1217,10 +1217,10 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
           >
             <div className="text-center max-w-3xl mx-auto space-y-4">
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Why Jesse Rock Math Changes Everything
+                Why Jesse Math Rockstar Changes Everything
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed">
-                Traditional math education is plagued by slow drills, anxiety, and rigid testing. Jesse Rock Math transforms calculations into an electrifying, gamified experience that builds lifelong confidence and lightning-fast mental math reflexes.
+                Traditional math education is plagued by slow drills, anxiety, and rigid testing. Jesse Math Rockstar transforms calculations into an electrifying, gamified experience that builds lifelong confidence and lightning-fast mental math reflexes.
               </p>
             </div>
 

@@ -259,7 +259,7 @@ export default function ReviewStatsSection() {
     setUserName('');
     setUserTitle('');
     setUserBody('');
-    setToastMessage('Thank you! Your verified user review for Jesse Rock Math has been published.');
+    setToastMessage('Thank you! Your verified user review for Jesse Math Rockstar has been published.');
     setTimeout(() => setToastMessage(null), 4000);
   };
 
@@ -271,8 +271,8 @@ export default function ReviewStatsSection() {
       itemScope
       itemType="https://schema.org/SoftwareApplication"
     >
-      {/* Hidden SEO Metadata Target strictly bound to Jesse Rock Math */}
-      <meta itemProp="name" content="Jesse Rock Math" />
+      {/* Hidden SEO Metadata Target strictly bound to Jesse Math Rockstar */}
+      <meta itemProp="name" content="Jesse Math Rockstar" />
       <meta itemProp="applicationCategory" content="EducationalApplication" />
       <meta itemProp="operatingSystem" content="Web, iOS, Android, Chromebook" />
       <link itemProp="url" href="https://jesse-math-rockstar-app.vercel.app/" />
@@ -288,7 +288,7 @@ export default function ReviewStatsSection() {
               <Sparkles size={13} className="text-amber-600" /> #reviews • 600 Verified App Reviews
             </span>
             <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200">
-              Rated strictly for Jesse Rock Math App
+              Rated strictly for Jesse Math Rockstar App
             </span>
           </div>
           <h2 className="text-2xl md:text-3xl font-display font-black text-deep-navy tracking-tight">
@@ -326,7 +326,7 @@ export default function ReviewStatsSection() {
         <meta itemProp="worstRating" content="1" />
         <meta itemProp="ratingCount" content={TOTAL_REVIEWS.toString()} />
         <meta itemProp="reviewCount" content={TOTAL_REVIEWS.toString()} />
-        <meta itemProp="itemReviewed" content="Jesse Rock Math" />
+        <meta itemProp="itemReviewed" content="Jesse Math Rockstar" />
 
         {/* Score Pillar */}
         <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-6 bg-slate-950/80 rounded-2xl border border-slate-800/80">
@@ -623,7 +623,7 @@ export default function ReviewStatsSection() {
             >
               <div className="flex items-center justify-between border-b-2 border-slate-100 pb-3">
                 <div className="space-y-0.5">
-                  <h3 className="text-lg font-black text-deep-navy">Review Jesse Rock Math</h3>
+                  <h3 className="text-lg font-black text-deep-navy">Review Jesse Math Rockstar</h3>
                   <p className="text-xs text-slate-500 font-medium">Leave genuine praise, report bugs, or request missing features</p>
                 </div>
                 <button

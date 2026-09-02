@@ -176,7 +176,7 @@ export default function PublicSeoHub() {
       badge: 'Arithmetic Engine',
       icon: Cpu,
       color: 'amber',
-      summary: 'The primary calculation core of Jesse Rock Math executes sub-millisecond mathematical prompt generation covering times tables 1 to 12 alongside inverse division pairings.',
+      summary: 'The primary calculation core of Jesse Math Rockstar executes sub-millisecond mathematical prompt generation covering times tables 1 to 12 alongside inverse division pairings.',
       specs: [
         { label: 'Latency Benchmark', value: '< 1.2ms Prompt Render' },
         { label: 'Curriculum Scope', value: 'Times Tables 1x1 to 12x12' },
@@ -335,19 +335,19 @@ export default function PublicSeoHub() {
 
   const faqs = [
     {
-      q: 'What is Jesse Rock Math and what makes it unique among EdTech math platforms?',
-      a: 'Jesse Rock Math is a high-speed, zero-lag browser-native math game engine and classroom platform created by Jesse Otobo. Unlike static flashcard tools, Jesse Rock Math integrates 1v1 live multiplayer calculation duels, an immersive 10-tier Rock Tour career progression, an automated Mistake Intelligence Diagnostic engine, and authentic UK statutory MTC & KS2 SATs simulators — all completely free with zero ads and zero paywalls.'
+      q: 'What is Jesse Math Rockstar and what makes it unique among EdTech math platforms?',
+      a: 'Jesse Math Rockstar is a high-speed, zero-lag browser-native math game engine and classroom platform created by Jesse Otobo. Unlike static flashcard tools, Jesse Math Rockstar integrates 1v1 live multiplayer calculation duels, an immersive 10-tier Rock Tour career progression, an automated Mistake Intelligence Diagnostic engine, and authentic UK statutory MTC & KS2 SATs simulators — all completely free with zero ads and zero paywalls.'
     },
     {
-      q: 'Is Jesse Rock Math completely free for primary schools, teachers, and parents?',
-      a: 'Yes, 100%. Jesse Rock Math is committed to educational equity. All core game modes, teacher dashboard lobbies, student access PINs, diagnostic analytics, and avatar items in the Rock Shop are completely free. There are no subscriptions, freemium locks, or paid upgrades.'
+      q: 'Is Jesse Math Rockstar completely free for primary schools, teachers, and parents?',
+      a: 'Yes, 100%. Jesse Math Rockstar is committed to educational equity. All core game modes, teacher dashboard lobbies, student access PINs, diagnostic analytics, and avatar items in the Rock Shop are completely free. There are no subscriptions, freemium locks, or paid upgrades.'
     },
     {
       q: 'How does the 1v1 Multiplayer Math Arena work without latency?',
       a: 'The Multiplayer Arena uses lightweight delta state synchronization. Keystroke inputs are processed instantly on the client while scores synchronize continuously across connected peers. If a live classmate is not available, intelligent Elo-scaled simulation bots match the player’s speed, ensuring zero queue wait times.'
     },
     {
-      q: 'How does Jesse Rock Math prepare Year 4 students for the UK Statutory Multiplication Tables Check (MTC)?',
+      q: 'How does Jesse Math Rockstar prepare Year 4 students for the UK Statutory Multiplication Tables Check (MTC)?',
       a: 'Our dedicated MTC Simulator replicates the exact testing parameters mandated by the UK Standards and Testing Agency (STA): 25 randomized times table questions covering 1-12, a strict 6-second timer per question, and a 3-second transition pause between questions. This builds fluency, keyboard speed, and eliminates test anxiety.'
     },
     {
@@ -359,8 +359,8 @@ export default function PublicSeoHub() {
       a: 'The Rock Tour is a 10-tier gamified progression journey (Busker → Garage Band → Local Pub → Support Act → Headline Act → Arena Tour → Stadium Legend → Rock Hall of Fame → World Icon → Rock God). Students earn XP and Rock Coins through correct calculations, unlocking custom guitars, amplifiers, avatar cosmetics, and stage pyrotechnics.'
     },
     {
-      q: 'How does Jesse Rock Math protect student privacy (COPPA & GDPR)?',
-      a: 'Jesse Rock Math uses a strict Zero-PII (Personally Identifiable Information) security model. Student accounts use randomly generated rockstar pseudonyms and PINs. We never collect email addresses, phone numbers, location data, or biometrics from children. The platform contains zero third-party advertising or tracking trackers.'
+      q: 'How does Jesse Math Rockstar protect student privacy (COPPA & GDPR)?',
+      a: 'Jesse Math Rockstar uses a strict Zero-PII (Personally Identifiable Information) security model. Student accounts use randomly generated rockstar pseudonyms and PINs. We never collect email addresses, phone numbers, location data, or biometrics from children. The platform contains zero third-party advertising or tracking trackers.'
     },
     {
       q: 'Can teachers export classroom performance data and print certificates?',
@@ -372,7 +372,7 @@ export default function PublicSeoHub() {
     },
     {
       q: 'What devices and operating systems are supported?',
-      a: 'Jesse Rock Math is 100% web-based and runs natively on Google Chromebooks, iPads, Android tablets, Windows PCs, MacBooks, and mobile smartphones without requiring any app store downloads. It also features Progressive Web App (PWA) offline support.'
+      a: 'Jesse Math Rockstar is 100% web-based and runs natively on Google Chromebooks, iPads, Android tablets, Windows PCs, MacBooks, and mobile smartphones without requiring any app store downloads. It also features Progressive Web App (PWA) offline support.'
     }
   ];
 
@@ -423,10 +423,10 @@ export default function PublicSeoHub() {
           <Sparkles size={14} /> Comprehensive SEO, Curriculum & Architectural Knowledge Hub
         </div>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-deep-navy tracking-tight">
-          Jesse Rock Math: <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600">Complete Technical & Curriculum Index</span>
+          Jesse Math Rockstar: <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600">Complete Technical & Curriculum Index</span>
         </h1>
         <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed">
-          The definitive public architectural specification, curriculum alignment matrix, empirical research review index, and Schema.org 2026 linked data documentation for Jesse Rock Math.
+          The definitive public architectural specification, curriculum alignment matrix, empirical research review index, and Schema.org 2026 linked data documentation for Jesse Math Rockstar.
         </p>
       </div>
 
@@ -465,13 +465,13 @@ export default function PublicSeoHub() {
             <div className="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-amber-400 text-[10px] font-bold">
               ⚡
             </div>
-            <span className="font-semibold text-slate-800">Jesse Rock Math</span>
+            <span className="font-semibold text-slate-800">Jesse Math Rockstar</span>
             <span className="text-slate-400">›</span>
             <span className="text-slate-500 truncate text-[11px]">https://jesse-math-rockstar-app.vercel.app</span>
           </div>
 
           <h3 className="text-base sm:text-xl font-medium text-[#1a0dab] hover:underline cursor-pointer leading-snug">
-            Jesse Rock Math | Free Multiplayer Classroom Math Games, Gigs & Speed Drills
+            Jesse Math Rockstar | Free Multiplayer Classroom Math Games, Gigs & Speed Drills
           </h3>
 
           {/* ★★★★★ GOOGLE RICH SNIPPET STARS BAR */}
@@ -493,7 +493,7 @@ export default function PublicSeoHub() {
           </div>
 
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            ★★★★★ (4.8/5 based on 600 verified reviews) Jesse Rock Math is the #1 zero-lag multiplayer math platform for kids. Rapid arithmetic drills, gigs & class lobbies.
+            ★★★★★ (4.8/5 based on 600 verified reviews) Jesse Math Rockstar is the #1 zero-lag multiplayer math platform for kids. Rapid arithmetic drills, gigs & class lobbies.
           </p>
         </div>
 
@@ -586,7 +586,7 @@ export default function PublicSeoHub() {
             Comprehensive Engineering & Pedagogical Breakdown
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mx-auto">
-            Explore every sub-system, calculation pipeline, security layer, and gamification mechanic powering Jesse Rock Math.
+            Explore every sub-system, calculation pipeline, security layer, and gamification mechanic powering Jesse Math Rockstar.
           </p>
         </div>
 
@@ -698,7 +698,7 @@ export default function PublicSeoHub() {
         </div>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-          Jesse Rock Math is strictly calibrated against the UK National Curriculum Key Stages 1 & 2 as well as US Common Core Mathematics standards for grades K through 6.
+          Jesse Math Rockstar is strictly calibrated against the UK National Curriculum Key Stages 1 & 2 as well as US Common Core Mathematics standards for grades K through 6.
         </p>
 
         <div className="overflow-x-auto">
@@ -732,7 +732,7 @@ export default function PublicSeoHub() {
             🎬 Featured Platform Overview
           </div>
           <h2 className="text-2xl md:text-3xl font-display font-black text-white">
-            See Jesse Rock Math in Action!
+            See Jesse Math Rockstar in Action!
           </h2>
           <p className="text-xs md:text-sm text-slate-300 max-w-xl mx-auto">
             Discover how we turn times tables, mental calculation drills, and 1v1 multiplayer arenas into a thrilling rockstar journey.
@@ -742,7 +742,7 @@ export default function PublicSeoHub() {
           <iframe
             className="w-full h-full"
             src="https://www.youtube.com/embed/kBjfLeranG4"
-            title="Jesse Rock Math Promo Video"
+            title="Jesse Math Rockstar Promo Video"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
@@ -811,7 +811,7 @@ export default function PublicSeoHub() {
             ❓ Frequently Asked Questions & Knowledge Base
           </div>
           <h2 className="text-2xl sm:text-3xl font-display font-black text-deep-navy">
-            Everything You Need to Know About Jesse Rock Math
+            Everything You Need to Know About Jesse Math Rockstar
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
             Comprehensive answers for educators, school district leads, parents, and scholars.

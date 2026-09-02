@@ -1561,19 +1561,19 @@ export default function App() {
         <main className="flex-1 flex flex-col overflow-hidden">
         <Helmet>
           <title>
-            {activeTab === 'home' ? 'Jesse Rock Math | Free Multiplayer Classroom Math Games' : 
-             activeTab === 'arena' ? 'Math Arena | Multiplayer Speed Drills | Jesse Rock Math' :
-             activeTab === 'sats' ? 'KS2 SATs Practice | Exam Simulator | Jesse Rock Math' :
-             activeTab === 'hub' ? 'Learning Hub | Classroom Activities | Jesse Rock Math' :
-             activeTab === 'dashboard' ? 'Student Dashboard | Track Progress | Jesse Rock Math' :
-             activeTab === 'shop' ? 'Rock Shop | Customize Avatar | Jesse Rock Math' :
-             'Jesse Rock Math | Educational Platform'}
+            {activeTab === 'home' ? 'Jesse Math Rockstar | Free Multiplayer Classroom Math Games' : 
+             activeTab === 'arena' ? 'Math Arena | Multiplayer Speed Drills | Jesse Math Rockstar' :
+             activeTab === 'sats' ? 'KS2 SATs Practice | Exam Simulator | Jesse Math Rockstar' :
+             activeTab === 'hub' ? 'Learning Hub | Classroom Activities | Jesse Math Rockstar' :
+             activeTab === 'dashboard' ? 'Student Dashboard | Track Progress | Jesse Math Rockstar' :
+             activeTab === 'shop' ? 'Rock Shop | Customize Avatar | Jesse Math Rockstar' :
+             'Jesse Math Rockstar | Educational Platform'}
           </title>
           <meta name="description" content={
-             activeTab === 'home' ? 'Play Jesse Rock Math, a zero-lag free multiplayer math game for kids. Interactive classroom application featuring mental math calculation speed drills.' :
+             activeTab === 'home' ? 'Play Jesse Math Rockstar, a zero-lag free multiplayer math game for kids. Interactive classroom application featuring mental math calculation speed drills.' :
              activeTab === 'arena' ? 'Compete in real-time math speed drills. Our multiplayer arena helps students master calculations instantly.' :
              activeTab === 'sats' ? 'Practice for UK KS2 SATs with our free online exam simulator. Includes arithmetic and reasoning papers.' :
-             'Explore Jesse Rock Math, a COPPA-compliant educational platform for primary school math.'
+             'Explore Jesse Math Rockstar, a COPPA-compliant educational platform for primary school math.'
           } />
           <link rel="canonical" href={`https://jesse-math-rockstar-app.vercel.app/${activeTab === 'home' ? '' : activeTab}`} />
         </Helmet>

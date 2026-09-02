@@ -90,7 +90,7 @@ export default function SurveyPopupModal({
                 </span>
               </div>
               <h2 className="text-lg sm:text-xl font-display font-black text-deep-navy">
-                Help Improve Jesse Rock Math 🎸
+                Help Improve Jesse Math Rockstar 🎸
               </h2>
             </div>
           </div>

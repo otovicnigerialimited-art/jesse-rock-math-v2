@@ -69,7 +69,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
           How It Works & Game <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-700 to-indigo-700">Rules</span>
         </h1>
         <p className="text-deep-navy text-sm leading-relaxed">
-          Jesse Rock Math Arena combines rockstar energy with core math principles. Learn how to train your speed and score points effectively.
+          Jesse Math Rockstar Arena combines rockstar energy with core math principles. Learn how to train your speed and score points effectively.
         </p>
       </div>
 

@@ -52,13 +52,13 @@ export default function BadgesSection({ stats, username, onClaimWeeklyBadge }: B
           <h3 className="font-bold text-deep-navy mb-2">Badges & Quests Rules</h3>
           <ul className="text-sm text-deep-navy/70 space-y-4 font-bold list-decimal pl-4">
             <li>
-              <strong>Earning Badges:</strong> Badges are prestigious rewards earned by achieving specific milestones within the Jesse Rock Math Arena. These milestones cover various categories such as maintaining long streaks of correct answers, achieving perfect accuracy in sessions, or solving problems in advanced difficulty modes (Hard/Extreme). Each badge represents a specific type of mastery.
+              <strong>Earning Badges:</strong> Badges are prestigious rewards earned by achieving specific milestones within the Jesse Math Rockstar Arena. These milestones cover various categories such as maintaining long streaks of correct answers, achieving perfect accuracy in sessions, or solving problems in advanced difficulty modes (Hard/Extreme). Each badge represents a specific type of mastery.
             </li>
             <li>
               <strong>Weekly Quests:</strong> Weekly Quests represent dynamic, time-sensitive challenges that refresh on a weekly basis. These tasks are specifically designed to test different skills and encourage consistent practice. Successfully completing all objectives within a Weekly Quest awards a significant bonus to your experience points (XP), allowing you to level up much faster than through standard play alone.
             </li>
             <li>
-              <strong>Legendary Rockstar Title:</strong> The 'Legendary Rockstar' title is the pinnacle of the Jesse Rock Math Arena journey. This exclusive rank is reserved only for players who have demonstrated complete mastery of the system by solving 200 individual math problems. As a testament to your unparalleled dedication and skill, achieving this status unlocks a custom, printable PDF certificate signed by Jesse Math Rock Star, commemorating your mathematical mastery.
+              <strong>Legendary Rockstar Title:</strong> The 'Legendary Rockstar' title is the pinnacle of the Jesse Math Rockstar Arena journey. This exclusive rank is reserved only for players who have demonstrated complete mastery of the system by solving 200 individual math problems. As a testament to your unparalleled dedication and skill, achieving this status unlocks a custom, printable PDF certificate signed by Jesse Math Rock Star, commemorating your mathematical mastery.
             </li>
           </ul>
         </div>

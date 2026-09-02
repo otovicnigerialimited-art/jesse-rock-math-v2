@@ -763,7 +763,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
             <Trophy className="text-amber-400" /> MULTIPLAYER ARENA 🏟️
           </h2>
           <div className="flex flex-col gap-2">
-            <p className="text-slate-700 text-xs">Real-time competitive math battle ground by Jesse Rock Math!</p>
+            <p className="text-slate-700 text-xs">Real-time competitive math battle ground by Jesse Math Rockstar!</p>
             <div className="bg-white/5 border border-slate-200 p-4 rounded-xl mt-2 text-left max-w-xl">
               <h3 className="font-bold text-deep-navy mb-2">Play Arena Rules</h3>
               <ul className="text-sm text-deep-navy/70 space-y-4 font-bold list-decimal pl-4">
@@ -979,7 +979,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               </span>
               <h3 className="text-xl font-black text-deep-navy">Searching Arena for a live Challenger</h3>
               <p className="text-slate-700 text-xs leading-normal">
-                Connecting to Jesse Rock Math servers. If no one else is currently in the matchmaking queue, we'll keep your lobby active until a challenger enters!
+                Connecting to Jesse Math Rockstar servers. If no one else is currently in the matchmaking queue, we'll keep your lobby active until a challenger enters!
               </p>
             </div>
 

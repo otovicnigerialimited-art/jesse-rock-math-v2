@@ -90,7 +90,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
     let ratingComment = '';
     switch (starRating) {
       case 5:
-        ratingComment = "Rated 5 out of 5 stars! ⭐⭐⭐⭐⭐ Jesse Rock Math is awesome! ⚡";
+        ratingComment = "Rated 5 out of 5 stars! ⭐⭐⭐⭐⭐ Jesse Math Rockstar is awesome! ⚡";
         break;
       case 4:
         ratingComment = "Rated 4 out of 5 stars! ⭐⭐⭐⭐ Really fun and exciting!";
@@ -187,7 +187,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
           MEET THE <span className="bg-gradient-to-r from-cyan-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">DEVELOPER</span>
         </h1>
         <p className="text-sm sm:text-base text-slate-850 max-w-2xl mx-auto font-bold leading-relaxed">
-          Jesse Rock Math Arena was designed, coded, and deployed by Jesse Otobo (11-year-old developer). Learn about Jesse's journey and leave an encouraging word below!
+          Jesse Math Rockstar Arena was designed, coded, and deployed by Jesse Otobo (11-year-old developer). Learn about Jesse's journey and leave an encouraging word below!
         </p>
       </motion.div>
 
@@ -266,7 +266,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
                 📅 June 20th — Made, Published & Indexed!
               </h4>
               <p className="text-xs text-slate-800 leading-relaxed font-bold">
-                Jesse Rock Math was made, published, and completely indexed on Google on <strong>June 20, 2026</strong>! To celebrate this special milestone, every single year on <strong>June 20th</strong>, all players receive an automatic <strong>+100 Free Streak Booster</strong> and special community gifts when they log in!
+                Jesse Math Rockstar was made, published, and completely indexed on Google on <strong>June 20, 2026</strong>! To celebrate this special milestone, every single year on <strong>June 20th</strong>, all players receive an automatic <strong>+100 Free Streak Booster</strong> and special community gifts when they log in!
               </p>
             </div>
             <div className="shrink-0 text-3xl animate-bounce hidden sm:block">
@@ -276,7 +276,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
         </div>
 
         <div className="space-y-6 text-sm leading-relaxed text-deep-navy font-sans">
-          <p className="text-base font-bold">Hello! I am Jesse, the founder of Jesse Rock Math, an application designed to help children enjoy practicing mathematics.</p>
+          <p className="text-base font-bold">Hello! I am Jesse, the founder of Jesse Math Rockstar, an application designed to help children enjoy practicing mathematics.</p>
           
           <div className="space-y-2">
             <h3 className="text-lg font-black text-pink-600 border-b-2 border-deep-navy pb-1 flex items-center gap-1.5">
@@ -320,7 +320,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
             </h3>
             <div className="space-y-4 text-[13px] font-bold text-slate-850 leading-relaxed">
               <p>
-                {"Jesse Rock Math is designed to transform the way students engage with mathematics. By creating an interactive, game-based environment, we move beyond passive learning to active participation, helping learners master essential concepts through play."}
+                {"Jesse Math Rockstar is designed to transform the way students engage with mathematics. By creating an interactive, game-based environment, we move beyond passive learning to active participation, helping learners master essential concepts through play."}
               </p>
               <p>
                 {"Our platform leverages real-time feedback, adaptive challenges, and rewarding progress tracking to ensure every student remains motivated and challenged at their appropriate level, making math both accessible and enjoyable."}
@@ -533,8 +533,8 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
               { age: "Age 8", title: "First Lines & Block Coding", desc: "Discovered programming logic through visual layouts, building 2D logic games." },
               { age: "Age 9", title: "Advancing to Text-Based Logic", desc: "Studied HTML/CSS constructs, creating educational mini-challenges for peers." },
               { age: "Age 10", title: "Vibe Coding Breakthrough", desc: "Mastered conversational prompting and API hooks, generating over 50+ experimental tools." },
-              { age: "Age 11", title: "Launching Jesse Rock Math App", desc: "Designed, synchronized, and compiled this flagship multiplayer hub!" },
-              { age: "June 20th", title: "Official Launch & Indexation Date", desc: "The official anniversary of Jesse Rock Math! This is the day the application was made, published, and indexed on Google on June 20, 2026. Celebrated every year on June 20th with free streaks!" }
+              { age: "Age 11", title: "Launching Jesse Math Rockstar App", desc: "Designed, synchronized, and compiled this flagship multiplayer hub!" },
+              { age: "June 20th", title: "Official Launch & Indexation Date", desc: "The official anniversary of Jesse Math Rockstar! This is the day the application was made, published, and indexed on Google on June 20, 2026. Celebrated every year on June 20th with free streaks!" }
             ].map((step, idx) => {
               const isAnniversary = step.age === "June 20th";
               return (
