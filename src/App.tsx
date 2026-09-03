@@ -1290,6 +1290,7 @@ export default function App() {
       }>
         <SchoolDashboards 
           authState={authState as any} 
+          activeClassCode={authState.classCode || null}
           onSignOut={handleSignOut} 
         />
       </React.Suspense>

@@ -79,6 +79,7 @@ interface TeacherDashboardProps {
   teacherId?: string;
   teacherName?: string;
   teacherEmail?: string;
+  activeClassCode?: string | null;
   onSignOut: () => void;
 }
 
@@ -87,6 +88,7 @@ export default function TeacherDashboard({
   teacherId, 
   teacherName, 
   teacherEmail, 
+  activeClassCode,
   onSignOut 
 }: TeacherDashboardProps) {
   // Resolve props cleanly supporting both nested teacher object and flat props
@@ -118,8 +120,8 @@ export default function TeacherDashboard({
   const [formSuccess, setFormSuccess] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Class Code states
-  const [teacherCode, setTeacherCode] = useState<string>('');
+  // Class Code states with null safety
+  const [teacherCode, setTeacherCode] = useState<string>(activeClassCode || '');
   const [className, setClassName] = useState<string>('');
   const [newClassNameInput, setNewClassNameInput] = useState('');
   const [codeError, setCodeError] = useState<string | null>(null);

@@ -10,11 +10,16 @@ interface SchoolDashboardsProps {
     userId?: string | null;
     realName?: string | null;
     email?: string | null;
+    classCode?: string | null;
   };
+  activeClassCode?: string | null;
   onSignOut: () => void;
 }
 
-export default function SchoolDashboards({ authState, onSignOut }: SchoolDashboardsProps) {
+export default function SchoolDashboards({ authState, activeClassCode, onSignOut }: SchoolDashboardsProps) {
+  // Defensive check and fallback for activeClassCode from props or authState
+  const safeClassCode = activeClassCode ?? authState.classCode ?? null;
+
   return (
     <div className="min-h-full bg-white backdrop-blur-md p-4 md:p-8 text-deep-navy relative overflow-hidden font-sans pt-24 animate-fade-in">
       {/* Background Orbs */}
@@ -33,6 +38,7 @@ export default function SchoolDashboards({ authState, onSignOut }: SchoolDashboa
               teacherId={authState.userId || ''}
               teacherEmail={authState.email || authState.username || ''}
               teacherName={authState.realName || 'Teacher'}
+              activeClassCode={safeClassCode}
               onSignOut={onSignOut}
             />
           </motion.div>
