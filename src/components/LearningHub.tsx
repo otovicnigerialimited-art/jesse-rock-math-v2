@@ -25,7 +25,7 @@ const LESSONS: Lesson[] = [
   },
   {
     id: '4',
-    title: 'Long Division Arena',
+    title: 'Long Division pitch',
     description: 'Master step-by-step long division using the DMSB method.',
     content: 'Long division involves finding how many times a divisor fits into parts of a dividend, subtracting, and bringing down the next digit.',
     category: 'Arithmetic',
@@ -538,7 +538,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
               <div className="bg-sunny-yellow/10 border border-deep-navy/30 p-4 rounded-2xl text-center space-y-2">
                 <h4 className="font-black text-sm text-deep-navy">Rock on with this new topic!</h4>
                 <p className="text-xs text-slate-700 leading-relaxed">
-                  You're exploring advanced arenas. Take a moment to think critically about the mathematical concepts required here. There are no limits to what you can conquer in the Striker Arena!
+                  You're exploring advanced pitches. Take a moment to think critically about the mathematical concepts required here. There are no limits to what you can conquer in the Striker pitch!
                 </p>
                 <div className="text-4xl py-4 animate-bounce">⚽</div>
                 <p className="text-xs font-bold text-brand-secondary">Ready to test your skills? Jump into the battle below!</p>
@@ -918,7 +918,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                   </div>
                 )}
 
-                {/* 4. Long Division Arena Teaching view */}
+                {/* 4. Long Division pitch Teaching view */}
                 {selectedLesson.id === '4' && (
                   <div className="space-y-6">
                     <h3 className="text-lg font-black text-deep-navy">🚀 DMSB Simulator</h3>
@@ -1118,7 +1118,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                       <div className="text-6xl animate-bounce">🚀</div>
                       <h4 className="font-black text-xl text-deep-navy">Ready for {selectedLesson.title}?</h4>
                       <p className="text-sm font-medium text-slate-700 max-w-sm mx-auto leading-relaxed">
-                        Mastering {selectedLesson.category.toLowerCase()} concepts requires focus. The Striker Arena awaits your arrival. Press the "Start Quiz Battle" button to begin your journey!
+                        Mastering {selectedLesson.category.toLowerCase()} concepts requires focus. The Striker pitch awaits your arrival. Press the "Start Quiz Battle" button to begin your journey!
                       </p>
                     </div>
                   </div>
@@ -1344,7 +1344,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                 <div className="w-10 h-10 rounded-xl bg-brand-secondary/20 flex items-center justify-center border-2 border-deep-navy shrink-0">
                   <Play size={18} fill="currentColor" className="text-brand-secondary" />
                 </div>
-                <h4 className="text-sm font-black text-deep-navy">2. Quiz Battle Arena ⚔️</h4>
+                <h4 className="text-sm font-black text-deep-navy">2. Quiz Battle pitch ⚔️</h4>
                 <p className="text-xs text-slate-700 leading-relaxed">
                   Ready to prove your skills? Click the <strong>"Start Quiz Battle"</strong> button inside a topic to launch a targeted 20-question mental battle designed to lock in your math muscle memory.
                 </p>
@@ -1370,7 +1370,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                 </h4>
                 <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4 leading-relaxed font-medium">
                   <li><strong>+10 Streaks Booster:</strong> Awarded instantly upon passing any topic quiz with 15+ score!</li>
-                  <li><strong>Rock Tokens:</strong> Earn golden tokens to spend in the official <strong>Club Shop</strong> for premium avatar cases and badge themes.</li>
+                  <li><strong>Match Tokens:</strong> Earn golden tokens to spend in the official <strong>Club Shop</strong> for premium avatar cases and badge themes.</li>
                   <li><strong>Experience Points (XP):</strong> Accumulate XP with every correct answer to skyrocket up the global school leaderboards.</li>
                 </ul>
               </div>

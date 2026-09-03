@@ -371,7 +371,7 @@ export default function ParentDashboard({ currentParent, parentId, parentName, o
                         <Award size={18} className="text-purple-400" />
                       </div>
                       <div className="text-2xl font-black text-purple-400">{selectedChild.highScore || 0} pts</div>
-                      <p className="text-[10px] text-slate-500">Arena Best</p>
+                      <p className="text-[10px] text-slate-500">pitch Best</p>
                     </div>
 
                     <div className="p-5 bg-slate-900 border border-slate-800 rounded-2xl space-y-2">
@@ -592,7 +592,7 @@ export default function ParentDashboard({ currentParent, parentId, parentName, o
                       <div className="relative">
                         <div className="absolute -left-[31px] top-0 w-4 h-4 bg-purple-500 rounded-full border-2 border-slate-900" />
                         <div className="text-xs font-bold text-purple-400">Yesterday</div>
-                        <div className="text-sm font-bold text-white">Live Classroom Arena Victory</div>
+                        <div className="text-sm font-bold text-white">Live Classroom pitch Victory</div>
                         <p className="text-xs text-slate-400">Placed 1st in speed calculation battle.</p>
                       </div>
                     </div>

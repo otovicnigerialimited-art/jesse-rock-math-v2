@@ -119,7 +119,7 @@ export default function AboutSection() {
           <GigLevelCard stage="Youth Academy Debut" levels="Levels 1 – 3" desc="Primary calculation speed, basic addition, subtraction, and place value fundamentals." />
           <GigLevelCard stage="Local Legend" levels="Levels 4 – 7" desc="Times tables fluency, division, decimals, fractions, and mental word problems." />
           <GigLevelCard stage="Main Stage Striker" levels="Levels 8 – 12" desc="Multi-step reasoning, algebra, geometry, ratios, and percentage conversions." />
-          <GigLevelCard stage="Hall of Famer" levels="Levels 13+" desc="Advanced problem-solving, SATs mastery, and global multiplayer arena leadership." />
+          <GigLevelCard stage="Hall of Famer" levels="Levels 13+" desc="Advanced problem-solving, SATs mastery, and global multiplayer pitch leadership." />
         </div>
 
         <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -165,7 +165,7 @@ export default function AboutSection() {
             <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Dynamic Fraction Bars, Pie Visualizers &amp; Place Value Charts</li>
             <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Step-by-step worked examples with guided self-check exercises</li>
             <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Spaced repetition diagnostic engine that targets personal weak spots</li>
-            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Real-time multiplayer striker speed duels and live arena matches</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Real-time multiplayer striker speed duels and live pitch matches</li>
           </ul>
         </div>
       </div>

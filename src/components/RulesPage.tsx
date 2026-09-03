@@ -24,7 +24,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
     {
       icon: <Activity className="text-violet-700" size={24} />,
       title: "Real-Time Direct Matchmaking",
-      desc: "Instant live matchmaking! When you enter the play arena queue, the system connects you with any active strikers online. If no one's around, you can practice your speeds as you prepare for global domination!"
+      desc: "Instant live matchmaking! When you enter the play pitch queue, the system connects you with any active strikers online. If no one's around, you can practice your speeds as you prepare for global domination!"
     },
     {
       icon: <Flame className="text-orange-700" size={24} />,
@@ -69,7 +69,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
           How It Works & Game <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-700 to-indigo-700">Rules</span>
         </h1>
         <p className="text-deep-navy text-sm leading-relaxed">
-          Jesse Math FC Arena combines striker energy with core math principles. Learn how to train your speed and score points effectively.
+          Jesse Math FC pitch combines striker energy with core math principles. Learn how to train your speed and score points effectively.
         </p>
       </div>
 
@@ -157,7 +157,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
               onClick={() => onNavigateToTab('quiz')}
               className="flex-1 sm:flex-initial px-5 py-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-clean-white font-black text-xs uppercase tracking-widest rounded-xl transition-all cursor-pointer shadow-lg shadow-violet-600/20"
             >
-              Battle Arena
+              Battle pitch
             </button>
           </div>
         </div>

@@ -59,10 +59,10 @@ export default function NextGigCard({
     bgGradient = 'from-amber-900 to-slate-900';
     icon = Target;
   } else {
-    title = 'Live Arena Multiplication Battle';
+    title = 'Live pitch Multiplication Battle';
     badge = 'High Performance';
-    desc = 'Your accuracy is strong across all domains! Jump into the Arena to compete live against peers.';
-    ctaText = 'Enter Arena Battle →';
+    desc = 'Your accuracy is strong across all domains! Jump into the pitch to compete live against peers.';
+    ctaText = 'Enter pitch Battle →';
     actionFn = onStartQuiz;
     bgGradient = 'from-emerald-900 to-slate-900';
     icon = Trophy;

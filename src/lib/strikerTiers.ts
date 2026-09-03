@@ -13,7 +13,7 @@ export interface StrikerTier {
   borderColor: string;
 }
 
-export const ROCKSTAR_TIERS: StrikerTier[] = [
+export const STRIKER_TIERS: StrikerTier[] = [
   {
     tierNumber: 1,
     id: 'rookie',
@@ -115,15 +115,15 @@ export const ROCKSTAR_TIERS: StrikerTier[] = [
 ];
 
 export function getCurrentStrikerTier(xp: number, level: number): StrikerTier {
-  for (let i = ROCKSTAR_TIERS.length - 1; i >= 0; i--) {
-    const tier = ROCKSTAR_TIERS[i];
+  for (let i = STRIKER_TIERS.length - 1; i >= 0; i--) {
+    const tier = STRIKER_TIERS[i];
     if (xp >= tier.minXp || level >= tier.minLevel) {
       return tier;
     }
   }
-  return ROCKSTAR_TIERS[0];
+  return STRIKER_TIERS[0];
 }
 
 export function getNextStrikerTier(currentTierNumber: number): StrikerTier | null {
-  return ROCKSTAR_TIERS.find(t => t.tierNumber === currentTierNumber + 1) || null;
+  return STRIKER_TIERS.find(t => t.tierNumber === currentTierNumber + 1) || null;
 }

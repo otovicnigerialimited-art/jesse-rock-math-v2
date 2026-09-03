@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ROCKSTAR_MINDSET_QUOTES } from '../../data/satsData';
+import { CHAMPION_MINDSET_QUOTES } from '../../data/satsData';
 import { 
   Heart, 
   Sparkles, 
@@ -44,7 +44,7 @@ export default function SatsMindset({ onOpenCalmBreathing }: SatsMindsetProps) {
 
       {/* Mindset Affirmations Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {ROCKSTAR_MINDSET_QUOTES.map((item, idx) => (
+        {CHAMPION_MINDSET_QUOTES.map((item, idx) => (
           <div
             key={idx}
             className="p-6 rounded-3xl bg-white border-3 border-indigo-900/30 hover:border-indigo-900 shadow-md space-y-3 transition-all"

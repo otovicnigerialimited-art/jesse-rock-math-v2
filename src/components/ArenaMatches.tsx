@@ -92,7 +92,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
             { title: "Speed Demon", icon: "⚡", desc: "Solved 20 problems in under 90s" },
             { title: "Table Master", icon: "⚽", desc: "Achieved 100% precision in 12x tables" },
             { title: "Streak Legend", icon: "🔥", desc: "Maintained a 10-day practice streak" },
-            { title: "Arena Champion", icon: "👑", desc: "Won multiplayer math duel" }
+            { title: "Pitch Champion", icon: "👑", desc: "Won multiplayer math duel" }
           ],
           topCategories: [
             { name: "Multiplication (12x)", score: "98% Accuracy" },
@@ -108,7 +108,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
           badges: [
             { title: "Math Striker", icon: "⚽", desc: "Completed 350+ equations" },
             { title: "Precision Pro", icon: "🎯", desc: "Zero mistakes in recent duels" },
-            { title: "Arena Rival", icon: "⚡", desc: "Active multiplayer competitor" }
+            { title: "Pitch Rival", icon: "⚡", desc: "Active multiplayer competitor" }
           ],
           topCategories: [
             { name: "Advanced Multiplication", score: "97% Accuracy" },
@@ -146,8 +146,8 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
       for (let entry of entries) {
         const { width, height } = entry.contentRect;
         if (containerRef.current) {
-          containerRef.current.style.setProperty('--arena-width', `${width}px`);
-          containerRef.current.style.setProperty('--arena-height', `${height}px`);
+          containerRef.current.style.setProperty('--pitch-width', `${width}px`);
+          containerRef.current.style.setProperty('--pitch-height', `${height}px`);
         }
       }
     });
@@ -368,7 +368,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
         const arenaQuestions = generateArenaQuestions();
         setQuestions(arenaQuestions);
 
-        // Create the official active arena match document
+        // Create the official active pitch match document
         const gameRoomRef = doc(db, "arena_games", activeGameId);
         try {
           await setDoc(gameRoomRef, {
@@ -760,15 +760,15 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-3xl font-display font-black text-deep-navy flex items-center gap-2">
-            <Trophy className="text-amber-400" /> MULTIPLAYER ARENA 🏟️
+            <Trophy className="text-amber-400" /> MULTIPLAYER PITCH 🏟️
           </h2>
           <div className="flex flex-col gap-2">
             <p className="text-slate-700 text-xs">Real-time competitive math battle ground by Jesse Math FC!</p>
             <div className="bg-white/5 border border-slate-200 p-4 rounded-xl mt-2 text-left max-w-xl">
-              <h3 className="font-bold text-deep-navy mb-2">Play Arena Rules</h3>
+              <h3 className="font-bold text-deep-navy mb-2">Match Arena Rules</h3>
               <ul className="text-sm text-deep-navy/70 space-y-4 font-bold list-decimal pl-4">
                 <li>
-                  <strong>Speed Scoring:</strong> In the Arena, speed is just as critical as accuracy. While getting the correct answer is required, the time taken to submit that answer directly influences your performance rating and score for that specific problem. Aim to solve and submit as rapidly as possible to maximize your score.
+                  <strong>Speed Scoring:</strong> In the pitch, speed is just as critical as accuracy. While getting the correct answer is required, the time taken to submit that answer directly influences your performance rating and score for that specific problem. Aim to solve and submit as rapidly as possible to maximize your score.
                 </li>
                 <li>
                   <strong>Streak Chains:</strong> The secret to massive experience point (XP) growth lies in building 'Streak Chains'. Every consecutive correct answer you submit adds to your streak and increases your score multiplier. However, be careful—a single incorrect answer will immediately break your streak, resetting your multiplier back to the base value and forcing you to start building your chain again.
@@ -801,7 +801,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               onClick={onExit}
               className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-slate-700 hover:text-deep-navy transition-all text-xs font-bold flex items-center gap-1.5 cursor-pointer"
             >
-              <ArrowLeft size={14} /> Exit Arena
+              <ArrowLeft size={14} /> Exit Pitch
             </button>
           )}
         </div>
@@ -813,7 +813,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
         {/* VIEW A: IDLE ENTRY PORTAL */}
         {gameState === 'idle' && (
           <div className="space-y-8 animate-fadeIn">
-            {/* Play Arena Custom Welcome Box */}
+            {/* Match Arena Custom Welcome Box */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -825,7 +825,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                     <Zap className="text-brand-primary animate-bounce" size={24} />
                   </div>
                   <div>
-                    <h3 className="text-lg font-display font-black text-deep-navy">Welcome to the Play Arena! 🏟️</h3>
+                    <h3 className="text-lg font-display font-black text-deep-navy">Welcome to the Match Arena! 🏟️</h3>
                     <p className="text-xs font-black text-slate-700 italic">"Fire up your fingers and sharpen your mental math reflexes!"</p>
                   </div>
                 </div>
@@ -838,7 +838,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               </div>
 
               <p className="text-xs text-slate-700 leading-relaxed">
-                The <strong>Play Arena</strong> is your lightning-fast, high-octane math warm-up ground! Built for maximum speed, this arena throws a rapid-fire mix of random equations at you to test your accuracy and calculation pacing. Whether you are jumping into a live, real-time classroom duel with your friends or conditioning your brain in solo training, the arena forces you to think fast on your feet.
+                The <strong>Match Arena</strong> is your lightning-fast, high-octane math warm-up ground! Built for maximum speed, this pitch throws a rapid-fire mix of random equations at you to test your accuracy and calculation pacing. Whether you are jumping into a live, real-time classroom duel with your friends or conditioning your brain in solo training, the pitch forces you to think fast on your feet.
               </p>
 
               <div className="p-4 bg-white/60 border-2 border-deep-navy rounded-2xl space-y-1">
@@ -977,7 +977,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               <span className="text-[10px] uppercase font-black bg-white/5 px-3 py-1 rounded-full text-brand-accent tracking-widest animate-pulse">
                 PLUGGING INTO THE CLOUD CORES...
               </span>
-              <h3 className="text-xl font-black text-deep-navy">Searching Arena for a live Challenger</h3>
+              <h3 className="text-xl font-black text-deep-navy">Searching Pitch for a live Challenger</h3>
               <p className="text-slate-700 text-xs leading-normal">
                 Connecting to Jesse Math FC servers. If no one else is currently in the matchmaking queue, we'll keep your lobby active until a challenger enters!
               </p>
@@ -1012,7 +1012,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               {warmupSeconds}
             </div>
             <div className="space-y-2">
-              <h3 className="text-3xl font-black text-deep-navy">GET READY TO ROCK! ⚽</h3>
+              <h3 className="text-3xl font-black text-deep-navy">GET READY TO PLAY! ⚽</h3>
               <p className="text-sm font-bold text-slate-700">Both players are paired. The 5-minute math timer starts in...</p>
             </div>
             <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs font-mono font-black text-amber-600 uppercase tracking-widest inline-block">
@@ -1206,7 +1206,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                 <Trophy size={40} />
               </div>
               <h3 className="text-3xl font-display font-black tracking-tight text-deep-navy mt-4 uppercase">
-                {isSolo ? "SOLO WARM-UP CONCLUDED" : "ARENA BATTLE CONCLUDED"}
+                {isSolo ? "SOLO WARM-UP CONCLUDED" : "PITCH BATTLE CONCLUDED"}
               </h3>
               <p className="text-slate-700 text-xs">
                 {isSolo ? "You completed a high-octane mental math speed warm-up!" : "A grand competition took place between real mathematicians."}
@@ -1231,7 +1231,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               /* Multiplayer Winner Display Panel */
               <div className="p-6 bg-white backdrop-blur-sm/80 rounded-[2.5rem] border border-slate-200 max-w-md mx-auto space-y-4">
                 <div>
-                  <span className="text-[10px] uppercase font-black text-slate-500 tracking-wider">ARENA CHAMPION</span>
+                  <span className="text-[10px] uppercase font-black text-slate-500 tracking-wider">PITCH CHAMPION</span>
                   {winnerName === 'Draw' || winnerName === 'Tie' ? (
                     <h4 className="text-3xl font-display font-black text-amber-400">IT'S A DRAW! ⚡</h4>
                   ) : (

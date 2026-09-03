@@ -941,7 +941,7 @@ export const SATS_EXAM_GUIDE = {
 };
 
 // Positive Striker Mindset & Growth Affirmations
-export const ROCKSTAR_MINDSET_QUOTES = [
+export const CHAMPION_MINDSET_QUOTES = [
   {
     quote: "You don't need to know everything today. You just need to keep practising.",
     category: "Perseverance"

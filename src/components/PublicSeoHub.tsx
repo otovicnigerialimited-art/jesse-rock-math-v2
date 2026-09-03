@@ -9,7 +9,7 @@ import {
 import ReviewStatsSection from './ReviewStatsSection';
 
 type SchemaTab = 'software' | 'faq' | 'course' | 'reviews' | 'organization';
-type ArchitectureTab = 'multiplication' | 'arena' | 'rocktour' | 'diagnostics' | 'sats' | 'teacher' | 'parent' | 'security';
+type ArchitectureTab = 'multiplication' | 'pitch' | 'rocktour' | 'diagnostics' | 'sats' | 'teacher' | 'parent' | 'security';
 
 export default function PublicSeoHub() {
   const [copiedSchema, setCopiedSchema] = useState(false);
@@ -68,7 +68,7 @@ export default function PublicSeoHub() {
       "name": "What is Jesse Math FC?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Jesse Math FC is a zero-lag interactive EdTech math learning platform and multiplayer game engine offering rapid mental arithmetic calculation drills, 1v1 arenas, gamified career tours, and KS2 SATs revision."
+        "text": "Jesse Math FC is a zero-lag interactive EdTech math learning platform and multiplayer game engine offering rapid mental arithmetic calculation drills, 1v1 pitches, gamified career tours, and KS2 SATs revision."
       }
     },
     {
@@ -135,7 +135,7 @@ export default function PublicSeoHub() {
   "@id": "https://jesse-math-striker-app.vercel.app/#organization",
   "name": "Jesse Math FC",
   "alternateName": "Jesse Math FC EdTech",
-  "description": "Jesse Math FC is the ultimate premium gamified EdTech platform designed for primary schools. We provide 1v1 live multiplayer math arenas, zero-lag calculation speed drills, UK KS2 SATs exam prep simulators, and comprehensive teacher dashboards to guarantee mathematical mastery and eliminate hesitation.",
+  "description": "Jesse Math FC is the ultimate premium gamified EdTech platform designed for primary schools. We provide 1v1 live multiplayer math pitches, zero-lag calculation speed drills, UK KS2 SATs exam prep simulators, and comprehensive teacher dashboards to guarantee mathematical mastery and eliminate hesitation.",
   "slogan": "The #1 Zero-Lag Multiplayer Math Platform for Kids",
   "knowsAbout": ["Mathematics Education", "EdTech", "Primary School Math", "Mental Arithmetic", "KS2 SATs"],
   "url": "https://jesse-math-striker-app.vercel.app/",
@@ -196,8 +196,8 @@ export default function PublicSeoHub() {
       ],
       technicalDetails: 'The arithmetic pipeline utilizes a deterministic pseudo-random shuffling algorithm with weighted repeat prevention. When a scholar hesitates on a specific fact family (e.g., 7 × 8), the input buffer timestamp registers the delay and registers the fact within the short-term retry buffer.'
     },
-    arena: {
-      title: '1v1 Real-Time Multiplayer Arena & Matchmaking Protocol',
+    pitch: {
+      title: '1v1 Real-Time Multiplayer pitch & Matchmaking Protocol',
       badge: 'Zero-Lag Networking',
       icon: Zap,
       color: 'rose',
@@ -348,8 +348,8 @@ export default function PublicSeoHub() {
       a: 'Yes, 100%. Jesse Math FC is committed to educational equity. All core game modes, teacher dashboard lobbies, student access PINs, diagnostic analytics, and avatar items in the Club Shop are completely free. There are no subscriptions, freemium locks, or paid upgrades.'
     },
     {
-      q: 'How does the 1v1 Multiplayer Math Arena work without latency?',
-      a: 'The Multiplayer Arena uses lightweight delta state synchronization. Keystroke inputs are processed instantly on the client while scores synchronize continuously across connected peers. If a live classmate is not available, intelligent Elo-scaled simulation bots match the player’s speed, ensuring zero queue wait times.'
+      q: 'How does the 1v1 Multiplayer Math Pitch work without latency?',
+      a: 'The Multiplayer pitch uses lightweight delta state synchronization. Keystroke inputs are processed instantly on the client while scores synchronize continuously across connected peers. If a live classmate is not available, intelligent Elo-scaled simulation bots match the player’s speed, ensuring zero queue wait times.'
     },
     {
       q: 'How does Jesse Math FC prepare Year 4 students for the UK Statutory Multiplication Tables Check (MTC)?',
@@ -740,7 +740,7 @@ export default function PublicSeoHub() {
             See Jesse Math FC in Action!
           </h2>
           <p className="text-xs md:text-sm text-slate-300 max-w-xl mx-auto">
-            Discover how we turn times tables, mental calculation drills, and 1v1 multiplayer arenas into a thrilling striker journey.
+            Discover how we turn times tables, mental calculation drills, and 1v1 multiplayer pitches into a thrilling striker journey.
           </p>
         </div>
         <div className="aspect-video w-full max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-800 bg-black">

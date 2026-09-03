@@ -116,7 +116,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
             >
               {/* Security Watermark Background Pattern */}
               <div className="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center font-display font-black text-9xl tracking-widest text-amber-900 select-none uppercase">
-                MATH ROCKSTAR
+                MATH CHAMPION
               </div>
 
               {/* Ornate corner frames and gold foil flourish graphics */}
@@ -132,7 +132,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
               <div className="flex flex-col items-center gap-1.5 z-10 mt-1">
                 <div className="flex items-center gap-2 px-5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 border border-amber-500/30 text-amber-800 font-display font-black text-xs sm:text-sm uppercase tracking-[0.3em]">
                   <Trophy size={16} className="text-amber-600 fill-amber-500" />
-                  <span>JESSE MATH ROCKSTAR ACADEMY</span>
+                  <span>JESSE MATH FC ACADEMY</span>
                   <Sparkles size={16} className="text-amber-600" />
                 </div>
                 <p className="text-[9px] sm:text-[10px] text-amber-900/70 font-mono font-bold uppercase tracking-[0.25em]">

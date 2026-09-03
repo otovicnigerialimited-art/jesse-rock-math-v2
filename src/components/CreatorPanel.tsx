@@ -29,7 +29,7 @@ export default function CreatorPanel() {
     const trimmedInput = password.trim();
     if (trimmedInput === '321jessestriker') {
       setUnlocked(true);
-      setSuccess("Creator verification code matches! Welcome Back, Jesse! Rock on.");
+      setSuccess("Creator verification code matches! Welcome Back, Jesse! Game on.");
       setTimeout(() => setSuccess(null), 3000);
     } else {
       console.warn("Unauthorised Access Attempt on Jesse's Desk.");
@@ -129,7 +129,7 @@ export default function CreatorPanel() {
                 </h3>
                 <div className="space-y-2 font-mono text-[11px] text-deep-navy bg-white backdrop-blur-md border border-deep-navy border-4 p-4 rounded-xl">
                   <div className="flex justify-between">
-                    <span>Arena Host Version:</span>
+                    <span>pitch Host Version:</span>
                     <span className="text-emerald-400 font-bold">Live v2.1.0</span>
                   </div>
                   <div className="flex justify-between">

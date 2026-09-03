@@ -249,7 +249,7 @@ export default function ClubShop({ userId, role = 'student', onNavigateToTab }: 
       if (freshStreak < item.coin_cost) {
         setShakingCardId(item.id);
         playRockSound('error');
-        setErrorMessage("Train harder! Earn more streak in the Play Arena to unlock this!");
+        setErrorMessage("Train harder! Earn more streak in the Match Arena to unlock this!");
         
         // Remove shake after half a second
         setTimeout(() => setShakingCardId(null), 600);
@@ -356,7 +356,7 @@ export default function ClubShop({ userId, role = 'student', onNavigateToTab }: 
           </div>
           <div>
             <h1 className="text-2xl font-black text-deep-navy uppercase tracking-tight flex items-center gap-2">
-              Club Shop <span className="text-xs bg-brand-accent/20 text-brand-accent px-2.5 py-1 rounded-full border border-brand-accent/20">LIVE ARENA</span>
+              Club Shop <span className="text-xs bg-brand-accent/20 text-brand-accent px-2.5 py-1 rounded-full border border-brand-accent/20">LIVE pitch</span>
             </h1>
             <p className="text-xs text-slate-450 font-bold uppercase tracking-wider mt-0.5">
               Spend math coins earned from battles to power up your look!
@@ -387,7 +387,7 @@ export default function ClubShop({ userId, role = 'student', onNavigateToTab }: 
           <div className="p-6 rounded-3xl bg-clean-white border border-deep-navy border-4 flex flex-col items-center justify-center text-center space-y-5">
             <div className="space-y-1">
               <span className="text-[10px] bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-2.5 py-0.5 rounded-full uppercase font-black tracking-widest">
-                Arena Profile
+                pitch Profile
               </span>
               <h3 className="text-sm font-black text-deep-navy uppercase tracking-wider">Dynamic Striker Stage</h3>
             </div>
@@ -434,7 +434,7 @@ export default function ClubShop({ userId, role = 'student', onNavigateToTab }: 
                 onClick={() => onNavigateToTab('quiz')}
                 className="w-full py-3.5 bg-gradient-to-r from-brand-primary to-indigo-650 hover:opacity-90 font-black uppercase text-xs tracking-widest rounded-2xl transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-lg shadow-brand-primary/10"
               >
-                <Gamepad2 size={13} /> Earn More Streak In Arena <ChevronRight size={12} />
+                <Gamepad2 size={13} /> Earn More Streak In pitch <ChevronRight size={12} />
               </button>
             )}
           </div>

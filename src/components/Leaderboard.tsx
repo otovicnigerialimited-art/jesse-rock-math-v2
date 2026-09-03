@@ -545,10 +545,10 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
         
         <div className="relative z-10 space-y-4">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-primary/20 border border-brand-primary/30 rounded-full text-xs font-bold text-brand-primary uppercase tracking-wider animate-bounce">
-            <Trophy size={16} /> Global Arena Rankings
+            <Trophy size={16} /> Global Pitch Rankings
           </div>
           <h1 className="text-4xl md:text-6xl font-display font-black tracking-tight leading-none text-deep-navy">
-            ROCK <span className="text-brand-primary">LEADERBOARD</span>
+            GLOBAL <span className="text-brand-primary">LEADERBOARD</span>
           </h1>
           <div className="bg-white/5 border border-deep-navy border-4 p-4 rounded-xl mt-4 max-w-xl mx-auto text-left">
             <h3 className="font-bold text-deep-navy mb-2">Leaderboard Rules</h3>
@@ -840,7 +840,7 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
                     )}
                   </div>
                   <p className="text-[10px] sm:text-xs text-deep-navy font-medium mt-0.5 sm:mt-1">
-                    Active in arena matching pool
+                    Active in pitch matching pool
                   </p>
                 </div>
               </div>

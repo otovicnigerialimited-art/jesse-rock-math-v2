@@ -29,7 +29,7 @@ export const LESSONS: Lesson[] = [
   },
   {
     id: '4',
-    title: 'Long Division Arena',
+    title: 'Long Division Pitch',
     description: 'Master step-by-step long division using the DMSB method.',
     content: 'Long division involves finding how many times a divisor fits into parts of a dividend, subtracting, and bringing down the next digit.',
     category: 'Arithmetic',

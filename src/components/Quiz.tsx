@@ -214,7 +214,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
   if (!hasStarted) {
     return (
       <div className="max-w-2xl mx-auto space-y-8 animate-fadeIn">
-        {/* Play Arena Custom Welcome Card */}
+        {/* Match Arena Custom Welcome Card */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -229,7 +229,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
                 <Zap className="text-brand-primary animate-bounce" size={28} />
               </div>
               <div>
-                <h3 className="text-2xl font-display font-black text-deep-navy">Welcome to the Play Arena! 🏟️</h3>
+                <h3 className="text-2xl font-display font-black text-deep-navy">Welcome to the Match Arena! 🏟️</h3>
                 <p className="text-xs font-black text-slate-700 italic">"Fire up your fingers and sharpen your mental math reflexes!"</p>
               </div>
             </div>
@@ -243,7 +243,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
 
           {/* Paragraph explanation */}
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-semibold">
-            The <strong>Play Arena</strong> is your lightning-fast, high-octane math warm-up ground! Built for maximum speed, this arena throws a rapid-fire mix of random equations at you to test your accuracy and calculation pacing. Whether you are jumping into a live, real-time classroom duel with your friends or conditioning your brain in solo training, the arena forces you to think fast on your feet.
+            The <strong>Match Arena</strong> is your lightning-fast, high-octane math warm-up ground! Built for maximum speed, this pitch throws a rapid-fire mix of random equations at you to test your accuracy and calculation pacing. Whether you are jumping into a live, real-time classroom duel with your friends or conditioning your brain in solo training, the pitch forces you to think fast on your feet.
           </p>
 
           {/* Confidence reset rules active */}

@@ -67,7 +67,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can students play multiplayer match games?",
-    a: "Yes! Students can enter the Play Arena to join live multiplayer math challenges against peers, build streaks, and climb global leaderboards."
+    a: "Yes! Students can enter the Match Arena to join live multiplayer math challenges against peers, build streaks, and climb global leaderboards."
   },
   {
     q: "Is Jesse Math FC suitable for classrooms and teachers?",
@@ -405,7 +405,7 @@ export default function HomeLanding({
       <section className="p-8 md:p-12 rounded-[2.5rem] bg-gradient-to-r from-indigo-900 to-slate-900 text-white border-4 border-deep-navy space-y-6 shadow-xl">
         <div className="max-w-2xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full text-xs font-black uppercase tracking-wider">
-            <Users size={14} /> Real-Time Battle Arena
+            <Users size={14} /> Real-Time Battle pitch
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-black tracking-tight">
             Turn math practice into a competition.
@@ -415,10 +415,10 @@ export default function HomeLanding({
           </p>
           <div className="pt-2">
             <button
-              onClick={() => onNavigateToTab('arena')}
+              onClick={() => onNavigateToTab('pitch')}
               className="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow transition-all flex items-center gap-2 cursor-pointer"
             >
-              Enter Battle Arena <ArrowRight size={16} />
+              Enter Battle pitch <ArrowRight size={16} />
             </button>
           </div>
         </div>

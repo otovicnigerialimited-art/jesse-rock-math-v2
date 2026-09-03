@@ -5,7 +5,7 @@ import { Sparkles, Music, Zap, Flame, Award } from 'lucide-react';
 const ENCOURAGING_MESSAGES = [
   "You're shredding this math! ⚽⚡",
   "Lightning fast equations! Keep rocking!",
-  "Absolute rock legend in action! 🔥",
+  "Absolute football legend in action! 🔥",
   "Finger-tapping speed on those numbers!",
   "Keep that rhythm going! You got this!",
   "Groovy math calculation! 🌟",

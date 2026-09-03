@@ -475,8 +475,8 @@ export default function SmartNotificationsModal({
                   onClick={() => triggerTestAlert(
                     'learning',
                     'classUpdates',
-                    '📢 Live Class Arena Scheduled',
-                    'Your teacher scheduled a live math arena duel for tomorrow!'
+                    '📢 Live Class pitch Scheduled',
+                    'Your teacher scheduled a live math pitch duel for tomorrow!'
                   )}
                 />
                 <TestButton

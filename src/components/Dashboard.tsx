@@ -231,7 +231,7 @@ export default function Dashboard({
                       {Math.round((session.score / session.total) * 100)}%
                     </div>
                     <div>
-                      <p className="font-bold text-sm text-deep-navy">{session.arenaType || "Arena Session"}</p>
+                      <p className="font-bold text-sm text-deep-navy">{session.arenaType || "pitch Session"}</p>
                       <p className="text-xs text-slate-500 font-medium">
                         {session.date}
                         {session.difficulty && ` • ${session.difficulty.toUpperCase()}`}

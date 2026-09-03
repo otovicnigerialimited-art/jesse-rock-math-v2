@@ -57,7 +57,7 @@ export default function TermsPage() {
         style={{ fontFamily: 'Georgia, Cambria, "Times New Roman", Times, serif' }}
       >
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-950 mb-2 font-sans">
-          JESSE MATH ROCKSTAR
+          JESSE MATH FC
         </h1>
         <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 font-sans">
           TERMS OF SERVICE
@@ -89,7 +89,7 @@ export default function TermsPage() {
 
           {/* SECTION 1 */}
           <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
-            1. ABOUT JESSE MATH ROCKSTAR
+            1. ABOUT JESSE MATH FC
           </h3>
           <p>
             Jesse Math FC is an educational mathematics platform created to make learning and practising maths more interactive, useful and enjoyable.
@@ -721,7 +721,7 @@ export default function TermsPage() {
 
           {/* Document Footer */}
           <div className="pt-2 text-sm font-sans text-slate-800 space-y-1">
-            <h4 className="text-base font-bold text-slate-950">JESSE MATH ROCKSTAR</h4>
+            <h4 className="text-base font-bold text-slate-950">JESSE MATH FC</h4>
             <p><strong>Operated by:</strong> Jesse Otobo</p>
             <p><strong>Country:</strong> United Kingdom</p>
             <p><strong>Effective Date:</strong> 31 August 2026</p>

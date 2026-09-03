@@ -299,7 +299,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
   const [features, setFeatures] = useState([
     { id: 'leaderboard', name: 'Global Leaderboard System', valueBoost: 1500, deployed: true, logicDriver: 'onSnapshot_realtime' },
     { id: 'gemini', name: 'Gemini AI Real-time Math Prompts', valueBoost: 1200, deployed: true, logicDriver: 'gemini_flash_stream' },
-    { id: 'arena', name: 'Multiplayer Workout Arenas', valueBoost: 2000, deployed: true, logicDriver: 'firestore_lobby_sync' },
+    { id: 'pitch', name: 'Multiplayer Workout Pitches', valueBoost: 2000, deployed: true, logicDriver: 'firestore_lobby_sync' },
     { id: 'backend', name: 'Secure Backend Proxy (server.ts)', valueBoost: 800, deployed: true, logicDriver: 'express_ingress_node' }
   ]);
 
@@ -580,7 +580,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Failed to enter Jesse Math FC Arena. Check internet connection.");
+      setError(err.message || "Failed to enter Jesse Math FC Pitch. Check internet connection.");
     } finally {
       setLoading(false);
     }
@@ -848,7 +848,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               </h1>
               
               <p className="text-lg md:text-xl text-slate-600 max-w-xl font-normal leading-relaxed">
-                An elite educational platform engineered for mental acceleration. Replace anxiety with instant reflex through high-performance, live multiplayer calculation arenas.
+                An elite educational platform engineered for mental acceleration. Replace anxiety with instant reflex through high-performance, live multiplayer calculation pitches.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center gap-4 pt-4">
@@ -856,7 +856,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   onClick={() => setShowLanding(false)}
                   className="w-full sm:w-auto px-8 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded text-sm uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
                 >
-                  <Zap size={18} /> Initialize Arena
+                  <Zap size={18} /> Initialize Pitch
                 </button>
                 <button 
                   onClick={() => setShowLanding(false)}
@@ -968,7 +968,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 Jesse Math FC was founded on June 20, 2026, by visionary educator and developer <strong>Jesse Otobo</strong>. Witnessing how standard timed drills paralyzed young learners with math anxiety, Jesse set out to bridge the gap between high-octane arcade gaming and rigorous mathematics.
               </p>
               <p className="text-slate-600 leading-relaxed text-base">
-                What started as a simple mental arithmetic prototype rapidly evolved into an elite multiplayer EdTech arena trusted by classrooms worldwide, empowering thousands of students to master their arithmetic, algebra, and fractions without fear.
+                What started as a simple mental arithmetic prototype rapidly evolved into an elite multiplayer EdTech pitch trusted by classrooms worldwide, empowering thousands of students to master their arithmetic, algebra, and fractions without fear.
               </p>
               <div className="flex items-center gap-4 pt-2">
                 <div className="flex -space-x-2">
@@ -1576,7 +1576,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             
             <div className="space-y-1">
               <h1 className="text-2xl font-bold tracking-tight text-slate-900 leading-none">
-                Math Arena
+                Math Pitch
               </h1>
               <p className="text-sm text-slate-500 font-medium tracking-wide uppercase">
                 Enterprise Education Portal
@@ -1785,7 +1785,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                     disabled={loading}
                     className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-emerald-600/20"
                   >
-                    {loading ? "Authenticating..." : "Enter School Arena"}
+                    {loading ? "Authenticating..." : "Enter School Pitch"}
                   </button>
                 </form>
               )}
@@ -1824,7 +1824,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                           <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                           <input
                             type="text"
-                            placeholder="e.g. MasonRock"
+                            placeholder="e.g. MasonStriker"
                             value={classStudentName}
                             onChange={(e) => setClassStudentName(e.target.value)}
                             className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
@@ -2088,7 +2088,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                       <Mail size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
                       <input
                         type="email"
-                        placeholder="teacher@jesserock.edu"
+                        placeholder="teacher@jessemathfc.edu"
                         value={teacherEmailSignup}
                         onChange={(e) => setTeacherEmailSignup(e.target.value)}
                         className="w-full pl-9 pr-3 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"

@@ -160,7 +160,7 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
                 <GraduationCap className="text-brand-secondary" size={24} />
               </div>
               <div>
-                <h3 className="text-lg font-display font-black text-deep-navy">Welcome to the Learn Arena! 💡</h3>
+                <h3 className="text-lg font-display font-black text-deep-navy">Welcome to the Learn pitch! 💡</h3>
                 <p className="text-xs text-slate-700 font-bold">The ultimate mathematical speed-training laboratory.</p>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
           </div>
 
           <p className="text-xs text-slate-700 leading-relaxed">
-            The <strong>Learn Arena</strong> is designed for testing your mental math speed! While you can fully customize custom math training sessions right here, we highly recommend mastering individual concepts step-by-step first.
+            The <strong>Learn pitch</strong> is designed for testing your mental math speed! While you can fully customize custom math training sessions right here, we highly recommend mastering individual concepts step-by-step first.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4 pt-1">
@@ -203,7 +203,7 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
           <div className="text-center space-y-2">
             <h2 className="text-3xl sm:text-4xl font-display font-black tracking-tight text-deep-navy flex items-center justify-center gap-3">
               <Settings className="text-violet-400 animate-spin" style={{ animationDuration: '6s' }} size={32} />
-              Learn Arena Settings
+              Learn pitch Settings
             </h2>
             <p className="text-sm text-slate-700 max-w-lg mx-auto">
               Configure your ultimate personalized mathematical training session. Choose your difficulty level and specific arithmetic disciplines.
@@ -295,7 +295,7 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
               className="w-full py-4 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-deep-navy font-black uppercase tracking-widest rounded-2xl shadow-xl hover:shadow-violet-500/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
             >
               <Play size={18} fill="currentColor" />
-              Enter Training Arena (20 Questions)
+              Enter Training pitch (20 Questions)
             </button>
           </div>
         </div>

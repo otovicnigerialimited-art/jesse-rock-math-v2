@@ -69,7 +69,7 @@ export default function StudentLoginCardsModal({
                 <div className="flex items-center justify-between border-b border-slate-800 print:border-slate-300 pb-2">
                   <div className="flex items-center gap-2">
                     <span className="text-xl">⚽</span>
-                    <span className="font-black text-xs uppercase tracking-wider text-amber-400 print:text-black">JESSE MATH ROCKSTAR</span>
+                    <span className="font-black text-xs uppercase tracking-wider text-amber-400 print:text-black">JESSE MATH FC</span>
                   </div>
                   <span className="text-[10px] font-bold bg-slate-800 print:bg-slate-200 px-2 py-0.5 rounded text-slate-300 print:text-black">
                     {className}

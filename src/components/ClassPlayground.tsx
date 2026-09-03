@@ -268,7 +268,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
               <div className="text-left">
                 <p className="text-[10px] font-black uppercase text-deep-navy/60 font-mono">NEW REACTION!</p>
                 <p className="text-xs font-black text-deep-navy">
-                  <span className="text-violet-700">@{rx.from}</span> sent you a rock signal!
+                  <span className="text-violet-700">@{rx.from}</span> sent you a match signal!
                 </p>
               </div>
             </motion.div>
@@ -406,7 +406,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
               className="w-full py-3 bg-gradient-to-r from-yellow-400 to-amber-500 hover:brightness-110 text-deep-navy border border-deep-navy border-2 font-black uppercase text-xs tracking-wider rounded-xl flex items-center justify-center gap-2 shadow transition-all active:scale-95 cursor-pointer"
             >
               <Play size={13} />
-              ENTER MATH ARENA 🏆
+              ENTER MATH PITCH 🏆
             </button>
           </div>
         </div>
@@ -690,7 +690,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
             )}
           </div>
 
-          {/* Section D: Multiplayer Arena Challenge Card */}
+          {/* Section D: Multiplayer pitch Challenge Card */}
           <div className="bg-gradient-to-br from-violet-600 via-indigo-600 to-indigo-700 border border-deep-navy border-4 rounded-3xl p-5 text-white text-left shadow-lg space-y-4 relative overflow-hidden">
             <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-white/5 rounded-full blur-xl pointer-events-none" />
             <div className="absolute -left-6 -top-6 w-20 h-20 bg-pink-500/10 rounded-full blur-xl pointer-events-none" />
@@ -700,7 +700,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
                 ⚔️ CLASSROOM MULTIPLAYER
               </span>
               <h3 className="text-md font-black uppercase tracking-tight text-white pt-1">
-                Math Battle Arena
+                Math Battle pitch
               </h3>
               <p className="text-[11px] text-slate-200 leading-relaxed font-semibold">
                 Launch a live multiplayer math match! Play directly with your logged-in classmates, race the clock, and grab major bragging rights!
@@ -708,7 +708,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
             </div>
 
             <button
-              onClick={() => onNavigateToTab && onNavigateToTab('arena')}
+              onClick={() => onNavigateToTab && onNavigateToTab('pitch')}
               className="w-full py-3 bg-white hover:bg-slate-50 text-indigo-700 font-black uppercase text-xs tracking-wider border border-deep-navy border-2 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
             >
               <Globe size={13} className="animate-spin-slow" />

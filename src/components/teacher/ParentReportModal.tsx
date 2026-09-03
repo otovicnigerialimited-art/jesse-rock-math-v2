@@ -54,7 +54,7 @@ export default function ParentReportModal({ isOpen, onClose, student, className 
         {/* Printable Parent Report Sheet */}
         <div className="overflow-y-auto flex-1 space-y-5 p-2 font-sans">
           <div className="p-5 bg-slate-950 print:bg-slate-100 rounded-2xl border border-slate-800 print:border-slate-300 space-y-2 text-center">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 print:text-indigo-600">JESSE MATH ROCKSTAR • CLASSROOM REPORT</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400 print:text-indigo-600">JESSE MATH FC • CLASSROOM REPORT</span>
             <h2 className="text-2xl font-black text-white print:text-black">{student.real_first_name}'s Math Learning Summary</h2>
             <p className="text-xs text-slate-400 print:text-slate-600">Class: {className} • Date: {new Date().toLocaleDateString()}</p>
           </div>

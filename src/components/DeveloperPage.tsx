@@ -102,7 +102,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
         ratingComment = "Rated 2 out of 5 stars! ⭐⭐ I will keep practicing!";
         break;
       case 1:
-        ratingComment = "Rated 1 out of 5 stars! ⭐ Needs more rock!";
+        ratingComment = "Rated 1 out of 5 stars! ⭐ Needs more football!";
         break;
       default:
         ratingComment = `Rated ${starRating} out of 5 stars!`;
@@ -187,7 +187,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
           MEET THE <span className="bg-gradient-to-r from-cyan-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">DEVELOPER</span>
         </h1>
         <p className="text-sm sm:text-base text-slate-850 max-w-2xl mx-auto font-bold leading-relaxed">
-          Jesse Math FC Arena was designed, coded, and deployed by Jesse Otobo (11-year-old developer). Learn about Jesse's journey and leave an encouraging word below!
+          Jesse Math FC Pitch was designed, coded, and deployed by Jesse Otobo (11-year-old developer). Learn about Jesse's journey and leave an encouraging word below!
         </p>
       </motion.div>
 
@@ -729,7 +729,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
                         </span>
                       ) : (
                         <span className="px-1.5 bg-cyan-500/10 border border-cyan-500/20 text-cyan-700 text-[7px] font-mono font-black rounded uppercase py-0.5 leading-none">
-                          ROCKSTAR
+                          CHAMPION
                         </span>
                       )}
                     </span>

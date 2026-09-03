@@ -99,7 +99,7 @@ export default function ChildSafetyModal({
             <MessageSquare size={14} className="text-indigo-600" /> Presets-Only Multiplayer Chat
           </h4>
           <p className="text-xs text-slate-500 font-medium">
-            To prevent inappropriate text or sharing of personal data, public match arenas strictly allow pre-approved safe quick chat messages:
+            To prevent inappropriate text or sharing of personal data, public Match Arenaes strictly allow pre-approved safe quick chat messages:
           </p>
           <div className="flex flex-wrap gap-1.5 pt-1">
             {SAFE_QUICK_CHATS.map((msg, idx) => (

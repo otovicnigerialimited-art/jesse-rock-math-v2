@@ -104,7 +104,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const pathName = location.pathname.substring(1) || 'home';
-  const validTabs = ['home', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'arena', 'sats', 'spaced_practice'];
+  const validTabs = ['home', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'pitch', 'sats', 'spaced_practice'];
   const activeTab = validTabs.includes(pathName) ? pathName : 'home';
   const setActiveTab = (tab: any) => {
     navigate(tab === 'home' ? '/' : `/${tab}`);
@@ -162,7 +162,7 @@ export default function App() {
         'motivation',
         'peerUpdates',
         '⚡ Live Speed Duel Challenge!',
-        'Alex just challenged you to a 60-second multiplication duel in the Multiplayer Arena!'
+        'Alex just challenged you to a 60-second multiplication duel in the Multiplayer Pitch!'
       );
     }, 6000);
 
@@ -542,7 +542,7 @@ export default function App() {
           isAuthenticated: true,
           isChecking: false,
           isCookieBlocked: false,
-          message: `Welcome to Jesse Rock, ${uname}!`,
+          message: `Welcome to Jesse Math FC, ${uname}!`,
           username: uname,
           role: 'individual',
           userId: deviceId
@@ -972,7 +972,7 @@ export default function App() {
       score: score,
       total: total,
       difficulty: difficulty,
-      arenaType: 'Learning Arena',
+      arenaType: 'Learning pitch',
       sections: sections
     };
 
@@ -1105,7 +1105,7 @@ export default function App() {
       score: score,
       total: total,
       difficulty: 'hard' as Difficulty,
-      arenaType: 'Play Arena',
+      arenaType: 'Match Arena',
       sections: ['Addition', 'Subtraction', 'Multiplication']
     };
 
@@ -1335,9 +1335,9 @@ export default function App() {
         { id: 'hub', label: 'Learning Hub', icon: BookOpen },
         { id: 'sats', label: '🎓 KS2 SATs Prep Hub', icon: GraduationCap },
         { id: 'survey', label: '📊 Survey Hub', icon: BarChart3 },
-        { id: 'quiz', label: 'Play Arena', icon: Trophy },
-        { id: 'learn', label: 'Learn Arena', icon: BookOpen },
-        { id: 'arena', label: 'Multiplayer Arena', icon: LogoIcon },
+        { id: 'quiz', label: 'Match Arena', icon: Trophy },
+        { id: 'learn', label: 'Learn Pitch', icon: BookOpen },
+        { id: 'pitch', label: 'Multiplayer Pitch', icon: LogoIcon },
         { id: 'badges', label: 'Badges & Quests', icon: Star },
         { id: 'rules', label: 'How It Works & Rules', icon: HelpCircle },
         { id: 'terms', label: 'Terms & Policies', icon: FileText },
@@ -1390,8 +1390,8 @@ export default function App() {
               <div className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0 block">
                 <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math FC Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
-              <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE ROCK<br />
-                <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>
+              <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE MATH<br />
+                <span className="text-action-orange text-xs uppercase font-extrabold">MATH PITCH 👑</span>
               </h1>
             </div>
             <button 
@@ -1562,7 +1562,7 @@ export default function App() {
         <Helmet>
           <title>
             {activeTab === 'home' ? 'Jesse Math FC | Free Multiplayer Classroom Math Games' : 
-             activeTab === 'arena' ? 'Math Arena | Multiplayer Speed Drills | Jesse Math FC' :
+             activeTab === 'pitch' ? 'Math Pitch | Multiplayer Speed Drills | Jesse Math FC' :
              activeTab === 'sats' ? 'KS2 SATs Practice | Exam Simulator | Jesse Math FC' :
              activeTab === 'hub' ? 'Learning Hub | Classroom Activities | Jesse Math FC' :
              activeTab === 'dashboard' ? 'Student Dashboard | Track Progress | Jesse Math FC' :
@@ -1571,7 +1571,7 @@ export default function App() {
           </title>
           <meta name="description" content={
              activeTab === 'home' ? 'Play Jesse Math FC, a zero-lag free multiplayer math game for kids. Interactive classroom application featuring mental math calculation speed drills.' :
-             activeTab === 'arena' ? 'Compete in real-time math speed drills. Our multiplayer arena helps students master calculations instantly.' :
+             activeTab === 'pitch' ? 'Compete in real-time math speed drills. Our multiplayer pitch helps students master calculations instantly.' :
              activeTab === 'sats' ? 'Practice for UK KS2 SATs with our free online exam simulator. Includes arithmetic and reasoning papers.' :
              'Explore Jesse Math FC, a COPPA-compliant educational platform for primary school math.'
           } />
@@ -1711,14 +1711,14 @@ export default function App() {
                     )
                   )}
                   {activeTab === 'hub' && <LearningHub onStartLesson={(lesson) => { setPracticeLesson(lesson); setActiveTab('learn'); }} stats={stats} />}
-                  {activeTab === 'arena' && (
+                  {activeTab === 'pitch' && (
                     authState.role === 'guest' ? (
                       <div className="max-w-lg mx-auto my-16 p-8 bg-white border-2 border-amber-500/30 rounded-[3rem] shadow-2xl text-center space-y-6">
                         <div className="w-20 h-20 bg-amber-500/10 rounded-3xl flex items-center justify-center mx-auto text-4xl shadow-inner">
                           ⚔️
                         </div>
                         <div className="space-y-3">
-                          <h3 className="text-2xl font-display font-black text-deep-navy">Multiplayer Arena Locked in Guest Mode</h3>
+                          <h3 className="text-2xl font-display font-black text-deep-navy">Multiplayer Pitch Locked in Guest Mode</h3>
                           <p className="text-sm font-medium text-slate-600 leading-relaxed">
                             Hey Striker! Sign in or register to enter live 1v1 multiplayer math duels, challenge real opponents, and claim epic victory badges! ⚽
                           </p>
@@ -1806,7 +1806,7 @@ export default function App() {
                 </h3>
                 
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  Outstanding work! You have reached the elite milestone of solving over **200 math problems** in the Jesse Math FC Arena! 
+                  Outstanding work! You have reached the elite milestone of solving over **200 math problems** in the Jesse Math FC Pitch! 
                   You have unlocked the prestigious **Legendary Tier Badge** permanently shown on your profile.
                 </p>
 

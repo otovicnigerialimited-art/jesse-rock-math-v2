@@ -1113,15 +1113,15 @@ export default function TeacherDashboard({
             )}
             </div>
 
-            {/* Class Arena Chalkboard & Homework Publisher */}
+            {/* Class pitch Chalkboard & Homework Publisher */}
             <div className="bg-clean-white border border-deep-navy border-4 rounded-3xl p-6 space-y-4 text-left shadow-lg">
               <div className="space-y-1">
                 <h3 className="text-sm font-black uppercase text-deep-navy flex items-center gap-2">
                   <Pencil size={18} className="text-pink-500 animate-pulse" />
-                  Arena Chalkboard Publisher
+                  pitch Chalkboard Publisher
                 </h3>
                 <p className="text-[11px] text-slate-600 font-bold leading-relaxed">
-                  Only you (the teacher) can post to the Class Arena chalkboard. Broadcast active math topics, words to learn, and custom research assignments!
+                  Only you (the teacher) can post to the Class pitch chalkboard. Broadcast active math topics, words to learn, and custom research assignments!
                 </p>
               </div>
 
@@ -1181,7 +1181,7 @@ export default function TeacherDashboard({
                   <div className="relative flex">
                     <FileText size={13} className="absolute left-3 top-3 text-deep-navy" />
                     <textarea
-                      placeholder="e.g. Research how ancient civilizations solved multiplication! Practice 5 times in the Arena."
+                      placeholder="e.g. Research how ancient civilizations solved multiplication! Practice 5 times in the pitch."
                       rows={3}
                       value={pubHomework}
                       onChange={(e) => setPubHomework(e.target.value)}
@@ -1204,7 +1204,7 @@ export default function TeacherDashboard({
                   ) : (
                     <>
                       <Pencil size={13} />
-                      PUBLISH TO CLASS ARENA 🚀
+                      PUBLISH TO CLASS pitch 🚀
                     </>
                   )}
                 </button>

@@ -222,7 +222,7 @@ export default function SettingsModal({
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-deep-navy text-sm font-bold">
               <Music size={18} className="text-indigo-500" />
-              <span>Rock Music</span>
+              <span>Stadium Atmosphere</span>
             </div>
             <button 
               type="button"

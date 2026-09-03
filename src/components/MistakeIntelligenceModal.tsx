@@ -100,7 +100,7 @@ export default function MistakeIntelligenceModal({
             </div>
             <h4 className="text-xl font-display font-black text-slate-900">No Repeat Mistakes Detected!</h4>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Your calculation accuracy is clean. Keep practicing in the Arena or SATs Mode!
+              Your calculation accuracy is clean. Keep practicing in the pitch or SATs Mode!
             </p>
           </div>
         )}

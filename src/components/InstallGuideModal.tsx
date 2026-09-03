@@ -128,7 +128,7 @@ export default function InstallGuideModal({ isOpen, onClose }: InstallGuideModal
 
       // 2. Offline Readme instructions
       const readmeText = `=====================================================
-JESSE MATH ROCKSTAR - OFFLINE GAME & APP PACKAGE
+JESSE MATH FC - OFFLINE GAME & APP PACKAGE
 =====================================================
 
 Designed by 11-year-old Founder Jesse Otobo

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ROCKSTAR_TIERS, getCurrentStrikerTier, getNextStrikerTier } from '../lib/strikerTiers';
+import { STRIKER_TIERS, getCurrentStrikerTier, getNextStrikerTier } from '../lib/strikerTiers';
 import { ExtendedUserStats } from '../types/extendedTypes';
 import { 
   Award, 
@@ -75,7 +75,7 @@ export default function StrikerProgressionCard({ stats }: StrikerProgressionCard
       <div className="space-y-3 pt-2">
         <h4 className="text-sm font-black uppercase tracking-wider text-slate-800">Striker Tier Roadmap</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {ROCKSTAR_TIERS.map(t => {
+          {STRIKER_TIERS.map(t => {
             const isUnlocked = stats.xp >= t.minXp || stats.level >= t.minLevel;
             const isCurrent = t.tierNumber === currentTier.tierNumber;
 
