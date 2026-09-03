@@ -681,7 +681,7 @@ export default function TeacherDashboard({
         isOpen={showPostHomework}
         onClose={() => setShowPostHomework(false)}
         teacherId={resolvedId}
-        classCode={activeClassCode || "DEMO"}
+        classCode={teacherCode || "DEMO"}
       />
 
       {activeDashboardTab === 'roster' ? (

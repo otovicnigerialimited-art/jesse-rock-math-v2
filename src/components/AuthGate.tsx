@@ -36,7 +36,12 @@ import {
   Building2,
   Shield,
   Settings2,
-  CheckCircle
+  CheckCircle,
+  Phone,
+  Smartphone,
+  Users,
+  KeyRound,
+  Send
 } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, onSnapshot, deleteDoc } from 'firebase/firestore';
@@ -46,15 +51,44 @@ import {
   registerTeacher,
   loginTeacherWithGoogle
 } from '../lib/schoolDb';
+import {
+  initPhoneRecaptcha,
+  sendParentPhoneOTP,
+  verifyParentPhoneOTP,
+  loginParentWithGoogle
+} from '../lib/parentAuth';
 
 interface AuthGateProps {
   onAuthSuccess: (username: string, uid: string) => void;
   onGuestPlay?: () => void;
 }
 
+const COUNTRY_CODES = [
+  { code: '+44', country: 'United Kingdom (UK)', flag: '🇬🇧' },
+  { code: '+1', country: 'United States & Canada', flag: '🇺🇸' },
+  { code: '+234', country: 'Nigeria', flag: '🇳🇬' },
+  { code: '+91', country: 'India', flag: '🇮🇳' },
+  { code: '+61', country: 'Australia', flag: '🇦🇺' },
+  { code: '+27', country: 'South Africa', flag: '🇿🇦' },
+  { code: '+49', country: 'Germany', flag: '🇩🇪' },
+  { code: '+33', country: 'France', flag: '🇫🇷' },
+  { code: '+353', country: 'Ireland', flag: '🇮🇪' },
+  { code: '+971', country: 'UAE', flag: '🇦🇪' },
+  { code: '+81', country: 'Japan', flag: '🇯🇵' },
+  { code: '+86', country: 'China', flag: '🇨🇳' },
+  { code: '+55', country: 'Brazil', flag: '🇧🇷' },
+  { code: '+254', country: 'Kenya', flag: '🇰🇪' },
+  { code: '+233', country: 'Ghana', flag: '🇬🇭' },
+  { code: '+60', country: 'Malaysia', flag: '🇲🇾' },
+  { code: '+65', country: 'Singapore', flag: '🇸🇬' },
+  { code: '+64', country: 'New Zealand', flag: '🇳🇿' },
+  { code: '+34', country: 'Spain', flag: '🇪🇸' },
+  { code: '+39', country: 'Italy', flag: '🇮🇹' },
+];
+
 export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) {
-  // Tabs: 'individual' for Striker/Student Login, 'teacher' for Teacher Login, 'developer' for Developer Login
-  const [loginTab, setLoginTab] = useState<'individual' | 'teacher' | 'developer'>('individual');
+  // Tabs: 'individual' for Striker/Student Login, 'teacher' for Teacher Login, 'parent' for Secret Parent Portal, 'developer' for Developer Login
+  const [loginTab, setLoginTab] = useState<'individual' | 'teacher' | 'parent' | 'developer'>('individual');
   const [showLanding, setShowLanding] = useState(true);
   
   const backgroundEmojis = React.useMemo(() => {
@@ -285,6 +319,114 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
   const [teacherNameSignup, setTeacherNameSignup] = useState('');
   const [teacherEmailSignup, setTeacherEmailSignup] = useState('');
   const [teacherPasswordSignup, setTeacherPasswordSignup] = useState('');
+
+  // --- PARENT SECRET PORTAL STATES (Google + Phone Number SMS ONLY) ---
+  const [parentPhoneCountry, setParentPhoneCountry] = useState('+44');
+  const [parentPhoneNumber, setParentPhoneNumber] = useState('');
+  const [parentFullName, setParentFullName] = useState('');
+  const [parentOtpCode, setParentOtpCode] = useState('');
+  const [parentOtpStep, setParentOtpStep] = useState<'input' | 'otp'>('input');
+  const [parentConfirmationResult, setParentConfirmationResult] = useState<any>(null);
+  const [parentPhoneLoading, setParentPhoneLoading] = useState(false);
+
+  const handleParentGoogleAuth = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const res = await loginParentWithGoogle();
+      if (!res.success || !res.user) {
+        setError(res.error || "Failed to authenticate parent with Google.");
+        setLoading(false);
+        return;
+      }
+      setSuccess(`Authenticated as Guardian: ${res.user.displayName || 'Parent'}! Entering dashboard...`);
+      setTimeout(() => {
+        onAuthSuccess(res.user!.displayName || 'Parent', res.user!.uid);
+      }, 400);
+    } catch (err: any) {
+      setError(err.message || "Failed to sign in with Google.");
+      setLoading(false);
+    }
+  };
+
+  const handleParentSendSMS = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+
+    const cleanDigits = parentPhoneNumber.trim().replace(/^0+/, '').replace(/\s+/g, '');
+    if (!cleanDigits || cleanDigits.length < 6) {
+      setError("Please enter a valid mobile phone number.");
+      return;
+    }
+
+    const fullPhone = `${parentPhoneCountry}${cleanDigits}`;
+    setParentPhoneLoading(true);
+
+    try {
+      const appVerifier = initPhoneRecaptcha('parent-recaptcha-container');
+      const res = await sendParentPhoneOTP(fullPhone, appVerifier);
+      if (!res.success || !res.confirmationResult) {
+        setError(res.error || "Failed to send SMS code.");
+        setParentPhoneLoading(false);
+        return;
+      }
+
+      setParentConfirmationResult(res.confirmationResult);
+      setParentOtpStep('otp');
+      setSuccess(`SMS code dispatched to ${fullPhone}! Please enter the 6-digit code below.`);
+    } catch (err: any) {
+      console.error("SMS Send Error:", err);
+      setError(err.message || "Could not dispatch SMS verification code.");
+    } finally {
+      setParentPhoneLoading(false);
+    }
+  };
+
+  const handleParentVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!parentConfirmationResult) {
+      setError("No active SMS verification session found. Please re-send SMS code.");
+      return;
+    }
+    if (!parentOtpCode || parentOtpCode.trim().length < 6) {
+      setError("Please enter the 6-digit SMS verification code.");
+      return;
+    }
+
+    setParentPhoneLoading(true);
+    setError(null);
+    setSuccess(null);
+
+    const cleanDigits = parentPhoneNumber.trim().replace(/^0+/, '').replace(/\s+/g, '');
+    const fullPhone = `${parentPhoneCountry}${cleanDigits}`;
+
+    try {
+      const res = await verifyParentPhoneOTP(
+        parentConfirmationResult,
+        parentOtpCode,
+        parentFullName || undefined,
+        fullPhone
+      );
+
+      if (!res.success || !res.user) {
+        setError(res.error || "Invalid verification code.");
+        setParentPhoneLoading(false);
+        return;
+      }
+
+      setSuccess(`Verification successful! Welcome to Parent Portal, ${res.user.displayName || 'Parent'}!`);
+      setTimeout(() => {
+        onAuthSuccess(res.user!.displayName || 'Parent', res.user!.uid);
+      }, 400);
+    } catch (err: any) {
+      console.error("OTP Verify Error:", err);
+      setError(err.message || "Failed to verify code.");
+    } finally {
+      setParentPhoneLoading(false);
+    }
+  };
 
   // --- DEVELOPER TAB STATES & HANDLERS ---
   const [devPassword, setDevPassword] = useState('');
@@ -1105,11 +1247,29 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               className="bg-white border-2 border-purple-200 p-8 rounded-3xl shadow-xl space-y-4 relative overflow-hidden"
             >
               <div className="absolute -right-6 -bottom-6 text-7xl opacity-10 select-none">🛡️</div>
-              <div className="w-12 h-12 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center font-bold text-xl shadow-sm">🛡️</div>
-              <h3 className="text-xl font-bold text-slate-900">Parent & Teacher Portal</h3>
+              <div className="w-12 h-12 bg-purple-100 text-purple-700 rounded-2xl flex items-center justify-center font-bold text-xl shadow-sm">👨‍👩‍👧‍👦</div>
+              <h3 className="text-xl font-bold text-slate-900">Parent & Guardian Secret Portal</h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                Monitor progress, assign tailored quiz modules, and export detailed performance reports with zero friction. Designed for modern classrooms.
+                Dedicated parent access via Google or Mobile SMS Phone verification. Monitor child learning progress, speed drill accuracy, and live homework assignments in real-time.
               </p>
+              <div className="pt-2 flex flex-col sm:flex-row gap-2">
+                <button
+                  type="button"
+                  onClick={() => { setShowLanding(false); setLoginTab('parent'); }}
+                  className="flex-1 py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-95"
+                >
+                  <Users size={14} />
+                  <span>Enter Parent Portal</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setShowLanding(false); setLoginTab('teacher'); }}
+                  className="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                >
+                  <GraduationCap size={14} />
+                  <span>Teacher Portal</span>
+                </button>
+              </div>
             </motion.div>
           </motion.div>
 
@@ -1628,7 +1788,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             </div>
           </div>
 
-          {/* 3-Way Portal Selector: Individual, Teacher, Developer Login */}
+          {/* 3-Way / 4-Way Portal Selector: Striker, Teacher, Parent Secret Portal */}
           <div className="flex bg-slate-100/80 p-1 rounded-2xl border border-slate-200 gap-1 shadow-inner">
             <button
               type="button"
@@ -1654,6 +1814,19 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             >
               <GraduationCap size={14} className={loginTab === 'teacher' ? 'text-cyan-600' : ''} />
               <span>Teacher</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => { setLoginTab('parent'); setError(null); setSuccess(null); }}
+              className={`flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
+                loginTab === 'parent'
+                  ? 'bg-white text-purple-900 shadow-sm border border-purple-200'
+                  : 'text-slate-500 hover:text-purple-700'
+              }`}
+            >
+              <Users size={14} className={loginTab === 'parent' ? 'text-purple-600' : ''} />
+              <span>Parent Portal</span>
             </button>
           </div>
 
@@ -2183,6 +2356,210 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   </div>
                 </form>
               )}
+            </div>
+          )}
+
+          {/* Tab: Parent Secret Portal (Google + Phone Number Registration/Login ONLY) */}
+          {loginTab === 'parent' && (
+            <div className="space-y-5 text-left">
+              {/* Header Badge */}
+              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200/80 p-3.5 rounded-2xl flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <ShieldCheck size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-black text-slate-900 uppercase tracking-wide">
+                    Parent & Guardian Portal
+                  </h4>
+                  <p className="text-[11px] text-slate-600 leading-snug mt-0.5 font-medium">
+                    Secure parent gateway. Register or sign in via Google or Mobile SMS verification.
+                  </p>
+                </div>
+              </div>
+
+              {/* OPTION 1: 1-Click Google Authentication */}
+              <div className="space-y-2">
+                <button
+                  type="button"
+                  onClick={handleParentGoogleAuth}
+                  disabled={loading || parentPhoneLoading}
+                  className="w-full py-3.5 px-4 bg-white hover:bg-slate-50 text-slate-800 border-2 border-slate-300 hover:border-purple-600 font-bold uppercase tracking-wider transition-all duration-200 rounded-xl flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50 shadow-sm relative group"
+                >
+                  <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                  </svg>
+                  <div className="flex flex-col items-start leading-tight">
+                    <span className="text-xs font-black tracking-wide text-slate-900">Sign In with Google</span>
+                    <span className="text-[9px] text-purple-700 font-bold uppercase tracking-wider">
+                      Instant Guardian Access
+                    </span>
+                  </div>
+                </button>
+              </div>
+
+              {/* Visual Divider */}
+              <div className="relative flex py-1 items-center">
+                <div className="flex-grow border-t border-slate-200"></div>
+                <span className="flex-shrink mx-4 text-[10px] uppercase font-bold text-slate-400">
+                  or sign in with phone number
+                </span>
+                <div className="flex-grow border-t border-slate-200"></div>
+              </div>
+
+              {/* OPTION 2: Mobile Phone Number SMS Registration / Login */}
+              {parentOtpStep === 'input' ? (
+                <form onSubmit={handleParentSendSMS} className="space-y-3.5">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Parent / Guardian Name (Optional for New Registration)
+                    </label>
+                    <div className="relative group">
+                      <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-600 transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="e.g. Sarah Jenkins"
+                        value={parentFullName}
+                        onChange={(e) => setParentFullName(e.target.value)}
+                        className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-purple-600 focus:ring-4 focus:ring-purple-50 transition-all font-semibold"
+                        autoComplete="name"
+                        disabled={loading || parentPhoneLoading}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Mobile Phone Number
+                    </label>
+                    <div className="flex gap-2">
+                      <select
+                        value={parentPhoneCountry}
+                        onChange={(e) => setParentPhoneCountry(e.target.value)}
+                        className="w-32 py-2.5 px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs font-bold outline-none focus:bg-white focus:border-purple-600 focus:ring-4 focus:ring-purple-50 transition-all cursor-pointer shrink-0"
+                        disabled={loading || parentPhoneLoading}
+                      >
+                        {COUNTRY_CODES.map((c) => (
+                          <option key={c.code + c.country} value={c.code}>
+                            {c.flag} {c.code}
+                          </option>
+                        ))}
+                      </select>
+
+                      <div className="relative flex-1 group">
+                        <Smartphone size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-600 transition-colors" />
+                        <input
+                          type="tel"
+                          placeholder="7123 456789"
+                          value={parentPhoneNumber}
+                          onChange={(e) => setParentPhoneNumber(e.target.value)}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm font-semibold outline-none focus:bg-white focus:border-purple-600 focus:ring-4 focus:ring-purple-50 transition-all"
+                          autoComplete="tel"
+                          disabled={loading || parentPhoneLoading}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <p className="text-[10px] text-slate-500 font-medium ml-1">
+                      We'll send a 6-digit SMS verification code to this phone number.
+                    </p>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || parentPhoneLoading || !parentPhoneNumber.trim()}
+                    className="w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-purple-600/20 text-xs"
+                  >
+                    {parentPhoneLoading ? (
+                      <>
+                        <RefreshCw size={14} className="animate-spin" />
+                        <span>Sending SMS Code...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send size={14} />
+                        <span>Send SMS Verification Code</span>
+                      </>
+                    )}
+                  </button>
+                </form>
+              ) : (
+                /* OTP Verification Step */
+                <form onSubmit={handleParentVerifyCode} className="space-y-4">
+                  <div className="p-3 bg-purple-50 border border-purple-200 rounded-xl text-left space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase text-purple-700 tracking-wider">
+                        SMS Code Sent
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => { setParentOtpStep('input'); setParentOtpCode(''); setError(null); }}
+                        className="text-[10px] text-purple-600 hover:text-purple-800 font-bold underline cursor-pointer"
+                      >
+                        Change Number
+                      </button>
+                    </div>
+                    <p className="text-xs font-semibold text-slate-800 font-mono">
+                      {parentPhoneCountry} {parentPhoneNumber}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                      Enter 6-Digit SMS Code
+                    </label>
+                    <div className="relative group">
+                      <KeyRound size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-600 transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="123456"
+                        maxLength={6}
+                        value={parentOtpCode}
+                        onChange={(e) => setParentOtpCode(e.target.value.replace(/\D/g, ''))}
+                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-lg font-mono font-bold tracking-widest outline-none focus:bg-white focus:border-purple-600 focus:ring-4 focus:ring-purple-50 transition-all text-center"
+                        autoComplete="one-time-code"
+                        autoFocus
+                        disabled={loading || parentPhoneLoading}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || parentPhoneLoading || parentOtpCode.length < 6}
+                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-emerald-600/20 text-xs"
+                  >
+                    {parentPhoneLoading ? (
+                      <>
+                        <RefreshCw size={14} className="animate-spin" />
+                        <span>Verifying SMS Code...</span>
+                      </>
+                    ) : (
+                      <>
+                        <CheckCircle size={14} />
+                        <span>Verify & Enter Parent Dashboard</span>
+                      </>
+                    )}
+                  </button>
+
+                  <div className="text-center pt-1">
+                    <button
+                      type="button"
+                      onClick={handleParentSendSMS}
+                      disabled={parentPhoneLoading}
+                      className="text-[11px] text-slate-500 hover:text-purple-600 font-semibold cursor-pointer"
+                    >
+                      Didn't receive code? Resend SMS
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Invisible reCAPTCHA container for Firebase Phone Auth */}
+              <div id="parent-recaptcha-container"></div>
             </div>
           )}
 

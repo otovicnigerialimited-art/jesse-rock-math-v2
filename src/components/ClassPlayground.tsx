@@ -358,13 +358,24 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
               </div>
 
               {/* Box 3: What Kids Should Do */}
-              <div className="bg-white/5 border border-white/10 p-4 rounded-xl space-y-1">
-                <span className="text-[9px] text-cyan-300 font-black uppercase font-mono block">
-                  📌 HOMEWORK / RESEARCH TOPIC
-                </span>
-                <p className="text-xs text-slate-200 font-medium leading-relaxed">
-                  {activePost.homework}
-                </p>
+              <div className="bg-white/5 border border-white/10 p-4 rounded-xl space-y-2 flex flex-col justify-between">
+                <div>
+                  <span className="text-[9px] text-cyan-300 font-black uppercase font-mono block mb-1">
+                    📌 HOMEWORK / RESEARCH TOPIC
+                  </span>
+                  <p className="text-xs text-slate-200 font-medium leading-relaxed">
+                    {activePost.homework}
+                  </p>
+                </div>
+                {onNavigateToTab && (
+                  <button
+                    onClick={() => onNavigateToTab('homework')}
+                    className="pt-2 text-[11px] font-bold text-amber-300 hover:text-amber-200 flex items-center gap-1.5 cursor-pointer hover:underline"
+                  >
+                    <BookOpen size={13} />
+                    Open Full Homework Hub →
+                  </button>
+                )}
               </div>
             </div>
           </div>

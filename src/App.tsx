@@ -62,6 +62,7 @@ const DeveloperPage = React.lazy(() => import('./components/DeveloperPage'));
 const LearnArena = React.lazy(() => import('./components/LearnArena'));
 const SchoolDashboards = React.lazy(() => import('./components/SchoolDashboards'));
 const ParentDashboard = React.lazy(() => import('./components/ParentDashboard'));
+const HomeworkHub = React.lazy(() => import('./components/HomeworkHub'));
 const CreatorPanel = React.lazy(() => import('./components/CreatorPanel'));
 const Dashboard = React.lazy(() => import('./components/Dashboard'));
 const Leaderboard = React.lazy(() => import('./components/Leaderboard'));
@@ -104,7 +105,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const pathName = location.pathname.substring(1) || 'home';
-  const validTabs = ['home', 'homework', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'pitch', 'sats', 'spaced_practice'];
+  const validTabs = ['home', 'homework', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'pitch', 'sats', 'spaced_practice', 'survey', 'school'];
   const activeTab = validTabs.includes(pathName) ? pathName : 'home';
   const setActiveTab = (tab: any) => {
     navigate(tab === 'home' ? '/' : `/${tab}`);
@@ -1320,7 +1321,7 @@ export default function App() {
   const navItems = authState.role === 'class_student'
     ? [
         { id: 'home', label: 'Classroom Playground', icon: Home },
-        { id: 'homework', label: 'Homework & Tasks', icon: BookOpen },
+        { id: 'homework', label: '📚 Homework & Tasks Hub', icon: BookOpen },
         { id: 'notifications', label: '🔔 Notifications', icon: Bell },
         { id: 'survey', label: '📊 Survey Hub', icon: BarChart3 },
         { id: 'quiz', label: 'Play Quiz Battle 🏆', icon: Trophy },
@@ -1328,6 +1329,7 @@ export default function App() {
       ]
     : [
         { id: 'home', label: 'Welcome Home', icon: Home },
+        { id: 'homework', label: '📚 Homework & Tasks Hub', icon: BookOpen },
         { id: 'notifications', label: '🔔 Notifications Hub', icon: Bell },
         { id: 'dashboard', label: 'My Progress Stats', icon: Award },
         { id: 'leaderboard', label: '🏆 Global Leaderboard', icon: Trophy },
@@ -1667,10 +1669,17 @@ export default function App() {
                     )
                   )}
                   {activeTab === 'homework' && (
-                    <HomeworkHub userId={authState.userId || ""}
-                      classCode={authStudent?.classCode || ""}
-                      onNavigateToTab={navigateToTab}
-                    />
+                    <React.Suspense fallback={
+                      <div className="h-full flex items-center justify-center text-slate-400">
+                        <Loader2 className="animate-spin w-8 h-8 text-cyan-500" />
+                      </div>
+                    }>
+                      <HomeworkHub 
+                        userId={authState.userId || ""}
+                        classCode={authState.classCode || ""}
+                        onNavigateToTab={setActiveTab}
+                      />
+                    </React.Suspense>
                   )}
 
                   {activeTab === 'dashboard' && (

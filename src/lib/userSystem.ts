@@ -29,6 +29,7 @@ export interface UserProfile {
   displayName?: string;
   email?: string;
   real_first_name?: string;
+  phoneNumber?: string;
   
   // Relationships
   teacher_id?: string;

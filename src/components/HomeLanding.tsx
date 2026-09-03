@@ -168,10 +168,16 @@ export default function HomeLanding({
               Play Free <ArrowRight size={18} />
             </button>
             <button
-              onClick={() => onNavigateToTab('sats')}
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-black text-sm tracking-wider uppercase rounded-2xl shadow-xl flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer"
+              onClick={() => onNavigateToTab('homework')}
+              className="w-full sm:w-auto px-7 py-4 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-sm tracking-wider uppercase rounded-2xl shadow-xl flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer border border-white/20"
             >
-              <GraduationCap size={20} className="text-slate-950" /> KS2 SATs Prep
+              <BookOpen size={18} /> Homework & Tasks
+            </button>
+            <button
+              onClick={() => onNavigateToTab('sats')}
+              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-400 hover:to-purple-400 text-white font-black text-sm tracking-wider uppercase rounded-2xl shadow-xl flex items-center justify-center gap-2 hover:scale-105 transition-all cursor-pointer border border-white/20"
+            >
+              <GraduationCap size={20} className="text-white" /> KS2 SATs Prep
             </button>
             {onOpenNotifications && (
               <button
