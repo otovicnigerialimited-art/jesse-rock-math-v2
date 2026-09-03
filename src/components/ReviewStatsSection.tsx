@@ -275,7 +275,7 @@ export default function ReviewStatsSection() {
       <meta itemProp="name" content="Jesse Math FC" />
       <meta itemProp="applicationCategory" content="EducationalApplication" />
       <meta itemProp="operatingSystem" content="Web, iOS, Android, Chromebook" />
-      <link itemProp="url" href="https://jesse-math-striker-app.vercel.app/" />
+      <link itemProp="url" href="https://jesse-math-rockstar-app.vercel.app/" />
 
       {/* Review Tag Header & Badges */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-slate-100 pb-6">

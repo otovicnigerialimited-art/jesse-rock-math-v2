@@ -24,9 +24,9 @@ export default function PublicSeoHub() {
 {
   "@context": "https://schema.org",
   "@type": ["SoftwareApplication", "EducationalApplication"],
-  "@id": "https://jesse-math-striker-app.vercel.app/#application",
+  "@id": "https://jesse-math-rockstar-app.vercel.app/#application",
   "name": "Jesse Math FC",
-  "url": "https://jesse-math-striker-app.vercel.app/",
+  "url": "https://jesse-math-rockstar-app.vercel.app/",
   "applicationCategory": "EducationalApplication",
   "applicationSubCategory": "Math Game, Speed Calculation Drill Engine, Classroom EdTech",
   "operatingSystem": "Web, iOS, Android, Chromebook, Windows, macOS, Linux",
@@ -61,7 +61,7 @@ export default function PublicSeoHub() {
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "@id": "https://jesse-math-striker-app.vercel.app/#faq",
+  "@id": "https://jesse-math-rockstar-app.vercel.app/#faq",
   "mainEntity": [
     {
       "@type": "Question",
@@ -91,7 +91,7 @@ export default function PublicSeoHub() {
   "@graph": [
     {
       "@type": "Course",
-      "@id": "https://jesse-math-striker-app.vercel.app/#course-multiplication",
+      "@id": "https://jesse-math-rockstar-app.vercel.app/#course-multiplication",
       "name": "Mastering Multiplication & Division Tables (1-12 Times Tables)",
       "description": "Comprehensive primary school mental arithmetic course designed to accelerate calculation speed, recall automaticity, and statutory MTC examination performance.",
       "isAccessibleForFree": true,
@@ -99,7 +99,7 @@ export default function PublicSeoHub() {
     },
     {
       "@type": "Course",
-      "@id": "https://jesse-math-striker-app.vercel.app/#course-sats",
+      "@id": "https://jesse-math-rockstar-app.vercel.app/#course-sats",
       "name": "KS2 SATs Arithmetic & Mathematical Reasoning Preparation Hub",
       "description": "Timed simulation modules covering fractions, long division, decimals, percentages, multi-step word problems, and mental math speed strategies.",
       "isAccessibleForFree": true
@@ -132,13 +132,13 @@ export default function PublicSeoHub() {
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://jesse-math-striker-app.vercel.app/#organization",
+  "@id": "https://jesse-math-rockstar-app.vercel.app/#organization",
   "name": "Jesse Math FC",
   "alternateName": "Jesse Math FC EdTech",
   "description": "Jesse Math FC is the ultimate premium gamified EdTech platform designed for primary schools. We provide 1v1 live multiplayer math pitches, zero-lag calculation speed drills, UK KS2 SATs exam prep simulators, and comprehensive teacher dashboards to guarantee mathematical mastery and eliminate hesitation.",
   "slogan": "The #1 Zero-Lag Multiplayer Math Platform for Kids",
   "knowsAbout": ["Mathematics Education", "EdTech", "Primary School Math", "Mental Arithmetic", "KS2 SATs"],
-  "url": "https://jesse-math-striker-app.vercel.app/",
+  "url": "https://jesse-math-rockstar-app.vercel.app/",
   "founder": {
     "@type": "Person",
     "name": "Jesse Otobo",
@@ -453,7 +453,7 @@ export default function PublicSeoHub() {
           </div>
           <div className="flex items-center gap-2">
             <a
-              href="https://validator.schema.org/#url=https%3A%2F%2Fjesse-math-striker-app.vercel.app%2F"
+              href="https://validator.schema.org/#url=https%3A%2F%2Fjesse-math-rockstar-app.vercel.app%2F"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1 transition-all"
@@ -472,7 +472,7 @@ export default function PublicSeoHub() {
             </div>
             <span className="font-semibold text-slate-800">Jesse Math FC</span>
             <span className="text-slate-400">›</span>
-            <span className="text-slate-500 truncate text-[11px]">https://jesse-math-striker-app.vercel.app</span>
+            <span className="text-slate-500 truncate text-[11px]">https://jesse-math-rockstar-app.vercel.app</span>
           </div>
 
           <h3 className="text-base sm:text-xl font-medium text-[#1a0dab] hover:underline cursor-pointer leading-snug">

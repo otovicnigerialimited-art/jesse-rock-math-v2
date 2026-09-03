@@ -99,7 +99,7 @@ export default function StudentLoginCardsModal({
                 </div>
 
                 <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400 print:text-slate-600">
-                  <span>jesse-math-striker</span>
+                  <span>jesse-math-rockstar</span>
                   <QrCode size={18} className="text-indigo-400 print:text-black" />
                 </div>
               </div>

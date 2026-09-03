@@ -440,7 +440,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
           </a>
 
           <a 
-            href="https://jesse-math-striker-app.vercel.app/" 
+            href="https://jesse-math-rockstar-app.vercel.app/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="flex items-center justify-between p-4 rounded-2xl bg-white hover:bg-sunny-yellow/10 border border-deep-navy border-4 transition-all group cursor-pointer"
@@ -451,7 +451,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
               </div>
               <div className="text-left">
                 <p className="text-[13px] font-bold text-deep-navy group-hover:text-amber-600 transition-colors">Live Math Striker App</p>
-                <p className="text-[10px] text-slate-600 font-mono font-bold">jesse-math-striker-app</p>
+                <p className="text-[10px] text-slate-600 font-mono font-bold">jesse-math-rockstar-app</p>
               </div>
             </div>
             <ExternalLink size={14} className="text-slate-600 group-hover:text-amber-600 transition-all group-hover:translate-x-0.5" />

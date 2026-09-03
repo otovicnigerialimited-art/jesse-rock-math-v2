@@ -119,7 +119,7 @@ export default function InstallGuideModal({ isOpen, onClose }: InstallGuideModal
   <div class="card">
     <h1>Jesse Math FC ⚽</h1>
     <p>Offline Game Package ready! Click below to open the official web app directly in your browser with full offline capability.</p>
-    <a href="https://jesse-math-striker-app.vercel.app/" class="btn" target="_blank">Launch Online Game 🚀</a>
+    <a href="https://jesse-math-rockstar-app.vercel.app/" class="btn" target="_blank">Launch Online Game 🚀</a>
   </div>
 </body>
 </html>`;
@@ -137,7 +137,7 @@ INSTALLATION & OFFLINE PLAY INSTRUCTIONS:
 
 1. DESKTOP / PC / MAC / CHROMEBOOK:
    - Open your browser (Google Chrome or Microsoft Edge).
-   - Visit: https://jesse-math-striker-app.vercel.app/
+   - Visit: https://jesse-math-rockstar-app.vercel.app/
    - Click the "Install" icon in your address bar to save as a native desktop app.
 
 2. MOBILE / TABLET (iOS / ANDROID):
@@ -155,7 +155,7 @@ Thank you for playing Jesse Math FC!
 
       // 3. Desktop .url Internet Shortcut with Icon Metadata
       const urlShortcutContent = `[InternetShortcut]
-URL=https://jesse-math-striker-app.vercel.app/
+URL=https://jesse-math-rockstar-app.vercel.app/
 IDList=
 HotKey=0
 IconFile=https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png
@@ -172,7 +172,7 @@ set SCRIPT="%TEMP%\\%RANDOM%-%RANDOM%-%RANDOM%-%RANDOM%.vbs"
 echo Set oWS = WScript.CreateObject("WScript.Shell") >> %SCRIPT%
 echo sLinkFile = oWS.SpecialFolders("Desktop") ^& "\\Jesse Math FC.lnk" >> %SCRIPT%
 echo Set oLink = oWS.CreateShortcut(sLinkFile) >> %SCRIPT%
-echo oLink.TargetPath = "https://jesse-math-striker-app.vercel.app/" >> %SCRIPT%
+echo oLink.TargetPath = "https://jesse-math-rockstar-app.vercel.app/" >> %SCRIPT%
 echo oLink.Description = "Jesse Math FC Desktop App" >> %SCRIPT%
 echo oLink.Save >> %SCRIPT%
 cscript /nologo %SCRIPT%

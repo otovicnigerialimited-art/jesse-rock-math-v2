@@ -1575,7 +1575,7 @@ export default function App() {
              activeTab === 'sats' ? 'Practice for UK KS2 SATs with our free online exam simulator. Includes arithmetic and reasoning papers.' :
              'Explore Jesse Math FC, a COPPA-compliant educational platform for primary school math.'
           } />
-          <link rel="canonical" href={`https://jesse-math-striker-app.vercel.app/${activeTab === 'home' ? '' : activeTab}`} />
+          <link rel="canonical" href={`https://jesse-math-rockstar-app.vercel.app/${activeTab === 'home' ? '' : activeTab}`} />
         </Helmet>
 
           {/* Header/Toggle */}

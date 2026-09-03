@@ -1765,7 +1765,7 @@ export default function TeacherDashboard({
 
       {/* Itch.io Embed */}
       <div className="flex justify-center mt-4 mb-0 w-full">
-         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-striker-appvercelapp">Jesse mathstriker by Jesse otobo</a></iframe>
+         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathstriker by Jesse otobo</a></iframe>
       </div>
     </div>
   );

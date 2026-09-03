@@ -139,6 +139,14 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
   };
 
   const handleClassLoginSubmit = async (e: React.FormEvent) => {
+    try {
+      if (typeof window !== "undefined" && (window as any).grecaptcha) {
+        (window as any).grecaptcha.enterprise.ready(async () => {
+          await (window as any).grecaptcha.enterprise.execute("6Lc_gaYtAAAAADi2oCUupIL3_IAZcAuteN9h_7Nw", {action: "LOGIN"});
+        });
+      }
+    } catch (e) {}
+
     e.preventDefault();
     setError(null);
     setSuccess(null);
@@ -449,6 +457,14 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
   // 1. Individual ("Home Login") Handler 
   const handleHomeLoginSubmit = async (e: React.FormEvent) => {
+    try {
+      if (typeof window !== "undefined" && (window as any).grecaptcha) {
+        (window as any).grecaptcha.enterprise.ready(async () => {
+          await (window as any).grecaptcha.enterprise.execute("6Lc_gaYtAAAAADi2oCUupIL3_IAZcAuteN9h_7Nw", {action: "LOGIN"});
+        });
+      }
+    } catch (e) {}
+
     e.preventDefault();
     setError(null);
 
@@ -588,6 +604,14 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
   // 2. School Student Login Handler
   const handleStudentLoginSubmit = async (e: React.FormEvent) => {
+    try {
+      if (typeof window !== "undefined" && (window as any).grecaptcha) {
+        (window as any).grecaptcha.enterprise.ready(async () => {
+          await (window as any).grecaptcha.enterprise.execute("6Lc_gaYtAAAAADi2oCUupIL3_IAZcAuteN9h_7Nw", {action: "LOGIN"});
+        });
+      }
+    } catch (e) {}
+
     e.preventDefault();
     setError(null);
 
@@ -639,6 +663,14 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
   // 3. Teacher Login Handler
   const handleTeacherLoginSubmit = async (e: React.FormEvent) => {
+    try {
+      if (typeof window !== "undefined" && (window as any).grecaptcha) {
+        (window as any).grecaptcha.enterprise.ready(async () => {
+          await (window as any).grecaptcha.enterprise.execute("6Lc_gaYtAAAAADi2oCUupIL3_IAZcAuteN9h_7Nw", {action: "LOGIN"});
+        });
+      }
+    } catch (e) {}
+
     e.preventDefault();
     setError(null);
 
@@ -683,6 +715,14 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
   };
 
   const handleTeacherGoogleLogin = async () => {
+    try {
+      if (typeof window !== "undefined" && (window as any).grecaptcha) {
+        (window as any).grecaptcha.enterprise.ready(async () => {
+          await (window as any).grecaptcha.enterprise.execute("6Lc_gaYtAAAAADi2oCUupIL3_IAZcAuteN9h_7Nw", {action: "LOGIN"});
+        });
+      }
+    } catch (e) {}
+
     setError(null);
     setLoading(true);
     try {
@@ -2228,7 +2268,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       </div>
       {/* Itch.io Embed */}
       <div className="flex justify-center mt-4 mb-0 w-full">
-         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-striker-appvercelapp">Jesse mathstriker by Jesse otobo</a></iframe>
+         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathstriker by Jesse otobo</a></iframe>
       </div>
     </div>
   );
