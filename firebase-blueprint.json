@@ -180,6 +180,7 @@
     "/classes/{classId}": { "schema": "ClassRoom", "description": "Classes collection" },
     "/class_sessions/{sessionId}": { "schema": "ClassSession", "description": "Live class sessions collection" },
     "/student_help_requests/{requestId}": { "schema": "StudentHelpRequest", "description": "Student help requests collection" },
+    "/homework/{homeworkId}": { "schema": "HomeworkAssignment", "description": "Class homework tasks collection" },
     "/homework_assignments/{homeworkId}": { "schema": "HomeworkAssignment", "description": "Homework assignments collection" },
     "/exit_tickets/{ticketId}": { "schema": "ExitTicket", "description": "Exit tickets collection" },
     "/assessments/{assessmentId}": { "schema": "Assessment", "description": "Assessments collection" },

@@ -83,7 +83,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
 
-    // Homework & Submissions
+    // Homework & Submissions (supports both /homework and /homework_assignments)
+    match /homework/{homeworkId} {
+      allow read, write: if true;
+    }
+
     match /homework_assignments/{homeworkId} {
       allow read, write: if true;
     }
