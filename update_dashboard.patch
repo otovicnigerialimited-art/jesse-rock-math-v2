@@ -1,0 +1,38 @@
+--- src/components/TeacherDashboard.tsx
++++ src/components/TeacherDashboard.tsx
+@@ -102,6 +102,7 @@
+   const [showBulkImport, setShowBulkImport] = useState(false);
+   const [showLoginCards, setShowLoginCards] = useState(false);
+   const [showAssessmentBuilder, setShowAssessmentBuilder] = useState(false);
++  const [showPostHomework, setShowPostHomework] = useState(false);
+ 
+   // App/UI state
+   const [activeClassCode, setActiveClassCode] = useState<string | null>(null);
+@@ -522,6 +523,13 @@
+         onClose={() => setShowLoginCards(false)}
+       />
+ 
++      <PostHomeworkModal
++        isOpen={showPostHomework}
++        onClose={() => setShowPostHomework(false)}
++        teacherId={resolvedId}
++        classCode={activeClassCode || "DEMO-CLASS"}
++      />
++
+       <div className="flex flex-col flex-1 justify-between w-full h-full">
+         <div className="space-y-6 flex-1">
+ 
+@@ -974,6 +982,13 @@
+             students={students}
+             onAssignPractice={(skill) => console.log("Assigning follow-up practice:", skill)}
+           />
++          
++          <button 
++            onClick={() => setShowPostHomework(true)}
++            className="w-full py-6 rounded-3xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xl uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-lg"
++          >
++            <BookOpen size={24} /> Post Live Homework to Student Hub
++          </button>
+           <HomeworkManager
+             teacherId={resolvedId}
+             classId="c1"

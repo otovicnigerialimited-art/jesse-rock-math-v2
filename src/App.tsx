@@ -104,7 +104,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const pathName = location.pathname.substring(1) || 'home';
-  const validTabs = ['home', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'pitch', 'sats', 'spaced_practice'];
+  const validTabs = ['home', 'homework', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'pitch', 'sats', 'spaced_practice'];
   const activeTab = validTabs.includes(pathName) ? pathName : 'home';
   const setActiveTab = (tab: any) => {
     navigate(tab === 'home' ? '/' : `/${tab}`);
@@ -1320,6 +1320,7 @@ export default function App() {
   const navItems = authState.role === 'class_student'
     ? [
         { id: 'home', label: 'Classroom Playground', icon: Home },
+        { id: 'homework', label: 'Homework & Tasks', icon: BookOpen },
         { id: 'notifications', label: '🔔 Notifications', icon: Bell },
         { id: 'survey', label: '📊 Survey Hub', icon: BarChart3 },
         { id: 'quiz', label: 'Play Quiz Battle 🏆', icon: Trophy },
@@ -1665,6 +1666,13 @@ export default function App() {
                       />
                     )
                   )}
+                  {activeTab === 'homework' && (
+                    <HomeworkHub userId={authState.userId || ""}
+                      classCode={authStudent?.classCode || ""}
+                      onNavigateToTab={navigateToTab}
+                    />
+                  )}
+
                   {activeTab === 'dashboard' && (
                     <Dashboard 
                       stats={stats} 

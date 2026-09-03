@@ -58,6 +58,7 @@ import BulkStudentImportModal from './teacher/BulkStudentImportModal';
 import StudentLoginCardsModal from './teacher/StudentLoginCardsModal';
 import LiveSessionManager from './teacher/LiveSessionManager';
 import TeacherRecommendationCard from './teacher/TeacherRecommendationCard';
+import PostHomeworkModal from "./teacher/PostHomeworkModal";
 import ExitTicketManager from './teacher/ExitTicketManager';
 import MisconceptionDetectorCard from './teacher/MisconceptionDetectorCard';
 import ClassroomSeatingChart from './teacher/ClassroomSeatingChart';
@@ -99,6 +100,7 @@ export default function TeacherDashboard({
   const [showBulkImport, setShowBulkImport] = useState(false);
   const [showLoginCards, setShowLoginCards] = useState(false);
   const [showAssessmentBuilder, setShowAssessmentBuilder] = useState(false);
+  const [showPostHomework, setShowPostHomework] = useState(false);
   const [selectedStudentForJourney, setSelectedStudentForJourney] = useState<SchoolStudent | null>(null);
   const [selectedStudentForParentReport, setSelectedStudentForParentReport] = useState<SchoolStudent | null>(null);
 
@@ -675,6 +677,13 @@ export default function TeacherDashboard({
       </div>
 
       {/* Conditional Dashboard Tab Content */}
+      <PostHomeworkModal
+        isOpen={showPostHomework}
+        onClose={() => setShowPostHomework(false)}
+        teacherId={resolvedId}
+        classCode={activeClassCode || "DEMO"}
+      />
+
       {activeDashboardTab === 'roster' ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Form: Register New Student in Classroom */}
@@ -973,6 +982,12 @@ export default function TeacherDashboard({
             students={students}
             onAssignPractice={(skill) => console.log("Assigning follow-up practice:", skill)}
           />
+          <button
+            onClick={() => setShowPostHomework(true)}
+            className="w-full py-6 rounded-3xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xl uppercase tracking-wider flex items-center justify-center gap-3 transition-colors shadow-lg"
+          >
+            <BookOpen size={24} /> Post Live Homework to Student Hub
+          </button>
           <HomeworkManager
             teacherId={resolvedId}
             classId="c1"

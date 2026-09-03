@@ -6,6 +6,7 @@ import {
   setLogLevel
 } from "firebase/firestore";
 import { getAnalytics, isSupported as isAnalyticsSupported } from "firebase/analytics";
+import { getMessaging, isSupported as isMessagingSupported } from "firebase/messaging";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 const firebaseConfig = {
@@ -54,4 +55,13 @@ if (typeof window !== 'undefined' && import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
   }
 }
 
-export { app, auth, db, analytics };
+let messaging: any = null;
+if (typeof window !== 'undefined') {
+  isMessagingSupported().then((supported) => {
+    if (supported) {
+      messaging = getMessaging(app);
+    }
+  }).catch(() => {});
+}
+
+export { app, auth, db, analytics, messaging };
