@@ -7,7 +7,7 @@ import { Difficulty, Problem, UserStats, Lesson } from '../types';
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
 import { useAdaptiveLogic } from '../hooks/useAdaptiveLogic';
-import RockstarKeypad from './RockstarKeypad';
+import StrikerKeypad from './StrikerKeypad';
 
 interface QuizProps {
   difficulty: Difficulty;
@@ -105,7 +105,7 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
 
       const funnyTaglines = [
         "🧠 Brainpower Overdrive!",
-        "🎸 Unstoppable Math Rock Star!",
+        "⚽ Unstoppable Math Champion!",
         "🚀 To Infinity and Beyond!",
         "🍌 That answer was bananas!",
         "🍕 You earn 100 virtual pizza slices!"
@@ -362,9 +362,9 @@ export default function Quiz({ difficulty, onFinish, onExit, isGuest, onConvertP
           </button>
         </form>
 
-        {/* Rockstar Touchpad */}
+        {/* Striker Touchpad */}
         <div className="pt-2">
-          <RockstarKeypad 
+          <StrikerKeypad 
             value={userInput} 
             onChange={(val) => {
               setUserInput(val);

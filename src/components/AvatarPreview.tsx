@@ -177,7 +177,7 @@ export default function AvatarPreview({
                 <path d="M 60 128 C 60 128, 70 116, 100 116 C 130 116, 140 128, 140 128 L 145 180 L 55 180 Z" fill="#6366f1" />
                 {/* Collar */}
                 <path d="M 85 116 C 85 116, 100 128, 115 116 Z" fill="url(#bodySkin)" stroke="#da9f77" strokeWidth="1" />
-                {/* Print logo: Rockstar Star */}
+                {/* Print logo: Striker Star */}
                 <polygon points="100,132 103,139 111,139 105,144 107,151 100,147 93,151 95,144 89,139 97,139" fill="#fcd34d" />
               </g>
             )}
@@ -270,12 +270,12 @@ export default function AvatarPreview({
             <circle cx="82" cy="80" r="4" fill="#f43f5f" opacity="0.35" />
             <circle cx="118" cy="80" r="4" fill="#f43f5f" opacity="0.35" />
 
-            {/* Mouth: Wide Rockstar Smile */}
+            {/* Mouth: Wide Striker Smile */}
             <path d="M 88 84 Q 100 98 112 84 C 112 84, 100 90, 88 84 Z" fill="#ffe2e2" stroke="#a02930" strokeWidth="1.5" />
             {/* Smiling tongue detailing */}
             <path d="M 94 87 Q 100 93 106 87 Q 100 95 94 87 Z" fill="#f43f5e" />
 
-            {/* COOL DESIGNER STAR SUNGLASSES (Every rockstar needs specs!) */}
+            {/* COOL DESIGNER STAR SUNGLASSES (Every striker needs specs!) */}
             {/* Left Frame Star */}
             <polygon points="82,65 85,71 91,71 86,75 88,81 82,78 76,81 78,75 73,71 79,71" fill="#ec4899" filter="url(#neon-glow-pink)" />
             <polygon points="82,67 84,71 89,71 85,74 87,78 82,76 77,78 79,74 75,71 80,71" fill="#ffffff" />
@@ -302,7 +302,7 @@ export default function AvatarPreview({
             )}
 
             {hairId === 'hair_neon_spikes' && (
-              // Electric spiky blue rockstar hairs
+              // Electric spiky blue striker hairs
               <g fill="#00f0ff" stroke="#0369a1" strokeWidth="1.5" filter="url(#neon-glow-cyan)">
                 <path d="M 68 62 L 50 48 L 74 48 L 65 24 L 88 38 L 100 12 L 112 38 L 135 24 L 126 48 L 150 48 L 132 62 C 140 35, 60 35, 68 62 Z" />
               </g>
@@ -384,7 +384,7 @@ export default function AvatarPreview({
             )}
 
             {instrumentId === 'instrument_strat_red' && (
-              // High gain classic rockstar neon red electric guitar
+              // High gain classic striker neon red football boot
               <g>
                 <g transform="rotate(-28, 100, 137)">
                   {/* Tuning fretboard */}

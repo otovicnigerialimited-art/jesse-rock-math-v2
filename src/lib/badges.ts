@@ -49,9 +49,9 @@ export const CORE_BADGES: Badge[] = [
   },
   {
     id: "legendary_xp",
-    title: "Math Rockstar 🎸",
+    title: "Math Striker ⚽",
     description: "Climb the charts and accumulate 1,000 total XP!",
-    emoji: "🎸",
+    emoji: "⚽",
     color: "from-blue-400 to-violet-500",
     category: "XP",
     checkUnlocked: (stats) => stats.xp >= 1000
@@ -67,7 +67,7 @@ export const CORE_BADGES: Badge[] = [
   },
   ...Array.from({ length: 194 }).map((_, i) => ({
     id: i === 193 ? "grand_master" : `scholar_${i + 1}`,
-    title: i === 193 ? "Legendary Rockstar 🏆" : `Scholar Level ${i + 1}`,
+    title: i === 193 ? "Legendary Striker 🏆" : `Scholar Level ${i + 1}`,
     description: i === 193 ? "Achieved the elite Legendary rank by solving 200 problems!" : `Solve ${i + 7} problems correctly!`,
     emoji: i === 193 ? "🏆" : "🌟",
     color: i === 193 ? "from-yellow-400 to-amber-600" : "from-blue-400 to-indigo-500",

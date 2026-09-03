@@ -24,7 +24,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
     {
       icon: <Activity className="text-violet-700" size={24} />,
       title: "Real-Time Direct Matchmaking",
-      desc: "Instant live matchmaking! When you enter the play arena queue, the system connects you with any active rockstars online. If no one's around, you can practice your speeds as you prepare for global domination!"
+      desc: "Instant live matchmaking! When you enter the play arena queue, the system connects you with any active strikers online. If no one's around, you can practice your speeds as you prepare for global domination!"
     },
     {
       icon: <Flame className="text-orange-700" size={24} />,
@@ -54,7 +54,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
     {
       icon: <Trophy className="text-brand-secondary" size={24} />,
       title: "The Fun Arcade (200 Streak Rule)",
-      desc: "Only the most elite Rockstars can enter the Fun Arcade! Once you achieve a massive streak of 200 or more correct answers, you break the locks to the secret Arcade Zone. Here, you get exclusive access to play high-quality, educational games from Google Interland (Be Internet Awesome). These are provided via direct outgoing links to a fully COPPA-compliant, kid-safe environment designed to teach digital citizenship."
+      desc: "Only the most elite Strikers can enter the Fun Arcade! Once you achieve a massive streak of 200 or more correct answers, you break the locks to the secret Arcade Zone. Here, you get exclusive access to play high-quality, educational games from Google Interland (Be Internet Awesome). These are provided via direct outgoing links to a fully COPPA-compliant, kid-safe environment designed to teach digital citizenship."
     }
   ];
 
@@ -69,7 +69,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
           How It Works & Game <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-700 to-indigo-700">Rules</span>
         </h1>
         <p className="text-deep-navy text-sm leading-relaxed">
-          Jesse Math Rockstar Arena combines rockstar energy with core math principles. Learn how to train your speed and score points effectively.
+          Jesse Math FC Arena combines striker energy with core math principles. Learn how to train your speed and score points effectively.
         </p>
       </div>
 

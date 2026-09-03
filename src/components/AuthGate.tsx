@@ -53,12 +53,12 @@ interface AuthGateProps {
 }
 
 export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) {
-  // Tabs: 'individual' for Rockstar/Student Login, 'teacher' for Teacher Login, 'developer' for Developer Login
+  // Tabs: 'individual' for Striker/Student Login, 'teacher' for Teacher Login, 'developer' for Developer Login
   const [loginTab, setLoginTab] = useState<'individual' | 'teacher' | 'developer'>('individual');
   const [showLanding, setShowLanding] = useState(true);
   
   const backgroundEmojis = React.useMemo(() => {
-    const emojis = ['🎸', '👑', '🚀', '➕', '✖️', '🎸', '👑', '🚀', '➖', '➗'];
+    const emojis = ['⚽', '👑', '🚀', '➕', '✖️', '⚽', '👑', '🚀', '➖', '➗'];
     return Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       char: emojis[i % emojis.length],
@@ -69,8 +69,8 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     }));
   }, []);
 
-  // Individual login sub-mode: 'rockstar', 'student', or 'class_code'
-  const [individualSubMode, setIndividualSubMode] = useState<'rockstar' | 'student' | 'class_code'>('rockstar');
+  // Individual login sub-mode: 'striker', 'student', or 'class_code'
+  const [individualSubMode, setIndividualSubMode] = useState<'striker' | 'student' | 'class_code'>('striker');
 
   // Class Login States
   const [classCodeInput, setClassCodeInput] = useState('');
@@ -419,7 +419,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     e.preventDefault();
     setDevError(null);
 
-    if (devPassword === "321jesserockstar") {
+    if (devPassword === "321jessestriker") {
       const newToken = `dev_token_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       
       // Save locally and globally
@@ -459,7 +459,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     }
 
     if (cleanUsername.includes(' ')) {
-      setError("Spaces are strictly forbidden in rockstar names! Use letters & numbers only.");
+      setError("Spaces are strictly forbidden in striker names! Use letters & numbers only.");
       return;
     }
 
@@ -476,7 +476,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
     const cleanPassword = password.trim();
     if (!cleanPassword) {
-      setError("Please pick a legendary Math Rockstar Password to secure your account!");
+      setError("Please pick a legendary Math Striker Password to secure your account!");
       return;
     }
 
@@ -580,7 +580,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
 
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Failed to enter Jesse Math Rockstar Arena. Check internet connection.");
+      setError(err.message || "Failed to enter Jesse Math FC Arena. Check internet connection.");
     } finally {
       setLoading(false);
     }
@@ -625,7 +625,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       safeStorage.setItem('jesse_rock_real_name', freshStudent.real_first_name);
       safeStorage.setItem('jesse_rock_teacher_id', freshStudent.teacher_id);
 
-      setSuccess(`Verified Rockstar Student @${freshStudent.username}! Preparing your instruments...`);
+      setSuccess(`Verified Striker Student @${freshStudent.username}! Preparing your instruments...`);
       setTimeout(() => {
         onAuthSuccess(freshStudent.username, freshStudent.id);
       }, 400);
@@ -839,7 +839,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             >
               <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-slate-300 bg-white rounded text-xs font-semibold uppercase tracking-widest text-slate-600">
                 <div className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
-                Jesse Math Rockstar
+                Jesse Math FC
               </div>
               
               <h1 className="text-5xl md:text-7xl font-light tracking-tight text-slate-900 leading-[1.1]">
@@ -965,15 +965,15 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 Born from a Passion for Fearless Mathematics
               </h2>
               <p className="text-slate-600 leading-relaxed text-base">
-                Jesse Math Rockstar was founded on June 20, 2026, by visionary educator and developer <strong>Jesse Otobo</strong>. Witnessing how standard timed drills paralyzed young learners with math anxiety, Jesse set out to bridge the gap between high-octane arcade gaming and rigorous mathematics.
+                Jesse Math FC was founded on June 20, 2026, by visionary educator and developer <strong>Jesse Otobo</strong>. Witnessing how standard timed drills paralyzed young learners with math anxiety, Jesse set out to bridge the gap between high-octane arcade gaming and rigorous mathematics.
               </p>
               <p className="text-slate-600 leading-relaxed text-base">
-                What started as a simple mental arithmetic prototype rapidly evolved into an elite multiplayer EdTech arena trusted by classrooms worldwide, empowering thousands of students to rock their arithmetic, algebra, and fractions without fear.
+                What started as a simple mental arithmetic prototype rapidly evolved into an elite multiplayer EdTech arena trusted by classrooms worldwide, empowering thousands of students to master their arithmetic, algebra, and fractions without fear.
               </p>
               <div className="flex items-center gap-4 pt-2">
                 <div className="flex -space-x-2">
                   <span className="w-10 h-10 rounded-full bg-cyan-500 text-white font-bold flex items-center justify-center border-2 border-white shadow">JO</span>
-                  <span className="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center border-2 border-white shadow">🎸</span>
+                  <span className="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center border-2 border-white shadow">⚽</span>
                   <span className="w-10 h-10 rounded-full bg-purple-500 text-white font-bold flex items-center justify-center border-2 border-white shadow">🚀</span>
                 </div>
                 <div>
@@ -988,7 +988,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
               className="bg-white border-2 border-slate-200 p-8 rounded-3xl shadow-xl relative overflow-hidden"
             >
-              <div className="absolute -right-10 -bottom-10 text-9xl opacity-10 select-none">🎸</div>
+              <div className="absolute -right-10 -bottom-10 text-9xl opacity-10 select-none">⚽</div>
               <div className="space-y-4 relative z-10">
                 <div className="text-xs font-mono font-bold text-emerald-600 uppercase tracking-widest">Mission Statement</div>
                 <h3 className="text-2xl font-bold text-slate-900">"Transforming Math into Music and Mastery."</h3>
@@ -1017,10 +1017,10 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 <span>▶️</span> Watch Platform Demo
               </div>
               <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-                See Jesse Math Rockstar in Action
+                See Jesse Math FC in Action
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed">
-                Watch our official walkthrough video to see how live multiplayer battles, zero-lag mechanics, and adaptive speed drills transform math practice into an addictive rock show.
+                Watch our official walkthrough video to see how live multiplayer battles, zero-lag mechanics, and adaptive speed drills transform math practice into an addictive football match.
               </p>
             </div>
 
@@ -1042,7 +1042,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               <div className="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center font-bold text-xl shadow-sm">🏆</div>
               <h3 className="text-xl font-bold text-slate-900">Real-Time Leaderboards</h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                Compete with students worldwide on live global and classroom leaderboards. Earn rock badges, level up your avatar, and celebrate math milestones together.
+                Compete with students worldwide on live global and classroom leaderboards. Earn football badges, level up your avatar, and celebrate math milestones together.
               </p>
             </motion.div>
 
@@ -1084,7 +1084,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               >
                 <img 
                   src="https://img.youtube.com/vi/BiOiAtKTfsQ/maxresdefault.jpg" 
-                  alt="Jesse Math Rockstar 8K Video Thumbnail" 
+                  alt="Jesse Math FC 8K Video Thumbnail" 
                   className="w-full h-full object-cover filter contrast-110 saturate-120 transform group-hover:scale-105 transition-transform duration-700"
                   onError={(e) => { e.currentTarget.src = 'https://img.youtube.com/vi/BiOiAtKTfsQ/hqdefault.jpg'; }}
                 />
@@ -1097,7 +1097,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-white drop-shadow-md">
                   <div className="flex items-center gap-3">
                     <span className="px-3 py-1 bg-red-600 rounded-xl text-xs font-mono font-black uppercase tracking-wider">8K Ultra HD</span>
-                    <span className="font-bold text-lg md:text-xl">Watch Jesse Math Rockstar on YouTube</span>
+                    <span className="font-bold text-lg md:text-xl">Watch Jesse Math FC on YouTube</span>
                   </div>
                   <span className="text-sm font-semibold underline text-cyan-300 group-hover:text-white transition-colors">Open YouTube ↗</span>
                 </div>
@@ -1114,7 +1114,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   A Complete Mathematical Ecosystem for K-12 & Beyond
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Jesse Math Rockstar is meticulously engineered to cover every essential pillar of early and intermediate mathematical proficiency, ensuring students develop intuition rather than rote memorization.
+                  Jesse Math FC is meticulously engineered to cover every essential pillar of early and intermediate mathematical proficiency, ensuring students develop intuition rather than rote memorization.
                 </p>
 
                 <div className="grid sm:grid-cols-2 gap-4 pt-2">
@@ -1217,10 +1217,10 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
           >
             <div className="text-center max-w-3xl mx-auto space-y-4">
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Why Jesse Math Rockstar Changes Everything
+                Why Jesse Math FC Changes Everything
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed">
-                Traditional math education is plagued by slow drills, anxiety, and rigid testing. Jesse Math Rockstar transforms calculations into an electrifying, gamified experience that builds lifelong confidence and lightning-fast mental math reflexes.
+                Traditional math education is plagued by slow drills, anxiety, and rigid testing. Jesse Math FC transforms calculations into an electrifying, gamified experience that builds lifelong confidence and lightning-fast mental math reflexes.
               </p>
             </div>
 
@@ -1231,7 +1231,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Eradicating Math Anxiety</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  By framing practice as an interactive rock-and-roll arcade game rather than stressful testing, students drop their guard, embrace mistakes as learning moments, and build healthy mathematical resilience.
+                  By framing practice as an interactive football arcade game rather than stressful testing, students drop their guard, embrace mistakes as learning moments, and build healthy mathematical resilience.
                 </p>
               </div>
 
@@ -1281,7 +1281,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">Live Multiplayer Duels</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  Challenge classmates or global peers in thrilling head-to-head calculation matches where speed, accuracy, and quick thinking crown the ultimate Math Rockstar.
+                  Challenge classmates or global peers in thrilling head-to-head calculation matches where speed, accuracy, and quick thinking crown the ultimate Math Striker.
                 </p>
               </div>
             </div>
@@ -1571,7 +1571,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               whileHover={{ scale: 1.05 }}
               className="w-16 h-16 rounded-2xl overflow-hidden shadow-sm border border-slate-200 mx-auto"
             >
-              <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover block" referrerPolicy="no-referrer" />
+              <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math FC Logo" className="w-full h-full object-cover block" referrerPolicy="no-referrer" />
             </motion.div>
             
             <div className="space-y-1">
@@ -1600,7 +1600,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
               }`}
             >
               <User size={14} className={loginTab === 'individual' ? 'text-cyan-600' : ''} />
-              <span>Rockstar</span>
+              <span>Striker</span>
             </button>
             
             <button
@@ -1643,13 +1643,13 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
           {/* Tab 1: Individual Home Login Form */}
           {loginTab === 'individual' && (
             <div className="space-y-4 text-left">
-              {/* Sub-tab toggle for Rockstar, Student, and Class Code inside Individual Login tab */}
+              {/* Sub-tab toggle for Striker, Student, and Class Code inside Individual Login tab */}
               <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-200 text-[10px] font-bold uppercase tracking-widest mb-6 gap-1">
                 <button
                   type="button"
-                  onClick={() => { setIndividualSubMode('rockstar'); setError(null); }}
+                  onClick={() => { setIndividualSubMode('striker'); setError(null); }}
                   className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'rockstar' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
+                    individualSubMode === 'striker' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
                   Indiv.
@@ -1674,8 +1674,8 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 </button>
               </div>
 
-              {individualSubMode === 'rockstar' && (
-                /* Rockstar Form */
+              {individualSubMode === 'striker' && (
+                /* Striker Form */
                 <form onSubmit={handleHomeLoginSubmit} className="space-y-4">
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
@@ -2070,7 +2070,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                       <Contact size={14} className="absolute left-3.5 top-3.5 text-deep-navy" />
                       <input
                         type="text"
-                        placeholder="e.g. Jesse Rockstar"
+                        placeholder="e.g. Jesse Striker"
                         value={teacherNameSignup}
                         onChange={(e) => setTeacherNameSignup(e.target.value)}
                         className="w-full pl-9 pr-3 py-2.5 bg-white backdrop-blur-md/40 border border-deep-navy border-4 rounded-xl text-deep-navy text-xs outline-none focus:border-violet-500 transition-all font-semibold"
@@ -2228,7 +2228,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       </div>
       {/* Itch.io Embed */}
       <div className="flex justify-center mt-4 mb-0 w-full">
-         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>
+         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-striker-appvercelapp">Jesse mathstriker by Jesse otobo</a></iframe>
       </div>
     </div>
   );

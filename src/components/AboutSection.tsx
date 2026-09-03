@@ -32,7 +32,7 @@ export default function AboutSection() {
           <Sparkles size={13} className="text-amber-500" /> Platform Architecture & Curriculum Overview
         </div>
         <h2 className="text-3xl md:text-5xl font-display font-black text-deep-navy tracking-tight">
-          About Jesse Math Rockstar
+          About Jesse Math FC
         </h2>
         <p className="text-sm md:text-base text-slate-700 font-medium leading-relaxed">
           An enterprise-grade, gamified math learning ecosystem built for students, teachers, and parents—featuring age-appropriate learning hubs, standardized exam preparation, and classroom analytics.
@@ -43,7 +43,7 @@ export default function AboutSection() {
       <div className="p-8 md:p-10 rounded-[2.5rem] bg-gradient-to-br from-violet-600 via-indigo-700 to-slate-900 text-white border-4 border-deep-navy shadow-xl relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
           <div className="w-24 h-24 rounded-3xl bg-white/10 border-2 border-white/20 p-2 shrink-0 backdrop-blur-md shadow-inner flex items-center justify-center">
-            <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-contain rounded-2xl" />
+            <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math FC Logo" className="w-full h-full object-contain rounded-2xl" />
           </div>
 
           <div className="space-y-3 text-center md:text-left">
@@ -54,7 +54,7 @@ export default function AboutSection() {
               The Story Behind the Platform
             </h3>
             <p className="text-sm md:text-base text-slate-200 font-medium leading-relaxed">
-              Jesse Math Rockstar was created by Jesse Otobo, an 11-year-old developer who wanted to transform daily math practice from repetitive homework into an exciting game. Seeing classmates struggle with math anxiety inspired the creation of an interactive space where solving equations earns rewards, unlocks avatar gear, and fosters friendly competition.
+              Jesse Math FC was created by Jesse Otobo, an 11-year-old developer who wanted to transform daily math practice from repetitive homework into an exciting game. Seeing classmates struggle with math anxiety inspired the creation of an interactive space where solving equations earns rewards, unlocks avatar gear, and fosters friendly competition.
             </p>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function AboutSection() {
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
               <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">COPPA Safe</span>
-              <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">Level Gigs</span>
+              <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">Level Matches</span>
               <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">KS2 SATs Prep</span>
             </div>
           </div>
@@ -111,21 +111,21 @@ export default function AboutSection() {
           </div>
           <div>
             <span className="text-[10px] font-black uppercase text-amber-600 tracking-widest block">Gamification Architecture</span>
-            <h3 className="text-xl md:text-2xl font-black text-deep-navy">Level "Gigs" Progression &amp; Avatar Customization</h3>
+            <h3 className="text-xl md:text-2xl font-black text-deep-navy">Level "Matches" Progression &amp; Avatar Customization</h3>
           </div>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <GigLevelCard stage="Garage Band Debut" levels="Levels 1 – 3" desc="Primary calculation speed, basic addition, subtraction, and place value fundamentals." />
+          <GigLevelCard stage="Youth Academy Debut" levels="Levels 1 – 3" desc="Primary calculation speed, basic addition, subtraction, and place value fundamentals." />
           <GigLevelCard stage="Local Legend" levels="Levels 4 – 7" desc="Times tables fluency, division, decimals, fractions, and mental word problems." />
-          <GigLevelCard stage="Main Stage Rockstar" levels="Levels 8 – 12" desc="Multi-step reasoning, algebra, geometry, ratios, and percentage conversions." />
+          <GigLevelCard stage="Main Stage Striker" levels="Levels 8 – 12" desc="Multi-step reasoning, algebra, geometry, ratios, and percentage conversions." />
           <GigLevelCard stage="Hall of Famer" levels="Levels 13+" desc="Advanced problem-solving, SATs mastery, and global multiplayer arena leadership." />
         </div>
 
         <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center md:text-left">
-            <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider">Rock Shop Economy</h4>
-            <p className="text-xs text-amber-800 font-medium">Students earn Rock Coins through accuracy streaks and level completion to customize rocker avatars with stage jackets, neon hairstyles, and guitars.</p>
+            <h4 className="text-xs font-black text-amber-900 uppercase tracking-wider">Club Shop Economy</h4>
+            <p className="text-xs text-amber-800 font-medium">Students earn match coins through accuracy streaks and level completion to customize rocker avatars with stage jackets, neon hairstyles, and football boots.</p>
           </div>
           <div className="px-4 py-2 bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-sm shrink-0">
             100% Free Virtual Economy
@@ -165,7 +165,7 @@ export default function AboutSection() {
             <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Dynamic Fraction Bars, Pie Visualizers &amp; Place Value Charts</li>
             <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Step-by-step worked examples with guided self-check exercises</li>
             <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Spaced repetition diagnostic engine that targets personal weak spots</li>
-            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Real-time multiplayer rockstar speed duels and live arena gigs</li>
+            <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-indigo-400 shrink-0" /> Real-time multiplayer striker speed duels and live arena matches</li>
           </ul>
         </div>
       </div>
@@ -219,7 +219,7 @@ export default function AboutSection() {
             <Heart size={18} className="text-rose-500" /> Free for Students, Teachers &amp; Schools
           </h4>
           <p className="text-xs text-slate-600 font-medium max-w-xl">
-            Jesse Math Rockstar is completely free to use with zero subscriptions, paywalls, or advertisements.
+            Jesse Math FC is completely free to use with zero subscriptions, paywalls, or advertisements.
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">

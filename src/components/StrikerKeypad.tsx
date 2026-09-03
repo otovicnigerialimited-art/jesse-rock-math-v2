@@ -3,14 +3,14 @@ import { motion } from 'motion/react';
 import { Delete, Check, Star } from 'lucide-react';
 import { cn } from '../lib/utils';
 
-interface RockstarKeypadProps {
+interface StrikerKeypadProps {
   value: string;
   onChange: (val: string) => void;
   onSubmit: () => void;
   showFraction?: boolean;
 }
 
-export default function RockstarKeypad({ value, onChange, onSubmit, showFraction = true }: RockstarKeypadProps) {
+export default function StrikerKeypad({ value, onChange, onSubmit, showFraction = true }: StrikerKeypadProps) {
   const handleDigit = (digit: string) => {
     if (value.length < 8) {
       onChange(value + digit);
@@ -29,7 +29,7 @@ export default function RockstarKeypad({ value, onChange, onSubmit, showFraction
 
   return (
     <div className="bg-slate-950 border-4 border-amber-400 rounded-[2rem] p-5 shadow-[0_16px_32px_rgba(0,0,0,0.8),0_0_20px_rgba(245,158,11,0.2)] max-w-sm mx-auto select-none relative overflow-hidden">
-      {/* Decorative Rockstar Decals */}
+      {/* Decorative Striker Decals */}
       <div className="absolute top-1 left-2 text-amber-500/20 rotate-12">
         <Star size={24} fill="currentColor" />
       </div>

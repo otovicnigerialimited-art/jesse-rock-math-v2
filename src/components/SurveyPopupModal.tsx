@@ -90,7 +90,7 @@ export default function SurveyPopupModal({
                 </span>
               </div>
               <h2 className="text-lg sm:text-xl font-display font-black text-deep-navy">
-                Help Improve Jesse Math Rockstar 🎸
+                Help Improve Jesse Math FC ⚽
               </h2>
             </div>
           </div>
@@ -171,7 +171,7 @@ export default function SurveyPopupModal({
                   {[
                     { id: 'none', label: '✅ Zero Bugs — Ran 100% buttery smooth', tag: 'Smooth' },
                     { id: 'touch_delay', label: '📱 Keypad Touch Latency on iPad / Tablet', tag: 'Touch Delay' },
-                    { id: 'accidental_purchase', label: '🛒 Accidental Rock Shop item purchase (Need confirm dialog)', tag: 'Shop UX' },
+                    { id: 'accidental_purchase', label: '🛒 Accidental Club Shop item purchase (Need confirm dialog)', tag: 'Shop UX' },
                     { id: 'audio_overlap', label: '🔊 Guitar solo audio overlapped round timer buzzer', tag: 'Audio' },
                     { id: 'avatar_reset', label: '🎨 Avatar rocker hair / skin color reset on reload', tag: 'Cosmetics' },
                     { id: 'multiplayer_sync', label: '⚔️ 1v1 Battle match synchronization hiccup', tag: 'Multiplayer' }
@@ -273,7 +273,7 @@ export default function SurveyPopupModal({
               </div>
             )}
 
-            {/* Question 4: Rock Shop & Reward Economy UX */}
+            {/* Question 4: Club Shop & Reward Economy UX */}
             {currentStep === 4 && (
               <div className="space-y-3 animate-fade-in">
                 <div className="space-y-1">
@@ -281,15 +281,15 @@ export default function SurveyPopupModal({
                     <ShoppingBag size={13} /> Question 4 of 5 • Shop & Rewards
                   </span>
                   <h3 className="text-sm sm:text-base font-black text-slate-900">
-                    How would you improve the Rock Shop and Reward Experience?
+                    How would you improve the Club Shop and Reward Experience?
                   </h3>
                 </div>
 
                 <div className="grid grid-cols-1 gap-2 pt-1">
                   {[
-                    { id: 'love_rewards', label: '🎸 Love it — Unlocking instruments & badges is awesome!' },
+                    { id: 'love_rewards', label: '⚽ Love it — Unlocking instruments & badges is awesome!' },
                     { id: 'needs_confirm_popup', label: '⚠️ Add an "Are you sure?" confirmation before spending coins' },
-                    { id: 'more_outfits', label: '👕 Want more customizable rocker outfits, hairstyles & guitars' },
+                    { id: 'more_outfits', label: '👕 Want more customizable rocker outfits, hairstyles & football boots' },
                     { id: 'coins_too_hard', label: '💰 Increase match reward coins so younger kids can buy gear faster' }
                   ].map((opt) => (
                     <button

@@ -150,8 +150,8 @@ export const ADMIN_SEED_ITEMS: ShopItem[] = [
     item_name: 'Red Fire Stratocaster',
     category: 'instrument',
     coin_cost: 80,
-    description: 'High-gain red electric guitar with custom pickguard.',
-    icon_emoji: '🎸',
+    description: 'High-gain red football boot with custom pickguard.',
+    icon_emoji: '⚽',
     rarity: 'Rare',
     accent_color: 'from-red-500 to-rose-700'
   },
@@ -211,7 +211,7 @@ export const ADMIN_SEED_ITEMS: ShopItem[] = [
     category: 'instrument',
     coin_cost: 100,
     description: 'Deep, thumping blue bass guitar for those low notes.',
-    icon_emoji: '🎸',
+    icon_emoji: '⚽',
     rarity: 'Rare',
     accent_color: 'from-blue-500 to-blue-700'
   }

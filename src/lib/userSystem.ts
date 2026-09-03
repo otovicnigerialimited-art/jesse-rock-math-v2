@@ -74,7 +74,7 @@ export function normalizeUsername(username: string): string {
 
 export function usernameToEmail(username: string): string {
   const norm = normalizeUsername(username);
-  return `${norm}@jessemathrockstar.internal`;
+  return `${norm}@jessemathstriker.internal`;
 }
 
 // ==========================================================
@@ -111,8 +111,8 @@ export function initGuestSession(): UserProfile {
     uid: guestId,
     role: 'GUEST',
     accountType: 'GUEST',
-    username: 'Guest Rockstar',
-    displayName: 'Guest Rockstar',
+    username: 'Guest Striker',
+    displayName: 'Guest Striker',
     highScore: guestProgress.highScore,
     xp: guestProgress.xp,
     coins: guestProgress.coins,
@@ -125,7 +125,7 @@ export function initGuestSession(): UserProfile {
   };
 
   safeStorage.setItem('jesse_rock_role', 'guest');
-  safeStorage.setItem('jesse_rock_my_username', 'Guest Rockstar');
+  safeStorage.setItem('jesse_rock_my_username', 'Guest Striker');
   safeStorage.setItem('jesse_rock_user_id', guestId);
 
   return guestProfile;

@@ -37,7 +37,7 @@ export default function SettingsModal({
   onClose, 
   config, 
   setConfig,
-  username = 'Rockstar',
+  username = 'Striker',
   userRole = 'Student',
   stats,
   onOpenNotifications
@@ -121,7 +121,7 @@ export default function SettingsModal({
             <div>
               <h3 className="font-bold text-sm text-white">{username}</h3>
               <p className="text-[11px] text-indigo-200 font-medium capitalize">
-                {userRole.replace('_', ' ')} {stats?.level ? `• Level ${stats.level} Rockstar` : ''}
+                {userRole.replace('_', ' ')} {stats?.level ? `• Level ${stats.level} Striker` : ''}
               </p>
             </div>
           </div>

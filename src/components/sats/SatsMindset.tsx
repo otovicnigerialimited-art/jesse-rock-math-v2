@@ -23,7 +23,7 @@ export default function SatsMindset({ onOpenCalmBreathing }: SatsMindsetProps) {
       {/* Top Banner */}
       <section className="bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-900 text-white p-6 md:p-10 rounded-[2.5rem] border-4 border-indigo-700 shadow-2xl space-y-4">
         <div className="flex items-center gap-2 px-3.5 py-1.5 bg-pink-500/20 border border-pink-400/30 rounded-full text-xs font-bold text-pink-300 uppercase tracking-widest w-max">
-          <Heart size={14} className="text-pink-400" /> Rockstar Mindset & Well-being
+          <Heart size={14} className="text-pink-400" /> Striker Mindset & Well-being
         </div>
         <h2 className="text-3xl sm:text-4xl font-display font-black text-white">
           Growth Mindset & Exam Confidence

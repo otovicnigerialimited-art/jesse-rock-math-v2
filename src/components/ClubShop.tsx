@@ -38,13 +38,13 @@ import {
   AlertCircle 
 } from 'lucide-react';
 
-interface RockShopProps {
+interface ClubShopProps {
   userId: string;
   role?: 'student' | 'individual' | 'teacher' | 'admin';
   onNavigateToTab?: (tab: any) => void;
 }
 
-export default function RockShop({ userId, role = 'student', onNavigateToTab }: RockShopProps) {
+export default function ClubShop({ userId, role = 'student', onNavigateToTab }: ClubShopProps) {
   const [activeCategory, setActiveCategory] = useState<'hair' | 'body' | 'instrument'>('instrument');
   const [shopItems, setShopItems] = useState<ShopItem[]>([]);
   const [loadingShop, setLoadingShop] = useState(true);
@@ -154,7 +154,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
         }
       }
     }, (err) => {
-      console.error("onSnapshot error in RockShop:", err);
+      console.error("onSnapshot error in ClubShop:", err);
     });
 
     return () => unsubscribe();
@@ -167,7 +167,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
       if (!audioCtx) return;
 
       if (type === 'win') {
-        // High energy rock power-chord synth effect!
+        // High energy stadium crowd roar effect!
         const osc = audioCtx.createOscillator();
         const osc2 = audioCtx.createOscillator();
         const gainNode = audioCtx.createGain();
@@ -249,7 +249,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
       if (freshStreak < item.coin_cost) {
         setShakingCardId(item.id);
         playRockSound('error');
-        setErrorMessage("Rock louder! Earn more streak in the Play Arena to unlock this!");
+        setErrorMessage("Train harder! Earn more streak in the Play Arena to unlock this!");
         
         // Remove shake after half a second
         setTimeout(() => setShakingCardId(null), 600);
@@ -351,12 +351,12 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 bg-gradient-to-tr from-brand-primary to-fuchsia-600 rounded-2xl flex items-center justify-center p-0.5 shadow-lg shadow-brand-primary/20 animate-pulse">
             <div className="w-full h-full bg-white backdrop-blur-md rounded-[14px] flex items-center justify-center text-2xl">
-              🎸
+              ⚽
             </div>
           </div>
           <div>
             <h1 className="text-2xl font-black text-deep-navy uppercase tracking-tight flex items-center gap-2">
-              Rock Shop <span className="text-xs bg-brand-accent/20 text-brand-accent px-2.5 py-1 rounded-full border border-brand-accent/20">LIVE ARENA</span>
+              Club Shop <span className="text-xs bg-brand-accent/20 text-brand-accent px-2.5 py-1 rounded-full border border-brand-accent/20">LIVE ARENA</span>
             </h1>
             <p className="text-xs text-slate-450 font-bold uppercase tracking-wider mt-0.5">
               Spend math coins earned from battles to power up your look!
@@ -389,7 +389,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
               <span className="text-[10px] bg-brand-primary/10 text-brand-primary border border-brand-primary/20 px-2.5 py-0.5 rounded-full uppercase font-black tracking-widest">
                 Arena Profile
               </span>
-              <h3 className="text-sm font-black text-deep-navy uppercase tracking-wider">Dynamic Rockstar Stage</h3>
+              <h3 className="text-sm font-black text-deep-navy uppercase tracking-wider">Dynamic Striker Stage</h3>
             </div>
 
             {/* Avatar display frame */}
@@ -420,7 +420,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
                   </span>
                 </div>
                 <div className="flex justify-between items-center bg-white/[0.02] p-2 rounded-lg border border-deep-navy border-4">
-                  <span className="text-slate-500 font-bold uppercase">🎸 Instruments</span>
+                  <span className="text-slate-500 font-bold uppercase">⚽ Instruments</span>
                   <span className="text-deep-navy font-extrabold truncate max-w-[140px]">
                     {shopItems.find(i => i.id === equippedItems.instrument)?.item_name || 'Campfire Acoustic'}
                   </span>
@@ -453,7 +453,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
                   : 'text-deep-navy hover:bg-white/5 hover:text-slate-250'
               }`}
             >
-              <Music size={14} /> Guitars & Harps
+              <Music size={14} /> football boots & Harps
             </button>
             <button
               onClick={() => setActiveCategory('hair')}
@@ -606,7 +606,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
         </div>
       </div>
 
-      {/* Rockstar Confetti Spark Splash celebration Overlay */}
+      {/* Striker Confetti Spark Splash celebration Overlay */}
       <AnimatePresence>
         {showConfetti && celebratedItem && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -628,7 +628,7 @@ export default function RockShop({ userId, role = 'student', onNavigateToTab }: 
             >
               {/* Star sparkles background animations */}
               <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-10 left-10 text-xl animate-pulse">🎸</div>
+                <div className="absolute top-10 left-10 text-xl animate-pulse">⚽</div>
                 <div className="absolute bottom-10 right-10 text-xl animate-pulse" style={{ animationDelay: '0.8s' }}>👑</div>
                 <div className="absolute top-1/2 right-8 text-lg animate-pulse" style={{ animationDelay: '0.4s' }}>✨</div>
                 <div className="absolute bottom-1/2 left-8 text-lg animate-pulse" style={{ animationDelay: '1.2s' }}>⚡</div>

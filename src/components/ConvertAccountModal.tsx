@@ -39,7 +39,7 @@ export default function ConvertAccountModal({
     const cleanPassword = passwordInput.trim();
 
     if (!cleanUsername) {
-      setError("Please enter a cool Rockstar Username!");
+      setError("Please enter a cool Striker Username!");
       return;
     }
     if (cleanUsername.length < 3) {
@@ -114,7 +114,7 @@ export default function ConvertAccountModal({
       setSuccess(`Success! Your account "${cleanUsername}" is registered and progress is saved.`);
       
       // Clean up guest local storage stats
-      safeStorage.removeItem('guest_rockstar_stats');
+      safeStorage.removeItem('guest_striker_stats');
 
       // Update login cookies/keys
       safeStorage.setItem('jesse_rock_role', 'individual');
@@ -177,7 +177,7 @@ export default function ConvertAccountModal({
             Claim Your Account
           </h2>
           <p className="text-slate-500 text-sm font-medium leading-relaxed px-2">
-            Secure your official Rockstar identity and save your progress permanently to the global cloud.
+            Secure your official Striker identity and save your progress permanently to the global cloud.
           </p>
         </div>
 

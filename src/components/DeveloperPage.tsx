@@ -90,7 +90,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
     let ratingComment = '';
     switch (starRating) {
       case 5:
-        ratingComment = "Rated 5 out of 5 stars! ⭐⭐⭐⭐⭐ Jesse Math Rockstar is awesome! ⚡";
+        ratingComment = "Rated 5 out of 5 stars! ⭐⭐⭐⭐⭐ Jesse Math FC is awesome! ⚡";
         break;
       case 4:
         ratingComment = "Rated 4 out of 5 stars! ⭐⭐⭐⭐ Really fun and exciting!";
@@ -110,7 +110,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
 
     try {
       await addDoc(collection(db, "developer_guestbook"), {
-        username: currentUser?.username || "Guest Rockstar",
+        username: currentUser?.username || "Guest Striker",
         text: ratingComment,
         avatar: avatarIcon,
         role: 'kid',
@@ -156,7 +156,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
 
     try {
       await addDoc(collection(db, "developer_guestbook"), {
-        username: currentUser?.username || "Verified Rockstar",
+        username: currentUser?.username || "Verified Striker",
         text: sanitizedComment,
         avatar: avatarIcon,
         role: currentUser?.role === 'teacher' || currentUser?.role === 'admin' ? 'adult' : 'kid',
@@ -187,7 +187,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
           MEET THE <span className="bg-gradient-to-r from-cyan-600 via-pink-600 to-amber-600 bg-clip-text text-transparent">DEVELOPER</span>
         </h1>
         <p className="text-sm sm:text-base text-slate-850 max-w-2xl mx-auto font-bold leading-relaxed">
-          Jesse Math Rockstar Arena was designed, coded, and deployed by Jesse Otobo (11-year-old developer). Learn about Jesse's journey and leave an encouraging word below!
+          Jesse Math FC Arena was designed, coded, and deployed by Jesse Otobo (11-year-old developer). Learn about Jesse's journey and leave an encouraging word below!
         </p>
       </motion.div>
 
@@ -266,7 +266,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
                 📅 June 20th — Made, Published & Indexed!
               </h4>
               <p className="text-xs text-slate-800 leading-relaxed font-bold">
-                Jesse Math Rockstar was made, published, and completely indexed on Google on <strong>June 20, 2026</strong>! To celebrate this special milestone, every single year on <strong>June 20th</strong>, all players receive an automatic <strong>+100 Free Streak Booster</strong> and special community gifts when they log in!
+                Jesse Math FC was made, published, and completely indexed on Google on <strong>June 20, 2026</strong>! To celebrate this special milestone, every single year on <strong>June 20th</strong>, all players receive an automatic <strong>+100 Free Streak Booster</strong> and special community gifts when they log in!
               </p>
             </div>
             <div className="shrink-0 text-3xl animate-bounce hidden sm:block">
@@ -276,11 +276,11 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
         </div>
 
         <div className="space-y-6 text-sm leading-relaxed text-deep-navy font-sans">
-          <p className="text-base font-bold">Hello! I am Jesse, the founder of Jesse Math Rockstar, an application designed to help children enjoy practicing mathematics.</p>
+          <p className="text-base font-bold">Hello! I am Jesse, the founder of Jesse Math FC, an application designed to help children enjoy practicing mathematics.</p>
           
           <div className="space-y-2">
             <h3 className="text-lg font-black text-pink-600 border-b-2 border-deep-navy pb-1 flex items-center gap-1.5">
-              🎸 The Inspiration
+              ⚽ The Inspiration
             </h3>
             <p className="font-semibold text-slate-850">
               I got inspired to create a unique platform that makes education extremely engaging and fun. By combining gaming elements with mathematics, my friends and peers can practice math and naturally improve their speed and accuracy.
@@ -320,7 +320,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
             </h3>
             <div className="space-y-4 text-[13px] font-bold text-slate-850 leading-relaxed">
               <p>
-                {"Jesse Math Rockstar is designed to transform the way students engage with mathematics. By creating an interactive, game-based environment, we move beyond passive learning to active participation, helping learners master essential concepts through play."}
+                {"Jesse Math FC is designed to transform the way students engage with mathematics. By creating an interactive, game-based environment, we move beyond passive learning to active participation, helping learners master essential concepts through play."}
               </p>
               <p>
                 {"Our platform leverages real-time feedback, adaptive challenges, and rewarding progress tracking to ensure every student remains motivated and challenged at their appropriate level, making math both accessible and enjoyable."}
@@ -440,7 +440,7 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
           </a>
 
           <a 
-            href="https://jesse-math-rockstar-app.vercel.app/" 
+            href="https://jesse-math-striker-app.vercel.app/" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="flex items-center justify-between p-4 rounded-2xl bg-white hover:bg-sunny-yellow/10 border border-deep-navy border-4 transition-all group cursor-pointer"
@@ -450,8 +450,8 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
                 <Globe size={18} />
               </div>
               <div className="text-left">
-                <p className="text-[13px] font-bold text-deep-navy group-hover:text-amber-600 transition-colors">Live Math Rockstar App</p>
-                <p className="text-[10px] text-slate-600 font-mono font-bold">jesse-math-rockstar-app</p>
+                <p className="text-[13px] font-bold text-deep-navy group-hover:text-amber-600 transition-colors">Live Math Striker App</p>
+                <p className="text-[10px] text-slate-600 font-mono font-bold">jesse-math-striker-app</p>
               </div>
             </div>
             <ExternalLink size={14} className="text-slate-600 group-hover:text-amber-600 transition-all group-hover:translate-x-0.5" />
@@ -533,8 +533,8 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
               { age: "Age 8", title: "First Lines & Block Coding", desc: "Discovered programming logic through visual layouts, building 2D logic games." },
               { age: "Age 9", title: "Advancing to Text-Based Logic", desc: "Studied HTML/CSS constructs, creating educational mini-challenges for peers." },
               { age: "Age 10", title: "Vibe Coding Breakthrough", desc: "Mastered conversational prompting and API hooks, generating over 50+ experimental tools." },
-              { age: "Age 11", title: "Launching Jesse Math Rockstar App", desc: "Designed, synchronized, and compiled this flagship multiplayer hub!" },
-              { age: "June 20th", title: "Official Launch & Indexation Date", desc: "The official anniversary of Jesse Math Rockstar! This is the day the application was made, published, and indexed on Google on June 20, 2026. Celebrated every year on June 20th with free streaks!" }
+              { age: "Age 11", title: "Launching Jesse Math FC App", desc: "Designed, synchronized, and compiled this flagship multiplayer hub!" },
+              { age: "June 20th", title: "Official Launch & Indexation Date", desc: "The official anniversary of Jesse Math FC! This is the day the application was made, published, and indexed on Google on June 20, 2026. Celebrated every year on June 20th with free streaks!" }
             ].map((step, idx) => {
               const isAnniversary = step.age === "June 20th";
               return (
@@ -591,9 +591,9 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
 
                 {/* Avatar Selection */}
                 <div className="space-y-1">
-                  <span className="text-[9px] uppercase font-black text-slate-500 tracking-wider block text-center">Choose your Rockstar Avatar:</span>
+                  <span className="text-[9px] uppercase font-black text-slate-500 tracking-wider block text-center">Choose your Striker Avatar:</span>
                   <div className="flex gap-2 justify-center">
-                    {['👑', '⚡', '🎸', '🏆', '🔥', '👾'].map((icon) => (
+                    {['👑', '⚡', '⚽', '🏆', '🔥', '👾'].map((icon) => (
                       <button
                         key={icon}
                         type="button"
@@ -657,14 +657,14 @@ export default function DeveloperPage({ currentUser }: DeveloperPageProps) {
                   <Send size={11} /> Post My Star Rating ⚡
                 </button>
                 <div className="text-center text-[8px] text-slate-500 font-mono">
-                  Posting as: <strong>{currentUser?.username || 'Guest Rockstar'}</strong> ({userRole.toUpperCase()})
+                  Posting as: <strong>{currentUser?.username || 'Guest Striker'}</strong> ({userRole.toUpperCase()})
                 </div>
               </form>
             ) : (
               /* Teacher/Adult accounts can write messages */
               <form onSubmit={handlePostComment} className="p-5 bg-clean-white border-deep-navy border-4 rounded-2xl space-y-4 font-sans">
                 <div className="flex gap-2 justify-center">
-                  {['👑', '⚡', '🎸', '🏆', '🔥', '👾'].map((icon) => (
+                  {['👑', '⚡', '⚽', '🏆', '🔥', '👾'].map((icon) => (
                     <button
                       key={icon}
                       type="button"

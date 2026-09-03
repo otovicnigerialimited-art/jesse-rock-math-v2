@@ -10,10 +10,10 @@ export default function MobileLockScreenPreview() {
     time: string;
     app: string;
   } | null>({
-    title: '🔥 Jesse Math Rockstar Streak Alert',
-    body: 'Your math rockstar streak is active! Complete one speed gig today to keep your crown.',
+    title: '🔥 Jesse Math FC Streak Alert',
+    body: 'Your math striker streak is active! Complete one speed gig today to keep your crown.',
     time: 'Just now',
-    app: 'Jesse Math Rockstar'
+    app: 'Jesse Math FC'
   });
 
   const triggerLockScreenBanner = (title: string, body: string) => {
@@ -21,7 +21,7 @@ export default function MobileLockScreenPreview() {
       title,
       body,
       time: 'Just now',
-      app: 'Jesse Math Rockstar'
+      app: 'Jesse Math FC'
     });
     dispatchNotification('motivation', 'streakReminders', title, body);
 

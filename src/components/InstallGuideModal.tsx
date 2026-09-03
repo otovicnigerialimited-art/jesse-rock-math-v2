@@ -75,7 +75,7 @@ export default function InstallGuideModal({ isOpen, onClose }: InstallGuideModal
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jesse Math Rockstar - Offline Game Launcher</title>
+  <title>Jesse Math FC - Offline Game Launcher</title>
   <style>
     body {
       margin: 0;
@@ -117,9 +117,9 @@ export default function InstallGuideModal({ isOpen, onClose }: InstallGuideModal
 </head>
 <body>
   <div class="card">
-    <h1>Jesse Math Rockstar 🎸</h1>
+    <h1>Jesse Math FC ⚽</h1>
     <p>Offline Game Package ready! Click below to open the official web app directly in your browser with full offline capability.</p>
-    <a href="https://jesse-math-rockstar-app.vercel.app/" class="btn" target="_blank">Launch Online Game 🚀</a>
+    <a href="https://jesse-math-striker-app.vercel.app/" class="btn" target="_blank">Launch Online Game 🚀</a>
   </div>
 </body>
 </html>`;
@@ -137,7 +137,7 @@ INSTALLATION & OFFLINE PLAY INSTRUCTIONS:
 
 1. DESKTOP / PC / MAC / CHROMEBOOK:
    - Open your browser (Google Chrome or Microsoft Edge).
-   - Visit: https://jesse-math-rockstar-app.vercel.app/
+   - Visit: https://jesse-math-striker-app.vercel.app/
    - Click the "Install" icon in your address bar to save as a native desktop app.
 
 2. MOBILE / TABLET (iOS / ANDROID):
@@ -148,14 +148,14 @@ INSTALLATION & OFFLINE PLAY INSTRUCTIONS:
 3. OFFLINE STANDALONE LAUNCHER:
    - Double click "index.html" inside this folder to launch the game locally in any browser!
 
-Thank you for playing Jesse Math Rockstar!
+Thank you for playing Jesse Math FC!
 `;
 
       zip.file('README-OFFLINE.txt', readmeText);
 
       // 3. Desktop .url Internet Shortcut with Icon Metadata
       const urlShortcutContent = `[InternetShortcut]
-URL=https://jesse-math-rockstar-app.vercel.app/
+URL=https://jesse-math-striker-app.vercel.app/
 IDList=
 HotKey=0
 IconFile=https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png
@@ -163,17 +163,17 @@ IconIndex=0
 [{000214A0-0000-0000-C000-00000000046X}]
 Prop3=19,1
 `;
-      zip.file('Jesse-Math-Rockstar-Desktop-App.url', urlShortcutContent);
+      zip.file('Jesse-Math-Striker-Desktop-App.url', urlShortcutContent);
 
       // 4. Windows Batch Script to create Desktop & Start Menu Shortcut with logo
       const batInstallerContent = `@echo off
-echo Creating Jesse Math Rockstar Desktop App Shortcut...
+echo Creating Jesse Math FC Desktop App Shortcut...
 set SCRIPT="%TEMP%\\%RANDOM%-%RANDOM%-%RANDOM%-%RANDOM%.vbs"
 echo Set oWS = WScript.CreateObject("WScript.Shell") >> %SCRIPT%
-echo sLinkFile = oWS.SpecialFolders("Desktop") ^& "\\Jesse Math Rockstar.lnk" >> %SCRIPT%
+echo sLinkFile = oWS.SpecialFolders("Desktop") ^& "\\Jesse Math FC.lnk" >> %SCRIPT%
 echo Set oLink = oWS.CreateShortcut(sLinkFile) >> %SCRIPT%
-echo oLink.TargetPath = "https://jesse-math-rockstar-app.vercel.app/" >> %SCRIPT%
-echo oLink.Description = "Jesse Math Rockstar Desktop App" >> %SCRIPT%
+echo oLink.TargetPath = "https://jesse-math-striker-app.vercel.app/" >> %SCRIPT%
+echo oLink.Description = "Jesse Math FC Desktop App" >> %SCRIPT%
 echo oLink.Save >> %SCRIPT%
 cscript /nologo %SCRIPT%
 del %SCRIPT%
@@ -187,7 +187,7 @@ pause
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'Jesse-Math-Rockstar-Offline.zip';
+      link.download = 'Jesse-Math-Striker-Offline.zip';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -401,7 +401,7 @@ pause
                   </div>
 
                   <p className="text-[11px] text-slate-500 font-medium leading-relaxed mb-3">
-                    Apple iOS Safari does not support automated installation triggers. Following the quick 3-step guide above saves <strong>Jesse Math Rockstar</strong> directly to your home screen with standalone features!
+                    Apple iOS Safari does not support automated installation triggers. Following the quick 3-step guide above saves <strong>Jesse Math FC</strong> directly to your home screen with standalone features!
                   </p>
 
                   <button

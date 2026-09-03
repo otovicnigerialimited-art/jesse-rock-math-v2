@@ -20,7 +20,7 @@ import { ExtendedUserStats } from '../types/extendedTypes';
 import { cn } from '../lib/utils';
 import DailyTip from './DailyTip';
 import NextGigCard from './NextGigCard';
-import RockstarProgressionCard from './RockstarProgressionCard';
+import StrikerProgressionCard from './StrikerProgressionCard';
 import PersonalBestsSection from './PersonalBestsSection';
 import AnimatedCounter from './AnimatedCounter';
 
@@ -183,8 +183,8 @@ export default function Dashboard({
         onStartQuiz={onStartQuiz}
       />
 
-      {/* Rockstar Progression Roadmap */}
-      <RockstarProgressionCard stats={stats} />
+      {/* Striker Progression Roadmap */}
+      <StrikerProgressionCard stats={stats} />
 
       {/* Verified Personal Bests */}
       <PersonalBestsSection bests={stats.personalBests} />

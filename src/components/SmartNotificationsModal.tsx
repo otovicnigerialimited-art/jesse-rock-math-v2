@@ -261,7 +261,7 @@ export default function SmartNotificationsModal({
                 />
                 <ToggleItem
                   title="Praise & Rewards"
-                  desc="Micro-celebrations for completing lessons, earning badges, or level Gigs."
+                  desc="Micro-celebrations for completing lessons, earning badges, or level Matches."
                   checked={settings.praiseAndRewards}
                   onChange={() => handleCategoryToggle('praiseAndRewards')}
                 />
@@ -345,7 +345,7 @@ export default function SmartNotificationsModal({
                 />
                 <ToggleItem
                   title="New Content Alerts"
-                  desc="Announcements when new courses, level Gigs, or features are unlocked."
+                  desc="Announcements when new courses, level Matches, or features are unlocked."
                   checked={settings.newContentAlerts}
                   onChange={() => handleCategoryToggle('newContentAlerts')}
                 />
@@ -456,7 +456,7 @@ export default function SmartNotificationsModal({
                     'motivation',
                     'praiseAndRewards',
                     '🏆 Milestone Achieved!',
-                    'You earned 150 Rock Coins for completing the Level 5 Gig!'
+                    'You earned 150 match coins for completing the Level 5 Gig!'
                   )}
                 />
                 <TestButton
@@ -516,7 +516,7 @@ export default function SmartNotificationsModal({
                     'system',
                     'technicalSupport',
                     '⚙️ App Update Applied',
-                    'Jesse Math Rockstar v3.2 updated with fresh SATs drills.'
+                    'Jesse Math FC v3.2 updated with fresh SATs drills.'
                   )}
                 />
               </div>

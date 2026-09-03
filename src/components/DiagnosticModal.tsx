@@ -76,7 +76,7 @@ export default function DiagnosticModal({ isOpen, onClose, onSaveResult }: Diagn
     let tierName = 'Rookie';
     if (accuracyPct >= 85) { overallLevel = 8; tierName = 'Math Performer'; }
     else if (accuracyPct >= 65) { overallLevel = 5; tierName = 'Rising Star'; }
-    else if (accuracyPct >= 40) { overallLevel = 3; tierName = 'Garage Rockstar'; }
+    else if (accuracyPct >= 40) { overallLevel = 3; tierName = 'Garage Striker'; }
 
     const result: DiagnosticResult = {
       completedAt: Date.now(),

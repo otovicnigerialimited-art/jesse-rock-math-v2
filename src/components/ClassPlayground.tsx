@@ -540,7 +540,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
                         <div className="bg-slate-50 p-2.5 rounded-xl border border-dashed border-deep-navy border-2 flex items-center justify-between gap-2 flex-wrap">
                           <span className="text-[10px] font-bold text-deep-navy/70 font-mono uppercase">Send Signal:</span>
                           <div className="flex gap-1.5">
-                            {['🎸', '⚡', '👑', '🎉', '💖'].map((emoji, eIdx) => (
+                            {['⚽', '⚡', '👑', '🎉', '💖'].map((emoji, eIdx) => (
                               <button
                                 key={`${emoji}-${eIdx}`}
                                 onClick={() => handleSendReaction(mate.id, emoji)}
@@ -670,7 +670,7 @@ export default function ClassPlayground({ currentUser, onSignOut, onNavigateToTa
                             @{mate.student_name} {emoji}
                           </p>
                           <p className="text-[9px] text-slate-400 font-mono">
-                            Level {mate.level || Math.max(1, Math.floor(mateXp / 100))} Rockstar
+                            Level {mate.level || Math.max(1, Math.floor(mateXp / 100))} Striker
                           </p>
                         </div>
                       </div>

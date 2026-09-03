@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ROCKSTAR_TIERS, getCurrentRockstarTier, getNextRockstarTier } from '../lib/rockstarTiers';
+import { ROCKSTAR_TIERS, getCurrentStrikerTier, getNextStrikerTier } from '../lib/strikerTiers';
 import { ExtendedUserStats } from '../types/extendedTypes';
 import { 
   Award, 
@@ -12,13 +12,13 @@ import {
   Zap
 } from 'lucide-react';
 
-interface RockstarProgressionCardProps {
+interface StrikerProgressionCardProps {
   stats: ExtendedUserStats;
 }
 
-export default function RockstarProgressionCard({ stats }: RockstarProgressionCardProps) {
-  const currentTier = getCurrentRockstarTier(stats.xp || 0, stats.level || 1);
-  const nextTier = getNextRockstarTier(currentTier.tierNumber);
+export default function StrikerProgressionCard({ stats }: StrikerProgressionCardProps) {
+  const currentTier = getCurrentStrikerTier(stats.xp || 0, stats.level || 1);
+  const nextTier = getNextStrikerTier(currentTier.tierNumber);
 
   const xpProgressInTier = stats.xp - currentTier.minXp;
   const xpNeededForNext = nextTier ? nextTier.minXp - currentTier.minXp : 1000;
@@ -35,7 +35,7 @@ export default function RockstarProgressionCard({ stats }: RockstarProgressionCa
           </div>
           <div>
             <span className="text-[10px] font-black uppercase tracking-widest text-amber-300 block">
-              Tier {currentTier.tierNumber} of 7 • Rockstar Status
+              Tier {currentTier.tierNumber} of 7 • Striker Status
             </span>
             <h3 className="text-2xl font-display font-black text-white">
               {currentTier.name}
@@ -67,13 +67,13 @@ export default function RockstarProgressionCard({ stats }: RockstarProgressionCa
         </div>
       ) : (
         <div className="p-3 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-2xl text-xs font-bold text-center">
-          👑 You have reached the ultimate pinnacle of Math Rockstar Progression!
+          👑 You have reached the ultimate pinnacle of Math Striker Progression!
         </div>
       )}
 
       {/* Tiers Roadmap */}
       <div className="space-y-3 pt-2">
-        <h4 className="text-sm font-black uppercase tracking-wider text-slate-800">Rockstar Tier Roadmap</h4>
+        <h4 className="text-sm font-black uppercase tracking-wider text-slate-800">Striker Tier Roadmap</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {ROCKSTAR_TIERS.map(t => {
             const isUnlocked = stats.xp >= t.minXp || stats.level >= t.minLevel;

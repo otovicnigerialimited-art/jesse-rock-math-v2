@@ -940,7 +940,7 @@ export const SATS_EXAM_GUIDE = {
   ]
 };
 
-// Positive Rockstar Mindset & Growth Affirmations
+// Positive Striker Mindset & Growth Affirmations
 export const ROCKSTAR_MINDSET_QUOTES = [
   {
     quote: "You don't need to know everything today. You just need to keep practising.",
@@ -977,8 +977,8 @@ export const ROCKSTAR_MINDSET_QUOTES = [
 ];
 
 export const DAILY_MOTIVATIONS = [
-  "🔥 You got that question wrong yesterday. Today you understand it. THAT is real rockstar improvement.",
-  "🎸 One question at a time. Steady pace, deep breath, clear working.",
+  "🔥 You got that question wrong yesterday. Today you understand it. THAT is real striker improvement.",
+  "⚽ One question at a time. Steady pace, deep breath, clear working.",
   "✨ Your effort today is planting seeds for total confidence on exam day.",
   "⚡ Don't rush arithmetic. Accuracy beats rushing every single time.",
   "🧠 Show your working steps proudly. Every step is worth gold marks."

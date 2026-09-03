@@ -68,7 +68,7 @@ const Leaderboard = React.lazy(() => import('./components/Leaderboard'));
 const Quiz = React.lazy(() => import('./components/Quiz'));
 const LearningHub = React.lazy(() => import('./components/LearningHub'));
 const BadgesSection = React.lazy(() => import('./components/BadgesSection'));
-const RockShop = React.lazy(() => import('./components/RockShop'));
+const ClubShop = React.lazy(() => import('./components/ClubShop'));
 const FunArcade = React.lazy(() => import('./components/FunArcade'));
 const ConvertAccountModal = React.lazy(() => import('./components/ConvertAccountModal'));
 const CertificateModal = React.lazy(() => import('./components/CertificateModal'));
@@ -129,7 +129,7 @@ export default function App() {
     instrument: 'instrument_default'
   });
   const backgroundEmojis = React.useMemo(() => {
-    const emojis = ['🎸', '👑', '🚀', '➕', '✖️', '🎸', '👑', '🚀', '➖', '➗'];
+    const emojis = ['⚽', '👑', '🚀', '➕', '✖️', '⚽', '👑', '🚀', '➖', '➗'];
     return Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       char: emojis[i % emojis.length],
@@ -141,7 +141,7 @@ export default function App() {
   }, []);
   const [stats, setStats] = useState<ExtendedUserStats>(() => {
     try {
-      const saved = safeStorage.getItem('math_rockstar_stats');
+      const saved = safeStorage.getItem('math_striker_stats');
       return saved ? JSON.parse(saved) : INITIAL_STATS;
     } catch (err) {
       console.warn('[JesseMath] Could not load initial stats from storage:', err);
@@ -177,7 +177,7 @@ export default function App() {
           group: 'motivation',
           key: 'streakReminders',
           title: '🔥 Streak & Daily Reminder',
-          body: 'Your math rockstar streak is active! Complete one speed gig today to keep your crown.'
+          body: 'Your math striker streak is active! Complete one speed gig today to keep your crown.'
         },
         {
           group: 'learning',
@@ -256,12 +256,12 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [configSettings, setConfigSettings] = useState(() => {
     try {
-      const saved = safeStorage.getItem('math_rockstar_config');
+      const saved = safeStorage.getItem('math_striker_config');
       return saved ? JSON.parse(saved) : {
         soundEffects: true,
         rockMusic: true,
         quietMode: false,
-        selectedAvatar: '🎸 Math Rockstar',
+        selectedAvatar: '⚽ Math Striker',
         customSpeed: 'easy' as Difficulty
       };
     } catch (err) {
@@ -270,14 +270,14 @@ export default function App() {
         soundEffects: true,
         rockMusic: true,
         quietMode: false,
-        selectedAvatar: '🎸 Math Rockstar',
+        selectedAvatar: '⚽ Math Striker',
         customSpeed: 'easy' as Difficulty
       };
     }
   });
 
   useEffect(() => {
-    safeStorage.setItem('math_rockstar_config', JSON.stringify(configSettings));
+    safeStorage.setItem('math_striker_config', JSON.stringify(configSettings));
     if (configSettings.quietMode) {
       document.body.classList.add('quiet-mode');
     } else {
@@ -418,7 +418,7 @@ export default function App() {
               streak: 0,
               bestStreak: 0,
               history: [],
-              unlockedBadges: ["School Rockstar"],
+              unlockedBadges: ["School Striker"],
               weeklyProgress: undefined
             });
           }
@@ -563,7 +563,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    // Check if there is an active logged-in math rockstar on this device
+    // Check if there is an active logged-in math striker on this device
     const storedUsername = safeStorage.getItem('jesse_rock_my_username');
     let storedDeviceId = safeStorage.getItem('jesse_rock_device_id');
     
@@ -717,9 +717,9 @@ export default function App() {
 
   useEffect(() => {
     if (authState.role === 'guest') {
-      safeStorage.setItem('guest_rockstar_stats', JSON.stringify(stats));
+      safeStorage.setItem('guest_striker_stats', JSON.stringify(stats));
     } else {
-      safeStorage.setItem('math_rockstar_stats', JSON.stringify(stats));
+      safeStorage.setItem('math_striker_stats', JSON.stringify(stats));
     }
   }, [stats, authState.role]);
 
@@ -1259,7 +1259,7 @@ export default function App() {
           fetchAndSyncProfile(uname, matchedUid);
         }}
         onGuestPlay={() => {
-          const savedGuest = safeStorage.getItem('guest_rockstar_stats');
+          const savedGuest = safeStorage.getItem('guest_striker_stats');
           if (savedGuest) {
             setStats(JSON.parse(savedGuest));
           } else {
@@ -1270,7 +1270,7 @@ export default function App() {
             isChecking: false,
             isCookieBlocked: false,
             message: "Guest session started",
-            username: "Rockstar Guest",
+            username: "Striker Guest",
             role: "guest",
             userId: null
           });
@@ -1330,7 +1330,7 @@ export default function App() {
         { id: 'notifications', label: '🔔 Notifications Hub', icon: Bell },
         { id: 'dashboard', label: 'My Progress Stats', icon: Award },
         { id: 'leaderboard', label: '🏆 Global Leaderboard', icon: Trophy },
-        { id: 'shop', label: '🔥 Rock Shop', icon: ShoppingBag },
+        { id: 'shop', label: '🔥 Club Shop', icon: ShoppingBag },
         { id: 'arcade', label: 'Fun Arcade 🕹️', icon: Gamepad2 },
         { id: 'hub', label: 'Learning Hub', icon: BookOpen },
         { id: 'sats', label: '🎓 KS2 SATs Prep Hub', icon: GraduationCap },
@@ -1388,7 +1388,7 @@ export default function App() {
           <div className="flex items-center justify-between gap-3 p-4 border-b border-deep-navy/10">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl overflow-hidden shadow-[0_0_15px_rgba(0,230,118,0.5)] border border-pastel-green/50 shrink-0 block">
-                <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math FC Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <h1 className="text-lg font-display font-black tracking-tight leading-tight text-deep-navy">JESSE ROCK<br />
                 <span className="text-action-orange text-xs uppercase font-extrabold">MATH ARENA 👑</span>
@@ -1498,7 +1498,7 @@ export default function App() {
                 className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 py-3 mt-4 text-[13px]"
                 style={{ fontFamily: "'Arial Black', sans-serif" }}
               >
-                🎸 Download App
+                ⚽ Download App
               </button>
             ) : (
               <button
@@ -1506,7 +1506,7 @@ export default function App() {
                 className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 py-3 mt-4 text-[13px]"
                 style={{ fontFamily: "'Arial Black', sans-serif" }}
               >
-                🎸 Download App
+                ⚽ Download App
               </button>
             )}
             
@@ -1561,21 +1561,21 @@ export default function App() {
         <main className="flex-1 flex flex-col overflow-hidden">
         <Helmet>
           <title>
-            {activeTab === 'home' ? 'Jesse Math Rockstar | Free Multiplayer Classroom Math Games' : 
-             activeTab === 'arena' ? 'Math Arena | Multiplayer Speed Drills | Jesse Math Rockstar' :
-             activeTab === 'sats' ? 'KS2 SATs Practice | Exam Simulator | Jesse Math Rockstar' :
-             activeTab === 'hub' ? 'Learning Hub | Classroom Activities | Jesse Math Rockstar' :
-             activeTab === 'dashboard' ? 'Student Dashboard | Track Progress | Jesse Math Rockstar' :
-             activeTab === 'shop' ? 'Rock Shop | Customize Avatar | Jesse Math Rockstar' :
-             'Jesse Math Rockstar | Educational Platform'}
+            {activeTab === 'home' ? 'Jesse Math FC | Free Multiplayer Classroom Math Games' : 
+             activeTab === 'arena' ? 'Math Arena | Multiplayer Speed Drills | Jesse Math FC' :
+             activeTab === 'sats' ? 'KS2 SATs Practice | Exam Simulator | Jesse Math FC' :
+             activeTab === 'hub' ? 'Learning Hub | Classroom Activities | Jesse Math FC' :
+             activeTab === 'dashboard' ? 'Student Dashboard | Track Progress | Jesse Math FC' :
+             activeTab === 'shop' ? 'Club Shop | Customize Avatar | Jesse Math FC' :
+             'Jesse Math FC | Educational Platform'}
           </title>
           <meta name="description" content={
-             activeTab === 'home' ? 'Play Jesse Math Rockstar, a zero-lag free multiplayer math game for kids. Interactive classroom application featuring mental math calculation speed drills.' :
+             activeTab === 'home' ? 'Play Jesse Math FC, a zero-lag free multiplayer math game for kids. Interactive classroom application featuring mental math calculation speed drills.' :
              activeTab === 'arena' ? 'Compete in real-time math speed drills. Our multiplayer arena helps students master calculations instantly.' :
              activeTab === 'sats' ? 'Practice for UK KS2 SATs with our free online exam simulator. Includes arithmetic and reasoning papers.' :
-             'Explore Jesse Math Rockstar, a COPPA-compliant educational platform for primary school math.'
+             'Explore Jesse Math FC, a COPPA-compliant educational platform for primary school math.'
           } />
-          <link rel="canonical" href={`https://jesse-math-rockstar-app.vercel.app/${activeTab === 'home' ? '' : activeTab}`} />
+          <link rel="canonical" href={`https://jesse-math-striker-app.vercel.app/${activeTab === 'home' ? '' : activeTab}`} />
         </Helmet>
 
           {/* Header/Toggle */}
@@ -1613,8 +1613,8 @@ export default function App() {
                 className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 px-4 py-2 min-h-[44px]"
                 style={{ fontFamily: "'Arial Black', sans-serif", fontSize: "14px" }}
               >
-                <span className="hidden sm:inline">🎸 Download App</span>
-                <span className="sm:hidden">🎸 App</span>
+                <span className="hidden sm:inline">⚽ Download App</span>
+                <span className="sm:hidden">⚽ App</span>
               </button>
             ) : (
               <button
@@ -1622,8 +1622,8 @@ export default function App() {
                 className="flex items-center justify-center gap-2 bg-gradient-to-br from-[#ff4500] to-[#ff8c00] text-white font-black uppercase border-[3px] border-white rounded-full cursor-pointer shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(255,69,0,0.9)] hover:from-[#ff5722] hover:to-[#ffb300] active:scale-95 px-4 py-2 min-h-[44px]"
                 style={{ fontFamily: "'Arial Black', sans-serif", fontSize: "14px" }}
               >
-                <span className="hidden sm:inline">🎸 Download App</span>
-                <span className="sm:hidden">🎸 App</span>
+                <span className="hidden sm:inline">⚽ Download App</span>
+                <span className="sm:hidden">⚽ App</span>
               </button>
             )}
           </header>
@@ -1694,7 +1694,7 @@ export default function App() {
                         <div className="space-y-3">
                           <h3 className="text-2xl font-display font-black text-deep-navy">Leaderboard Ranks Locked in Guest Mode</h3>
                           <p className="text-sm font-medium text-slate-600 leading-relaxed">
-                            Hey Rockstar! Sign in or register to unlock global leaderboard rankings, compete against players worldwide, and save your permanent streak & rewards! 🎸
+                            Hey Striker! Sign in or register to unlock global leaderboard rankings, compete against players worldwide, and save your permanent streak & rewards! ⚽
                           </p>
                         </div>
                         <button
@@ -1720,7 +1720,7 @@ export default function App() {
                         <div className="space-y-3">
                           <h3 className="text-2xl font-display font-black text-deep-navy">Multiplayer Arena Locked in Guest Mode</h3>
                           <p className="text-sm font-medium text-slate-600 leading-relaxed">
-                            Hey Rockstar! Sign in or register to enter live 1v1 multiplayer math duels, challenge real opponents, and claim epic victory badges! 🎸
+                            Hey Striker! Sign in or register to enter live 1v1 multiplayer math duels, challenge real opponents, and claim epic victory badges! ⚽
                           </p>
                         </div>
                         <button
@@ -1740,12 +1740,12 @@ export default function App() {
                   {activeTab === 'terms' && <TermsPage />}
                   {activeTab === 'developer' && <DeveloperPage currentUser={{ uid: authState.userId || userDeviceId || 'guest', username: authState.username || 'Guest', role: authState.role || 'guest' }} />}
                   {activeTab === 'learn' && <LearnArena onFinish={handleLearnArenaFinish} onExit={() => setActiveTab('hub')} lesson={practiceLesson} />}
-                  {activeTab === 'shop' && <RockShop userId={authState.userId || userDeviceId || ''} role={authState.role as any} onNavigateToTab={setActiveTab} />}
+                  {activeTab === 'shop' && <ClubShop userId={authState.userId || userDeviceId || ''} role={authState.role as any} onNavigateToTab={setActiveTab} />}
                   {activeTab === 'sats' && (
                     <SatsHub 
                       userId={authState.userId || userDeviceId || 'guest'} 
-                      studentName={authState.username || 'Rockstar'} 
-                      onExitToRockstarMode={() => setActiveTab('home')} 
+                      studentName={authState.username || 'Striker'} 
+                      onExitToStrikerMode={() => setActiveTab('home')} 
                     />
                   )}
                   {activeTab === 'survey' && <SurveyHub onNavigateToTab={setActiveTab} />}
@@ -1767,7 +1767,7 @@ export default function App() {
             onClose={() => setIsSettingsOpen(false)} 
             config={configSettings} 
             setConfig={setConfigSettings}
-            username={authState.username || 'Rockstar'}
+            username={authState.username || 'Striker'}
             userRole={authState.role || 'Student'}
             stats={stats}
             onOpenNotifications={() => {
@@ -1802,11 +1802,11 @@ export default function App() {
               <div className="mt-8 space-y-4">
                 <span className="text-xs uppercase tracking-[0.25em] font-black text-amber-400">UNBELIEVABLE! 🏆</span>
                 <h3 className="text-3xl font-display font-black tracking-tight text-white leading-tight">
-                  YOU ARE A <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-500 to-amber-400 uppercase">Legendary Math Rockstar!</span>
+                  YOU ARE A <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-500 to-amber-400 uppercase">Legendary Math Striker!</span>
                 </h3>
                 
                 <p className="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                  Outstanding work! You have reached the elite milestone of solving over **200 math problems** in the Jesse Math Rockstar Arena! 
+                  Outstanding work! You have reached the elite milestone of solving over **200 math problems** in the Jesse Math FC Arena! 
                   You have unlocked the prestigious **Legendary Tier Badge** permanently shown on your profile.
                 </p>
 
@@ -1832,7 +1832,7 @@ export default function App() {
                     onClick={() => setShowGrandMasterCelebration(false)}
                     className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-center text-xs uppercase tracking-wider cursor-pointer transition-all"
                   >
-                    Keep Rocking! 🎸
+                    Keep Rocking! ⚽
                   </button>
                 </div>
               </div>
@@ -1913,7 +1913,7 @@ export default function App() {
             <ChildSafetyModal 
               isOpen={showSafetyModal}
               onClose={() => setShowSafetyModal(false)}
-              currentUsername={authState.username || 'RockstarMathPro'}
+              currentUsername={authState.username || 'StrikerMathPro'}
               onUpdateUsername={(newName) => {
                 setAuthState(prev => ({ ...prev, username: newName }));
               }}

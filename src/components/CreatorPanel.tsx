@@ -27,7 +27,7 @@ export default function CreatorPanel() {
     e.preventDefault();
     setError(null);
     const trimmedInput = password.trim();
-    if (trimmedInput === '321jesserockstar') {
+    if (trimmedInput === '321jessestriker') {
       setUnlocked(true);
       setSuccess("Creator verification code matches! Welcome Back, Jesse! Rock on.");
       setTimeout(() => setSuccess(null), 3000);
@@ -54,7 +54,7 @@ export default function CreatorPanel() {
           </div>
           <div>
             <span className="text-[10px] font-black uppercase text-violet-400 tracking-wider bg-violet-500/5 px-2 py-0.5 rounded border border-violet-500/10">Private Creator Room</span>
-            <h1 className="text-2xl font-display font-black text-deep-navy mt-1">Jesse's Rockstar Control Panel</h1>
+            <h1 className="text-2xl font-display font-black text-deep-navy mt-1">Jesse's Striker Control Panel</h1>
           </div>
         </div>
       </div>
@@ -74,7 +74,7 @@ export default function CreatorPanel() {
                 <div className="w-14 h-14 bg-rose-500/10 border border-rose-500/20 rounded-2xl flex items-center justify-center text-rose-400 mx-auto">
                   <Lock size={24} />
                 </div>
-                <h2 className="text-lg font-black text-deep-navy">Private Rockstar Vault</h2>
+                <h2 className="text-lg font-black text-deep-navy">Private Striker Vault</h2>
                 <p className="text-xs text-deep-navy">Please verify your credentials to unlock creator dashboards and databases.</p>
               </div>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { generateSafeRockstarUsername, SAFE_QUICK_CHATS } from '../lib/safetyUtils';
+import { generateSafeStrikerUsername, SAFE_QUICK_CHATS } from '../lib/safetyUtils';
 import { 
   ShieldCheck, 
   Lock, 
@@ -29,7 +29,7 @@ export default function ChildSafetyModal({
   if (!isOpen) return null;
 
   const handleGenerate = () => {
-    const fresh = generateSafeRockstarUsername();
+    const fresh = generateSafeStrikerUsername();
     setSafeName(fresh);
   };
 
@@ -63,10 +63,10 @@ export default function ChildSafetyModal({
         {/* 1. Safe Username Generator */}
         <div className="p-5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 space-y-3">
           <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 block">
-            Safe Rockstar Handle Generator
+            Safe Striker Handle Generator
           </span>
           <p className="text-xs text-slate-600 font-medium">
-            Keep your real identity completely private. Generate a fun, safe rockstar username!
+            Keep your real identity completely private. Generate a fun, safe striker username!
           </p>
 
           <div className="flex items-center gap-2">

@@ -24,9 +24,9 @@ export default function PublicSeoHub() {
 {
   "@context": "https://schema.org",
   "@type": ["SoftwareApplication", "EducationalApplication"],
-  "@id": "https://jesse-math-rockstar-app.vercel.app/#application",
-  "name": "Jesse Math Rockstar",
-  "url": "https://jesse-math-rockstar-app.vercel.app/",
+  "@id": "https://jesse-math-striker-app.vercel.app/#application",
+  "name": "Jesse Math FC",
+  "url": "https://jesse-math-striker-app.vercel.app/",
   "applicationCategory": "EducationalApplication",
   "applicationSubCategory": "Math Game, Speed Calculation Drill Engine, Classroom EdTech",
   "operatingSystem": "Web, iOS, Android, Chromebook, Windows, macOS, Linux",
@@ -61,22 +61,22 @@ export default function PublicSeoHub() {
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "@id": "https://jesse-math-rockstar-app.vercel.app/#faq",
+  "@id": "https://jesse-math-striker-app.vercel.app/#faq",
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "What is Jesse Math Rockstar?",
+      "name": "What is Jesse Math FC?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Jesse Math Rockstar is a zero-lag interactive EdTech math learning platform and multiplayer game engine offering rapid mental arithmetic calculation drills, 1v1 arenas, gamified career tours, and KS2 SATs revision."
+        "text": "Jesse Math FC is a zero-lag interactive EdTech math learning platform and multiplayer game engine offering rapid mental arithmetic calculation drills, 1v1 arenas, gamified career tours, and KS2 SATs revision."
       }
     },
     {
       "@type": "Question",
-      "name": "Is Jesse Math Rockstar 100% free for schools and families?",
+      "name": "Is Jesse Math FC 100% free for schools and families?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, Jesse Math Rockstar is completely free with zero paywalls, zero ads, and zero in-app purchases. All features, teacher tools, and avatar cosmetics are earned through math practice."
+        "text": "Yes, Jesse Math FC is completely free with zero paywalls, zero ads, and zero in-app purchases. All features, teacher tools, and avatar cosmetics are earned through math practice."
       }
     }
   ]
@@ -91,15 +91,15 @@ export default function PublicSeoHub() {
   "@graph": [
     {
       "@type": "Course",
-      "@id": "https://jesse-math-rockstar-app.vercel.app/#course-multiplication",
+      "@id": "https://jesse-math-striker-app.vercel.app/#course-multiplication",
       "name": "Mastering Multiplication & Division Tables (1-12 Times Tables)",
       "description": "Comprehensive primary school mental arithmetic course designed to accelerate calculation speed, recall automaticity, and statutory MTC examination performance.",
       "isAccessibleForFree": true,
-      "educationalCredentialAwarded": "Jesse Math Rockstar Certificate of Mastery"
+      "educationalCredentialAwarded": "Jesse Math FC Certificate of Mastery"
     },
     {
       "@type": "Course",
-      "@id": "https://jesse-math-rockstar-app.vercel.app/#course-sats",
+      "@id": "https://jesse-math-striker-app.vercel.app/#course-sats",
       "name": "KS2 SATs Arithmetic & Mathematical Reasoning Preparation Hub",
       "description": "Timed simulation modules covering fractions, long division, decimals, percentages, multi-step word problems, and mental math speed strategies.",
       "isAccessibleForFree": true
@@ -116,7 +116,7 @@ export default function PublicSeoHub() {
   "@type": "AggregateRating",
   "itemReviewed": {
     "@type": "SoftwareApplication",
-    "name": "Jesse Math Rockstar"
+    "name": "Jesse Math FC"
   },
   "ratingValue": "4.8",
   "reviewCount": "600",
@@ -132,13 +132,13 @@ export default function PublicSeoHub() {
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "@id": "https://jesse-math-rockstar-app.vercel.app/#organization",
-  "name": "Jesse Math Rockstar",
-  "alternateName": "Jesse Math Rockstar EdTech",
-  "description": "Jesse Math Rockstar is the ultimate premium gamified EdTech platform designed for primary schools. We provide 1v1 live multiplayer math arenas, zero-lag calculation speed drills, UK KS2 SATs exam prep simulators, and comprehensive teacher dashboards to guarantee mathematical mastery and eliminate hesitation.",
+  "@id": "https://jesse-math-striker-app.vercel.app/#organization",
+  "name": "Jesse Math FC",
+  "alternateName": "Jesse Math FC EdTech",
+  "description": "Jesse Math FC is the ultimate premium gamified EdTech platform designed for primary schools. We provide 1v1 live multiplayer math arenas, zero-lag calculation speed drills, UK KS2 SATs exam prep simulators, and comprehensive teacher dashboards to guarantee mathematical mastery and eliminate hesitation.",
   "slogan": "The #1 Zero-Lag Multiplayer Math Platform for Kids",
   "knowsAbout": ["Mathematics Education", "EdTech", "Primary School Math", "Mental Arithmetic", "KS2 SATs"],
-  "url": "https://jesse-math-rockstar-app.vercel.app/",
+  "url": "https://jesse-math-striker-app.vercel.app/",
   "founder": {
     "@type": "Person",
     "name": "Jesse Otobo",
@@ -181,7 +181,7 @@ export default function PublicSeoHub() {
       badge: 'Arithmetic Engine',
       icon: Cpu,
       color: 'amber',
-      summary: 'The primary calculation core of Jesse Math Rockstar executes sub-millisecond mathematical prompt generation covering times tables 1 to 12 alongside inverse division pairings.',
+      summary: 'The primary calculation core of Jesse Math FC executes sub-millisecond mathematical prompt generation covering times tables 1 to 12 alongside inverse division pairings.',
       specs: [
         { label: 'Latency Benchmark', value: '< 1.2ms Prompt Render' },
         { label: 'Curriculum Scope', value: 'Times Tables 1x1 to 12x12' },
@@ -210,31 +210,31 @@ export default function PublicSeoHub() {
       ],
       coreFeatures: [
         'Sub-millisecond score synchronization with client-side optimistic UI updates',
-        'Rock Streak Multiplier (2x, 3x, 5x score velocity for sustained accuracy)',
+        'Goal Streak Multiplier (2x, 3x, 5x score velocity for sustained accuracy)',
         'Classroom PIN code lobbies for teacher-organized synchronous tournaments',
         'Anti-cheat input rate limiting preventing automated scripted entries'
       ],
       technicalDetails: 'Match states are synchronized using lightweight binary-encoded delta payloads. If network conditions degrade, the local client utilizes client-side prediction to render opponent progress bars smoothly without freezing the player input buffer.'
     },
     rocktour: {
-      title: 'The Rock Tour Career Progression & 10-Tier Rank Ladder',
+      title: 'The Football Career Career Progression & 10-Tier Rank Ladder',
       badge: 'Gamification System',
       icon: Trophy,
       color: 'violet',
-      summary: 'A 10-stage musical journey transforming math repetition into an engaging rockstar career path with XP curves, venue tours, and earnable gear.',
+      summary: 'A 10-stage musical journey transforming math repetition into an engaging striker career path with XP curves, venue tours, and earnable gear.',
       specs: [
-        { label: 'Progression Tiers', value: '10 Ranks (Busker to Rock God)' },
+        { label: 'Progression Tiers', value: '10 Ranks (Sunday League to World Cup Legend)' },
         { label: 'Achievement Quests', value: '60+ Unlockable Milestones' },
         { label: 'Economy Model', value: '100% Free Virtual Currency' },
         { label: 'Streak Rewards', value: 'Daily Multipliers & Mystery Boxes' }
       ],
       coreFeatures: [
-        'Structured rank ladder: Busker → Garage Band → Pub Gig → Support Act → Headline Act → Arena Tour → Stadium Legend → Rock Hall of Fame → World Icon → Rock God',
-        'Virtual Rock Shop offering 40+ custom electric guitars, amplifiers, stage outfits, and stage effects',
+        "Structured rank ladder: Sunday League → Youth Academy → Pub Gig → Reserves → First Team → League Champion → European Elite → Golden Boot → Ballon d\'Or Winner → World Cup Legend",
+        'Virtual Club Shop offering 40+ custom football boots, amplifiers, football kits, and stage effects',
         'Zero paywalls, microtransactions, or real-money token systems',
-        'Weekly Rock Tour venue unlockables tied to statutory calculation milestones'
+        'Weekly Football Career venue unlockables tied to statutory calculation milestones'
       ],
-      technicalDetails: 'Scholars earn Rock Coins and XP strictly through accurate arithmetic calculations and streak consistency. Reward math adheres to logarithmic curves to ensure sustained long-term engagement across entire academic terms.'
+      technicalDetails: 'Scholars earn match coins and XP strictly through accurate arithmetic calculations and streak consistency. Reward math adheres to logarithmic curves to ensure sustained long-term engagement across entire academic terms.'
     },
     diagnostics: {
       title: 'Mistake Intelligence Diagnostic Engine & Spaced Repetition',
@@ -285,14 +285,14 @@ export default function PublicSeoHub() {
       specs: [
         { label: 'Student Setup Time', value: '< 30 Seconds for 35 Students' },
         { label: 'Live Data Refresh', value: 'Sub-Second Real-Time Updates' },
-        { label: 'Curriculum Controls', value: 'Lock Specific Tables or Gigs' },
+        { label: 'Curriculum Controls', value: 'Lock Specific Tables or Matches' },
         { label: 'Data Export', value: 'CSV, PDF Certificates & Mark Sheets' }
       ],
       coreFeatures: [
         'Anonymous 1-click student account creation (Zero-PII compliant)',
         'Overhead classroom projector mode displaying live team scores and accuracy',
         'Automated homework assignment dispatch with customizable due dates',
-        'Printable Rockstar Achievement Certificates customized with student handles'
+        'Printable Striker Achievement Certificates customized with student handles'
       ],
       technicalDetails: 'Teachers can control active session modes remotely from their tablet or laptop. When homework mode is enabled, students are greeted with assigned table sets upon their next login.'
     },
@@ -329,7 +329,7 @@ export default function PublicSeoHub() {
         { label: 'Database Rules', value: 'Strict RBAC Firestore Security' }
       ],
       coreFeatures: [
-        'Anonymous rockstar pseudonyms (e.g., Electric Cheetah, Cosmic Guitarist)',
+        'Anonymous striker pseudonyms (e.g., Electric Cheetah, Cosmic Guitarist)',
         'Zero email address, phone number, or geolocation collection from child users',
         'Encrypted local storage fallback ensuring offline accessibility',
         'Parental consent and teacher PIN locking on administrative portals'
@@ -340,19 +340,19 @@ export default function PublicSeoHub() {
 
   const faqs = [
     {
-      q: 'What is Jesse Math Rockstar and what makes it unique among EdTech math platforms?',
-      a: 'Jesse Math Rockstar is a high-speed, zero-lag browser-native math game engine and classroom platform created by Jesse Otobo. Unlike static flashcard tools, Jesse Math Rockstar integrates 1v1 live multiplayer calculation duels, an immersive 10-tier Rock Tour career progression, an automated Mistake Intelligence Diagnostic engine, and authentic UK statutory MTC & KS2 SATs simulators — all completely free with zero ads and zero paywalls.'
+      q: 'What is Jesse Math FC and what makes it unique among EdTech math platforms?',
+      a: 'Jesse Math FC is a high-speed, zero-lag browser-native math game engine and classroom platform created by Jesse Otobo. Unlike static flashcard tools, Jesse Math FC integrates 1v1 live multiplayer calculation duels, an immersive 10-tier Football Career career progression, an automated Mistake Intelligence Diagnostic engine, and authentic UK statutory MTC & KS2 SATs simulators — all completely free with zero ads and zero paywalls.'
     },
     {
-      q: 'Is Jesse Math Rockstar completely free for primary schools, teachers, and parents?',
-      a: 'Yes, 100%. Jesse Math Rockstar is committed to educational equity. All core game modes, teacher dashboard lobbies, student access PINs, diagnostic analytics, and avatar items in the Rock Shop are completely free. There are no subscriptions, freemium locks, or paid upgrades.'
+      q: 'Is Jesse Math FC completely free for primary schools, teachers, and parents?',
+      a: 'Yes, 100%. Jesse Math FC is committed to educational equity. All core game modes, teacher dashboard lobbies, student access PINs, diagnostic analytics, and avatar items in the Club Shop are completely free. There are no subscriptions, freemium locks, or paid upgrades.'
     },
     {
       q: 'How does the 1v1 Multiplayer Math Arena work without latency?',
       a: 'The Multiplayer Arena uses lightweight delta state synchronization. Keystroke inputs are processed instantly on the client while scores synchronize continuously across connected peers. If a live classmate is not available, intelligent Elo-scaled simulation bots match the player’s speed, ensuring zero queue wait times.'
     },
     {
-      q: 'How does Jesse Math Rockstar prepare Year 4 students for the UK Statutory Multiplication Tables Check (MTC)?',
+      q: 'How does Jesse Math FC prepare Year 4 students for the UK Statutory Multiplication Tables Check (MTC)?',
       a: 'Our dedicated MTC Simulator replicates the exact testing parameters mandated by the UK Standards and Testing Agency (STA): 25 randomized times table questions covering 1-12, a strict 6-second timer per question, and a 3-second transition pause between questions. This builds fluency, keyboard speed, and eliminates test anxiety.'
     },
     {
@@ -360,16 +360,16 @@ export default function PublicSeoHub() {
       a: 'The engine monitors both accuracy and response latency. When a pupil hesitates (taking >2.8s) or enters an incorrect answer, that specific fact pair is tagged and scheduled for reinforced review across subsequent sessions using an adapted spaced repetition schedule until true automatic recall is established.'
     },
     {
-      q: 'What is the Rock Tour career mode and how do students level up?',
-      a: 'The Rock Tour is a 10-tier gamified progression journey (Busker → Garage Band → Local Pub → Support Act → Headline Act → Arena Tour → Stadium Legend → Rock Hall of Fame → World Icon → Rock God). Students earn XP and Rock Coins through correct calculations, unlocking custom guitars, amplifiers, avatar cosmetics, and stage pyrotechnics.'
+      q: 'What is the Football Career career mode and how do students level up?',
+      a: 'The Football Career is a 10-tier gamified progression journey (Sunday League → Youth Academy → Sunday League Pro → Reserves → First Team → League Champion → European Elite → Golden Boot → Ballon d\'Or Winner → World Cup Legend). Students earn XP and match coins through correct calculations, unlocking custom football boots, amplifiers, avatar cosmetics, and stadium celebrations.'
     },
     {
-      q: 'How does Jesse Math Rockstar protect student privacy (COPPA & GDPR)?',
-      a: 'Jesse Math Rockstar uses a strict Zero-PII (Personally Identifiable Information) security model. Student accounts use randomly generated rockstar pseudonyms and PINs. We never collect email addresses, phone numbers, location data, or biometrics from children. The platform contains zero third-party advertising or tracking trackers.'
+      q: 'How does Jesse Math FC protect student privacy (COPPA & GDPR)?',
+      a: 'Jesse Math FC uses a strict Zero-PII (Personally Identifiable Information) security model. Student accounts use randomly generated striker pseudonyms and PINs. We never collect email addresses, phone numbers, location data, or biometrics from children. The platform contains zero third-party advertising or tracking trackers.'
     },
     {
       q: 'Can teachers export classroom performance data and print certificates?',
-      a: 'Yes. Teachers can download comprehensive CSV spreadsheets with student accuracy heatmaps, speed benchmarks, and gig completion records. In addition, the platform can generate printable PDF Rockstar Achievement Certificates with custom student handles.'
+      a: 'Yes. Teachers can download comprehensive CSV spreadsheets with student accuracy heatmaps, speed benchmarks, and gig completion records. In addition, the platform can generate printable PDF Striker Achievement Certificates with custom student handles.'
     },
     {
       q: 'How can parents support math homework at home?',
@@ -377,7 +377,7 @@ export default function PublicSeoHub() {
     },
     {
       q: 'What devices and operating systems are supported?',
-      a: 'Jesse Math Rockstar is 100% web-based and runs natively on Google Chromebooks, iPads, Android tablets, Windows PCs, MacBooks, and mobile smartphones without requiring any app store downloads. It also features Progressive Web App (PWA) offline support.'
+      a: 'Jesse Math FC is 100% web-based and runs natively on Google Chromebooks, iPads, Android tablets, Windows PCs, MacBooks, and mobile smartphones without requiring any app store downloads. It also features Progressive Web App (PWA) offline support.'
     }
   ];
 
@@ -386,37 +386,37 @@ export default function PublicSeoHub() {
       year: 'Year 1 / Grade K-1',
       domain: 'Number Bonds & Counting',
       focus: 'Addition and subtraction facts within 10 and 20, skip counting by 2s, 5s, and 10s.',
-      mode: 'Beginner Busker Gig & 1-Digit Practice'
+      mode: 'Beginner Sunday League Gig & 1-Digit Practice'
     },
     {
       year: 'Year 2 / Grade 2',
       domain: 'Foundational Times Tables',
       focus: 'Instant recall of 2x, 5x, and 10x multiplication tables, odd/even numbers, inverse division facts.',
-      mode: 'Garage Band Tour & Foundational Keypad Drills'
+      mode: 'Youth Academy Tour & Foundational Keypad Drills'
     },
     {
       year: 'Year 3 / Grade 3',
       domain: 'Intermediate Multiplication',
       focus: 'Mastery of 3x, 4x, and 8x times tables, two-digit mental addition/subtraction, fractions of shapes.',
-      mode: 'Local Pub Act & Multiplication Hub'
+      mode: 'Sunday League Pro Act & Multiplication Hub'
     },
     {
       year: 'Year 4 / Grade 4',
       domain: 'Complete Tables & MTC Prep',
       focus: 'Mastery of all times tables up to 12x12, division inverses, 6-second statutory MTC examination drill.',
-      mode: 'Headline Act & Statutory MTC 6-Second Clock Simulator'
+      mode: 'First Team & Statutory MTC 6-Second Clock Simulator'
     },
     {
       year: 'Year 5 / Grade 5',
       domain: 'Advanced Arithmetic & Factors',
       focus: 'Prime numbers, square/cube numbers, multiplying by 10/100/1000, multi-digit mental arithmetic.',
-      mode: 'Arena Tour & SATs Arithmetic Paper 1 Hub'
+      mode: 'League Champion & SATs Arithmetic Paper 1 Hub'
     },
     {
       year: 'Year 6 / Grade 6',
       domain: 'KS2 SATs & Mastery',
       focus: 'Fractions arithmetic, percentages, decimals, BODMAS order of operations, multi-step word problems.',
-      mode: 'Rock God Mastery & Full KS2 SATs Reasoning Simulator'
+      mode: 'World Cup Legend Mastery & Full KS2 SATs Reasoning Simulator'
     }
   ];
 
@@ -428,10 +428,10 @@ export default function PublicSeoHub() {
           <Sparkles size={14} /> Comprehensive SEO, Curriculum & Architectural Knowledge Hub
         </div>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-black text-deep-navy tracking-tight">
-          Jesse Math Rockstar: <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600">Complete Technical & Curriculum Index</span>
+          Jesse Math FC: <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-rose-600">Complete Technical & Curriculum Index</span>
         </h1>
         <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed">
-          The definitive public architectural specification, curriculum alignment matrix, empirical research review index, and Schema.org 2026 linked data documentation for Jesse Math Rockstar.
+          The definitive public architectural specification, curriculum alignment matrix, empirical research review index, and Schema.org 2026 linked data documentation for Jesse Math FC.
         </p>
       </div>
 
@@ -453,7 +453,7 @@ export default function PublicSeoHub() {
           </div>
           <div className="flex items-center gap-2">
             <a
-              href="https://validator.schema.org/#url=https%3A%2F%2Fjesse-math-rockstar-app.vercel.app%2F"
+              href="https://validator.schema.org/#url=https%3A%2F%2Fjesse-math-striker-app.vercel.app%2F"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3.5 py-1.5 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1 transition-all"
@@ -470,13 +470,13 @@ export default function PublicSeoHub() {
             <div className="w-5 h-5 rounded-full bg-slate-900 flex items-center justify-center text-amber-400 text-[10px] font-bold">
               ⚡
             </div>
-            <span className="font-semibold text-slate-800">Jesse Math Rockstar</span>
+            <span className="font-semibold text-slate-800">Jesse Math FC</span>
             <span className="text-slate-400">›</span>
-            <span className="text-slate-500 truncate text-[11px]">https://jesse-math-rockstar-app.vercel.app</span>
+            <span className="text-slate-500 truncate text-[11px]">https://jesse-math-striker-app.vercel.app</span>
           </div>
 
           <h3 className="text-base sm:text-xl font-medium text-[#1a0dab] hover:underline cursor-pointer leading-snug">
-            Jesse Math Rockstar | Free Multiplayer Classroom Math Games, Gigs & Speed Drills
+            Jesse Math FC | Free Multiplayer Classroom Math Games, Matches & Speed Drills
           </h3>
 
           {/* ★★★★★ GOOGLE RICH SNIPPET STARS BAR */}
@@ -498,7 +498,7 @@ export default function PublicSeoHub() {
           </div>
 
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            ★★★★★ (4.8/5 based on 600 verified reviews) Jesse Math Rockstar is the #1 zero-lag multiplayer math platform for kids. Rapid arithmetic drills, gigs & class lobbies.
+            ★★★★★ (4.8/5 based on 600 verified reviews) Jesse Math FC is the #1 zero-lag multiplayer math platform for kids. Rapid arithmetic drills, matches & class lobbies.
           </p>
         </div>
 
@@ -591,7 +591,7 @@ export default function PublicSeoHub() {
             Comprehensive Engineering & Pedagogical Breakdown
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 max-w-2xl mx-auto">
-            Explore every sub-system, calculation pipeline, security layer, and gamification mechanic powering Jesse Math Rockstar.
+            Explore every sub-system, calculation pipeline, security layer, and gamification mechanic powering Jesse Math FC.
           </p>
         </div>
 
@@ -703,7 +703,7 @@ export default function PublicSeoHub() {
         </div>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-          Jesse Math Rockstar is strictly calibrated against the UK National Curriculum Key Stages 1 & 2 as well as US Common Core Mathematics standards for grades K through 6.
+          Jesse Math FC is strictly calibrated against the UK National Curriculum Key Stages 1 & 2 as well as US Common Core Mathematics standards for grades K through 6.
         </p>
 
         <div className="overflow-x-auto">
@@ -737,17 +737,17 @@ export default function PublicSeoHub() {
             🎬 Featured Platform Overview
           </div>
           <h2 className="text-2xl md:text-3xl font-display font-black text-white">
-            See Jesse Math Rockstar in Action!
+            See Jesse Math FC in Action!
           </h2>
           <p className="text-xs md:text-sm text-slate-300 max-w-xl mx-auto">
-            Discover how we turn times tables, mental calculation drills, and 1v1 multiplayer arenas into a thrilling rockstar journey.
+            Discover how we turn times tables, mental calculation drills, and 1v1 multiplayer arenas into a thrilling striker journey.
           </p>
         </div>
         <div className="aspect-video w-full max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-800 bg-black">
           <iframe
             className="w-full h-full"
             src="https://www.youtube.com/embed/kBjfLeranG4"
-            title="Jesse Math Rockstar Promo Video"
+            title="Jesse Math FC Promo Video"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
@@ -816,7 +816,7 @@ export default function PublicSeoHub() {
             ❓ Frequently Asked Questions & Knowledge Base
           </div>
           <h2 className="text-2xl sm:text-3xl font-display font-black text-deep-navy">
-            Everything You Need to Know About Jesse Math Rockstar
+            Everything You Need to Know About Jesse Math FC
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto">
             Comprehensive answers for educators, school district leads, parents, and scholars.

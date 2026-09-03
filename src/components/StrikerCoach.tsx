@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Music, Zap, Flame, Award } from 'lucide-react';
 
 const ENCOURAGING_MESSAGES = [
-  "You're shredding this math! 🎸⚡",
+  "You're shredding this math! ⚽⚡",
   "Lightning fast equations! Keep rocking!",
   "Absolute rock legend in action! 🔥",
   "Finger-tapping speed on those numbers!",
@@ -13,7 +13,7 @@ const ENCOURAGING_MESSAGES = [
   "Math is your guitar solo—make it scream!"
 ];
 
-export default function RockstarCoach({ isPlaying, isLargeSidePanel }: { isPlaying: boolean; isLargeSidePanel?: boolean }) {
+export default function StrikerCoach({ isPlaying, isLargeSidePanel }: { isPlaying: boolean; isLargeSidePanel?: boolean }) {
   const [msgIndex, setMsgIndex] = useState(0);
 
   useEffect(() => {
@@ -36,10 +36,10 @@ export default function RockstarCoach({ isPlaying, isLargeSidePanel }: { isPlayi
         {/* Header Badge */}
         <div className="flex items-center gap-2 px-3 py-1 bg-amber-500/20 border border-amber-500/40 rounded-full mb-4">
           <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-amber-600">Rockstar Coach & Hype Master</span>
+          <span className="text-[10px] font-black uppercase tracking-widest text-amber-600">Striker Coach & Hype Master</span>
         </div>
 
-        {/* Large 3D Chubby Rockstar Mascot Avatar */}
+        {/* Large 3D Chubby Striker Mascot Avatar */}
         <motion.div
           animate={{ 
             y: [0, -10, 0],
@@ -57,14 +57,14 @@ export default function RockstarCoach({ isPlaying, isLargeSidePanel }: { isPlayi
           {/* Glow halo */}
           <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/40 to-violet-500/40 rounded-full blur-2xl group-hover:scale-110 transition-transform" />
 
-          {/* SVG Chubby Rockstar Character */}
+          {/* SVG Chubby Striker Character */}
           <svg viewBox="0 0 120 120" className="w-full h-full relative z-10">
             {/* Headphones band */}
             <path d="M 35 45 Q 60 15 85 45" fill="none" stroke="#6366f1" strokeWidth="6" strokeLinecap="round" />
             <circle cx="33" cy="50" r="8" fill="#4f46e5" />
             <circle cx="87" cy="50" r="8" fill="#4f46e5" />
 
-            {/* Spiky Rockstar Hair */}
+            {/* Spiky Striker Hair */}
             <path d="M 40 38 L 45 22 L 55 35 L 60 18 L 68 34 L 78 22 L 82 38 Z" fill="#f59e0b" stroke="#d97706" strokeWidth="2" strokeLinejoin="round" />
 
             {/* Chubby Head / Face */}
@@ -76,7 +76,7 @@ export default function RockstarCoach({ isPlaying, isLargeSidePanel }: { isPlayi
             <line x1="58" y1="51" x2="62" y2="51" stroke="#1e1b4b" strokeWidth="3" />
             <path d="M 48 50 L 52 53 M 66 50 L 70 53" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" />
 
-            {/* Cheerful Rockstar Smile */}
+            {/* Cheerful Striker Smile */}
             <path d="M 53 64 Q 60 70 67 64" fill="none" stroke="#c2410c" strokeWidth="2.5" strokeLinecap="round" />
             <circle cx="43" cy="60" r="3.5" fill="#f87171" opacity="0.6" />
             <circle cx="77" cy="60" r="3.5" fill="#f87171" opacity="0.6" />
@@ -87,7 +87,7 @@ export default function RockstarCoach({ isPlaying, isLargeSidePanel }: { isPlayi
             <path d="M 52 78 L 60 92 L 68 78 Z" fill="#ffffff" />
             <path d="M 60 92 L 60 110" stroke="#b91c1c" strokeWidth="2" />
 
-            {/* Electric Guitar across front */}
+            {/* football boot across front */}
             <g transform="rotate(25 60 85)">
               <rect x="42" y="70" width="36" height="22" rx="6" fill="#8b5cf6" stroke="#6d28d9" strokeWidth="2" />
               <circle cx="60" cy="81" r="5" fill="#1e1b4b" />

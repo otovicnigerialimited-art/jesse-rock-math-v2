@@ -88,7 +88,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
               <span style={{ fontSize: '2rem' }}>⚠️</span>
               <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: '#f8fafc', margin: 0 }}>
-                Jesse Math Rockstar — Recovery Shield
+                Jesse Math FC — Recovery Shield
               </h2>
             </div>
             <p style={{ color: '#94a3b8', fontSize: '0.875rem', marginBottom: '1.5rem', lineHeight: '1.5' }}>

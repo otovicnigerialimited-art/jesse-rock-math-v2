@@ -35,13 +35,13 @@ if (!firebaseAdmin?.apps?.length) {
       const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
       firebaseAdmin.initializeApp({
         credential: credHelper.cert(serviceAccount),
-        databaseURL: process.env.FIREBASE_DATABASE_URL || "https://jesse-math-rockstar-default-rtdb.firebaseio.com"
+        databaseURL: process.env.FIREBASE_DATABASE_URL || "https://jesse-math-striker-default-rtdb.firebaseio.com"
       });
       console.log("[FIREBASE ADMIN] Initialized with Service Account JSON");
     } else {
       firebaseAdmin.initializeApp({
         credential: credHelper.applicationDefault(),
-        databaseURL: "https://jesse-math-rockstar-default-rtdb.firebaseio.com"
+        databaseURL: "https://jesse-math-striker-default-rtdb.firebaseio.com"
       });
       console.log("[FIREBASE ADMIN] Initialized with Application Default Credentials");
     }
@@ -72,12 +72,12 @@ let serverDb: any;
 
 const getServerDb = () => {
   if (!serverDb) {
-    const projectId = process.env.VITE_FIREBASE_PROJECT_ID || "jesse-math-rockstar";
+    const projectId = process.env.VITE_FIREBASE_PROJECT_ID || "jesse-math-striker";
     const firebaseConfig = {
       apiKey: process.env.VITE_FIREBASE_API_KEY || "AIzaSyAlDrGsdzlB4kpcqHT65Y6r8VxatkO8Sv0",
-      authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN || "jesse-math-rockstar.firebaseapp.com",
+      authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN || "jesse-math-striker.firebaseapp.com",
       projectId: projectId,
-      storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET || "jesse-math-rockstar.firebasestorage.app",
+      storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET || "jesse-math-striker.firebasestorage.app",
       messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "461112227439",
       appId: process.env.VITE_FIREBASE_APP_ID || "1:461112227439:web:a106ade74c039e16a97f9a"
     };

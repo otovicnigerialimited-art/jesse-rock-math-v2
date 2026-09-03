@@ -110,7 +110,7 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
 
   const handleShareRank = () => {
     const rankText = userRank ? `${userRank}` : "Unranked";
-    const shareText = `🎯 I am currently ranked #${rankText} globally on Jesse Math Rockstar with a streak of ${userScore}! Can you beat my high score? Play here: https://jesse-math-rockstar-app.vercel.app/`;
+    const shareText = `🎯 I am currently ranked #${rankText} globally on Jesse Math FC with a streak of ${userScore}! Can you beat my high score? Play here: https://jesse-math-striker-app.vercel.app/`;
     
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(shareText).then(() => {

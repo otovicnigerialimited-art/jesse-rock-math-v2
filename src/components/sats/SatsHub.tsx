@@ -43,13 +43,13 @@ import {
 interface SatsHubProps {
   userId?: string;
   studentName?: string;
-  onExitToRockstarMode: () => void;
+  onExitToStrikerMode: () => void;
 }
 
 export default function SatsHub({
   userId = 'guest',
-  studentName = 'Rockstar',
-  onExitToRockstarMode
+  studentName = 'Striker',
+  onExitToStrikerMode
 }: SatsHubProps) {
   const [activeTab, setActiveTab] = useState<SatsNavTab>('dashboard');
   const [progress, setProgress] = useState<SatsStudentProgress>(() => {
@@ -99,7 +99,7 @@ export default function SatsHub({
     { id: 'progress', label: 'Analytics', desc: 'Accuracy & Weakness Tracker', icon: TrendingUp },
     { id: 'plan', label: 'Revision Plan', desc: 'Weekly Practice Schedule', icon: Calendar },
     { id: 'guide', label: 'Exam Guide', desc: 'Format & Scoring Conversion', icon: FileText },
-    { id: 'mindset', label: 'Rockstar Mindset', desc: 'Anxiety Control & Techniques', icon: Heart }
+    { id: 'mindset', label: 'Striker Mindset', desc: 'Anxiety Control & Techniques', icon: Heart }
   ];
 
   const currentTabInfo = navItems.find(item => item.id === activeTab) || navItems[0];
@@ -121,9 +121,9 @@ export default function SatsHub({
             {/* Logo & Subtitle */}
             <div className="flex items-center gap-3">
               <button
-                onClick={onExitToRockstarMode}
+                onClick={onExitToStrikerMode}
                 className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 transition-all flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider cursor-pointer"
-                title="Back to Rockstar Mode"
+                title="Back to Striker Mode"
               >
                 <ArrowLeft size={16} />
                 <span className="hidden sm:inline">Exit</span>

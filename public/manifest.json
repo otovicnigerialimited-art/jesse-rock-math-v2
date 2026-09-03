@@ -1,10 +1,10 @@
 {
-  "id": "com.jesse.mathrockstar.pwa",
-  "name": "Jesse Math Rockstar",
-  "short_name": "Math Rockstar",
+  "id": "com.jesse.mathstriker.pwa",
+  "name": "Jesse Math Striker",
+  "short_name": "Math Striker",
   "developer": {
     "name": "Jesse Otobo",
-    "url": "https://jesse-math-rockstar-app.vercel.app/"
+    "url": "https://jesse-math-striker-app.vercel.app/"
   },
   "publisher": "Jesse Otobo Educational Technologies",
   "author": "Jesse Otobo (11-Year-Old Founder)",
@@ -16,7 +16,7 @@
   "orientation": "any",
   "background_color": "#0f172a",
   "theme_color": "#7c3aed",
-  "description": "Jesse Math Rockstar is the official verified gamified math learning platform created by 11-year-old software founder Jesse Otobo. Master mental math, UK KS2 SATs exam prep, interactive visual models, and Google Classroom teacher sync.",
+  "description": "Jesse Math Striker is the official verified gamified math learning platform created by 11-year-old software founder Jesse Otobo. Master mental math, UK KS2 SATs exam prep, interactive visual models, and Google Classroom teacher sync.",
   "lang": "en-US",
   "dir": "ltr",
   "categories": ["education", "games", "kids", "productivity", "utilities"],
@@ -46,21 +46,21 @@
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Jesse Math Rockstar Arena Dashboard"
+      "label": "Jesse Math Striker Arena Dashboard"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Jesse Math Rockstar Mobile Speed Drill"
+      "label": "Jesse Math Striker Mobile Speed Drill"
     }
   ],
   "shortcuts": [
     {
       "name": "Play Speed Arena",
       "short_name": "Arena",
-      "description": "Jump straight into real-time math speed duels and gigs",
+      "description": "Jump straight into real-time math speed duels and matches",
       "url": "/?tab=arena",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
@@ -86,9 +86,9 @@
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Rock Shop",
+      "name": "Club Shop",
       "short_name": "Shop",
-      "description": "Customize rock avatars, guitars, hairstyles, and outfits",
+      "description": "Customize football avatars, football boots, hairstyles, and outfits",
       "url": "/?tab=shop",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }

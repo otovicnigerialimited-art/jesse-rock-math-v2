@@ -31,7 +31,7 @@ export default function TermsPage() {
       {/* Top Document Controls */}
       <div className="max-w-4xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-slate-300 shadow-sm print:hidden">
         <div className="text-sm font-bold text-slate-700">
-          Jesse Math Rockstar — Legal Document View
+          Jesse Math FC — Legal Document View
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -70,19 +70,19 @@ export default function TermsPage() {
 
         <div className="space-y-6 text-base text-slate-900 leading-relaxed">
           <p>
-            Welcome to <strong>Jesse Math Rockstar</strong>.
+            Welcome to <strong>Jesse Math FC</strong>.
           </p>
 
           <p>
-            These Terms of Service (“Terms”) explain the rules for using Jesse Math Rockstar (“Jesse Math Rockstar”, “the Service”, “we”, “us”, or “our”).
+            These Terms of Service (“Terms”) explain the rules for using Jesse Math FC (“Jesse Math FC”, “the Service”, “we”, “us”, or “our”).
           </p>
 
           <p>
-            Jesse Math Rockstar is operated by <strong>Jesse Otobo</strong> in the United Kingdom.
+            Jesse Math FC is operated by <strong>Jesse Otobo</strong> in the United Kingdom.
           </p>
 
           <p>
-            By accessing or using Jesse Math Rockstar, you agree to follow these Terms. If you do not agree with them, please do not use the Service.
+            By accessing or using Jesse Math FC, you agree to follow these Terms. If you do not agree with them, please do not use the Service.
           </p>
 
           <hr className="my-8 border-slate-300" />
@@ -92,7 +92,7 @@ export default function TermsPage() {
             1. ABOUT JESSE MATH ROCKSTAR
           </h3>
           <p>
-            Jesse Math Rockstar is an educational mathematics platform created to make learning and practising maths more interactive, useful and enjoyable.
+            Jesse Math FC is an educational mathematics platform created to make learning and practising maths more interactive, useful and enjoyable.
           </p>
           <p>
             Depending on the features available at the time, the Service may include:
@@ -110,7 +110,7 @@ export default function TermsPage() {
             <li>Student progress tracking;</li>
             <li>Educational assignments;</li>
             <li>Leaderboards using appropriate display names;</li>
-            <li>Virtual rewards and Rock Coins;</li>
+            <li>Virtual rewards and match coins;</li>
             <li>Avatar and cosmetic customisation; and</li>
             <li>Surveys and feedback tools.</li>
           </ul>
@@ -125,7 +125,7 @@ export default function TermsPage() {
             2. EDUCATIONAL PURPOSE
           </h3>
           <p>
-            Jesse Math Rockstar is designed to <strong>support education and mathematics practice</strong>.
+            Jesse Math FC is designed to <strong>support education and mathematics practice</strong>.
           </p>
           <p>
             It is not intended to replace:
@@ -138,7 +138,7 @@ export default function TermsPage() {
             <li>official examination services.</li>
           </ul>
           <p>
-            While we work hard to provide useful and accurate educational content, we cannot promise that using Jesse Math Rockstar will automatically improve a user's academic performance.
+            While we work hard to provide useful and accurate educational content, we cannot promise that using Jesse Math FC will automatically improve a user's academic performance.
           </p>
           <p>
             We also cannot guarantee a particular SATs result, examination result, school grade, mathematics ability or academic achievement.
@@ -154,13 +154,13 @@ export default function TermsPage() {
             3. ELIGIBILITY AND CHILDREN
           </h3>
           <p>
-            Jesse Math Rockstar is intended for users aged <strong>4 and above</strong>.
+            Jesse Math FC is intended for users aged <strong>4 and above</strong>.
           </p>
           <p>
             Because the Service may be used by children, parents, guardians, schools and teachers should make sure that children use the Service in an appropriate and safe way.
           </p>
           <p>
-            Children under 13 should use Jesse Math Rockstar with appropriate parent, guardian, school or educational authorisation.
+            Children under 13 should use Jesse Math FC with appropriate parent, guardian, school or educational authorisation.
           </p>
           <p>
             Please do not enter unnecessary personal information into the Service.
@@ -176,7 +176,7 @@ export default function TermsPage() {
             <li>any other information that is not needed to use the Service.</li>
           </ul>
           <p>
-            Jesse Math Rockstar does not provide open text or voice communication between students.
+            Jesse Math FC does not provide open text or voice communication between students.
           </p>
           <p>
             Where social or competitive features are available, we may use display names, avatars, badges and mathematics scores rather than publicly displaying a child's real identity.
@@ -189,7 +189,7 @@ export default function TermsPage() {
             4. ACCOUNT TYPES
           </h3>
           <p>
-            Jesse Math Rockstar may provide different types of accounts, including:
+            Jesse Math FC may provide different types of accounts, including:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 my-3">
             <li>Student Accounts;</li>
@@ -202,7 +202,7 @@ export default function TermsPage() {
             Some features may require an account.
           </p>
           <p>
-            Guest users may be able to use certain parts of Jesse Math Rockstar without creating a permanent account.
+            Guest users may be able to use certain parts of Jesse Math FC without creating a permanent account.
           </p>
           <p>
             Please be aware that guest progress may be stored locally on the device being used. This means that progress could be lost if browser storage is cleared, private browsing is used, the device is changed, or the stored data is otherwise removed.
@@ -260,7 +260,7 @@ export default function TermsPage() {
             <li>export authorised educational reports;</li>
             <li>reset classroom credentials;</li>
             <li>remove students from classrooms; and</li>
-            <li>use other classroom-management features provided by Jesse Math Rockstar.</li>
+            <li>use other classroom-management features provided by Jesse Math FC.</li>
           </ul>
           <p>
             Teachers must only access information they are authorised to access.
@@ -303,23 +303,23 @@ export default function TermsPage() {
 
           {/* SECTION 8 */}
           <h3 className="text-xl font-bold text-slate-950 pt-2 font-sans">
-            8. VIRTUAL ITEMS AND ROCK COINS
+            8. VIRTUAL ITEMS AND match coins
           </h3>
           <p>
-            Jesse Math Rockstar may include virtual items such as <strong>Rock Coins, avatars, instruments, badges and other digital rewards</strong>.
+            Jesse Math FC may include virtual items such as <strong>match coins, avatars, instruments, badges and other digital rewards</strong>.
           </p>
           <p>
             Unless we clearly state otherwise:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 my-3">
-            <li>Rock Coins have no real-world monetary value;</li>
-            <li>Rock Coins cannot be exchanged for cash;</li>
-            <li>Rock Coins cannot be sold or transferred outside Jesse Math Rockstar;</li>
+            <li>match coins have no real-world monetary value;</li>
+            <li>match coins cannot be exchanged for cash;</li>
+            <li>match coins cannot be sold or transferred outside Jesse Math FC;</li>
             <li>virtual items do not represent real-world property; and</li>
             <li>virtual items may be changed, removed or discontinued.</li>
           </ul>
           <p>
-            At the time these Terms were last updated, Jesse Math Rockstar does not charge users for Rock Coins or ordinary Rock Shop items.
+            At the time these Terms were last updated, Jesse Math FC does not charge users for match coins or ordinary Club Shop items.
           </p>
           <p>
             If paid features are introduced in the future, additional terms will apply where required.
@@ -332,13 +332,13 @@ export default function TermsPage() {
             9. ACCEPTABLE USE
           </h3>
           <p>
-            We want Jesse Math Rockstar to remain safe, fair and enjoyable for everyone.
+            We want Jesse Math FC to remain safe, fair and enjoyable for everyone.
           </p>
           <p>
             You must not use the Service to:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 my-3">
-            <li>hack or attack Jesse Math Rockstar;</li>
+            <li>hack or attack Jesse Math FC;</li>
             <li>carry out DDoS attacks;</li>
             <li>perform brute-force attacks;</li>
             <li>abuse or overload APIs;</li>
@@ -357,7 +357,7 @@ export default function TermsPage() {
             <li>otherwise misuse the Service.</li>
           </ul>
           <p>
-            Unauthorised security testing, penetration testing or exploitation of vulnerabilities is not permitted unless Jesse Math Rockstar has expressly authorised it.
+            Unauthorised security testing, penetration testing or exploitation of vulnerabilities is not permitted unless Jesse Math FC has expressly authorised it.
           </p>
 
           <hr className="my-8 border-slate-300" />
@@ -394,13 +394,13 @@ export default function TermsPage() {
             11. INTELLECTUAL PROPERTY
           </h3>
           <p>
-            Unless stated otherwise, Jesse Math Rockstar and its original materials belong to <strong>Jesse Otobo</strong> and/or the applicable rights holder.
+            Unless stated otherwise, Jesse Math FC and its original materials belong to <strong>Jesse Otobo</strong> and/or the applicable rights holder.
           </p>
           <p>
             This may include:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 my-3">
-            <li>the Jesse Math Rockstar name;</li>
+            <li>the Jesse Math FC name;</li>
             <li>branding;</li>
             <li>logos;</li>
             <li>source code;</li>
@@ -414,7 +414,7 @@ export default function TermsPage() {
             <li>other original intellectual property.</li>
           </ul>
           <p>
-            Using Jesse Math Rockstar does not transfer ownership of these materials to you.
+            Using Jesse Math FC does not transfer ownership of these materials to you.
           </p>
           <p>
             You receive a limited, personal, non-exclusive and non-transferable right to use the Service for its intended educational purpose.
@@ -433,7 +433,7 @@ export default function TermsPage() {
             12. FEEDBACK AND REVIEWS
           </h3>
           <p>
-            We welcome feedback because it helps us improve Jesse Math Rockstar.
+            We welcome feedback because it helps us improve Jesse Math FC.
           </p>
           <p>
             You may submit feedback, reviews, survey responses, ideas or suggestions through available feedback tools.
@@ -442,7 +442,7 @@ export default function TermsPage() {
             Please do not include confidential, unnecessary or sensitive personal information in feedback submissions.
           </p>
           <p>
-            Where legally permitted, you give Jesse Math Rockstar permission to use submitted feedback to operate, improve and research the Service.
+            Where legally permitted, you give Jesse Math FC permission to use submitted feedback to operate, improve and research the Service.
           </p>
           <p>
             If feedback is publicly shared, we will handle it consistently with our Privacy Policy, especially where children may be involved.
@@ -455,7 +455,7 @@ export default function TermsPage() {
             13. SERVICE AVAILABILITY
           </h3>
           <p>
-            We work to keep Jesse Math Rockstar reliable and available, but we cannot promise that the Service will always be online.
+            We work to keep Jesse Math FC reliable and available, but we cannot promise that the Service will always be online.
           </p>
           <p>
             Temporary interruptions may happen because of:
@@ -480,10 +480,10 @@ export default function TermsPage() {
             14. THIRD-PARTY SERVICES
           </h3>
           <p>
-            Jesse Math Rockstar relies on third-party infrastructure and services, including <strong>Firebase</strong>, for certain functions such as authentication and database functionality.
+            Jesse Math FC relies on third-party infrastructure and services, including <strong>Firebase</strong>, for certain functions such as authentication and database functionality.
           </p>
           <p>
-            Because these services are operated by third parties, outages, technical failures or other problems may sometimes affect Jesse Math Rockstar.
+            Because these services are operated by third parties, outages, technical failures or other problems may sometimes affect Jesse Math FC.
           </p>
           <p>
             We are not responsible for problems caused by third-party services that are outside our reasonable control.
@@ -556,7 +556,7 @@ export default function TermsPage() {
             The Privacy Policy forms part of these Terms.
           </p>
           <p>
-            Jesse Math Rockstar does <strong>not sell or rent users' personal information</strong>.
+            Jesse Math FC does <strong>not sell or rent users' personal information</strong>.
           </p>
 
           <hr className="my-8 border-slate-300" />
@@ -569,7 +569,7 @@ export default function TermsPage() {
             We take the safety and privacy of children seriously.
           </p>
           <p>
-            Jesse Math Rockstar is designed to minimise the collection of unnecessary information from children.
+            Jesse Math FC is designed to minimise the collection of unnecessary information from children.
           </p>
           <p>
             The Service does not provide open student-to-student text or voice chat.
@@ -588,7 +588,7 @@ export default function TermsPage() {
             19. SECURITY
           </h3>
           <p>
-            We use reasonable security measures designed to help protect Jesse Math Rockstar and user information.
+            We use reasonable security measures designed to help protect Jesse Math FC and user information.
           </p>
           <p>
             These measures may include:
@@ -615,7 +615,7 @@ export default function TermsPage() {
             20. LIMITATION OF LIABILITY
           </h3>
           <p>
-            To the extent permitted by applicable law, Jesse Math Rockstar is not responsible for losses caused by circumstances such as:
+            To the extent permitted by applicable law, Jesse Math FC is not responsible for losses caused by circumstances such as:
           </p>
           <ul className="list-disc pl-6 space-y-1.5 my-3">
             <li>temporary Service interruptions;</li>
@@ -642,7 +642,7 @@ export default function TermsPage() {
             21. CHANGES TO THE SERVICE
           </h3>
           <p>
-            Jesse Math Rockstar is a growing Service.
+            Jesse Math FC is a growing Service.
           </p>
           <p>
             We may add, improve, modify or remove features as the platform develops.
@@ -661,7 +661,7 @@ export default function TermsPage() {
             22. FUTURE PAID FEATURES
           </h3>
           <p>
-            At the time these Terms were last updated, Jesse Math Rockstar is provided without paywalls or paid features as described in the current Service.
+            At the time these Terms were last updated, Jesse Math FC is provided without paywalls or paid features as described in the current Service.
           </p>
           <p>
             In the future, we may introduce optional paid services.
@@ -711,7 +711,7 @@ export default function TermsPage() {
             25. ENTIRE AGREEMENT
           </h3>
           <p>
-            These Terms, together with our Privacy Policy and any other policies specifically incorporated into them, set out the rules for using Jesse Math Rockstar.
+            These Terms, together with our Privacy Policy and any other policies specifically incorporated into them, set out the rules for using Jesse Math FC.
           </p>
           <p>
             If any part of these Terms is found to be unlawful or unenforceable, the remaining provisions will continue to apply to the extent permitted by law.

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Brain, Settings, Trophy, Flame, Play, HelpCircle, CheckCircle2, GraduationCap, Sparkles, BookOpen, ArrowRight } from 'lucide-react';
-import RockstarKeypad from './RockstarKeypad';
+import StrikerKeypad from './StrikerKeypad';
 import { Difficulty, Problem } from '../types';
 import { generateProblem, calculateXP } from '../lib/mathUtils';
 import { playCorrectSound, playWrongSound } from '../lib/audioUtils';
@@ -517,9 +517,9 @@ export default function LearnArena({ onExit, onFinish, lesson }: LearnArenaProps
           </button>
         </form>
 
-        {/* Rockstar Touchpad */}
+        {/* Striker Touchpad */}
         <div className="pt-2">
-          <RockstarKeypad
+          <StrikerKeypad
             value={userInput}
             onChange={(val) => {
               setUserInput(val);

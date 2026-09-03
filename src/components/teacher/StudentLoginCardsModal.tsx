@@ -68,7 +68,7 @@ export default function StudentLoginCardsModal({
               >
                 <div className="flex items-center justify-between border-b border-slate-800 print:border-slate-300 pb-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">🎸</span>
+                    <span className="text-xl">⚽</span>
                     <span className="font-black text-xs uppercase tracking-wider text-amber-400 print:text-black">JESSE MATH ROCKSTAR</span>
                   </div>
                   <span className="text-[10px] font-bold bg-slate-800 print:bg-slate-200 px-2 py-0.5 rounded text-slate-300 print:text-black">
@@ -99,7 +99,7 @@ export default function StudentLoginCardsModal({
                 </div>
 
                 <div className="pt-1 flex items-center justify-between text-[10px] text-slate-400 print:text-slate-600">
-                  <span>jesse-math-rockstar</span>
+                  <span>jesse-math-striker</span>
                   <QrCode size={18} className="text-indigo-400 print:text-black" />
                 </div>
               </div>

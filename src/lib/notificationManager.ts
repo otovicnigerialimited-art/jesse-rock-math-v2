@@ -246,7 +246,7 @@ export function getSampleSeedNotifications(): NotificationLogItem[] {
       categoryGroup: 'motivation',
       category: 'praiseAndRewards',
       title: '🏆 Micro-Celebration: Badge Unlocked!',
-      body: 'Congratulations! You completed the "Fractions Master" level and earned 250 Rock Coins!',
+      body: 'Congratulations! You completed the "Fractions Master" level and earned 250 match coins!',
       timestamp: now - 1000 * 60 * 60 * 2,
       read: false
     },

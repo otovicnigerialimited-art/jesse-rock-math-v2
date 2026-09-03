@@ -293,9 +293,9 @@ export function computeSurveyAnalyticsFromResponses(responses: SurveyAnswer[]): 
       { key: 'more_modes', label: 'More Arcade Mini-Games & Boss Duels', votes: featCount.more_modes, percentage: calculatePct(featCount.more_modes), devStatus: 'Under Investigation' as const }
     ].sort((a, b) => b.votes - a.votes),
     shopSentiment: [
-      { key: 'love_rewards', label: 'Love the Rock Shop & Instrument Unlocks', count: shopCount.love_rewards, percentage: calculatePct(shopCount.love_rewards) },
+      { key: 'love_rewards', label: 'Love the Club Shop & Instrument Unlocks', count: shopCount.love_rewards, percentage: calculatePct(shopCount.love_rewards) },
       { key: 'needs_confirm_popup', label: 'Require "Are You Sure?" Confirm Dialog', count: shopCount.needs_confirm_popup, percentage: calculatePct(shopCount.needs_confirm_popup) },
-      { key: 'more_outfits', label: 'Request More Rocker Stage Outfits', count: shopCount.more_outfits, percentage: calculatePct(shopCount.more_outfits) },
+      { key: 'more_outfits', label: 'Request More Rocker football kits', count: shopCount.more_outfits, percentage: calculatePct(shopCount.more_outfits) },
       { key: 'coins_too_hard', label: 'Increase Match Coin Payout Rates', count: shopCount.coins_too_hard, percentage: calculatePct(shopCount.coins_too_hard) }
     ],
     developerPriorityRank: [

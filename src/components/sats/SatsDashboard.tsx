@@ -77,7 +77,7 @@ export default function SatsDashboard({
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-black tracking-tight text-white">
-              {timeGreeting}, {progress.studentName}! 🎸
+              {timeGreeting}, {progress.studentName}! ⚽
             </h1>
 
             <p className="text-sm md:text-base text-indigo-100/90 font-medium leading-relaxed max-w-xl">

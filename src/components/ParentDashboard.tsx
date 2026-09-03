@@ -335,7 +335,7 @@ export default function ParentDashboard({ currentParent, parentId, parentName, o
                         <span className="text-2xl font-black text-pink-400">{selectedChild.xp || 100}</span>
                       </div>
                       <div className="p-4 bg-slate-950/70 border border-slate-800 rounded-2xl text-center">
-                        <span className="text-[10px] uppercase font-bold text-slate-400 block">Rock Coins</span>
+                        <span className="text-[10px] uppercase font-bold text-slate-400 block">match coins</span>
                         <span className="text-2xl font-black text-amber-400">{selectedChild.coins || 100} 🪙</span>
                       </div>
                     </div>
@@ -380,7 +380,7 @@ export default function ParentDashboard({ currentParent, parentId, parentName, o
                         <Sparkles size={18} className="text-pink-400" />
                       </div>
                       <div className="text-2xl font-black text-pink-400">Level {selectedChild.currentLevel || 1}</div>
-                      <p className="text-[10px] text-slate-500">Rockstar Tier</p>
+                      <p className="text-[10px] text-slate-500">Striker Tier</p>
                     </div>
                   </div>
 
@@ -412,7 +412,7 @@ export default function ParentDashboard({ currentParent, parentId, parentName, o
                         <Award size={18} className="text-purple-400" /> Badges & Achievements
                       </h3>
                       <div className="flex flex-wrap gap-2">
-                        {(selectedChild.badges || ['Genius Debut', 'School Rockstar', 'Mental Speedster']).map((b, idx) => (
+                        {(selectedChild.badges || ['Genius Debut', 'School Striker', 'Mental Speedster']).map((b, idx) => (
                           <div key={idx} className="px-3 py-1.5 bg-purple-500/20 border border-purple-500/30 text-purple-300 rounded-xl text-xs font-bold flex items-center gap-1.5">
                             <Sparkles size={14} /> {b}
                           </div>

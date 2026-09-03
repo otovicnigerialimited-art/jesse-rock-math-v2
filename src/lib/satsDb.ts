@@ -81,7 +81,7 @@ export function generateDefaultRevisionPlan(weakDomains?: SatsDomain[]): Revisio
   ];
 }
 
-export function getDefaultSatsProgress(userId: string = 'guest', studentName: string = 'Rockstar'): SatsStudentProgress {
+export function getDefaultSatsProgress(userId: string = 'guest', studentName: string = 'Striker'): SatsStudentProgress {
   // Default target date is roughly 34 days in future
   const now = new Date();
   const targetDate = new Date(now.getTime() + 34 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
@@ -142,7 +142,7 @@ export function getDefaultSatsProgress(userId: string = 'guest', studentName: st
       },
       {
         id: 'm4',
-        title: 'Reasoning Rockstar 🧠',
+        title: 'Reasoning Striker 🧠',
         desc: 'Solve 10 multi-step problem solving challenges',
         icon: 'Brain'
       },
@@ -157,7 +157,7 @@ export function getDefaultSatsProgress(userId: string = 'guest', studentName: st
   };
 }
 
-export async function loadSatsProgress(userId: string = 'guest', studentName: string = 'Rockstar'): Promise<SatsStudentProgress> {
+export async function loadSatsProgress(userId: string = 'guest', studentName: string = 'Striker'): Promise<SatsStudentProgress> {
   const fallback = getDefaultSatsProgress(userId, studentName);
   
   // Try loading from local storage first for instant interactive responsiveness

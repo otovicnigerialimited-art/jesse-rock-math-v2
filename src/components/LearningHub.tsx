@@ -193,7 +193,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
   const renderGuidePanel = (lessonId: string) => {
     return (
       <div className="flex flex-col h-full bg-white backdrop-blur-sm border border-deep-navy border-4 rounded-[2rem] p-5 shadow-lg space-y-4">
-        {/* Rockstar Tab Controls */}
+        {/* Striker Tab Controls */}
         <div className="flex border-b-4 border-deep-navy pb-2 overflow-x-auto whitespace-nowrap scrollbar-none gap-2">
           {(['concept', 'realworld', 'mistakes'] as const).map(tab => {
             const labels = {
@@ -278,10 +278,10 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                   </div>
 
                   <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl">
-                    <h5 className="font-bold text-xs text-emerald-800 mb-1">Guitar Strings Check: 🎸</h5>
+                    <h5 className="font-bold text-xs text-emerald-800 mb-1">Guitar Strings Check: ⚽</h5>
                     <p className="text-xs leading-relaxed text-emerald-950">
-                      Each electric guitar has exactly <strong>6 strings</strong>. If you have <strong>3 rockstar guitars</strong> lined up on stage, how many strings do you need to tune? <br />
-                      <strong className="text-emerald-800">3 Guitars × 6 Strings = 18 total strings!</strong>
+                      Each football boot has exactly <strong>6 strings</strong>. If you have <strong>3 striker football boots</strong> lined up on stage, how many strings do you need to tune? <br />
+                      <strong className="text-emerald-800">3 football boots × 6 Strings = 18 total strings!</strong>
                     </p>
                   </div>
                 </div>
@@ -538,9 +538,9 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
               <div className="bg-sunny-yellow/10 border border-deep-navy/30 p-4 rounded-2xl text-center space-y-2">
                 <h4 className="font-black text-sm text-deep-navy">Rock on with this new topic!</h4>
                 <p className="text-xs text-slate-700 leading-relaxed">
-                  You're exploring advanced arenas. Take a moment to think critically about the mathematical concepts required here. There are no limits to what you can conquer in the Rockstar Arena!
+                  You're exploring advanced arenas. Take a moment to think critically about the mathematical concepts required here. There are no limits to what you can conquer in the Striker Arena!
                 </p>
-                <div className="text-4xl py-4 animate-bounce">🎸</div>
+                <div className="text-4xl py-4 animate-bounce">⚽</div>
                 <p className="text-xs font-bold text-brand-secondary">Ready to test your skills? Jump into the battle below!</p>
               </div>
             </div>
@@ -1118,7 +1118,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                       <div className="text-6xl animate-bounce">🚀</div>
                       <h4 className="font-black text-xl text-deep-navy">Ready for {selectedLesson.title}?</h4>
                       <p className="text-sm font-medium text-slate-700 max-w-sm mx-auto leading-relaxed">
-                        Mastering {selectedLesson.category.toLowerCase()} concepts requires focus. The Rockstar Arena awaits your arrival. Press the "Start Quiz Battle" button to begin your journey!
+                        Mastering {selectedLesson.category.toLowerCase()} concepts requires focus. The Striker Arena awaits your arrival. Press the "Start Quiz Battle" button to begin your journey!
                       </p>
                     </div>
                   </div>
@@ -1213,7 +1213,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                 )}
               </div>
 
-              {/* Right Column: Rockstar Tab Guide */}
+              {/* Right Column: Striker Tab Guide */}
               <div className="lg:col-span-7 h-full">
                 {renderGuidePanel(selectedLesson.id)}
               </div>
@@ -1370,7 +1370,7 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
                 </h4>
                 <ul className="text-xs text-slate-700 space-y-1 list-disc pl-4 leading-relaxed font-medium">
                   <li><strong>+10 Streaks Booster:</strong> Awarded instantly upon passing any topic quiz with 15+ score!</li>
-                  <li><strong>Rock Tokens:</strong> Earn golden tokens to spend in the official <strong>Rock Shop</strong> for premium avatar cases and badge themes.</li>
+                  <li><strong>Rock Tokens:</strong> Earn golden tokens to spend in the official <strong>Club Shop</strong> for premium avatar cases and badge themes.</li>
                   <li><strong>Experience Points (XP):</strong> Accumulate XP with every correct answer to skyrocket up the global school leaderboards.</li>
                 </ul>
               </div>

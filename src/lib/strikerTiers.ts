@@ -1,4 +1,4 @@
-export interface RockstarTier {
+export interface StrikerTier {
   tierNumber: number;
   id: string;
   name: string;
@@ -13,13 +13,13 @@ export interface RockstarTier {
   borderColor: string;
 }
 
-export const ROCKSTAR_TIERS: RockstarTier[] = [
+export const ROCKSTAR_TIERS: StrikerTier[] = [
   {
     tierNumber: 1,
     id: 'rookie',
     name: 'Rookie',
     title: 'Acoustic Starter',
-    badgeEmoji: '🎸',
+    badgeEmoji: '⚽',
     minLevel: 1,
     minXp: 0,
     maxXp: 250,
@@ -31,7 +31,7 @@ export const ROCKSTAR_TIERS: RockstarTier[] = [
   {
     tierNumber: 2,
     id: 'garage',
-    name: 'Garage Rockstar',
+    name: 'Garage Striker',
     title: 'Amplifier Jammer',
     badgeEmoji: '🚗',
     minLevel: 3,
@@ -46,7 +46,7 @@ export const ROCKSTAR_TIERS: RockstarTier[] = [
     tierNumber: 3,
     id: 'rising',
     name: 'Rising Star',
-    title: 'Stage Headline Act',
+    title: 'Stage First Team',
     badgeEmoji: '🌟',
     minLevel: 5,
     minXp: 601,
@@ -101,7 +101,7 @@ export const ROCKSTAR_TIERS: RockstarTier[] = [
   {
     tierNumber: 7,
     id: 'ultimate',
-    name: 'Ultimate Rockstar',
+    name: 'Ultimate Striker',
     title: 'Grand Math Sovereign',
     badgeEmoji: '👑',
     minLevel: 13,
@@ -114,7 +114,7 @@ export const ROCKSTAR_TIERS: RockstarTier[] = [
   }
 ];
 
-export function getCurrentRockstarTier(xp: number, level: number): RockstarTier {
+export function getCurrentStrikerTier(xp: number, level: number): StrikerTier {
   for (let i = ROCKSTAR_TIERS.length - 1; i >= 0; i--) {
     const tier = ROCKSTAR_TIERS[i];
     if (xp >= tier.minXp || level >= tier.minLevel) {
@@ -124,6 +124,6 @@ export function getCurrentRockstarTier(xp: number, level: number): RockstarTier 
   return ROCKSTAR_TIERS[0];
 }
 
-export function getNextRockstarTier(currentTierNumber: number): RockstarTier | null {
+export function getNextStrikerTier(currentTierNumber: number): StrikerTier | null {
   return ROCKSTAR_TIERS.find(t => t.tierNumber === currentTierNumber + 1) || null;
 }

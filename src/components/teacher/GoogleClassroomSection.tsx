@@ -45,8 +45,8 @@ export default function GoogleClassroomSection({ teacherId, teacherEmail, teache
   const [importedCount, setImportedCount] = useState<number | null>(null);
 
   // Assignment posting state
-  const [assignmentTitle, setAssignmentTitle] = useState('Jesse Math Rockstar Challenge');
-  const [assignmentDesc, setAssignmentDesc] = useState('Complete your daily math sprint on Jesse Math Rockstar and boost your classroom ranking!');
+  const [assignmentTitle, setAssignmentTitle] = useState('Jesse Math FC Challenge');
+  const [assignmentDesc, setAssignmentDesc] = useState('Complete your daily math sprint on Jesse Math FC and boost your classroom ranking!');
   const [postingAssignment, setPostingAssignment] = useState(false);
 
   // Initialize Google Token Client
@@ -193,7 +193,7 @@ export default function GoogleClassroomSection({ teacherId, teacherEmail, teache
         }
       }
       setImportedCount(count);
-      setSuccessMessage(`Successfully imported ${count} students into your Jesse Math Rockstar classroom roster!`);
+      setSuccessMessage(`Successfully imported ${count} students into your Jesse Math FC classroom roster!`);
     } catch (err: any) {
       setError(err.message || "Failed during student import.");
     } finally {
@@ -261,7 +261,7 @@ export default function GoogleClassroomSection({ teacherId, teacherEmail, teache
             </div>
             <h2 className="text-2xl sm:text-3xl font-black tracking-tight font-display">Sync & Assign via Google Classroom</h2>
             <p className="text-blue-100 text-xs sm:text-sm max-w-xl font-medium">
-              Seamlessly import your enrolled students into your Jesse Math Rockstar roster and push math challenges directly to your Google Classroom stream.
+              Seamlessly import your enrolled students into your Jesse Math FC roster and push math challenges directly to your Google Classroom stream.
             </p>
           </div>
           {accessToken ? (
@@ -311,7 +311,7 @@ export default function GoogleClassroomSection({ teacherId, teacherEmail, teache
           <div className="space-y-2 max-w-md mx-auto">
             <h3 className="text-lg font-black text-slate-900">Connect Your Educator Account</h3>
             <p className="text-xs text-slate-500 leading-relaxed font-medium">
-              Link your Google Classroom account to instantly load your courses, sync student rosters into Jesse Math Rockstar, and broadcast math assignments.
+              Link your Google Classroom account to instantly load your courses, sync student rosters into Jesse Math FC, and broadcast math assignments.
             </p>
           </div>
           <button
@@ -380,7 +380,7 @@ export default function GoogleClassroomSection({ teacherId, teacherEmail, teache
                       <h3 className="text-sm font-black uppercase text-slate-900 tracking-wider flex items-center gap-2">
                         <Users size={16} className="text-emerald-600" /> Enrolled Students ({courseStudents.length})
                       </h3>
-                      <p className="text-[11px] text-slate-500 font-medium">Import Google Classroom students into your active Jesse Math Rockstar roster.</p>
+                      <p className="text-[11px] text-slate-500 font-medium">Import Google Classroom students into your active Jesse Math FC roster.</p>
                     </div>
                     <button
                       onClick={handleImportStudents}

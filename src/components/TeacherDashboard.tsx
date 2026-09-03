@@ -90,7 +90,7 @@ export default function TeacherDashboard({
 }: TeacherDashboardProps) {
   // Resolve props cleanly supporting both nested teacher object and flat props
   const resolvedId = teacher?.id || teacherId || '';
-  const resolvedName = teacher?.teacher_name || teacherName || 'Rockstar Educator';
+  const resolvedName = teacher?.teacher_name || teacherName || 'Striker Educator';
   const resolvedEmail = teacher?.email || teacherEmail || '';
 
   const [activeDashboardTab, setActiveDashboardTab] = useState<'roster' | 'class_login' | 'live_session' | 'school_admin' | 'assessments' | 'homework' | 'differentiation' | 'google_classroom'>('roster');
@@ -436,7 +436,7 @@ export default function TeacherDashboard({
     try {
       const result = await addStudentToTeacher(cleanFirstName, cleanUsername, cleanPassword, resolvedId);
       if (result.success) {
-        setFormSuccess(`Successfully registered rockstar student @${cleanUsername}!`);
+        setFormSuccess(`Successfully registered striker student @${cleanUsername}!`);
         if (result.studentId) {
           setTemporarySessionPins(prev => ({
             ...prev,
@@ -537,7 +537,7 @@ export default function TeacherDashboard({
               </h2>
             </div>
             <p className="text-sm text-deep-navy">
-              Your classroom control board. Manage your math rockstars and check real-time progress below.
+              Your classroom control board. Manage your math strikers and check real-time progress below.
             </p>
             <div className="text-xs font-mono text-indigo-400">
               Registered email: {resolvedEmail}
@@ -798,7 +798,7 @@ export default function TeacherDashboard({
                 </div>
               ) : filteredStudents.length === 0 ? (
                 <div className="border border-dashed border-deep-navy border-4 rounded-3xl p-12 text-center text-slate-450 text-xs mx-auto space-y-3">
-                  <p>No rockstars registered inside your classroom ledger yet.</p>
+                  <p>No strikers registered inside your classroom ledger yet.</p>
                   <p className="text-[11px] text-slate-500">
                     Fill in the registration form on the left of this screen to instantly add students!
                   </p>
@@ -1765,7 +1765,7 @@ export default function TeacherDashboard({
 
       {/* Itch.io Embed */}
       <div className="flex justify-center mt-4 mb-0 w-full">
-         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-rockstar-appvercelapp">Jesse mathrockstar by Jesse otobo</a></iframe>
+         <iframe frameBorder="0" src="https://itch.io/embed/4792376?linkback=true" width="552" height="167" className="rounded-xl shadow-xl max-w-full"><a href="https://jesse-otobo.itch.io/httpsjesse-math-striker-appvercelapp">Jesse mathstriker by Jesse otobo</a></iframe>
       </div>
     </div>
   );

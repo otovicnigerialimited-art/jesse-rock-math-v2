@@ -8,8 +8,8 @@ import { generateArenaQuestions } from '../lib/mathUtils';
 import { playCorrectSound, playWrongSound, setGlobalMuted, startBGM, stopBGM } from '../lib/audioUtils';
 import { cn } from '../lib/utils';
 import confetti from 'canvas-confetti';
-import RockstarCoach from './RockstarCoach';
-import RockstarKeypad from './RockstarKeypad';
+import StrikerCoach from './StrikerCoach';
+import StrikerKeypad from './StrikerKeypad';
 
 interface ArenaMatchesProps {
   currentUser: {
@@ -90,7 +90,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
           xp: uData.xp || 1250,
           badges: [
             { title: "Speed Demon", icon: "⚡", desc: "Solved 20 problems in under 90s" },
-            { title: "Table Master", icon: "🎸", desc: "Achieved 100% precision in 12x tables" },
+            { title: "Table Master", icon: "⚽", desc: "Achieved 100% precision in 12x tables" },
             { title: "Streak Legend", icon: "🔥", desc: "Maintained a 10-day practice streak" },
             { title: "Arena Champion", icon: "👑", desc: "Won multiplayer math duel" }
           ],
@@ -106,7 +106,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
           level: 12,
           xp: 2840,
           badges: [
-            { title: "Math Rockstar", icon: "🎸", desc: "Completed 350+ equations" },
+            { title: "Math Striker", icon: "⚽", desc: "Completed 350+ equations" },
             { title: "Precision Pro", icon: "🎯", desc: "Zero mistakes in recent duels" },
             { title: "Arena Rival", icon: "⚡", desc: "Active multiplayer competitor" }
           ],
@@ -122,7 +122,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
         username: targetName,
         level: 10,
         xp: 2000,
-        badges: [{ title: "Math Rocker", icon: "🎸", desc: "Ready for battle" }],
+        badges: [{ title: "Math Rocker", icon: "⚽", desc: "Ready for battle" }],
         topCategories: [{ name: "General Arithmetic", score: "94% Accuracy" }]
       });
     } finally {
@@ -544,7 +544,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
 
       const funnyTaglines = [
         "🧠 Brainpower Overdrive!",
-        "🎸 Unstoppable Math Rock Star!",
+        "⚽ Unstoppable Math Champion!",
         "🚀 To Infinity and Beyond!",
         "🍌 That answer was bananas!",
         "🍕 You earn 100 virtual pizza slices!"
@@ -716,7 +716,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
         }
       }
       
-      // Trigger magnificent rockstar confetti celebration!
+      // Trigger magnificent striker confetti celebration!
       confetti({
         particleCount: 200,
         spread: 100,
@@ -763,7 +763,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
             <Trophy className="text-amber-400" /> MULTIPLAYER ARENA 🏟️
           </h2>
           <div className="flex flex-col gap-2">
-            <p className="text-slate-700 text-xs">Real-time competitive math battle ground by Jesse Math Rockstar!</p>
+            <p className="text-slate-700 text-xs">Real-time competitive math battle ground by Jesse Math FC!</p>
             <div className="bg-white/5 border border-slate-200 p-4 rounded-xl mt-2 text-left max-w-xl">
               <h3 className="font-bold text-deep-navy mb-2">Play Arena Rules</h3>
               <ul className="text-sm text-deep-navy/70 space-y-4 font-bold list-decimal pl-4">
@@ -865,7 +865,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               </div>
 
               <div className="space-y-3 max-w-lg mx-auto">
-                <h3 className="text-2xl font-black text-slate-100">Claim the Rockstar Spotlight!</h3>
+                <h3 className="text-2xl font-black text-slate-100">Claim the Striker Spotlight!</h3>
                 <p className="text-slate-700 text-xs leading-relaxed">
                   Step up to test your arithmetic speed against other real human math scholars. Both competitors receive the exact same **20 progressive problems (5 easy, 5 medium, 10 hard)** under a **5-minute timer**.
                 </p>
@@ -979,7 +979,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               </span>
               <h3 className="text-xl font-black text-deep-navy">Searching Arena for a live Challenger</h3>
               <p className="text-slate-700 text-xs leading-normal">
-                Connecting to Jesse Math Rockstar servers. If no one else is currently in the matchmaking queue, we'll keep your lobby active until a challenger enters!
+                Connecting to Jesse Math FC servers. If no one else is currently in the matchmaking queue, we'll keep your lobby active until a challenger enters!
               </p>
             </div>
 
@@ -1012,7 +1012,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               {warmupSeconds}
             </div>
             <div className="space-y-2">
-              <h3 className="text-3xl font-black text-deep-navy">GET READY TO ROCK! 🎸</h3>
+              <h3 className="text-3xl font-black text-deep-navy">GET READY TO ROCK! ⚽</h3>
               <p className="text-sm font-bold text-slate-700">Both players are paired. The 5-minute math timer starts in...</p>
             </div>
             <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs font-mono font-black text-amber-600 uppercase tracking-widest inline-block">
@@ -1028,9 +1028,9 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
             animate={{ opacity: 1 }}
             className="grid lg:grid-cols-12 gap-8 items-start relative"
           >
-            {/* Left Column: Big Stationary Rockstar Coach Side Panel */}
+            {/* Left Column: Big Stationary Striker Coach Side Panel */}
             <div className="lg:col-span-4">
-              <RockstarCoach isPlaying={true} isLargeSidePanel={true} />
+              <StrikerCoach isPlaying={true} isLargeSidePanel={true} />
             </div>
 
             {/* Right Column: Game Layout */}
@@ -1176,9 +1176,9 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                     </button>
                   </form>
 
-                  {/* Rockstar Touchpad */}
+                  {/* Striker Touchpad */}
                   <div className="pt-2">
-                    <RockstarKeypad
+                    <StrikerKeypad
                       value={userInput}
                       onChange={(val) => {
                         setUserInput(val);
@@ -1224,7 +1224,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                   Outstanding job! Firing up your mathematical reflexes with random speed questions prepares you perfectly for competitive classroom duels or tricky topics.
                 </p>
                 <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-450 rounded-2xl text-xs font-bold text-center">
-                  ✨ Rewarded: +{userCorrectCount * 5 + 30} XP & +{Math.floor(userCorrectCount / 2)} Rock Coins!
+                  ✨ Rewarded: +{userCorrectCount * 5 + 30} XP & +{Math.floor(userCorrectCount / 2)} match coins!
                 </div>
               </div>
             ) : (
@@ -1369,7 +1369,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
                   <div>
                     <h3 className="text-xl font-display font-black text-deep-navy">{selectedProfileName}</h3>
                     <span className="text-xs font-bold text-amber-600 bg-amber-500/10 px-2.5 py-0.5 rounded-full">
-                      Math Rockstar Profile
+                      Math Striker Profile
                     </span>
                   </div>
                 </div>
@@ -1384,7 +1384,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
               {isLoadingProfile ? (
                 <div className="py-16 text-center space-y-3">
                   <Loader2 className="animate-spin text-amber-500 mx-auto" size={36} />
-                  <p className="text-xs font-bold text-slate-500">Loading rockstar stats...</p>
+                  <p className="text-xs font-bold text-slate-500">Loading striker stats...</p>
                 </div>
               ) : selectedProfileData ? (
                 <div className="space-y-6 max-h-[65vh] overflow-y-auto pr-1">

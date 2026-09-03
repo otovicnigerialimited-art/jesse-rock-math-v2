@@ -1,6 +1,6 @@
 const SAFE_ADJECTIVES = [
   'Sonic', 'Neon', 'Electric', 'Golden', 'Silver', 'Cosmic', 'Hyper', 'Swift',
-  'Acoustic', 'Turbo', 'Stellar', 'Mega', 'Rockstar', 'Thunder', 'Solar'
+  'Acoustic', 'Turbo', 'Stellar', 'Mega', 'Striker', 'Thunder', 'Solar'
 ];
 
 const SAFE_NOUNS = [
@@ -8,7 +8,7 @@ const SAFE_NOUNS = [
   'Falcon', 'Vortex', 'Melody', 'Legend', 'Star', 'Solver', 'Calculus', 'Champion'
 ];
 
-export function generateSafeRockstarUsername(): string {
+export function generateSafeStrikerUsername(): string {
   const adj = SAFE_ADJECTIVES[Math.floor(Math.random() * SAFE_ADJECTIVES.length)];
   const noun = SAFE_NOUNS[Math.floor(Math.random() * SAFE_NOUNS.length)];
   const num = Math.floor(Math.random() * 90) + 10;
@@ -17,9 +17,9 @@ export function generateSafeRockstarUsername(): string {
 
 // Strictly sanitized quick chat options for multiplayer child safety
 export const SAFE_QUICK_CHATS = [
-  'Great game! 🎸',
+  'Great game! ⚽',
   'Nice calculation speed! ⚡',
-  'Good luck, rockstar! 🏆',
+  'Good luck, striker! 🏆',
   'Awesome streak! 🔥',
   'Replay match? 🔄',
   'Well played! 👏',

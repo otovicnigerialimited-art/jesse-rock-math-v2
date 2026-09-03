@@ -25,18 +25,18 @@ const HUMAN_REVIEWS: ReviewItem[] = [
     rating: 5,
     date: '2026-02-28',
     title: 'Transformed multiplication fluency across our entire classroom!',
-    body: 'My pupils were dreading the statutory multiplication tables check until we started using this for 10 minutes at the start of numeracy hour. The rock gigs and stage progression gave them genuine intrinsic motivation. Average speed across my 28 students doubled in just three weeks!',
+    body: 'My pupils were dreading the statutory multiplication tables check until we started using this for 10 minutes at the start of numeracy hour. The matches and league progression gave them genuine intrinsic motivation. Average speed across my 28 students doubled in just three weeks!',
     verified: true,
     category: 'positive',
     helpfulCount: 89
   },
   {
     id: 'rev-pos-2',
-    author: 'Maya K. (Grade 4 Rockstar Scholar)',
+    author: 'Maya K. (Grade 4 Football Scholar)',
     role: 'Student',
     rating: 5,
     date: '2026-02-22',
-    title: 'The best math game ever! Unlocked the Neon Electric Guitar!',
+    title: 'The best math game ever! Unlocked the Neon football boot!',
     body: 'I love playing 1v1 against my best friend after school. I went from answering 9 questions a minute to 26 questions a minute. Math used to make me nervous but now I am the fastest in my class at the 7x and 8x times tables!',
     verified: true,
     category: 'positive',
@@ -99,7 +99,7 @@ const HUMAN_REVIEWS: ReviewItem[] = [
     rating: 3,
     date: '2026-02-25',
     title: 'Missing bulk CSV roster upload + sound overlap glitch in arena',
-    body: 'We love the multiplication battles, but please add a bulk CSV student upload! Typing 32 student logins manually took my entire Sunday evening. Also, the electric guitar riff audio sometimes plays directly over the round timer buzzer when answering in rapid succession.',
+    body: 'We love the multiplication battles, but please add a bulk CSV student upload! Typing 32 student logins manually took my entire Sunday evening. Also, the football boot riff audio sometimes plays directly over the round timer buzzer when answering in rapid succession.',
     verified: true,
     category: 'critical',
     critiqueTag: 'Missing Feature',
@@ -112,7 +112,7 @@ const HUMAN_REVIEWS: ReviewItem[] = [
     rating: 2,
     date: '2026-02-19',
     title: 'Touch delay on older iPad keypad made me lose my speed streak!',
-    body: 'When I tap numbers quickly on our family iPad (8th Gen), sometimes the on-screen number pad registers a split-second late. I lost my 19-answer rock streak in 1v1 battle because the keypad lagged behind my fingers. Please fix the tablet keypad touch response!',
+    body: 'When I tap numbers quickly on our family iPad (8th Gen), sometimes the on-screen number pad registers a split-second late. I lost my 19-answer Goal Streak in 1v1 battle because the keypad lagged behind my fingers. Please fix the tablet keypad touch response!',
     verified: true,
     category: 'critical',
     critiqueTag: 'Touch Delay / Lag',
@@ -124,8 +124,8 @@ const HUMAN_REVIEWS: ReviewItem[] = [
     role: 'Tutor',
     rating: 1,
     date: '2026-02-14',
-    title: 'Accidentally spent 450 rock coins—no purchase confirmation dialog!',
-    body: 'My 8-year-old grandson spent two weeks diligently saving 450 rock coins for the Gold Stratocaster. His finger accidentally brushed a sticker pack in the shop and it bought it immediately with NO "Are you sure?" confirmation popup! He burst into tears. Please add a confirm button before deducting coins!',
+    title: 'Accidentally spent 450 match coins—no purchase confirmation dialog!',
+    body: 'My 8-year-old grandson spent two weeks diligently saving 450 match coins for the Gold Stratocaster. His finger accidentally brushed a sticker pack in the shop and it bought it immediately with NO "Are you sure?" confirmation popup! He burst into tears. Please add a confirm button before deducting coins!',
     verified: true,
     category: 'critical',
     critiqueTag: 'Shop UX / Accidental Purchase',
@@ -259,7 +259,7 @@ export default function ReviewStatsSection() {
     setUserName('');
     setUserTitle('');
     setUserBody('');
-    setToastMessage('Thank you! Your verified user review for Jesse Math Rockstar has been published.');
+    setToastMessage('Thank you! Your verified user review for Jesse Math FC has been published.');
     setTimeout(() => setToastMessage(null), 4000);
   };
 
@@ -271,11 +271,11 @@ export default function ReviewStatsSection() {
       itemScope
       itemType="https://schema.org/SoftwareApplication"
     >
-      {/* Hidden SEO Metadata Target strictly bound to Jesse Math Rockstar */}
-      <meta itemProp="name" content="Jesse Math Rockstar" />
+      {/* Hidden SEO Metadata Target strictly bound to Jesse Math FC */}
+      <meta itemProp="name" content="Jesse Math FC" />
       <meta itemProp="applicationCategory" content="EducationalApplication" />
       <meta itemProp="operatingSystem" content="Web, iOS, Android, Chromebook" />
-      <link itemProp="url" href="https://jesse-math-rockstar-app.vercel.app/" />
+      <link itemProp="url" href="https://jesse-math-striker-app.vercel.app/" />
 
       {/* Review Tag Header & Badges */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-slate-100 pb-6">
@@ -288,7 +288,7 @@ export default function ReviewStatsSection() {
               <Sparkles size={13} className="text-amber-600" /> #reviews • 600 Verified App Reviews
             </span>
             <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200">
-              Rated strictly for Jesse Math Rockstar App
+              Rated strictly for Jesse Math FC App
             </span>
           </div>
           <h2 className="text-2xl md:text-3xl font-display font-black text-deep-navy tracking-tight">
@@ -326,7 +326,7 @@ export default function ReviewStatsSection() {
         <meta itemProp="worstRating" content="1" />
         <meta itemProp="ratingCount" content={TOTAL_REVIEWS.toString()} />
         <meta itemProp="reviewCount" content={TOTAL_REVIEWS.toString()} />
-        <meta itemProp="itemReviewed" content="Jesse Math Rockstar" />
+        <meta itemProp="itemReviewed" content="Jesse Math FC" />
 
         {/* Score Pillar */}
         <div className="lg:col-span-4 flex flex-col items-center justify-center text-center p-6 bg-slate-950/80 rounded-2xl border border-slate-800/80">
@@ -623,7 +623,7 @@ export default function ReviewStatsSection() {
             >
               <div className="flex items-center justify-between border-b-2 border-slate-100 pb-3">
                 <div className="space-y-0.5">
-                  <h3 className="text-lg font-black text-deep-navy">Review Jesse Math Rockstar</h3>
+                  <h3 className="text-lg font-black text-deep-navy">Review Jesse Math FC</h3>
                   <p className="text-xs text-slate-500 font-medium">Leave genuine praise, report bugs, or request missing features</p>
                 </div>
                 <button

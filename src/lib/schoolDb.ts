@@ -109,7 +109,7 @@ export async function seedSchoolsDb() {
       // Seed clean default teacher without dummy student records
       await setDoc(doc(db, 'teachers', defaultTeacherId), {
         id: defaultTeacherId,
-        teacher_name: 'Jesse Rockstar',
+        teacher_name: 'Jesse Striker',
         email: 'teacher@jesserock.edu',
         created_at: Date.now()
       });
@@ -319,7 +319,7 @@ export async function addStudentToTeacher(
     return { success: false, error: `Username @${cleanUser} is already claimed. Please choose a different variation!` };
   }
 
-  // Insert standard rockstar progress data
+  // Insert standard striker progress data
   const initialProgressObj: MathProgressData = {
     highScore: 0,
     xp: 100,
@@ -344,7 +344,7 @@ export async function addStudentToTeacher(
     // Top level stats
     coins: 100,
     xp: 100,
-    badges: ["School Rockstar"],
+    badges: ["School Striker"],
     equipped_items: {
       hair: 'hair_default',
       body: 'body_default',

@@ -62,7 +62,7 @@ export default function ParentReportModal({ isOpen, onClose, student, className 
           <div className="grid grid-cols-3 gap-3 text-center text-xs">
             <div className="p-3 bg-slate-950 print:bg-slate-50 border border-slate-800 print:border-slate-300 rounded-xl">
               <span className="block text-2xl font-black text-amber-400 print:text-black">{progress.currentLevel}</span>
-              <span className="text-[10px] uppercase font-bold text-slate-400 print:text-slate-600">Rockstar Level</span>
+              <span className="text-[10px] uppercase font-bold text-slate-400 print:text-slate-600">Striker Level</span>
             </div>
 
             <div className="p-3 bg-slate-950 print:bg-slate-50 border border-slate-800 print:border-slate-300 rounded-xl">
@@ -105,7 +105,7 @@ export default function ParentReportModal({ isOpen, onClose, student, className 
                 <BookOpen size={15} /> Suggested Home Practice Tips
               </h4>
               <p className="text-slate-300 print:text-slate-800 leading-relaxed">
-                Log into Jesse Math Rockstar for 10 minutes, 3 times a week. Try playing "Fractions Speed Challenge" together to earn new Rockstar cosmetic avatar unlocks!
+                Log into Jesse Math FC for 10 minutes, 3 times a week. Try playing "Fractions Speed Challenge" together to earn new Striker cosmetic avatar unlocks!
               </p>
             </div>
           </div>

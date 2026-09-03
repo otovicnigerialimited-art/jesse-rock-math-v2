@@ -58,8 +58,8 @@ const SUPPORTED_SKILLS = [
 
 const FAQ_ITEMS = [
   {
-    q: "Is Jesse Math Rockstar free?",
-    a: "Yes, Jesse Math Rockstar is 100% free to play with no hidden paywalls, subscription fees, or intrusive advertisements."
+    q: "Is Jesse Math FC free?",
+    a: "Yes, Jesse Math FC is 100% free to play with no hidden paywalls, subscription fees, or intrusive advertisements."
   },
   {
     q: "What math skills can students practice?",
@@ -70,7 +70,7 @@ const FAQ_ITEMS = [
     a: "Yes! Students can enter the Play Arena to join live multiplayer math challenges against peers, build streaks, and climb global leaderboards."
   },
   {
-    q: "Is Jesse Math Rockstar suitable for classrooms and teachers?",
+    q: "Is Jesse Math FC suitable for classrooms and teachers?",
     a: "Absolutely. Teachers can set up class rosters, track student performance, view progress diagnostics, and run interactive class activities."
   },
   {
@@ -83,7 +83,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Can I play on a mobile phone or tablet?",
-    a: "Yes, Jesse Math Rockstar is fully responsive and optimized for phones, tablets, Chromebooks, and desktop computers."
+    a: "Yes, Jesse Math FC is fully responsive and optimized for phones, tablets, Chromebooks, and desktop computers."
   }
 ];
 
@@ -124,7 +124,7 @@ export default function HomeLanding({
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tight leading-none">
-            Jesse Math Rockstar
+            Jesse Math FC
           </h1>
 
           <p className="text-xl md:text-2xl font-bold text-amber-300 tracking-tight">
@@ -223,16 +223,16 @@ export default function HomeLanding({
             🎬 Official YouTube Promo Trailer
           </div>
           <h2 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
-            See Jesse Math Rockstar in Action!
+            See Jesse Math FC in Action!
           </h2>
           <p className="text-sm text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Discover how we turn times tables, mental arithmetic drills, and competitive multiplayer practice into a legendary rockstar journey. Watch our video ad directly from our YouTube channel!
+            Discover how we turn times tables, mental arithmetic drills, and competitive multiplayer practice into a legendary striker journey. Watch our video ad directly from our YouTube channel!
           </p>
           <div className="aspect-video w-full max-w-3xl mx-auto rounded-3xl overflow-hidden border-4 border-slate-800 shadow-2xl bg-black">
             <iframe
               className="w-full h-full"
               src="https://www.youtube.com/embed/kBjfLeranG4"
-              title="Jesse Math Rockstar YouTube Promo Ad"
+              title="Jesse Math FC YouTube Promo Ad"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
@@ -346,9 +346,9 @@ export default function HomeLanding({
             <div className="w-10 h-10 rounded-2xl bg-emerald-500 text-white font-black text-lg flex items-center justify-center shadow">
               3
             </div>
-            <h3 className="text-base font-black text-deep-navy">Become a Rockstar</h3>
+            <h3 className="text-base font-black text-deep-navy">Become a Striker</h3>
             <p className="text-xs text-slate-600 font-medium leading-relaxed">
-              Earn rewards, unlock avatar gear in the Rock Shop, and climb the leaderboard as your skills improve.
+              Earn rewards, unlock avatar gear in the Club Shop, and climb the leaderboard as your skills improve.
             </p>
           </div>
         </div>
@@ -435,7 +435,7 @@ export default function HomeLanding({
               Math practice for classrooms, too.
             </h2>
             <p className="text-xs md:text-sm text-slate-700 font-medium leading-relaxed max-w-2xl">
-              Teachers can use Jesse Math Rockstar to give students interactive math activities, track class progress, and make practice more engaging in computer labs or at home.
+              Teachers can use Jesse Math FC to give students interactive math activities, track class progress, and make practice more engaging in computer labs or at home.
             </p>
           </div>
           <button
@@ -469,7 +469,7 @@ export default function HomeLanding({
           />
           <ValueCard 
             title="Custom Avatar Gear"
-            desc="Earn coins by solving equations and unlock rockstar items in the Rock Shop."
+            desc="Earn coins by solving equations and unlock striker items in the Club Shop."
           />
           <ValueCard 
             title="Student Friendly"
@@ -487,7 +487,7 @@ export default function HomeLanding({
           <div className="space-y-1 text-center sm:text-left">
             <h3 className="text-lg font-black text-deep-navy">Created by Jesse Otobo</h3>
             <p className="text-xs text-slate-600 font-medium leading-relaxed max-w-2xl">
-              Jesse Math Rockstar was created by Jesse Otobo, an 11-year-old developer who wanted to make math practice more engaging for classmates and students worldwide.
+              Jesse Math FC was created by Jesse Otobo, an 11-year-old developer who wanted to make math practice more engaging for classmates and students worldwide.
             </p>
           </div>
         </div>
@@ -500,7 +500,7 @@ export default function HomeLanding({
             <HelpCircle size={24} className="text-indigo-600" /> Frequently Asked Questions
           </h2>
           <p className="text-xs md:text-sm text-slate-600 font-medium">
-            Everything you need to know about playing and using Jesse Math Rockstar.
+            Everything you need to know about playing and using Jesse Math FC.
           </p>
         </div>
 
@@ -580,10 +580,10 @@ export default function HomeLanding({
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5 text-left">
             <div className="w-8 h-8 rounded-lg overflow-hidden border border-deep-navy/20 shrink-0">
-              <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math Rockstar Logo" className="w-full h-full object-cover" />
+              <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Jesse Math FC Logo" className="w-full h-full object-cover" />
             </div>
             <div>
-              <p className="text-xs font-black text-deep-navy uppercase">Jesse Math Rockstar</p>
+              <p className="text-xs font-black text-deep-navy uppercase">Jesse Math FC</p>
               <p className="text-[10px] text-slate-500 font-medium">Free Interactive Math Game</p>
             </div>
           </div>
@@ -633,7 +633,7 @@ export default function HomeLanding({
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-deep-navy/5 pt-4 text-[10px] text-slate-500 font-medium font-mono">
-          <p>© 2026 Jesse Math Rockstar. Created by Jesse Otobo.</p>
+          <p>© 2026 Jesse Math FC. Created by Jesse Otobo.</p>
           <p>Educational Math Practice Platform</p>
         </div>
       </footer>

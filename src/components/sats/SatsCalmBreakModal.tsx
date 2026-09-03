@@ -51,11 +51,11 @@ export default function SatsCalmBreakModal({ isOpen, onClose }: SatsCalmBreakMod
 
           {/* Header */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-500/20 border border-indigo-400/30 rounded-full text-xs font-bold text-indigo-200 uppercase tracking-widest mb-6">
-            <Heart size={14} className="text-pink-400 animate-pulse" /> Rockstar Calm Sanctuary
+            <Heart size={14} className="text-pink-400 animate-pulse" /> Striker Calm Sanctuary
           </div>
 
           <h2 className="text-3xl font-display font-black text-white mb-2">
-            Take a breath, Rockstar. 🎸
+            Take a breath, Striker. ⚽
           </h2>
           <p className="text-slate-300 text-sm max-w-md mx-auto mb-8 font-medium">
             You don't have to solve everything at once. Rest is when your brain connects new knowledge.

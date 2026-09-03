@@ -22,7 +22,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
     try {
       const canvas = await html2canvas(certRef.current, { scale: 3, useCORS: true });
       const link = document.createElement('a');
-      link.download = `Jesse_Math_Rockstar_Certificate_${username || 'Scholar'}.png`;
+      link.download = `Jesse_Math_Striker_Certificate_${username || 'Scholar'}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
@@ -47,7 +47,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`Jesse_Math_Rockstar_Certificate_${username || 'Scholar'}.pdf`);
+      pdf.save(`Jesse_Math_Striker_Certificate_${username || 'Scholar'}.pdf`);
     } catch (err) {
       console.error("Failed to generate PDF", err);
     }
@@ -159,7 +159,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
                 {/* Recipient Name in Display Typography */}
                 <div className="relative py-1 px-4 my-2">
                   <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-black text-slate-950 border-b-4 border-double border-amber-600/80 pb-3 max-w-2xl mx-auto tracking-wide drop-shadow-sm">
-                    {username || "Young Math Rockstar"}
+                    {username || "Young Math Striker"}
                   </h2>
                 </div>
 
@@ -208,7 +208,7 @@ export default function CertificateModal({ isOpen, onClose, username, totalSolve
                 {/* Verification Badge */}
                 <div className="hidden sm:flex flex-col items-center text-center">
                   <span className="text-xs font-mono font-black text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">VERIFIED BOARD APPROVAL ✓</span>
-                  <span className="text-[9px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1 mt-1">Jesse Math Rockstar Academic Board</span>
+                  <span className="text-[9px] uppercase tracking-wider text-slate-500 font-black border-t border-slate-300 pt-1 mt-1">Jesse Math FC Academic Board</span>
                 </div>
 
                 {/* Date Conferred */}

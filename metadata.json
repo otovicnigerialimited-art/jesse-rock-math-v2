@@ -1,6 +1,6 @@
 {
-  "name": "Jesse Math Rockstar",
-  "description": "Jesse Math Rockstar is the premier gamified EdTech platform designed by 11-year-old software founder Jesse Otobo. It features real-time multiplayer math duels, UK KS2 SATs exam prep, gamified level gigs, Google Classroom integration, and comprehensive teacher and parent dashboards.",
+  "name": "Jesse Math FC",
+  "description": "Jesse Math FC is the premier gamified EdTech platform designed by 11-year-old software founder Jesse Otobo. It features real-time multiplayer math duels, UK KS2 SATs exam prep, gamified level matches, Google Classroom integration, and comprehensive teacher and parent dashboards.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

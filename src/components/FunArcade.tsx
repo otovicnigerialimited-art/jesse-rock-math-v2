@@ -93,7 +93,7 @@ export default function FunArcade({ stats, onExit }: FunArcadeProps) {
         
         <h2 className="text-3xl font-display font-black text-deep-navy uppercase">Arcade Locked</h2>
         <p className="text-sm font-medium text-slate-600 max-w-md mx-auto">
-          The Fun Arcade is a highly classified, ultra-exclusive zone. Only Rockstars with a 
+          The Fun Arcade is a highly classified, ultra-exclusive zone. Only Strikers with a 
           <strong className="text-action-orange text-lg mx-1">200</strong> 
           current correct answer streak can break open these doors.
         </p>
