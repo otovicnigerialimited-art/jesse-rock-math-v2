@@ -50,7 +50,7 @@ export default function PublicSeoHub() {
     "bestRating": "5",
     "worstRating": "1"
   },
-  "contentRating": "COPPA-compliant",
+  "contentRating": "Follows COPPA Rules",
   "isFamilyFriendly": true
 }
 </script>`
@@ -73,7 +73,7 @@ export default function PublicSeoHub() {
     },
     {
       "@type": "Question",
-      "name": "Is Jesse Math FC 100% free for schools and families?",
+      "name": "Is Jesse Math FC completely free for schools and families?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Yes, Jesse Math FC is completely free with zero paywalls, zero ads, and zero in-app purchases. All features, teacher tools, and avatar cosmetics are earned through math practice."
@@ -225,7 +225,7 @@ export default function PublicSeoHub() {
       specs: [
         { label: 'Progression Tiers', value: '10 Ranks (Sunday League to World Cup Legend)' },
         { label: 'Achievement Quests', value: '60+ Unlockable Milestones' },
-        { label: 'Economy Model', value: '100% Free Virtual Currency' },
+        { label: 'Economy Model', value: 'Free Virtual Currency' },
         { label: 'Streak Rewards', value: 'Daily Multipliers & Mystery Boxes' }
       ],
       coreFeatures: [
@@ -289,7 +289,7 @@ export default function PublicSeoHub() {
         { label: 'Data Export', value: 'CSV, PDF Certificates & Mark Sheets' }
       ],
       coreFeatures: [
-        'Anonymous 1-click student account creation (Zero-PII compliant)',
+        'Anonymous 1-click student account creation (Zero-PII architecture)',
         'Overhead classroom projector mode displaying live team scores and accuracy',
         'Automated homework assignment dispatch with customizable due dates',
         'Printable Striker Achievement Certificates customized with student handles'
@@ -317,13 +317,13 @@ export default function PublicSeoHub() {
       technicalDetails: 'Parents can view granular calculation response times down to the millisecond, observing the precise transition from cognitive counting strategies to instant automatic recall.'
     },
     security: {
-      title: 'Zero-PII Child Safety, COPPA & UK GDPR Security Sandbox',
+      title: 'Zero-PII Child Safety & Student Privacy Guidelines',
       badge: 'Privacy & Security',
       icon: ShieldCheck,
       color: 'purple',
-      summary: 'Military-grade privacy architecture ensuring zero collection of personal information from minors, zero third-party tracking, and zero advertising.',
+      summary: 'Student privacy architecture following COPPA rules, ensuring zero collection of personal information from minors, zero third-party tracking, and zero advertising.',
       specs: [
-        { label: 'COPPA Compliance', value: '100% Certified Safe Architecture' },
+        { label: 'COPPA Rules', value: 'Follows COPPA Rules & Privacy Standards' },
         { label: 'GDPR-K Standard', value: 'Zero-PII Anonymized Tokens' },
         { label: 'Ad Trackers', value: '0 (Strictly Blocked)' },
         { label: 'Database Rules', value: 'Strict RBAC Firestore Security' }
@@ -345,7 +345,7 @@ export default function PublicSeoHub() {
     },
     {
       q: 'Is Jesse Math FC completely free for primary schools, teachers, and parents?',
-      a: 'Yes, 100%. Jesse Math FC is committed to educational equity. All core game modes, teacher dashboard lobbies, student access PINs, diagnostic analytics, and avatar items in the Club Shop are completely free. There are no subscriptions, freemium locks, or paid upgrades.'
+      a: 'Yes, completely. Jesse Math FC is committed to educational equity. All core game modes, teacher dashboard lobbies, student access PINs, diagnostic analytics, and avatar items in the Club Shop are free. There are no subscriptions, freemium locks, or paid upgrades.'
     },
     {
       q: 'How does the 1v1 Multiplayer Math Pitch work without latency?',
@@ -365,7 +365,7 @@ export default function PublicSeoHub() {
     },
     {
       q: 'How does Jesse Math FC protect student privacy (COPPA & GDPR)?',
-      a: 'Jesse Math FC uses a strict Zero-PII (Personally Identifiable Information) security model. Student accounts use randomly generated striker pseudonyms and PINs. We never collect email addresses, phone numbers, location data, or biometrics from children. The platform contains zero third-party advertising or tracking trackers.'
+      a: 'Jesse Math FC uses a strict Zero-PII (Personally Identifiable Information) model following COPPA and GDPR rules. Student accounts use randomly generated striker pseudonyms and PINs. We never collect email addresses, phone numbers, location data, or biometrics from children. The platform contains zero third-party advertising or tracking trackers.'
     },
     {
       q: 'Can teachers export classroom performance data and print certificates?',
@@ -377,7 +377,7 @@ export default function PublicSeoHub() {
     },
     {
       q: 'What devices and operating systems are supported?',
-      a: 'Jesse Math FC is 100% web-based and runs natively on Google Chromebooks, iPads, Android tablets, Windows PCs, MacBooks, and mobile smartphones without requiring any app store downloads. It also features Progressive Web App (PWA) offline support.'
+      a: 'Jesse Math FC is fully web-based and runs natively on Google Chromebooks, iPads, Android tablets, Windows PCs, MacBooks, and mobile smartphones without requiring any app store downloads. It also features Progressive Web App (PWA) offline support.'
     }
   ];
 

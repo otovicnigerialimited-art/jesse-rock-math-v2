@@ -272,7 +272,7 @@ export function getSampleSeedNotifications(): NotificationLogItem[] {
       id: 'sample_5',
       categoryGroup: 'progress',
       category: 'gradingAlerts',
-      title: '📝 Homework Scored: 100% Accuracy!',
+      title: '📝 Homework Scored: Perfect Accuracy!',
       body: 'Your teacher reviewed your "Decimals & Percentages" assignment and gave feedback.',
       timestamp: now - 1000 * 60 * 60 * 30,
       read: true

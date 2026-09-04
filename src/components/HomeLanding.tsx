@@ -59,7 +59,7 @@ const SUPPORTED_SKILLS = [
 const FAQ_ITEMS = [
   {
     q: "Is Jesse Math FC free?",
-    a: "Yes, Jesse Math FC is 100% free to play with no hidden paywalls, subscription fees, or intrusive advertisements."
+    a: "Yes, Jesse Math FC is completely free to play with no hidden paywalls, subscription fees, or intrusive advertisements."
   },
   {
     q: "What math skills can students practice?",

@@ -207,7 +207,7 @@ export function subscribeToRealSurveyResponses(
 
 /**
  * Pure statistical compute function calculating exact ratios, percentages, and distribution frequencies
- * from 100% genuine user responses.
+ * from verified genuine user responses.
  */
 export function computeSurveyAnalyticsFromResponses(responses: SurveyAnswer[]): AggregatedSurveyAnalytics {
   const total = responses.length;
@@ -272,7 +272,7 @@ export function computeSurveyAnalyticsFromResponses(responses: SurveyAnswer[]): 
     totalResponses: total,
     zeroBugsPercentage,
     bugDistribution: [
-      { key: 'none', label: 'Zero Bugs (100% Smooth Play)', count: bugsCount.none, percentage: calculatePct(bugsCount.none), severity: 'low' },
+      { key: 'none', label: 'Zero Bugs (Smooth Play)', count: bugsCount.none, percentage: calculatePct(bugsCount.none), severity: 'low' },
       { key: 'touch_delay', label: 'Tablet / iPad Keypad Touch Latency', count: bugsCount.touch_delay, percentage: calculatePct(bugsCount.touch_delay), severity: 'high' },
       { key: 'accidental_purchase', label: 'Accidental Shop Purchase (Need Confirm Dialog)', count: bugsCount.accidental_purchase, percentage: calculatePct(bugsCount.accidental_purchase), severity: 'high' },
       { key: 'audio_overlap', label: 'Guitar Riff Audio Overlapping Timer', count: bugsCount.audio_overlap, percentage: calculatePct(bugsCount.audio_overlap), severity: 'medium' },
@@ -307,7 +307,7 @@ export function computeSurveyAnalyticsFromResponses(responses: SurveyAnswer[]): 
     ].sort((a, b) => b.votes - a.votes),
     datasetMetadata: {
       sampleSize: total,
-      anonymizedStatus: '100% Anonymized (Zero PII or Usernames stored)',
+      anonymizedStatus: 'Fully Anonymized (Zero PII or Usernames stored)',
       statisticalConfidence: total >= 30 ? '95% Confidence Level' : 'Provisional Statistical Sample',
       marginOfError: total > 0 ? `±${(1 / Math.sqrt(total) * 100).toFixed(1)}%` : 'N/A',
       primaryDataCollection: 'Live In-App Survey Prompt & Modal',

@@ -136,7 +136,7 @@ export default function MobileLockScreenPreview() {
             </button>
 
             <button
-              onClick={() => triggerLockScreenBanner('🏆 Reward Unlocked: Gold Badge!', 'You earned the Grand Master Mathematician award with 100% accuracy.')}
+              onClick={() => triggerLockScreenBanner('🏆 Reward Unlocked: Gold Badge!', 'You earned the Grand Master Mathematician award with flawless accuracy.')}
               className="w-full p-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 text-left transition-all flex items-center justify-between cursor-pointer"
             >
               <div>

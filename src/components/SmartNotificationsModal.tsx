@@ -485,7 +485,7 @@ export default function SmartNotificationsModal({
                   onClick={() => triggerTestAlert(
                     'progress',
                     'gradingAlerts',
-                    '📝 Homework Scored: 100%',
+                    '📝 Homework Scored: Perfect Score',
                     'Your teacher reviewed your fractions exit ticket with full marks!'
                   )}
                 />
@@ -535,7 +535,7 @@ export default function SmartNotificationsModal({
         {/* FOOTER */}
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 font-medium shrink-0">
           <span className="flex items-center gap-1">
-            <ShieldCheck size={15} className="text-emerald-500" /> Safe, COPPA-compliant educational alerts
+            <ShieldCheck size={15} className="text-emerald-500" /> Safe educational alerts following COPPA guidelines
           </span>
           <button
             onClick={onClose}

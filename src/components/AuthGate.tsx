@@ -1196,9 +1196,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   <div className="flex items-center justify-between p-3 bg-[#E8F8F5] border border-slate-300 rounded">
                     <div className="flex items-center gap-3">
                       <ShieldCheck className="text-cyan-500" size={16} />
-                      <span className="text-sm font-medium text-slate-700">COPPA Shield</span>
+                      <span className="text-sm font-medium text-slate-700">Follows COPPA Rules</span>
                     </div>
-                    <span className="text-xs font-mono text-slate-500">VERIFIED</span>
+                    <span className="text-xs font-mono text-slate-500">PROTECTED</span>
                   </div>
                 </div>
               </div>
@@ -1486,7 +1486,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   >
                     <span className="text-purple-600 font-bold text-lg">🔒</span>
                     <div>
-                      <strong className="text-slate-900 block mb-0.5">3. 100% COPPA & Student Privacy Safe</strong>
+                      <strong className="text-slate-900 block mb-0.5">3. Follows COPPA & Student Privacy Rules</strong>
                       Designed specifically for classrooms with strict zero-tracking policies, no third-party ad networks, and complete teacher administrative control.
                     </div>
                   </motion.div>
@@ -1582,7 +1582,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                 <div className="w-12 h-12 bg-rose-500/10 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-600 font-bold text-xl">
                   🛡️
                 </div>
-                <h3 className="text-xl font-bold text-slate-900">100% COPPA & Safe Schools</h3>
+                <h3 className="text-xl font-bold text-slate-900">Follows COPPA Rules & Safe Schools</h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
                   Strict privacy controls, zero tracking cookies, and automated name screening ensure a completely safe, distraction-free environment trusted by schools worldwide.
                 </p>

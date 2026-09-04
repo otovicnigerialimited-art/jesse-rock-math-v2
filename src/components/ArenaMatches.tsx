@@ -90,7 +90,7 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
           xp: uData.xp || 1250,
           badges: [
             { title: "Speed Demon", icon: "⚡", desc: "Solved 20 problems in under 90s" },
-            { title: "Table Master", icon: "⚽", desc: "Achieved 100% precision in 12x tables" },
+            { title: "Table Master", icon: "⚽", desc: "Achieved perfect precision in 12x tables" },
             { title: "Streak Legend", icon: "🔥", desc: "Maintained a 10-day practice streak" },
             { title: "Pitch Champion", icon: "👑", desc: "Won multiplayer math duel" }
           ],

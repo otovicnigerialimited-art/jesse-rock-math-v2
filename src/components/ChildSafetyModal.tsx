@@ -52,7 +52,7 @@ export default function ChildSafetyModal({
               <h3 className="font-display font-black text-slate-900 text-lg">
                 Child Safety & Privacy Center
               </h3>
-              <p className="text-xs text-slate-500 font-medium">COPPA-compliant, zero-PII protection framework</p>
+              <p className="text-xs text-slate-500 font-medium">Zero-PII protection framework following COPPA rules</p>
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">
@@ -116,7 +116,7 @@ export default function ChildSafetyModal({
           <ul className="space-y-1 list-disc list-inside">
             <li>No personal location, real names, or contact info requested.</li>
             <li>No ads, tracking cookies, or third-party data selling.</li>
-            <li>Fully COPPA and GDPR-K compliant educational workspace.</li>
+            <li>Educational workspace designed to follow COPPA and GDPR-K privacy rules.</li>
           </ul>
         </div>
 

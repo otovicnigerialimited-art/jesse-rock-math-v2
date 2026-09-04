@@ -251,7 +251,7 @@ export default function SettingsModal({
         {/* Footer */}
         <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
           <span className="text-[11px] text-slate-400 font-medium flex items-center gap-1">
-            <ShieldCheck size={14} className="text-emerald-500" /> COPPA Safe &amp; Privacy Compliant
+            <ShieldCheck size={14} className="text-emerald-500" /> Follows COPPA &amp; Student Privacy Rules
           </span>
           <button
             onClick={onClose}

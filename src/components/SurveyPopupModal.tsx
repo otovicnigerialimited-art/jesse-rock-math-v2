@@ -125,7 +125,7 @@ export default function SurveyPopupModal({
                 Live Anonymized Processing
               </p>
               <p className="text-slate-500 text-[11px] font-medium">
-                Your submission is 100% private. No usernames or personal identifiers are stored or shown on the analytical dashboard.
+                Your submission is completely private. No usernames or personal identifiers are stored or shown on the analytical dashboard.
               </p>
             </div>
 
@@ -169,7 +169,7 @@ export default function SurveyPopupModal({
 
                 <div className="grid grid-cols-1 gap-2 pt-1">
                   {[
-                    { id: 'none', label: '✅ Zero Bugs — Ran 100% buttery smooth', tag: 'Smooth' },
+                    { id: 'none', label: '✅ Zero Bugs — Ran buttery smooth', tag: 'Smooth' },
                     { id: 'touch_delay', label: '📱 Keypad Touch Latency on iPad / Tablet', tag: 'Touch Delay' },
                     { id: 'accidental_purchase', label: '🛒 Accidental Club Shop item purchase (Need confirm dialog)', tag: 'Shop UX' },
                     { id: 'audio_overlap', label: '🔊 Guitar solo audio overlapped round timer buzzer', tag: 'Audio' },

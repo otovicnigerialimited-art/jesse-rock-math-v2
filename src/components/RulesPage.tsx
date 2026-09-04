@@ -54,7 +54,7 @@ export default function RulesPage({ onNavigateToTab }: RulesPageProps) {
     {
       icon: <Trophy className="text-brand-secondary" size={24} />,
       title: "The Fun Arcade (200 Streak Rule)",
-      desc: "Only the most elite Strikers can enter the Fun Arcade! Once you achieve a massive streak of 200 or more correct answers, you break the locks to the secret Arcade Zone. Here, you get exclusive access to play high-quality, educational games from Google Interland (Be Internet Awesome). These are provided via direct outgoing links to a fully COPPA-compliant, kid-safe environment designed to teach digital citizenship."
+      desc: "Only the most elite Strikers can enter the Fun Arcade! Once you achieve a massive streak of 200 or more correct answers, you break the locks to the secret Arcade Zone. Here, you get exclusive access to play high-quality, educational games from Google Interland (Be Internet Awesome). These are provided via direct outgoing links to a kid-safe environment designed following COPPA rules to teach digital citizenship."
     }
   ];
 

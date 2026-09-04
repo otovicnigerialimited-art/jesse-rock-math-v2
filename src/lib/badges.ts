@@ -23,7 +23,7 @@ export const CORE_BADGES: Badge[] = [
   {
     id: "accuracy_king",
     title: "Perfect Target 🎯",
-    description: "Submit a matching perfect-score session with 100% accuracy!",
+    description: "Submit a matching session with flawless accuracy!",
     emoji: "🎯",
     color: "from-red-400 to-pink-500",
     category: "Precision",

@@ -60,7 +60,7 @@ export default function AboutSection() {
         </div>
       </div>
 
-      {/* 1. AGE DISTINCTIONS & CHILD PRIVACY SAFETY (COPPA COMPLIANT) */}
+      {/* 1. AGE DISTINCTIONS & CHILD PRIVACY SAFETY (FOLLOWS COPPA RULES) */}
       <div className="bg-slate-900 text-white p-8 md:p-10 rounded-3xl border-4 border-deep-navy space-y-6 shadow-lg">
         <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
           <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
@@ -68,7 +68,7 @@ export default function AboutSection() {
           </div>
           <div>
             <span className="text-[10px] font-black uppercase text-emerald-400 tracking-widest block">Safety & Privacy Standards</span>
-            <h3 className="text-xl md:text-2xl font-black text-white">Age Distinctions & COPPA Privacy Guarantee</h3>
+            <h3 className="text-xl md:text-2xl font-black text-white">Age Distinctions & Child Privacy Protections</h3>
           </div>
         </div>
 
@@ -78,10 +78,10 @@ export default function AboutSection() {
               <Lock size={16} /> Under 13 Years Old (Primary & Middle School)
             </div>
             <p className="text-xs text-slate-300 leading-relaxed font-medium">
-              Strictly engineered in compliance with <strong>COPPA &amp; GDPR Child Privacy</strong> rules. Primary students require <strong>no email address</strong> to play and can log in via teacher-generated visual class cards. Contains zero public chatrooms, direct messaging, or external link exposure.
+              Engineered following <strong>COPPA &amp; GDPR Child Privacy</strong> rules. Primary students require <strong>no email address</strong> to play and can log in via teacher-generated visual class cards. Contains zero public chatrooms, direct messaging, or external link exposure.
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
-              <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">COPPA Safe</span>
+              <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">Follows COPPA Rules</span>
               <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">Level Matches</span>
               <span className="px-2.5 py-1 bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[10px] font-bold rounded-lg">KS2 SATs Prep</span>
             </div>
@@ -89,7 +89,7 @@ export default function AboutSection() {
 
           <div className="p-6 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
             <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
-              <ShieldCheck size={16} /> COPPA & GDPR Privacy Compliance (Under 13 Safe)
+              <ShieldCheck size={16} /> Follows COPPA & GDPR Privacy Rules (Under 13 Safe)
             </div>
             <p className="text-xs text-slate-300 leading-relaxed font-medium">
               Child privacy and safety are built into every layer. Students under 13 log in securely with visual avatars and simple PIN codes without providing email addresses, phone numbers, or personal identifying data.
@@ -128,7 +128,7 @@ export default function AboutSection() {
             <p className="text-xs text-amber-800 font-medium">Students earn match coins through accuracy streaks and level completion to customize rocker avatars with stage jackets, neon hairstyles, and football boots.</p>
           </div>
           <div className="px-4 py-2 bg-amber-400 text-slate-950 font-black text-xs rounded-xl shadow-sm shrink-0">
-            100% Free Virtual Economy
+            Completely Free Virtual Economy
           </div>
         </div>
       </div>

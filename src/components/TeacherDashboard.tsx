@@ -1645,7 +1645,7 @@ export default function TeacherDashboard({
                 </div>
 
                 <div className="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-300 text-[11px] leading-relaxed">
-                  🛡️ <strong>Zero-Plaintext Policy:</strong> In compliance with COPPA/FERPA student privacy standards, past passwords cannot be viewed. Generating a new temporary PIN will immediately invalidate any previous credential.
+                  🛡️ <strong>Zero-Plaintext Policy:</strong> Following COPPA and FERPA student privacy rules, past passwords cannot be viewed. Generating a new temporary PIN will immediately invalidate any previous credential.
                 </div>
 
                 <div className="space-y-1.5">

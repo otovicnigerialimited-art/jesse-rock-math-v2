@@ -196,7 +196,7 @@ export default function App() {
           group: 'progress',
           key: 'praiseAndRewards',
           title: '🏆 Achievement Unlocked!',
-          body: 'You earned a new badge for mastering long division with 100% accuracy!'
+          body: 'You earned a new badge for mastering long division with flawless accuracy!'
         },
         {
           group: 'discovery',
@@ -1577,7 +1577,7 @@ export default function App() {
              activeTab === 'home' ? 'Play Jesse Math FC, a zero-lag free multiplayer math game for kids. Interactive classroom application featuring mental math calculation speed drills.' :
              activeTab === 'pitch' ? 'Compete in real-time math speed drills. Our multiplayer pitch helps students master calculations instantly.' :
              activeTab === 'sats' ? 'Practice for UK KS2 SATs with our free online exam simulator. Includes arithmetic and reasoning papers.' :
-             'Explore Jesse Math FC, a COPPA-compliant educational platform for primary school math.'
+             'Explore Jesse Math FC, an educational platform for primary school math following COPPA rules.'
           } />
           <link rel="canonical" href={`https://jesse-math-rockstar-app.vercel.app/${activeTab === 'home' ? '' : activeTab}`} />
         </Helmet>

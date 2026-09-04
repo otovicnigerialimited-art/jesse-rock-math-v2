@@ -345,7 +345,7 @@ export default function ReviewStatsSection() {
             Based on <span className="text-amber-300 font-bold">600 Verified Submissions</span>
           </p>
           <div className="mt-4 pt-4 border-t border-slate-800 w-full flex items-center justify-center gap-2 text-[11px] text-emerald-400 font-bold">
-            <CheckCircle2 size={14} /> 100% Human-Written Reviews
+            <CheckCircle2 size={14} /> Verified Human-Written Reviews
           </div>
         </div>
 
