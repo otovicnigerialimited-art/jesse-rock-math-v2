@@ -54,6 +54,9 @@ export interface Teacher {
   phone_number?: string;
   workspace_domain?: string;
   google_uid?: string;
+  class_code?: string;
+  class_code_upper?: string;
+  class_name?: string;
   last_login?: number;
   created_at?: number;
 }
@@ -75,6 +78,7 @@ export interface SchoolStudent {
   username: string;
   teacher_id: string; // maps to registered teacher
   school_math_progress: MathProgressData;
+  class_code?: string;
   credentialsResetAt?: number;
   firstLoginRequired?: boolean;
 
@@ -135,6 +139,128 @@ export function generateClassCode(): string {
   return code;
 }
 
+// Find Teacher by Class Code (Flexible & Case-Insensitive)
+export async function findTeacherByClassCode(codeEntered: string): Promise<{ teacherId: string; className: string; teacherName: string; classCode: string } | null> {
+  const cleanCode = codeEntered.trim().toUpperCase().replace(/\s/g, '');
+  if (!cleanCode) return null;
+
+  try {
+    const teachersCol = collection(db, 'teachers');
+    let q = query(teachersCol, where('class_code', '==', cleanCode));
+    let snap = await getDocs(q);
+
+    if (snap.empty) {
+      q = query(teachersCol, where('class_code_upper', '==', cleanCode));
+      snap = await getDocs(q);
+    }
+
+    if (!snap.empty) {
+      const tDoc = snap.docs[0];
+      const tData = tDoc.data();
+      return {
+        teacherId: tDoc.id,
+        className: tData.class_name || `${tData.teacher_name || 'Teacher'}'s Class`,
+        teacherName: tData.teacher_name || 'Teacher',
+        classCode: cleanCode
+      };
+    }
+
+    // Try classes collection
+    const classesCol = collection(db, 'classes');
+    const cq = query(classesCol, where('code', '==', cleanCode));
+    const csnap = await getDocs(cq);
+    if (!csnap.empty) {
+      const cdoc = csnap.docs[0].data();
+      return {
+        teacherId: cdoc.teacher_id,
+        className: cdoc.class_name || 'Classroom',
+        teacherName: cdoc.teacher_name || 'Teacher',
+        classCode: cleanCode
+      };
+    }
+
+    // Case-insensitive sweep across teachers
+    const allTeachersSnap = await getDocs(teachersCol);
+    for (const tDoc of allTeachersSnap.docs) {
+      const tData = tDoc.data();
+      if (tData.class_code && tData.class_code.toUpperCase().replace(/\s/g, '') === cleanCode) {
+        return {
+          teacherId: tDoc.id,
+          className: tData.class_name || `${tData.teacher_name || 'Teacher'}'s Class`,
+          teacherName: tData.teacher_name || 'Teacher',
+          classCode: cleanCode
+        };
+      }
+    }
+
+    // Demo code fallback
+    if (cleanCode === 'DEMO' || cleanCode === 'JESSE' || cleanCode === 'MATH') {
+      return {
+        teacherId: 'teacher_jesse_default',
+        className: "Jesse's Live Math Pitch",
+        teacherName: "Jesse Striker",
+        classCode: cleanCode
+      };
+    }
+  } catch (err) {
+    console.warn("Error finding teacher by class code:", err);
+  }
+
+  return null;
+}
+
+// Student Self-Registration with Class Code
+export async function registerStudentWithClassCode(
+  realFirstName: string,
+  usernameEntered: string,
+  passwordEntered: string,
+  classCodeEntered: string
+): Promise<{ success: boolean; error?: string; studentObj?: SchoolStudent; classInfo?: any }> {
+  const teacherInfo = await findTeacherByClassCode(classCodeEntered);
+  if (!teacherInfo) {
+    return { 
+      success: false, 
+      error: `Class Code "${classCodeEntered.trim().toUpperCase()}" was not found. Please double check with your teacher!` 
+    };
+  }
+
+  const res = await addStudentToTeacher(
+    realFirstName,
+    usernameEntered,
+    passwordEntered,
+    teacherInfo.teacherId
+  );
+
+  if (!res.success || !res.studentId) {
+    return { success: false, error: res.error || "Failed to register student profile." };
+  }
+
+  const studentObj: SchoolStudent = {
+    id: res.studentId,
+    real_first_name: realFirstName.trim(),
+    username: usernameEntered.trim(),
+    teacher_id: teacherInfo.teacherId,
+    school_math_progress: {
+      highScore: 0,
+      xp: 100,
+      coins: 100,
+      solved: 0,
+      correctAnswers: 0,
+      currentLevel: 1,
+      streak: 0
+    },
+    coins: 100,
+    xp: 100,
+    badges: ["School Striker"]
+  };
+
+  return {
+    success: true,
+    studentObj,
+    classInfo: teacherInfo
+  };
+}
+
 // Authenticate Teacher
 export async function authenticateSchoolTeacher(
   emailEntered: string,
@@ -171,9 +297,27 @@ export async function authenticateSchoolTeacher(
   const data = teacherDoc.data();
   // Check password if present or allow verified teacher login
   if (!data.password || data.password === cleanPass || cleanPass.length >= 4) {
+    let activeCode = data.class_code;
+    if (!activeCode) {
+      activeCode = generateClassCode();
+      try {
+        await updateDoc(teacherDoc.ref, {
+          class_code: activeCode,
+          class_code_upper: activeCode.toUpperCase(),
+          class_name: data.class_name || `${data.teacher_name || 'Teacher'}'s Classroom`
+        });
+      } catch (err) {}
+    }
+
     return {
       success: true,
-      userObj: { id: teacherDoc.id, ...data } as Teacher
+      userObj: { 
+        id: teacherDoc.id, 
+        teacher_name: data.teacher_name || 'Teacher',
+        email: data.email || cleanEmail,
+        ...data, 
+        class_code: activeCode 
+      } as Teacher
     };
   }
 
@@ -206,11 +350,17 @@ export async function registerTeacher(
     console.warn("Firebase Auth registration note:", authErr?.message);
   }
 
+  const generatedCode = generateClassCode();
+  const className = `${cleanName}'s Classroom`;
+
   // Insert teacher doc
   const docRef = await addDoc(collection(db, 'teachers'), {
     teacher_name: cleanName,
     email: cleanEmail,
     password: cleanPass,
+    class_code: generatedCode,
+    class_code_upper: generatedCode.toUpperCase(),
+    class_name: className,
     created_at: Date.now()
   });
 
@@ -224,6 +374,8 @@ export async function registerTeacher(
       username: cleanEmail,
       displayName: cleanName,
       email: cleanEmail,
+      class_code: generatedCode,
+      class_name: className,
       highScore: 0,
       xp: 500,
       coins: 500,
@@ -237,7 +389,13 @@ export async function registerTeacher(
 
   return {
     success: true,
-    userObj: { id: docRef.id, teacher_name: cleanName, email: cleanEmail }
+    userObj: { 
+      id: docRef.id, 
+      teacher_name: cleanName, 
+      email: cleanEmail, 
+      class_code: generatedCode, 
+      class_name: className 
+    }
   };
 }
 
@@ -671,8 +829,15 @@ export async function loginTeacherWithGoogle(options?: {
   if (!snap.empty) {
     const docSnap = snap.docs[0];
     teacherId = docSnap.id;
-    await updateDoc(docSnap.ref, { id: teacherId, ...updateData });
     const existingData = docSnap.data();
+    let activeClassCode = existingData.class_code;
+    if (!activeClassCode) {
+      activeClassCode = generateClassCode();
+      (updateData as any).class_code = activeClassCode;
+      (updateData as any).class_code_upper = activeClassCode.toUpperCase();
+      (updateData as any).class_name = existingData.class_name || `${teacherName}'s Classroom`;
+    }
+    await updateDoc(docSnap.ref, { id: teacherId, ...updateData });
 
     // Also ensure users profile exists in Firestore
     try {
@@ -685,6 +850,8 @@ export async function loginTeacherWithGoogle(options?: {
         email: email,
         workspace_domain: emailDomain,
         photo_url: photoUrl,
+        class_code: activeClassCode,
+        class_name: existingData.class_name || `${teacherName}'s Classroom`,
         highScore: 0,
         xp: 500,
         coins: 500,
@@ -702,14 +869,21 @@ export async function loginTeacherWithGoogle(options?: {
         id: teacherId, 
         teacher_name: teacherName, 
         email, 
-        photo_url: photoUrl,
+        photo_url: photoUrl, 
         ...existingData,
+        class_code: activeClassCode,
         workspace_domain: emailDomain
       } as Teacher
     };
   } else {
+    const generatedCode = generateClassCode();
+    const className = `${teacherName}'s Classroom`;
+
     const docRef = await addDoc(collection(db, 'teachers'), {
       ...updateData,
+      class_code: generatedCode,
+      class_code_upper: generatedCode.toUpperCase(),
+      class_name: className,
       created_at: Date.now()
     });
     teacherId = docRef.id;
@@ -726,6 +900,8 @@ export async function loginTeacherWithGoogle(options?: {
         email: email,
         workspace_domain: emailDomain,
         photo_url: photoUrl,
+        class_code: generatedCode,
+        class_name: className,
         highScore: 0,
         xp: 500,
         coins: 500,
@@ -745,6 +921,8 @@ export async function loginTeacherWithGoogle(options?: {
         teacher_name: teacherName, 
         email, 
         photo_url: photoUrl,
+        class_code: generatedCode,
+        class_name: className,
         workspace_domain: emailDomain
       }
     };

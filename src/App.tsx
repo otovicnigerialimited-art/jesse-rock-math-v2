@@ -401,7 +401,7 @@ export default function App() {
         className,
         realName,
         userId,
-        classCode: role === 'class_student' ? classCode : undefined
+        classCode: (role === 'class_student' || role === 'teacher' || role === 'student') ? classCode : undefined
       });
 
       if (role === 'student' && userId) {

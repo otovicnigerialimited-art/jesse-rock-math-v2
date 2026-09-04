@@ -41,7 +41,9 @@ import {
   Smartphone,
   Users,
   KeyRound,
-  Send
+  Send,
+  School,
+  QrCode
 } from 'lucide-react';
 import { db } from '../lib/firebase';
 import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, onSnapshot, deleteDoc } from 'firebase/firestore';
@@ -49,7 +51,10 @@ import {
   authenticateSchoolStudent,
   authenticateSchoolTeacher,
   registerTeacher,
-  loginTeacherWithGoogle
+  loginTeacherWithGoogle,
+  findTeacherByClassCode,
+  registerStudentWithClassCode,
+  SchoolStudent
 } from '../lib/schoolDb';
 import {
   initPhoneRecaptcha,
@@ -87,8 +92,8 @@ const COUNTRY_CODES = [
 ];
 
 export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) {
-  // Tabs: 'individual' for Striker/Student Login, 'teacher' for Teacher Login, 'parent' for Secret Parent Portal, 'developer' for Developer Login
-  const [loginTab, setLoginTab] = useState<'individual' | 'teacher' | 'parent' | 'developer'>('individual');
+  // Tabs: 'classroom' for Class Room Portal, 'individual' for Solo Striker, 'teacher' for Teacher Login, 'parent' for Secret Parent Portal, 'developer' for Developer Login
+  const [loginTab, setLoginTab] = useState<'classroom' | 'individual' | 'teacher' | 'parent' | 'developer'>('classroom');
   const [showLanding, setShowLanding] = useState(true);
   
   const backgroundEmojis = React.useMemo(() => {
@@ -103,14 +108,24 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     }));
   }, []);
 
-  // Individual login sub-mode: 'striker', 'student', or 'class_code'
-  const [individualSubMode, setIndividualSubMode] = useState<'striker' | 'student' | 'class_code'>('striker');
+  // Classroom sub-mode: 'join_code' (Join with room code), 'student_login' (Sign in with passkey), 'student_signup' (Self register student)
+  const [classroomSubMode, setClassroomSubMode] = useState<'join_code' | 'student_login' | 'student_signup'>('join_code');
+
+  // Individual login sub-mode
+  const [individualSubMode, setIndividualSubMode] = useState<'striker' | 'guest'>('striker');
 
   // Class Login States
   const [classCodeInput, setClassCodeInput] = useState('');
   const [classStudentName, setClassStudentName] = useState('');
   const [classSessionStatus, setClassSessionStatus] = useState<'idle' | 'active' | 'removed'>('idle');
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+
+  // Student Self-Registration with Class Code States
+  const [studentSignupRealName, setStudentSignupRealName] = useState('');
+  const [studentSignupUsername, setStudentSignupUsername] = useState('');
+  const [studentSignupPassword, setStudentSignupPassword] = useState('');
+  const [studentSignupClassCode, setStudentSignupClassCode] = useState('');
+  const [showStudentSignupPassword, setShowStudentSignupPassword] = useState(false);
 
   // Check for persistent Class Session on mount
   useEffect(() => {
@@ -172,6 +187,7 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     setError(null);
   };
 
+  // 1. Quick Class Join with Code Handler (Auto-resolves teacher and creates active session)
   const handleClassLoginSubmit = async (e: React.FormEvent) => {
     try {
       if (typeof window !== "undefined" && (window as any).grecaptcha) {
@@ -185,19 +201,19 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     setError(null);
     setSuccess(null);
 
-    const cleanName = classStudentName.trim().replace(/\s/g, '');
+    const cleanName = classStudentName.trim();
     const cleanCode = classCodeInput.trim().toUpperCase().replace(/\s/g, '');
 
     if (!cleanName) {
-      setError("Please choose a cool name to enter the classroom!");
+      setError("Please choose a student name / handle to enter the classroom!");
       return;
     }
     if (cleanName.length < 2) {
       setError("Your name must be at least 2 characters long.");
       return;
     }
-    if (!/^[a-zA-Z0-9_]+$/.test(cleanName)) {
-      setError("Name can only contain letters, numbers, and underscores.");
+    if (!isAppropriate(cleanName)) {
+      setError("Please choose an appropriate student name.");
       return;
     }
 
@@ -209,51 +225,53 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
     setLoading(true);
 
     try {
-      const teachersCol = collection(db, 'teachers');
-      const q = query(teachersCol, where('class_code', '==', cleanCode));
-      const snap = await getDocs(q);
-
-      if (snap.empty) {
-        setError(`Class Code "${cleanCode}" was not found! Please make sure you have the correct code from your teacher.`);
+      const teacherInfo = await findTeacherByClassCode(cleanCode);
+      if (!teacherInfo) {
+        setError(`Class Code "${cleanCode}" was not found! Please check with your teacher for the correct room code.`);
         setLoading(false);
         return;
       }
 
-      const teacherDoc = snap.docs[0];
-      const teacherId = teacherDoc.id;
+      const { teacherId, className } = teacherInfo;
 
-      // Verify that the handle (username) was pre-registered/saved by this teacher
+      // Check if student exists in teacher's roster
       const schoolStudentsCol = collection(db, 'school_students');
       const studentQuery = query(schoolStudentsCol, where('teacher_id', '==', teacherId));
       const studentSnap = await getDocs(studentQuery);
 
-      let foundStudentDoc = null;
-      studentSnap.forEach(doc => {
-        const data = doc.data();
+      let foundStudentDoc: any = null;
+      studentSnap.forEach(d => {
+        const data = d.data();
         if ((data.username_lower === cleanName.toLowerCase()) || 
-            (data.username && data.username.toLowerCase() === cleanName.toLowerCase())) {
-          foundStudentDoc = doc;
+            (data.username && data.username.toLowerCase() === cleanName.toLowerCase()) ||
+            (data.real_first_name && data.real_first_name.toLowerCase() === cleanName.toLowerCase())) {
+          foundStudentDoc = d;
         }
       });
 
-      if (!foundStudentDoc) {
-        setError(`Error: The handle "@${cleanName}" is not registered inside your teacher's student roster. Please ask your teacher to add you first!`);
-        setLoading(false);
-        return;
-      }
+      let studentUid = '';
+      let initialScore = 0;
+      let initialXP = 100;
+      let initialLevel = 1;
 
-      // Read registered progress from teacher's roster
-      const schoolStudentData = foundStudentDoc.data();
-      const studentProgress = schoolStudentData.school_math_progress || {};
-      const initialScore = studentProgress.highScore || 0;
-      const initialXP = studentProgress.xp || 100;
-      const initialLevel = studentProgress.currentLevel || 1;
+      if (foundStudentDoc) {
+        const schoolStudentData = foundStudentDoc.data();
+        studentUid = foundStudentDoc.id;
+        const studentProgress = schoolStudentData.school_math_progress || {};
+        initialScore = studentProgress.highScore || 0;
+        initialXP = studentProgress.xp || 100;
+        initialLevel = studentProgress.currentLevel || 1;
+      } else {
+        studentUid = `student_${cleanCode}_${Date.now().toString(36)}`;
+      }
 
       // Create a direct session
       const newDocRef = doc(collection(db, 'class_sessions'));
       const sessionId = newDocRef.id;
 
       await setDoc(newDocRef, {
+        id: sessionId,
+        student_id: studentUid,
         student_name: cleanName,
         class_code: cleanCode,
         teacher_id: teacherId,
@@ -265,22 +283,105 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
         level: initialLevel
       });
 
+      // Save class request for teacher live lobby sync
+      try {
+        await setDoc(doc(db, 'class_requests', studentUid), {
+          id: studentUid,
+          name: cleanName,
+          class_code: cleanCode,
+          teacher_id: teacherId,
+          score: initialScore,
+          xp: initialXP,
+          status: 'active',
+          updated_at: Date.now()
+        }, { merge: true });
+      } catch (reqErr) {}
+
       // Log in instantly!
       safeStorage.setItem('jesse_rock_role', 'class_student');
-      safeStorage.setItem('jesse_rock_user_id', sessionId);
+      safeStorage.setItem('jesse_rock_user_id', studentUid);
       safeStorage.setItem('jesse_rock_my_username', cleanName);
+      safeStorage.setItem('jesse_rock_real_name', cleanName);
       safeStorage.setItem('jesse_rock_class_code', cleanCode);
+      safeStorage.setItem('jesse_rock_school_id', teacherId);
+      safeStorage.setItem('jesse_rock_class_name', className);
       safeStorage.setItem('jesse_class_session_id', sessionId);
       safeStorage.setItem('jesse_class_request_name', cleanName);
       safeStorage.setItem('jesse_class_request_code', cleanCode);
 
-      setSuccess(`Authenticated! Welcome to ${teacherDoc.data().class_name || 'Classroom'}. Entering now...`);
+      setActiveSessionId(sessionId);
+      setClassSessionStatus('active');
+
+      setSuccess(`Authenticated! Welcome to ${className}. Entering pitch now...`);
       setTimeout(() => {
-        onAuthSuccess(cleanName, sessionId);
+        onAuthSuccess(cleanName, studentUid);
       }, 400);
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Failed to enter classroom.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 2. Student Self-Registration Handler with Class Code
+  const handleStudentSignupSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+
+    const cleanRealName = studentSignupRealName.trim();
+    const cleanUser = studentSignupUsername.trim();
+    const cleanPass = studentSignupPassword.trim();
+    const cleanCode = studentSignupClassCode.trim().toUpperCase().replace(/\s/g, '');
+
+    if (!cleanRealName || cleanRealName.length < 2) {
+      setError("Please enter your real first name (minimum 2 characters).");
+      return;
+    }
+    if (!cleanUser || cleanUser.length < 3) {
+      setError("Please choose a student username (minimum 3 characters).");
+      return;
+    }
+    if (!cleanPass || cleanPass.length < 3) {
+      setError("Please choose a secret student PIN / passkey (minimum 3 digits/characters).");
+      return;
+    }
+    if (!cleanCode) {
+      setError("Please enter your teacher's Class Code.");
+      return;
+    }
+    if (!isAppropriate(cleanRealName) || !isAppropriate(cleanUser)) {
+      setError("Please use appropriate language for your student profile.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await registerStudentWithClassCode(cleanRealName, cleanUser, cleanPass, cleanCode);
+      if (!res.success || !res.studentObj) {
+        setError(res.error || "Could not register student account with this class code.");
+        setLoading(false);
+        return;
+      }
+
+      const student = res.studentObj;
+      safeStorage.setItem('jesse_rock_role', 'student');
+      safeStorage.setItem('jesse_rock_user_id', student.id);
+      safeStorage.setItem('jesse_rock_my_username', student.username);
+      safeStorage.setItem('jesse_rock_real_name', student.real_first_name || cleanRealName);
+      safeStorage.setItem('jesse_rock_class_code', cleanCode);
+      safeStorage.setItem('jesse_rock_device_id', student.id);
+      if (student.teacher_id) {
+        safeStorage.setItem('jesse_rock_school_id', student.teacher_id);
+      }
+
+      setSuccess(`Student account created! Welcome to ${res.classInfo?.className || 'Classroom'}, ${cleanRealName}!`);
+      setTimeout(() => {
+        onAuthSuccess(student.username, student.id);
+      }, 400);
+    } catch (err: any) {
+      setError(err.message || "Failed to register student account.");
     } finally {
       setLoading(false);
     }
@@ -790,6 +891,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       safeStorage.setItem('jesse_rock_my_username', freshStudent.username);
       safeStorage.setItem('jesse_rock_real_name', freshStudent.real_first_name);
       safeStorage.setItem('jesse_rock_teacher_id', freshStudent.teacher_id);
+      if (freshStudent.class_code) {
+        safeStorage.setItem('jesse_rock_class_code', freshStudent.class_code);
+      }
 
       setSuccess(`Verified Striker Student @${freshStudent.username}! Preparing your instruments...`);
       setTimeout(() => {
@@ -843,6 +947,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       safeStorage.setItem('jesse_rock_user_id', authenticatedTeacher.id);
       safeStorage.setItem('jesse_rock_my_username', authenticatedTeacher.email);
       safeStorage.setItem('jesse_rock_real_name', authenticatedTeacher.teacher_name);
+      if (authenticatedTeacher.class_code) {
+        safeStorage.setItem('jesse_rock_class_code', authenticatedTeacher.class_code);
+      }
 
       setSuccess(`Welcome back, Teacher ${authenticatedTeacher.teacher_name}! Synchronising...`);
       setTimeout(() => {
@@ -888,6 +995,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       safeStorage.setItem('jesse_rock_user_id', teacher.id);
       safeStorage.setItem('jesse_rock_my_username', teacher.email);
       safeStorage.setItem('jesse_rock_real_name', teacher.teacher_name);
+      if (teacher.class_code) {
+        safeStorage.setItem('jesse_rock_class_code', teacher.class_code);
+      }
 
       const domainDisplay = teacher.workspace_domain || (teacher.email.includes('@') ? teacher.email.split('@')[1] : 'workspace');
       setSuccess(`Welcome back, Educator ${teacher.teacher_name}! Verified Workspace Domain: @${domainDisplay}`);
@@ -952,6 +1062,9 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
       safeStorage.setItem('jesse_rock_my_username', freshlyTeacher.email);
       safeStorage.setItem('jesse_rock_real_name', freshlyTeacher.teacher_name);
       safeStorage.setItem('jesse_rock_device_id', freshlyTeacher.id);
+      if (freshlyTeacher.class_code) {
+        safeStorage.setItem('jesse_rock_class_code', freshlyTeacher.class_code);
+      }
 
       setSuccess(`Teacher Workspace Registered Successfully! Launching Class ${freshlyTeacher.teacher_name}...`);
       setTimeout(() => {
@@ -1788,45 +1901,58 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             </div>
           </div>
 
-          {/* 3-Way / 4-Way Portal Selector: Striker, Teacher, Parent Secret Portal */}
-          <div className="flex bg-slate-100/80 p-1 rounded-2xl border border-slate-200 gap-1 shadow-inner">
+          {/* 4-Way Portal Selector: Classroom, Striker, Teacher, Parent */}
+          <div className="grid grid-cols-4 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200 gap-1 shadow-inner">
             <button
               type="button"
-              onClick={() => { setLoginTab('individual'); setError(null); setSuccess(null); }}
-              className={`flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
-                loginTab === 'individual'
-                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+              onClick={() => { setLoginTab('classroom'); setError(null); setSuccess(null); }}
+              className={`py-2 px-1 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+                loginTab === 'classroom'
+                  ? 'bg-white text-cyan-800 shadow-sm border border-slate-200 ring-2 ring-cyan-500/20'
                   : 'text-slate-500 hover:text-slate-700'
               }`}
             >
-              <User size={14} className={loginTab === 'individual' ? 'text-cyan-600' : ''} />
-              <span>Striker</span>
+              <School size={15} className={loginTab === 'classroom' ? 'text-cyan-600' : ''} />
+              <span className="truncate w-full text-center">Classroom</span>
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => { setLoginTab('individual'); setError(null); setSuccess(null); }}
+              className={`py-2 px-1 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+                loginTab === 'individual'
+                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200 ring-2 ring-cyan-500/20'
+                  : 'text-slate-500 hover:text-slate-700'
+              }`}
+            >
+              <User size={15} className={loginTab === 'individual' ? 'text-cyan-600' : ''} />
+              <span className="truncate w-full text-center">Striker</span>
             </button>
             
             <button
               type="button"
               onClick={() => { setLoginTab('teacher'); setError(null); setSuccess(null); }}
-              className={`flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
+              className={`py-2 px-1 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
                 loginTab === 'teacher'
-                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200'
+                  ? 'bg-white text-slate-900 shadow-sm border border-slate-200 ring-2 ring-cyan-500/20'
                   : 'text-slate-500 hover:text-slate-700'
               }`}
             >
-              <GraduationCap size={14} className={loginTab === 'teacher' ? 'text-cyan-600' : ''} />
-              <span>Teacher</span>
+              <GraduationCap size={15} className={loginTab === 'teacher' ? 'text-cyan-600' : ''} />
+              <span className="truncate w-full text-center">Teacher</span>
             </button>
 
             <button
               type="button"
               onClick={() => { setLoginTab('parent'); setError(null); setSuccess(null); }}
-              className={`flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1.5 ${
+              className={`py-2 px-1 text-[10px] font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
                 loginTab === 'parent'
-                  ? 'bg-white text-purple-900 shadow-sm border border-purple-200'
+                  ? 'bg-white text-purple-900 shadow-sm border border-purple-200 ring-2 ring-purple-500/20'
                   : 'text-slate-500 hover:text-purple-700'
               }`}
             >
-              <Users size={14} className={loginTab === 'parent' ? 'text-purple-600' : ''} />
-              <span>Parent Portal</span>
+              <Users size={15} className={loginTab === 'parent' ? 'text-purple-600' : ''} />
+              <span className="truncate w-full text-center">Parent</span>
             </button>
           </div>
 
@@ -1853,234 +1979,128 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
             </motion.div>
           )}
 
-          {/* Tab 1: Individual Home Login Form */}
-          {loginTab === 'individual' && (
+          {/* Tab: Classroom Portal (Join with Code, Sign In, or Self-Register) */}
+          {loginTab === 'classroom' && (
             <div className="space-y-4 text-left">
-              {/* Sub-tab toggle for Striker, Student, and Class Code inside Individual Login tab */}
-              <div className="flex bg-slate-50 p-1 rounded-xl border border-slate-200 text-[10px] font-bold uppercase tracking-widest mb-6 gap-1">
+              {/* Classroom Mode Sub-Tabs */}
+              <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 text-[10px] font-bold uppercase tracking-wider gap-1">
                 <button
                   type="button"
-                  onClick={() => { setIndividualSubMode('striker'); setError(null); }}
-                  className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'striker' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
+                  onClick={() => { setClassroomSubMode('join_code'); setError(null); setSuccess(null); }}
+                  className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                    classroomSubMode === 'join_code'
+                      ? 'bg-white text-cyan-800 shadow-sm border border-slate-200 font-black'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
-                  Indiv.
+                  <Zap size={11} className="text-cyan-600" />
+                  <span>Join Code</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setIndividualSubMode('student'); setError(null); }}
-                  className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'student' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
+                  onClick={() => { setClassroomSubMode('student_login'); setError(null); setSuccess(null); }}
+                  className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                    classroomSubMode === 'student_login'
+                      ? 'bg-white text-cyan-800 shadow-sm border border-slate-200 font-black'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
-                  Student
+                  <LogIn size={11} className="text-cyan-600" />
+                  <span>Sign In</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setIndividualSubMode('class_code'); setError(null); }}
-                  className={`flex-1 py-2 rounded-lg transition-all cursor-pointer text-center ${
-                    individualSubMode === 'class_code' ? 'bg-white text-slate-900 shadow-sm border border-slate-100' : 'text-slate-500 hover:text-slate-700'
+                  onClick={() => { setClassroomSubMode('student_signup'); setError(null); setSuccess(null); }}
+                  className={`flex-1 py-1.5 rounded-lg transition-all cursor-pointer text-center flex items-center justify-center gap-1 ${
+                    classroomSubMode === 'student_signup'
+                      ? 'bg-white text-cyan-800 shadow-sm border border-slate-200 font-black'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
-                  Class
+                  <UserPlus size={11} className="text-cyan-600" />
+                  <span>Register</span>
                 </button>
               </div>
 
-              {individualSubMode === 'striker' && (
-                /* Striker Form */
-                <form onSubmit={handleHomeLoginSubmit} className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
-                      Username
-                    </label>
-                    <div className="relative group">
-                      <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
-                      <input
-                        type="text"
-                        placeholder="MasterMind"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value.replace(/\s/g, ''))}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
-                        autoComplete="off"
-                        disabled={loading}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
-                      Secret PIN
-                    </label>
-                    <div className="relative group">
-                      <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="••••"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
-                        autoComplete="off"
-                        disabled={loading}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-                      >
-                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-cyan-600/20"
-                  >
-                    {loading ? "Initializing..." : "Authorize Entry"}
-                  </button>
-
-                  <p className="text-[10px] text-slate-400 text-center font-medium">
-                    ⚡ New player? Enter a unique username & PIN to instantly create your account!
-                  </p>
-                </form>
-              )}
-
-              {individualSubMode === 'student' && (
-                /* Student Form */
-                <form onSubmit={handleStudentLoginSubmit} className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
-                      Student ID
-                    </label>
-                    <div className="relative group">
-                      <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
-                      <input
-                        type="text"
-                        placeholder="mason_star"
-                        value={studentUsername}
-                        onChange={(e) => setStudentUsername(e.target.value.replace(/\s/g, ''))}
-                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
-                        autoComplete="off"
-                        disabled={loading}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
-                      Student Passkey
-                    </label>
-                    <div className="relative group">
-                      <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
-                      <input
-                        type={showStudentPassword ? "text" : "password"}
-                        placeholder="••••"
-                        value={studentPassword}
-                        onChange={(e) => setStudentPassword(e.target.value)}
-                        className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
-                        autoComplete="off"
-                        disabled={loading}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowStudentPassword(!showStudentPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-                      >
-                        {showStudentPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-emerald-600/20"
-                  >
-                    {loading ? "Authenticating..." : "Enter School Pitch"}
-                  </button>
-                </form>
-              )}
-
-              {individualSubMode === 'class_code' && (
-                /* Class Code Form */
-                <div className="space-y-4">
+              {/* Submode 1: Join with Code */}
+              {classroomSubMode === 'join_code' && (
+                <div>
                   {classSessionStatus === 'removed' ? (
-                    <div className="p-5 bg-rose-500/10 border border-rose-500/20 rounded-3xl text-center space-y-4">
-                      <div className="w-16 h-16 mx-auto flex items-center justify-center bg-rose-500/20 rounded-full border-rose-500/30 text-rose-500 text-3xl">
+                    <div className="p-5 bg-rose-50 border border-rose-200 rounded-2xl text-center space-y-3">
+                      <div className="w-12 h-12 mx-auto flex items-center justify-center bg-rose-100 rounded-full text-rose-600 text-2xl">
                         🚫
                       </div>
-                      
                       <div className="space-y-1">
-                        <h3 className="text-sm font-black uppercase text-rose-500">Session Terminated</h3>
-                        <p className="text-[11px] text-slate-600 leading-relaxed font-bold">
+                        <h3 className="text-xs font-black uppercase text-rose-700">Session Ended</h3>
+                        <p className="text-[11px] text-slate-600 font-medium">
                           You have been removed from this classroom session by the teacher.
                         </p>
                       </div>
-
                       <button
                         type="button"
                         onClick={handleLeaveClass}
-                        className="w-full py-2.5 bg-white hover:bg-slate-50 text-deep-navy border border-deep-navy border-4 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+                        className="w-full py-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 text-xs font-bold uppercase rounded-xl transition-all cursor-pointer"
                       >
-                        Back to Login
+                        Reset & Join Again
                       </button>
                     </div>
                   ) : (
-                    <form onSubmit={handleClassLoginSubmit} className="space-y-4">
-                      <div className="space-y-1.5 text-left">
-                        <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
-                          Classroom Handle
+                    <form onSubmit={handleClassLoginSubmit} className="space-y-3.5">
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                          Student Name / Handle
                         </label>
                         <div className="relative group">
-                          <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                          <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
                           <input
                             type="text"
-                            placeholder="e.g. MasonStriker"
+                            placeholder="e.g. Alex"
                             value={classStudentName}
                             onChange={(e) => setClassStudentName(e.target.value)}
-                            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
+                            className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-semibold"
                             autoComplete="off"
                             disabled={loading}
                           />
                         </div>
                       </div>
 
-                    <div className="space-y-1.5 text-left">
-                      <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
-                        Classroom Access Code
-                      </label>
-                      <div className="relative group">
-                        <div className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full overflow-hidden border border-slate-200">
-                          <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Logo" className="w-full h-full object-cover" />
-                        </div>
-                        <input
-                          type="text"
-                          placeholder="JESSE-123"
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                          Teacher's Class Code
+                        </label>
+                        <div className="relative group">
+                          <div className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full overflow-hidden border border-slate-200">
+                            <img src="https://media2.dev.to/dynamic/image/width=800%2Cheight=%2Cfit=scale-down%2Cgravity=auto%2Cformat=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fvk11iy6n5ppdp0j4nm46.png" alt="Logo" className="w-full h-full object-cover" />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="e.g. JESSE-123 or ABC789"
                             value={classCodeInput}
-                            onChange={(e) => setClassCodeInput(e.target.value)}
-                            className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-mono font-bold tracking-wider uppercase"
+                            onChange={(e) => setClassCodeInput(e.target.value.toUpperCase())}
+                            className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-mono font-bold tracking-wider uppercase"
                             autoComplete="off"
                             disabled={loading}
                           />
                         </div>
+                        <p className="text-[9px] text-slate-400 ml-1 font-medium">
+                          Ask your teacher for the Class Code displayed on their board.
+                        </p>
                       </div>
 
                       <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-cyan-600/20"
+                        className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold uppercase tracking-wider transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-md shadow-cyan-600/20"
                       >
                         {loading ? (
                           <>
-                            <RefreshCw size={14} className="animate-spin" />
-                            Verifying...
+                            <RefreshCw size={13} className="animate-spin" />
+                            <span>Verifying Code...</span>
                           </>
                         ) : (
                           <>
-                            <LogIn size={14} />
-                            Enter Classroom
+                            <LogIn size={13} />
+                            <span>Enter Classroom</span>
                           </>
                         )}
                       </button>
@@ -2088,6 +2108,267 @@ export default function AuthGate({ onAuthSuccess, onGuestPlay }: AuthGateProps) 
                   )}
                 </div>
               )}
+
+              {/* Submode 2: Student Account Sign In */}
+              {classroomSubMode === 'student_login' && (
+                <form onSubmit={handleStudentLoginSubmit} className="space-y-3.5">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                      Student Username
+                    </label>
+                    <div className="relative group">
+                      <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="e.g. alex_math"
+                        value={studentUsername}
+                        onChange={(e) => setStudentUsername(e.target.value.replace(/\s/g, ''))}
+                        className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-semibold"
+                        autoComplete="off"
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                      Student Passkey / PIN
+                    </label>
+                    <div className="relative group">
+                      <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                      <input
+                        type={showStudentPassword ? "text" : "password"}
+                        placeholder="••••"
+                        value={studentPassword}
+                        onChange={(e) => setStudentPassword(e.target.value)}
+                        className="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-semibold"
+                        autoComplete="off"
+                        disabled={loading}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowStudentPassword(!showStudentPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                      >
+                        {showStudentPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold uppercase tracking-wider transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-md shadow-emerald-600/20"
+                  >
+                    {loading ? (
+                      <>
+                        <RefreshCw size={13} className="animate-spin" />
+                        <span>Verifying...</span>
+                      </>
+                    ) : (
+                      <>
+                        <LogIn size={13} />
+                        <span>Sign In to Classroom</span>
+                      </>
+                    )}
+                  </button>
+
+                  <div className="text-center pt-1">
+                    <button
+                      type="button"
+                      onClick={() => { setClassroomSubMode('student_signup'); setError(null); }}
+                      className="text-[10px] text-cyan-600 hover:text-cyan-700 font-bold uppercase tracking-wider cursor-pointer"
+                    >
+                      Need to register? Sign up here
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Submode 3: Student Self-Registration */}
+              {classroomSubMode === 'student_signup' && (
+                <form onSubmit={handleStudentSignupSubmit} className="space-y-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                      Real First Name
+                    </label>
+                    <div className="relative group">
+                      <Contact size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="e.g. Alex"
+                        value={studentSignupRealName}
+                        onChange={(e) => setStudentSignupRealName(e.target.value)}
+                        className="w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-semibold"
+                        autoComplete="off"
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                      Create Username
+                    </label>
+                    <div className="relative group">
+                      <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="e.g. alex_math10"
+                        value={studentSignupUsername}
+                        onChange={(e) => setStudentSignupUsername(e.target.value.replace(/\s/g, ''))}
+                        className="w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-semibold"
+                        autoComplete="off"
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                      Create Secret PIN / Passkey
+                    </label>
+                    <div className="relative group">
+                      <Lock size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                      <input
+                        type={showStudentSignupPassword ? "text" : "password"}
+                        placeholder="e.g. 1234"
+                        value={studentSignupPassword}
+                        onChange={(e) => setStudentSignupPassword(e.target.value)}
+                        className="w-full pl-10 pr-9 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-semibold"
+                        autoComplete="off"
+                        disabled={loading}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowStudentSignupPassword(!showStudentSignupPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                      >
+                        {showStudentSignupPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold uppercase text-slate-500 tracking-wider block ml-1">
+                      Teacher's Class Code
+                    </label>
+                    <div className="relative group">
+                      <School size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                      <input
+                        type="text"
+                        placeholder="e.g. JESSE-123"
+                        value={studentSignupClassCode}
+                        onChange={(e) => setStudentSignupClassCode(e.target.value.toUpperCase())}
+                        className="w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-xs outline-none focus:bg-white focus:border-cyan-600 focus:ring-2 focus:ring-cyan-50 transition-all font-mono font-bold uppercase tracking-wider"
+                        autoComplete="off"
+                        disabled={loading}
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold uppercase tracking-wider transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-md shadow-cyan-600/20"
+                  >
+                    {loading ? (
+                      <>
+                        <RefreshCw size={13} className="animate-spin" />
+                        <span>Registering...</span>
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus size={13} />
+                        <span>Create Account & Join</span>
+                      </>
+                    )}
+                  </button>
+
+                  <div className="text-center pt-1">
+                    <button
+                      type="button"
+                      onClick={() => { setClassroomSubMode('student_login'); setError(null); }}
+                      className="text-[10px] text-slate-500 hover:text-slate-700 font-bold uppercase tracking-wider cursor-pointer"
+                    >
+                      Already have an account? Sign in
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
+          {/* Tab 2: Solo Striker Login / Instant Registration */}
+          {loginTab === 'individual' && (
+            <div className="space-y-4 text-left">
+              <form onSubmit={handleHomeLoginSubmit} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                    Username
+                  </label>
+                  <div className="relative group">
+                    <User size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                    <input
+                      type="text"
+                      placeholder="MasterMind"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value.replace(/\s/g, ''))}
+                      className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
+                      autoComplete="off"
+                      disabled={loading}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase text-slate-500 tracking-widest block font-sans ml-1">
+                    Secret PIN
+                  </label>
+                  <div className="relative group">
+                    <Lock size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-cyan-600 transition-colors" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm outline-none focus:bg-white focus:border-cyan-600 focus:ring-4 focus:ring-cyan-50 transition-all font-semibold"
+                      autoComplete="off"
+                      disabled={loading}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold uppercase tracking-widest transition-all duration-200 rounded-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 shadow-lg shadow-cyan-600/20"
+                >
+                  {loading ? "Initializing..." : "Authorize Entry"}
+                </button>
+
+                {onGuestPlay && (
+                  <button
+                    type="button"
+                    onClick={onGuestPlay}
+                    disabled={loading}
+                    className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer"
+                  >
+                    ⚽ Play as Guest (No Login)
+                  </button>
+                )}
+
+                <p className="text-[10px] text-slate-400 text-center font-medium">
+                  ⚡ New player? Enter a unique username & PIN to instantly create your account!
+                </p>
+              </form>
             </div>
           )}
 
