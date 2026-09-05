@@ -136,10 +136,11 @@ const LESSONS: Lesson[] = [
 
 interface LearningHubProps {
   onStartLesson: (lesson: Lesson) => void;
+  onStartAdaptiveQuiz?: (lesson?: Lesson) => void;
   stats?: any;
 }
 
-export default function LearningHub({ onStartLesson, stats }: LearningHubProps) {
+export default function LearningHub({ onStartLesson, onStartAdaptiveQuiz, stats }: LearningHubProps) {
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [infoTab, setInfoTab] = useState<'concept' | 'realworld' | 'mistakes'>('concept');
 
@@ -768,12 +769,22 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
               </p>
             </div>
             
-            <button 
-              onClick={() => onStartLesson(selectedLesson)}
-              className="px-6 py-3.5 bg-brand-secondary hover:bg-brand-secondary/90 text-deep-navy font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-brand-secondary/20 transition-all hover:scale-[1.03] shrink-0"
-            >
-              <Play size={14} fill="currentColor" /> Start Quiz Battle
-            </button>
+            <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+              {onStartAdaptiveQuiz && (
+                <button 
+                  onClick={() => onStartAdaptiveQuiz(selectedLesson)}
+                  className="px-5 py-3.5 bg-sunny-yellow hover:bg-sunny-yellow/90 text-deep-navy font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer border-2 border-deep-navy shadow-md transition-all hover:scale-[1.02]"
+                >
+                  <Sparkles size={14} className="text-brand-secondary" /> Adaptive Drill 💡
+                </button>
+              )}
+              <button 
+                onClick={() => onStartLesson(selectedLesson)}
+                className="px-6 py-3.5 bg-brand-secondary hover:bg-brand-secondary/90 text-deep-navy font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-brand-secondary/20 transition-all hover:scale-[1.03]"
+              >
+                <Play size={14} fill="currentColor" /> Start Quiz Battle
+              </button>
+            </div>
           </div>
 
           {/* Interactive Learning Playground */}
@@ -1223,14 +1234,48 @@ export default function LearningHub({ onStartLesson, stats }: LearningHubProps) 
       ) : (
         /* Lesson Directory view */
         <div className="space-y-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h2 className="text-3xl font-display font-black text-deep-navy">Genius Hub 🎓</h2>
               <p className="text-deep-navy text-sm">Master brand new math logic with zero stress!</p>
             </div>
-            <div className="p-3 bg-brand-secondary/20 rounded-2xl">
-              <BookOpen className="text-brand-secondary" />
+            {onStartAdaptiveQuiz && (
+              <button
+                onClick={() => onStartAdaptiveQuiz()}
+                className="px-5 py-3 bg-gradient-to-r from-amber-400 to-brand-secondary hover:from-amber-500 hover:to-brand-secondary text-deep-navy font-black text-xs uppercase tracking-wider rounded-2xl border-2 border-deep-navy shadow-[0_4px_12px_rgba(255,140,0,0.2)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+              >
+                <Sparkles size={16} className="text-deep-navy animate-spin-slow" />
+                <span>⚡ Start Adaptive Quiz</span>
+              </button>
+            )}
+          </div>
+
+          {/* Adaptive Progress Highlight Banner */}
+          <div className="p-5 bg-gradient-to-r from-sunny-yellow/30 via-brand-secondary/15 to-sunny-yellow/20 border-4 border-deep-navy rounded-3xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-secondary text-deep-navy border border-deep-navy">
+                  Adaptive AI Math Engine
+                </span>
+                <span className="text-xs font-bold text-slate-600">
+                  {stats?.completedLessons?.length || 0} / {LESSONS.length} Topics Mastered
+                </span>
+              </div>
+              <h3 className="text-base font-black text-deep-navy">
+                Questions That Automatically Calibrate to Your Skill Level
+              </h3>
+              <p className="text-xs text-slate-700 max-w-xl leading-relaxed">
+                Problems are dynamically generated based on your progress in this Learning Hub. Answer correctly to increase difficulty; get step-by-step hints and gentler warmups if you get stuck!
+              </p>
             </div>
+            {onStartAdaptiveQuiz && (
+              <button
+                onClick={() => onStartAdaptiveQuiz()}
+                className="w-full md:w-auto px-6 py-3.5 bg-brand-secondary hover:bg-brand-secondary/90 text-deep-navy font-black text-xs uppercase tracking-widest rounded-2xl border-2 border-deep-navy shadow-md transition-all hover:scale-[1.02] cursor-pointer shrink-0 flex items-center justify-center gap-2"
+              >
+                <Play size={14} fill="currentColor" /> Play Adaptive Drill
+              </button>
+            )}
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

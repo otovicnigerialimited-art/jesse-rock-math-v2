@@ -40,7 +40,8 @@ import {
   GraduationCap,
   Brain,
   Bell,
-  BarChart3
+  BarChart3,
+  Sparkles
 } from 'lucide-react';
 import { UserStats, Difficulty, Lesson } from './types';
 import { ExtendedUserStats } from './types/extendedTypes';
@@ -67,7 +68,9 @@ const CreatorPanel = React.lazy(() => import('./components/CreatorPanel'));
 const Dashboard = React.lazy(() => import('./components/Dashboard'));
 const Leaderboard = React.lazy(() => import('./components/Leaderboard'));
 const Quiz = React.lazy(() => import('./components/Quiz'));
+const AdaptiveQuiz = React.lazy(() => import('./components/AdaptiveQuiz'));
 const LearningHub = React.lazy(() => import('./components/LearningHub'));
+import { LESSONS } from './data/lessons';
 const BadgesSection = React.lazy(() => import('./components/BadgesSection'));
 const ClubShop = React.lazy(() => import('./components/ClubShop'));
 const FunArcade = React.lazy(() => import('./components/FunArcade'));
@@ -105,7 +108,7 @@ export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const pathName = location.pathname.substring(1) || 'home';
-  const validTabs = ['home', 'homework', 'dashboard', 'leaderboard', 'hub', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'pitch', 'sats', 'spaced_practice', 'survey', 'school'];
+  const validTabs = ['home', 'homework', 'dashboard', 'leaderboard', 'hub', 'adaptive_quiz', 'quiz', 'badges', 'rules', 'terms', 'seo', 'developer', 'learn', 'shop', 'creator', 'arcade', 'pitch', 'sats', 'spaced_practice', 'survey', 'school'];
   const activeTab = validTabs.includes(pathName) ? pathName : 'home';
   const setActiveTab = (tab: any) => {
     navigate(tab === 'home' ? '/' : `/${tab}`);
@@ -315,7 +318,7 @@ export default function App() {
   });
 
   const [userDeviceId, setUserDeviceId] = useState<string | null>(null);
-  const [practiceLesson, setPracticeLesson] = useState<Lesson | null>(null);
+  const [practiceLesson, setPracticeLesson] = useState<any>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>((window as any).deferredPrompt || null);
   const [showInstallGuide, setShowInstallGuide] = useState(false);
 
@@ -1325,6 +1328,7 @@ export default function App() {
         { id: 'homework', label: '📚 Homework & Tasks Hub', icon: BookOpen },
         { id: 'notifications', label: '🔔 Notifications', icon: Bell },
         { id: 'survey', label: '📊 Survey Hub', icon: BarChart3 },
+        { id: 'adaptive_quiz', label: '⚡ Adaptive Quiz Drill', icon: Sparkles },
         { id: 'quiz', label: 'Play Quiz Battle 🏆', icon: Trophy },
         { id: 'terms', label: 'Terms & Policies', icon: FileText }
       ]
@@ -1337,6 +1341,7 @@ export default function App() {
         { id: 'shop', label: '🔥 Club Shop', icon: ShoppingBag },
         { id: 'arcade', label: 'Fun Arcade 🕹️', icon: Gamepad2 },
         { id: 'hub', label: 'Learning Hub', icon: BookOpen },
+        { id: 'adaptive_quiz', label: '⚡ Adaptive Quiz Drill', icon: Sparkles },
         { id: 'sats', label: '🎓 KS2 SATs Prep Hub', icon: GraduationCap },
         { id: 'survey', label: '📊 Survey Hub', icon: BarChart3 },
         { id: 'quiz', label: 'Match Arena', icon: Trophy },
@@ -1728,7 +1733,40 @@ export default function App() {
                       </React.Suspense>
                     )
                   )}
-                  {activeTab === 'hub' && <LearningHub onStartLesson={(lesson) => { setPracticeLesson(lesson); setActiveTab('learn'); }} stats={stats} />}
+                  {activeTab === 'hub' && (
+                    <LearningHub 
+                      onStartLesson={(lesson) => { 
+                        setPracticeLesson(lesson); 
+                        setActiveTab('learn'); 
+                      }} 
+                      onStartAdaptiveQuiz={(lesson) => {
+                        if (lesson) setPracticeLesson(lesson);
+                        setActiveTab('adaptive_quiz');
+                      }}
+                      stats={stats} 
+                    />
+                  )}
+                  {activeTab === 'adaptive_quiz' && (
+                    <AdaptiveQuiz 
+                      stats={stats}
+                      initialLesson={practiceLesson}
+                      onFinish={(score, total, xpGained) => {
+                        handleQuizFinish(score, total, xpGained);
+                      }}
+                      onExit={() => setActiveTab('hub')}
+                      onNavigateToLesson={(lId) => {
+                        const found = LESSONS.find(l => l.id === lId);
+                        if (found) {
+                          setPracticeLesson(found);
+                          setActiveTab('learn');
+                        } else {
+                          setActiveTab('hub');
+                        }
+                      }}
+                      isGuest={authState.role === 'guest'}
+                      onConvertProgress={() => setShowConvertModal(true)}
+                    />
+                  )}
                   {activeTab === 'pitch' && (
                     authState.role === 'guest' ? (
                       <div className="max-w-lg mx-auto my-16 p-8 bg-white border-2 border-amber-500/30 rounded-[3rem] shadow-2xl text-center space-y-6">
