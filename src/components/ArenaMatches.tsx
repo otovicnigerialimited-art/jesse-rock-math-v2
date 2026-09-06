@@ -169,17 +169,24 @@ export default function ArenaMatches({ currentUser, onExit, soundEffectsEnabled,
       const list: any[] = [];
       snapshot.forEach((snap) => {
         const data = snap.data();
-        if (data.username) {
+        const role = (data.role || data.accountType || '').toLowerCase();
+        const uname = data.username || '';
+        const isTeacher = role === 'teacher' || 
+                          role === 'admin' || 
+                          snap.id.startsWith('teacher_') ||
+                          (uname.includes('@') && role === 'teacher');
+        
+        if (uname && !isTeacher && !uname.toLowerCase().includes('guest') && uname.toLowerCase() !== 'unknown') {
           list.push({
             id: snap.id,
-            username: data.username || "Challenger Genius",
+            username: uname || "Challenger Genius",
             xp: data.xp || 100,
             streak: data.streak || 0
           });
         }
       });
       setOnlinePlayers(list);
-      setOnlineUsersCount(snapshot.size);
+      setOnlineUsersCount(list.length);
     }, (err) => {
       console.warn("Real-time active scan warning:", err);
     });

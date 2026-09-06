@@ -26,8 +26,15 @@ export default function PlayerSignIns() {
         const allPlayers = [...usersData, ...studentsData]
           .filter(p => {
             const usernameLower = (p.username || '').toLowerCase();
+            const roleLower = (p.role || p.accountType || '').toLowerCase();
+            const isTeacher = roleLower === 'teacher' || 
+                              roleLower === 'admin' || 
+                              p.id?.startsWith('teacher_') ||
+                              (usernameLower.includes('@') && roleLower === 'teacher');
             return p.username && 
-                   !usernameLower.includes('guest');
+                   !isTeacher &&
+                   !usernameLower.includes('guest') &&
+                   usernameLower !== 'unknown';
           })
           .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
         setPlayers(allPlayers);
@@ -36,8 +43,15 @@ export default function PlayerSignIns() {
          console.warn(err);
          const realUsers = usersData.filter(p => {
            const usernameLower = (p.username || '').toLowerCase();
+           const roleLower = (p.role || p.accountType || '').toLowerCase();
+           const isTeacher = roleLower === 'teacher' || 
+                             roleLower === 'admin' || 
+                             p.id?.startsWith('teacher_') ||
+                             (usernameLower.includes('@') && roleLower === 'teacher');
            return p.username && 
-                  !usernameLower.includes('guest');
+                  !isTeacher &&
+                  !usernameLower.includes('guest') &&
+                  usernameLower !== 'unknown';
          });
          setPlayers(realUsers.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)));
          setLoading(false);

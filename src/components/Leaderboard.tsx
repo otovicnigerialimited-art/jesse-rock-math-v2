@@ -50,6 +50,15 @@ function isValidPlayer(data: any, id: string): boolean {
   const uname = data.username || '';
   if (!uname || uname.toLowerCase() === 'unknown') return false;
   
+  // Teachers, educators, and admin accounts must NEVER be shown on player leaderboards
+  const roleLower = (data.role || data.accountType || '').toLowerCase();
+  const isTeacher = roleLower === 'teacher' || 
+                    roleLower === 'admin' || 
+                    id.startsWith('teacher_') || 
+                    Boolean(data.teacher_id && !data.real_first_name && !data.school_math_progress) ||
+                    (uname.includes('@') && roleLower === 'teacher');
+  if (isTeacher) return false;
+
   const isGuest = uname.toLowerCase().includes('guest') || 
                   uname === 'Anonymous Hero' || 
                   id.startsWith('guest_') || 
@@ -508,10 +517,11 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
   const top3 = isSearching ? [] : filteredPlayers.slice(0, 3);
   const displayedInTable = isSearching ? filteredPlayers : filteredPlayers.slice(3);
 
-  // Append logged-in user at the end of the table if they are not on the board, but match search query
+  // Append logged-in student/individual at the end of the table if they are not on the board, but match search query (Teachers excluded)
+  const isTeacherUser = currentUser.role === 'teacher' || currentUser.role === 'admin';
   const isMeOnBoard = filteredPlayers.some(p => p.id === currentUser.uid);
   let finalTablePlayers = [...displayedInTable];
-  if (!isMeOnBoard && currentUser.uid && currentUser.username) {
+  if (!isTeacherUser && !isMeOnBoard && currentUser.uid && currentUser.username) {
     const matchesSearch = !isSearching || currentUser.username.toLowerCase().includes(searchQuery.toLowerCase());
     if (matchesSearch) {
       finalTablePlayers.push({
@@ -806,9 +816,9 @@ export default function Leaderboard({ currentUser, currentStreak, stats }: Leade
         </div>
       </div>
 
-      {/* MODULE 4: Fixed/Sticky Bottom "Your Current Status" Banner */}
+      {/* MODULE 4: Fixed/Sticky Bottom "Your Current Status" Banner (Students & Individuals only) */}
       <AnimatePresence>
-        {currentUser.username && (
+        {currentUser.username && currentUser.role !== 'teacher' && currentUser.role !== 'admin' && (
           <motion.div
             initial={{ y: 80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
