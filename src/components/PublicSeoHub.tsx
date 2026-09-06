@@ -476,7 +476,7 @@ export default function PublicSeoHub() {
           </div>
 
           <h3 className="text-base sm:text-xl font-medium text-[#1a0dab] hover:underline cursor-pointer leading-snug">
-            Jesse Math FC | Free Multiplayer Classroom Math Games, Matches & Speed Drills
+            Jesse Math FC | Free Multiplayer Math Games for Kids & Schools
           </h3>
 
           {/* ★★★★★ GOOGLE RICH SNIPPET STARS BAR */}
@@ -498,7 +498,7 @@ export default function PublicSeoHub() {
           </div>
 
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            ★★★★★ (4.8/5 based on 600 verified reviews) Jesse Math FC is the #1 zero-lag multiplayer math platform for kids. Rapid arithmetic drills, matches & class lobbies.
+            Jesse Math FC: Free multiplayer math game for kids. 4.8★ rated. Real-time 1v1 duels, KS2 SATs prep, MTC multiplication drills & classroom tournaments.
           </p>
         </div>
 
