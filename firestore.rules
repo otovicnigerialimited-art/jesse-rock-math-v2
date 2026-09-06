@@ -3,193 +3,372 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // =========================================================================
-    // SECURITY & VALIDATION HELPER FUNCTIONS
+    // 1. CORE HELPER FUNCTIONS & AUTHENTICATION PREDICATES
     // =========================================================================
 
-    function isNotTooLarge(val) {
-      return val is string && val.size() <= 2000;
+    function isSignedIn() {
+      return request.auth != null;
     }
 
-    function isValidNumber(val, minVal, maxVal) {
+    function isUser(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.role == 'super_admin' || 
+        request.auth.token.role == 'admin' ||
+        request.auth.token.admin == true
+      );
+    }
+
+    function isTeacher() {
+      return isSignedIn() && (
+        request.auth.token.role == 'teacher' || 
+        request.auth.token.isTeacher == true ||
+        isAdmin()
+      );
+    }
+
+    function isParent() {
+      return isSignedIn() && (
+        request.auth.token.role == 'parent' ||
+        isAdmin()
+      );
+    }
+
+    // =========================================================================
+    // 2. INPUT & TYPE VALIDATION HELPERS
+    // =========================================================================
+
+    function isSafeString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    function isSafeOptionalString(val, maxLen) {
+      return val == null || (val is string && val.size() <= maxLen);
+    }
+
+    function isSafeNumber(val, minVal, maxVal) {
       return val is number && val >= minVal && val <= maxVal;
     }
 
-    // =========================================================================
-    // COLLECTION-SPECIFIC ZERO-TRUST RULES
-    // =========================================================================
-
-    // User Profiles & Progress
-    match /users/{userId} {
-      allow read: if true;
-      allow create, update: if true;
-      allow delete: if request.auth != null && request.auth.uid == userId;
+    function isSafeOptionalNumber(val, minVal, maxVal) {
+      return val == null || (val is number && val >= minVal && val <= maxVal);
     }
 
-    // Username Registry
+    function isSafeScore(val) {
+      return val is number && val >= 0 && val <= 10000000;
+    }
+
+    // Ensures immutable fields are never altered in updates
+    function unchanged(field) {
+      return !(field in request.resource.data) || 
+        resource == null || 
+        request.resource.data[field] == resource.data[field];
+    }
+
+    // =========================================================================
+    // 3. USER PROFILES & USERNAME REGISTRY
+    // =========================================================================
+
+    match /users/{userId} {
+      // User can read their own profile; public can read basic gaming cards
+      allow read: if isUser(userId) || isSignedIn() || isAdmin();
+      
+      // User can create their initial profile
+      allow create: if isSafeString(userId, 1, 128)
+        && request.resource.data.xp is number
+        && request.resource.data.xp >= 0 && request.resource.data.xp <= 50000000
+        && request.resource.data.coins is number
+        && request.resource.data.coins >= 0 && request.resource.data.coins <= 50000000;
+
+      // User can update profile with sensitive field immutability
+      allow update: if (isUser(userId) || isAdmin() || isTeacher())
+        && unchanged('uid')
+        && unchanged('createdAt')
+        && (!('role' in request.resource.data) || request.resource.data.role == resource.data.role || isAdmin())
+        && request.resource.data.xp is number
+        && request.resource.data.xp >= 0 && request.resource.data.xp <= 50000000
+        && request.resource.data.coins is number
+        && request.resource.data.coins >= 0 && request.resource.data.coins <= 50000000;
+
+      allow delete: if isAdmin() || isUser(userId);
+    }
+
     match /usernames/{username} {
       allow read: if true;
-      allow create, update: if true;
-      allow delete: if request.auth != null;
+      allow create: if isSafeString(username, 1, 64)
+        && request.resource.data.uid is string
+        && (isUser(request.resource.data.uid) || !isSignedIn());
+      allow update: if isSafeString(username, 1, 64)
+        && unchanged('uid');
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
     }
 
-    // School Organizations & Teachers
+    // =========================================================================
+    // 4. SCHOOLS & TEACHER ACCOUNTS
+    // =========================================================================
+
     match /schools/{schoolId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if (isAdmin() || isTeacher() || isSignedIn())
+        && isSafeString(schoolId, 1, 128);
+      allow delete: if isAdmin();
     }
 
     match /teachers/{teacherId} {
+      // Teachers and students in their class can read teacher meta
       allow read: if true;
-      allow create, update: if true;
-      allow delete: if request.auth != null;
+      allow create: if isSafeString(teacherId, 1, 128)
+        && (isUser(teacherId) || !isSignedIn() || isTeacher());
+      allow update: if (isUser(teacherId) || isAdmin() || isTeacher())
+        && unchanged('id')
+        && unchanged('email');
+      allow delete: if isAdmin() || isUser(teacherId);
     }
 
-    // School Students & Rosters
+    // =========================================================================
+    // 5. SCHOOL STUDENTS & ROSTERS
+    // =========================================================================
+
     match /school_students/{studentId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create: if isSafeString(studentId, 1, 128)
+        && request.resource.data.username is string
+        && isSafeString(request.resource.data.username, 1, 64);
+      allow update: if isSafeString(studentId, 1, 128)
+        && unchanged('createdAt')
+        && unchanged('teacher_id');
+      allow delete: if isAdmin() || isTeacher() || (isSignedIn() && resource.data.teacher_id == request.auth.uid);
     }
 
-    // Classes, Classrooms, Announcements & Posts
+    // =========================================================================
+    // 6. CLASSROOM SESSIONS, ANNOUNCEMENTS & INTERVENTIONS
+    // =========================================================================
+
     match /classes/{classId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(classId, 1, 128)
+        && (isTeacher() || isSignedIn() || isAdmin());
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.teacher_id == request.auth.uid);
     }
 
     match /class_sessions/{sessionId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(sessionId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /class_announcements/{announcementId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(announcementId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /class_posts/{postId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(postId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /class_requests/{requestId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(requestId, 1, 128);
+      allow delete: if isAdmin();
     }
 
-    // Student Help Requests
     match /student_help_requests/{requestId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(requestId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
-    // Misconceptions & Intervention Groups
     match /class_misconceptions/{misconceptionId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(misconceptionId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /intervention_groups/{groupId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(groupId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
-    // Homework & Submissions (supports both /homework and /homework_assignments)
+    // =========================================================================
+    // 7. HOMEWORK & ASSESSMENTS
+    // =========================================================================
+
     match /homework/{homeworkId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(homeworkId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /homework_assignments/{homeworkId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(homeworkId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /homework_submissions/{submissionId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(submissionId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
-    // Assessments & Exit Tickets
     match /exit_tickets/{ticketId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(ticketId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /exit_ticket_results/{resultId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(resultId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /assessments/{assessmentId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(assessmentId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /assessment_submissions/{submissionId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(submissionId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
-    // Multiplayer Arena Games & Matchmaking Queue
+    // =========================================================================
+    // 8. MULTIPLAYER ARENA & MATCHMAKING
+    // =========================================================================
+
     match /arena_games/{gameId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(gameId, 1, 128);
+      allow delete: if isAdmin();
     }
 
     match /matchmaking_queue/{queueId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(queueId, 1, 128);
+      allow delete: if true;
     }
 
-    // Student Journey Replays & Events
     match /student_journey_events/{eventId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create: if isSafeString(eventId, 1, 128);
+      allow update, delete: if isAdmin();
     }
 
-    // Parent Reports & Invitations
+    // =========================================================================
+    // 9. PARENTS & PROGRESS REPORTS
+    // =========================================================================
+
+    match /parents/{parentId} {
+      allow read: if isUser(parentId) || isAdmin() || isTeacher();
+      allow create: if isSafeString(parentId, 1, 128);
+      allow update: if isUser(parentId) || isAdmin();
+      allow delete: if isAdmin() || isUser(parentId);
+    }
+
     match /parent_invitations/{invitationId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(invitationId, 1, 128);
+      allow delete: if isAdmin() || isTeacher();
     }
 
     match /parent_children/{docId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(docId, 1, 128);
+      allow delete: if isAdmin() || isParent();
     }
 
     match /parent_weekly_reports/{reportId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(reportId, 1, 128);
+      allow delete: if isAdmin();
     }
 
-    // SATs Progress & Revision
     match /sats_progress/{studentId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow create, update: if isSafeString(studentId, 1, 128);
+      allow delete: if isAdmin();
     }
 
-    // Leaderboard
+    // =========================================================================
+    // 10. LEADERBOARDS, REVIEWS & SURVEYS
+    // =========================================================================
+
     match /leaderboard/{docId} {
       allow read: if true;
-      allow create, update: if true;
-      allow delete: if request.auth != null;
+      allow create, update: if (isSafeScore(request.resource.data.highScore)
+        || isSafeScore(request.resource.data.score))
+        && unchanged('uid');
+      allow delete: if isAdmin();
     }
 
-    // Reviews & Public Feedback
     match /reviews/{reviewId} {
       allow read: if true;
-      allow create, update: if true;
-      allow delete: if request.auth != null;
+      allow create: if isSafeNumber(request.resource.data.rating, 1, 5)
+        && isSafeOptionalString(request.resource.data.reviewText, 2000)
+        && isSafeOptionalString(request.resource.data.reviewerName, 100);
+      allow update: if (isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid))
+        && isSafeNumber(request.resource.data.rating, 1, 5)
+        && isSafeOptionalString(request.resource.data.reviewText, 2000);
+      allow delete: if isAdmin() || (isSignedIn() && resource.data.uid == request.auth.uid);
     }
 
-    // Survey Responses & Research Intelligence (Anonymized User Submissions)
     match /survey_responses/{surveyId} {
       allow read: if true;
-      allow create: if true;
-      allow update, delete: if request.auth != null;
+      allow create: if isSafeString(surveyId, 1, 128)
+        && isSafeOptionalString(request.resource.data.bugsEncountered, 100)
+        && isSafeOptionalString(request.resource.data.performanceRating, 100);
+      allow update, delete: if isAdmin();
     }
 
-    // Developer Guestbook
     match /developer_guestbook/{entryId} {
-      allow read, create: if true;
-      allow update, delete: if request.auth != null;
+      allow read: if true;
+      allow create: if isSafeOptionalString(request.resource.data.message, 1000)
+        && isSafeOptionalString(request.resource.data.author, 100);
+      allow update, delete: if isAdmin();
     }
 
-    // Shop Items & System State
     match /shop_items/{itemId} {
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if isAdmin();
     }
 
     match /system_state/{stateId} {
-      allow read, write: if true;
-    }
-
-    // Security Audit Logs (Append-only)
-    match /security_audit_logs/{logId} {
       allow read: if true;
-      allow create: if true;
-      allow update, delete: if false;
+      allow write: if isAdmin();
     }
 
-    // Deny all other unhandled paths
+    match /active_browser_sessions/{sessionId} {
+      allow read: if true;
+      allow create, update: if isSafeString(sessionId, 1, 128)
+        && request.resource.data.lastHeartbeat is number;
+      allow delete: if true;
+    }
+
+    // =========================================================================
+    // 11. AUDIT LOGS (IMMUTABLE APPEND-ONLY)
+    // =========================================================================
+
+    match /security_audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isSafeString(logId, 1, 128)
+        && request.resource.data.action is string;
+      allow update, delete: if false; // Strict immutability
+    }
+
+    // =========================================================================
+    // 12. CATCH-ALL DENY BY DEFAULT
+    // =========================================================================
+
     match /{document=**} {
       allow read, write: if false;
     }

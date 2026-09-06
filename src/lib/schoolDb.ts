@@ -13,6 +13,8 @@ import {
   deleteDoc,
   writeBatch
 } from 'firebase/firestore';
+import { hashPasswordWithSalt, verifyPasswordMatch } from './cryptoUtils';
+import { checkActionRateLimit, sanitizeUserInput } from './safetyUtils';
 
 // ==========================================================
 // 1. SUPABASE / POSTGRES SQL SCHEMA REPRESENTATION (USER REFERENCE)
@@ -274,6 +276,12 @@ export async function authenticateSchoolTeacher(
   const cleanEmail = emailEntered.trim().toLowerCase();
   const cleanPass = passwordEntered.trim();
 
+  // Rate-limiting check
+  const rl = checkActionRateLimit(`login_teacher_${cleanEmail}`, 10, 60000);
+  if (!rl.allowed) {
+    return { success: false, error: `Too many login attempts. Please wait ${rl.retryAfterSeconds}s before trying again.` };
+  }
+
   try {
     await signInWithEmailAndPassword(auth, cleanEmail, cleanPass);
   } catch (authErr: any) {
@@ -296,7 +304,16 @@ export async function authenticateSchoolTeacher(
   const teacherDoc = snap.docs[0];
   const data = teacherDoc.data();
   // Check password if present or allow verified teacher login
-  if (!data.password || data.password === cleanPass || cleanPass.length >= 4) {
+  const isPassValid = !data.password || (await verifyPasswordMatch(cleanPass, data.password));
+  if (isPassValid) {
+    // Auto-upgrade plaintext to hash
+    if (data.password && !data.password.startsWith("sha256_")) {
+      try {
+        const newHash = await hashPasswordWithSalt(cleanPass);
+        await updateDoc(teacherDoc.ref, { password: newHash });
+      } catch (err) {}
+    }
+
     let activeCode = data.class_code;
     if (!activeCode) {
       activeCode = generateClassCode();
@@ -332,7 +349,7 @@ export async function registerTeacher(
 ): Promise<{ success: boolean; error?: string; userObj?: Teacher }> {
   const cleanEmail = emailEntered.trim().toLowerCase();
   const cleanPass = passwordEntered.trim();
-  const cleanName = teacherName.trim();
+  const cleanName = sanitizeUserInput(teacherName.trim(), 100);
 
   // Validate duplicate email
   const q = query(
@@ -350,6 +367,7 @@ export async function registerTeacher(
     console.warn("Firebase Auth registration note:", authErr?.message);
   }
 
+  const secureHashedPassword = await hashPasswordWithSalt(cleanPass);
   const generatedCode = generateClassCode();
   const className = `${cleanName}'s Classroom`;
 
@@ -357,7 +375,7 @@ export async function registerTeacher(
   const docRef = await addDoc(collection(db, 'teachers'), {
     teacher_name: cleanName,
     email: cleanEmail,
-    password: cleanPass,
+    password: secureHashedPassword,
     class_code: generatedCode,
     class_code_upper: generatedCode.toUpperCase(),
     class_name: className,
@@ -374,6 +392,7 @@ export async function registerTeacher(
       username: cleanEmail,
       displayName: cleanName,
       email: cleanEmail,
+      password: secureHashedPassword,
       class_code: generatedCode,
       class_name: className,
       highScore: 0,
@@ -412,6 +431,12 @@ export async function authenticateSchoolStudent(
   const cleanUser = usernameEntered.trim();
   const cleanPass = passwordEntered.trim();
 
+  // Rate-limiting check
+  const rl = checkActionRateLimit(`login_student_${cleanUser.toLowerCase()}`, 10, 60000);
+  if (!rl.allowed) {
+    return { success: false, error: `Too many login attempts. Please wait ${rl.retryAfterSeconds}s before trying again.` };
+  }
+
   let snap = await getDocs(query(
     collection(db, 'school_students'),
     where('username_lower', '==', cleanUser.toLowerCase())
@@ -430,9 +455,18 @@ export async function authenticateSchoolStudent(
   const studentDoc = snap.docs[0];
   const data = studentDoc.data() as SchoolStudent & { password?: string };
 
-  // If password exists in record, verify it strictly and reject old passwords
-  if (data.password && data.password !== cleanPass) {
+  // Verify password strictly with hashing support
+  const isMatch = !data.password || (await verifyPasswordMatch(cleanPass, data.password));
+  if (!isMatch) {
     return { success: false, error: "Incorrect password or PIN. The password has been updated by your teacher—please check your login card!" };
+  }
+
+  // Auto-upgrade to hash
+  if (data.password && !data.password.startsWith("sha256_")) {
+    try {
+      const newHash = await hashPasswordWithSalt(cleanPass);
+      await updateDoc(studentDoc.ref, { password: newHash });
+    } catch (e) {}
   }
 
   return {
@@ -448,9 +482,9 @@ export async function addStudentToTeacher(
   passwordEntered: string,
   teacherId: string
 ): Promise<{ success: boolean; error?: string; studentId?: string; tempPass?: string }> {
-  const cleanUser = usernameEntered.trim();
+  const cleanUser = sanitizeUserInput(usernameEntered.trim(), 40);
   const cleanPass = passwordEntered.trim();
-  const cleanFirstName = realFirstName.trim();
+  const cleanFirstName = sanitizeUserInput(realFirstName.trim(), 50);
 
   // Validate inputs
   if (!cleanFirstName || cleanFirstName.length < 2) {
@@ -488,11 +522,13 @@ export async function addStudentToTeacher(
     streak: 0
   };
 
+  const secureHashedPassword = await hashPasswordWithSalt(cleanPass);
+
   const newStudentData = {
     real_first_name: cleanFirstName,
     username: cleanUser,
     username_lower: cleanUser.toLowerCase(),
-    password: cleanPass,
+    password: secureHashedPassword,
     teacher_id: teacherId,
     school_math_progress: initialProgressObj,
     createdAt: Date.now(),
@@ -562,10 +598,11 @@ export async function resetStudentCredentials(
 
     const tempPin = customNewPin?.trim() || ('rock' + Math.floor(100 + Math.random() * 900));
     const now = Date.now();
+    const secureHashedPin = await hashPasswordWithSalt(tempPin);
 
     // Update password in database so old password is immediately rejected and new password is required
     await updateDoc(studentRef, {
-      password: tempPin,
+      password: secureHashedPin,
       lastPasswordResetAt: now,
       credentialsResetAt: now,
       firstLoginRequired: true,

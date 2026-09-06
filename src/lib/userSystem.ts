@@ -18,6 +18,8 @@ import {
   deleteDoc
 } from 'firebase/firestore';
 import { safeStorage } from './storage';
+import { hashPasswordWithSalt, verifyPasswordMatch } from './cryptoUtils';
+import { checkActionRateLimit, sanitizeUserInput } from './safetyUtils';
 
 export type AccountRole = 'GUEST' | 'INDIVIDUAL' | 'STUDENT' | 'TEACHER' | 'PARENT';
 
@@ -182,6 +184,12 @@ export async function createIndividualAccount(
     return { success: false, error: "Password must be at least 4 characters long." };
   }
 
+  // Rate-limiting check for signups
+  const rl = checkActionRateLimit(`signup_${normUser}`, 5, 60000);
+  if (!rl.allowed) {
+    return { success: false, error: `Too many registration attempts. Please wait ${rl.retryAfterSeconds}s before trying again.` };
+  }
+
   // 1. Verify username uniqueness
   const nameSnap = await getDoc(doc(db, "usernames", normUser));
   if (nameSnap.exists()) {
@@ -197,10 +205,10 @@ export async function createIndividualAccount(
     }
   } catch (authErr: any) {
     console.warn("Firebase Auth fallback for individual signup:", authErr?.message);
-    // Proceed with Firestore-backed registration
   }
 
   try {
+    const secureHashedPassword = await hashPasswordWithSalt(passwordEntered);
     let initialXp = 100;
     let initialCoins = 100;
     let initialHighScore = 0;
@@ -229,12 +237,13 @@ export async function createIndividualAccount(
       }
     }
 
+    const cleanUsername = sanitizeUserInput(usernameEntered.trim(), 30);
     const profile: UserProfile = {
       uid,
       role: 'INDIVIDUAL',
       accountType: 'INDIVIDUAL',
-      username: usernameEntered.trim(),
-      displayName: usernameEntered.trim(),
+      username: cleanUsername,
+      displayName: cleanUsername,
       highScore: initialHighScore,
       xp: initialXp,
       coins: initialCoins,
@@ -246,15 +255,15 @@ export async function createIndividualAccount(
       lastLoginAt: Date.now()
     };
 
-    // Save profile to Firestore
+    // Save profile to Firestore with salted hash
     await setDoc(doc(db, "users", uid), {
       ...profile,
-      password: passwordEntered
+      password: secureHashedPassword
     });
     await setDoc(doc(db, "usernames", normUser), {
       uid,
-      username: usernameEntered.trim(),
-      password: passwordEntered,
+      username: cleanUsername,
+      password: secureHashedPassword,
       createdAt: Date.now()
     });
 
@@ -284,14 +293,30 @@ export async function loginWithUsername(
     return { success: false, error: "Please enter both username and password." };
   }
 
+  // Rate-limiting check for login attempts (10 attempts per minute)
+  const rl = checkActionRateLimit(`login_${normUser}`, 10, 60000);
+  if (!rl.allowed) {
+    return { success: false, error: `Too many login attempts. Please wait ${rl.retryAfterSeconds}s before trying again.` };
+  }
+
   // Find username lookup
   const nameSnap = await getDoc(doc(db, "usernames", normUser));
   if (nameSnap.exists()) {
     const uData = nameSnap.data();
     const uid = uData.uid || `user_${normUser}`;
 
-    // Direct password match on username record
-    if (uData.password && uData.password === passwordEntered) {
+    // Cryptographic or legacy password match
+    const isMatch = await verifyPasswordMatch(passwordEntered, uData.password);
+    if (isMatch) {
+      // Auto-upgrade legacy plaintext password to secure salted SHA-256
+      if (uData.password && !uData.password.startsWith("sha256_")) {
+        try {
+          const newHash = await hashPasswordWithSalt(passwordEntered);
+          await updateDoc(doc(db, "usernames", normUser), { password: newHash });
+          await updateDoc(doc(db, "users", uid), { password: newHash });
+        } catch (e) {}
+      }
+
       const userSnap = await getDoc(doc(db, "users", uid));
       let userData: UserProfile;
       if (userSnap.exists()) {
@@ -353,7 +378,7 @@ export async function loginWithUsername(
       console.warn("Auth check failed:", err?.message);
     }
 
-    if (uData.password && uData.password !== passwordEntered) {
+    if (uData.password && !isMatch) {
       return { success: false, error: "Incorrect password entered." };
     }
   }
@@ -365,7 +390,16 @@ export async function loginWithUsername(
   if (!studentSnap.empty) {
     const studentDoc = studentSnap.docs[0];
     const sData = studentDoc.data();
-    if (!sData.password || sData.password === passwordEntered || passwordEntered.length >= 4) {
+    const isStudentPassValid = !sData.password || (await verifyPasswordMatch(passwordEntered, sData.password));
+    if (isStudentPassValid) {
+      // Auto-upgrade student password to salted hash if plaintext
+      if (sData.password && !sData.password.startsWith("sha256_")) {
+        try {
+          const newHash = await hashPasswordWithSalt(passwordEntered);
+          await updateDoc(studentDoc.ref, { password: newHash });
+        } catch (e) {}
+      }
+
       const studentProfile: UserProfile = {
         uid: studentDoc.id,
         role: 'STUDENT',
@@ -449,15 +483,16 @@ export async function createTeacherAccount(
       lastLoginAt: Date.now()
     };
 
+    const secureHashedPassword = await hashPasswordWithSalt(passwordEntered);
     await setDoc(doc(db, "users", uid), {
       ...profile,
-      password: passwordEntered
+      password: secureHashedPassword
     });
     await setDoc(doc(db, "teachers", uid), {
       id: uid,
       teacher_name: cleanName,
       email: cleanEmail,
-      password: passwordEntered,
+      password: secureHashedPassword,
       created_at: Date.now()
     });
 
@@ -482,6 +517,12 @@ export async function loginTeacherOrParent(
     return { success: false, error: "Please enter your email and password." };
   }
 
+  // Rate-limiting check
+  const rl = checkActionRateLimit(`login_adult_${cleanEmail}`, 10, 60000);
+  if (!rl.allowed) {
+    return { success: false, error: `Too many login attempts. Please wait ${rl.retryAfterSeconds}s before trying again.` };
+  }
+
   // 1. Try Firebase Auth
   let authUid: string | null = null;
   try {
@@ -500,7 +541,16 @@ export async function loginTeacherOrParent(
   if (!teacherSnap.empty) {
     const tDoc = teacherSnap.docs[0];
     const tData = tDoc.data();
-    if (!tData.password || tData.password === passwordEntered || passwordEntered.length >= 4) {
+    const isTeacherPassValid = !tData.password || (await verifyPasswordMatch(passwordEntered, tData.password));
+    if (isTeacherPassValid) {
+      // Auto-upgrade plaintext to hash if needed
+      if (tData.password && !tData.password.startsWith("sha256_")) {
+        try {
+          const newHash = await hashPasswordWithSalt(passwordEntered);
+          await updateDoc(tDoc.ref, { password: newHash });
+        } catch (e) {}
+      }
+
       const uid = authUid || tDoc.id;
       const profile: UserProfile = {
         uid,
@@ -582,6 +632,7 @@ export async function createParentAccount(
   }
 
   try {
+    const secureHashedPassword = await hashPasswordWithSalt(passwordEntered);
     const profile: UserProfile = {
       uid,
       role: 'PARENT',
@@ -603,7 +654,7 @@ export async function createParentAccount(
 
     await setDoc(doc(db, "users", uid), {
       ...profile,
-      password: passwordEntered
+      password: secureHashedPassword
     });
 
     safeStorage.setItem('jesse_rock_role', 'parent');
@@ -643,6 +694,12 @@ export async function linkChildWithCode(
   const cleanCode = codeEntered.trim().toUpperCase();
   if (!cleanCode) {
     return { success: false, error: "Please enter a valid Child Link Code (e.g. JMR-48291)." };
+  }
+
+  // Rate-limiting check (5 attempts per minute per parent)
+  const rl = checkActionRateLimit(`link_child_${parentUid}`, 5, 60000);
+  if (!rl.allowed) {
+    return { success: false, error: `Too many link attempts. Please wait ${rl.retryAfterSeconds}s before trying again.` };
   }
 
   const inviteSnap = await getDoc(doc(db, "parent_invitations", cleanCode));
@@ -807,10 +864,11 @@ export async function studentUpdatePassword(
     }
 
     const now = Date.now();
+    const secureHashedPassword = await hashPasswordWithSalt(newPasswordEntered);
 
     // Update user profile
     await updateDoc(doc(db, "users", studentUid), {
-      password: newPasswordEntered,
+      password: secureHashedPassword,
       firstLoginRequired: false,
       lastPasswordResetAt: now
     });
@@ -818,7 +876,7 @@ export async function studentUpdatePassword(
     // Update school_students doc if exists
     if (ssSnap.exists()) {
       await updateDoc(studentRef, {
-        password: newPasswordEntered,
+        password: secureHashedPassword,
         firstLoginRequired: false,
         lastPasswordResetAt: now,
         credentialsResetAt: now,

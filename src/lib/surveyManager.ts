@@ -1,5 +1,6 @@
 import { safeStorage } from './storage';
 import { db } from './firebase';
+import { checkActionRateLimit } from './safetyUtils';
 import { 
   collection, 
   addDoc, 
@@ -116,6 +117,13 @@ export function getLocalStoredSubmissions(): SurveyAnswer[] {
  * Strictly NO usernames or PII are collected.
  */
 export async function saveSurveySubmission(answer: Omit<SurveyAnswer, 'timestamp'>): Promise<void> {
+  // Prevent survey submission flooding (max 3 submissions per 10 minutes)
+  const rl = checkActionRateLimit('survey_submission', 3, 600000);
+  if (!rl.allowed) {
+    console.warn(`Survey submission rate limited. Retry in ${rl.retryAfterSeconds}s.`);
+    return;
+  }
+
   const newEntry: SurveyAnswer = {
     ...answer,
     timestamp: new Date().toISOString()

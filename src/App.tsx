@@ -90,6 +90,8 @@ const SpacedPracticeView = React.lazy(() => import('./components/SpacedPracticeV
 const SurveyHub = React.lazy(() => import('./components/SurveyHub'));
 import SurveyPopupModal from './components/SurveyPopupModal';
 import { hasCompletedSurvey } from './lib/surveyManager';
+import { BrowserLockModal } from './components/BrowserLockModal';
+import { sessionGuard, ActiveSessionInfo } from './lib/browserLockManager';
 
 const INITIAL_STATS: ExtendedUserStats = {
   totalSolved: 0,
@@ -321,6 +323,25 @@ export default function App() {
   const [practiceLesson, setPracticeLesson] = useState<any>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>((window as any).deferredPrompt || null);
   const [showInstallGuide, setShowInstallGuide] = useState(false);
+
+  // Single Browser Concurrency Guard State
+  const [isSessionBlocked, setIsSessionBlocked] = useState(false);
+  const [otherSessionInfo, setOtherSessionInfo] = useState<ActiveSessionInfo | undefined>(undefined);
+
+  useEffect(() => {
+    const unsub = sessionGuard.subscribe((blocked, other) => {
+      setIsSessionBlocked(blocked);
+      setOtherSessionInfo(other);
+    });
+    return unsub;
+  }, []);
+
+  useEffect(() => {
+    const targetKey = authState.userId || userDeviceId || safeStorage.getItem('jesse_rock_user_id') || safeStorage.getItem('jesse_rock_device_id') || (authState.username ? `user_${authState.username.toLowerCase()}` : null);
+    if (targetKey) {
+      sessionGuard.startGuarding(targetKey);
+    }
+  }, [authState.userId, userDeviceId, authState.username]);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: any) => {
@@ -1985,6 +2006,12 @@ export default function App() {
             setShowSurveyPopup(false);
             setActiveTab('survey');
           }}
+        />
+
+        {/* Single Browser Guard Overlay */}
+        <BrowserLockModal 
+          isBlocked={isSessionBlocked} 
+          otherSession={otherSessionInfo} 
         />
 
         <NotificationToast onOpenHub={() => setShowNotificationsModal(true)} />
